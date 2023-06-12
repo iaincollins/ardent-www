@@ -73,7 +73,7 @@ export default () => {
         <i className='icarus-terminal-chevron-right' />
         <Link href='/commodities'>System</Link>
       </p>
-      {!system && <div className='loading-bar' />}
+      {!system && <div className='loading-bar' style={{ marginTop: '1.5rem' }} />}
       {system &&
         <>
           <h2>{system.systemName}</h2>

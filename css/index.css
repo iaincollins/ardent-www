@@ -174,17 +174,38 @@ pre {
   position: absolute;
   top: 0;
   right: 0;
-  padding: .5rem .75rem;
+  padding: .5rem .75rem .75rem 1rem;
   pointer-events: none;
   text-align: right;
   font-size: .8rem;
   text-transform: uppercase;
   z-index: -3;
-  background: rgba(50,50,50,.75);
+  background: rgba(70,70,70,.5);
   color: #ccc;
   clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem));
-
 }
+
+.stats:before {
+  content: '';
+  position: absolute;
+  inset: 0; 
+  background: #888;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    2.00rem 100%,
+    0 calc(100% - 2.00rem),
+    0 0,
+    .2rem  .2rem ,
+    .2rem calc(100% - 2.00rem - 0.08rem),
+    calc(2.00rem + 0.08rem) calc(100% - .2rem),
+    100% calc(100% - .2rem),
+    100% 0rem,
+    .2rem 0rem
+  );
+}
+
 
 .breadcrumb {
   margin-bottom: 0;
