@@ -70,7 +70,7 @@ export default () => {
     <>
       <p className='breadcrumb'>
         <Link href='/'>Home</Link>
-        {' : '}
+        <i className='icarus-terminal-chevron-right' />
         <Link href='/commodities'>System</Link>
       </p>
       {!system && <div className='loading-bar' />}

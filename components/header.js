@@ -31,7 +31,7 @@ export default () => {
         <div className='stats'>
           Star Systems: {stats.systems.toLocaleString()}<br/>
           Trade Orders: {stats.trade.tradeOrders.toLocaleString()}<br/>
-          Updates in last 24 hours: {stats.trade.updatedInLast24Hours.toLocaleString()}
+          Updates today: {stats.trade.updatedInLast24Hours.toLocaleString()}<br/>
         </div>}
       {/* {stats && JSON.stringify(stats, null, 2)} */}
     </>

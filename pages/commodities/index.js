@@ -43,6 +43,7 @@ export default () => {
         <Link href='/'>Home</Link>
       </p>
       <h2>Commodities</h2>
+      {!commodities && <div className='loading-bar' />}
       {commodities &&
         <Table
           className='data-table'
@@ -52,7 +53,7 @@ export default () => {
               dataIndex: 'name',
               key: 'commodityName',
               align: 'left',
-              render: (v, r) => <>{v}<br /> <small>{r.category}</small></>
+              render: (v, r) => <>{v}<br /><small>{r.category}</small></>
             },
             {
               title: 'Avg Export CR/T',
@@ -75,7 +76,7 @@ export default () => {
               align: 'right',
               render: (v, r) =>
                 <>
-                  ~ {v.toLocaleString()} CR
+                  ~ {v.toLocaleString()}
                   <br />
                   <small>MAX {r.maxProfit.toLocaleString()} CR</small>
                 </>

@@ -2,6 +2,20 @@
 @import url('fx.css');
 @import url('loading-bar.css');
 
+@font-face {
+  font-family: 'Jura';
+  src: url('../public/fonts/Jura-VariableFont_wght.ttf') format('truetype');
+}
+
+/* Override generated defaults for terminal font */
+i[class^="icarus-terminal-"],
+i[class*=" icarus-terminal-"] {
+  font-size: inherit;
+  font-size: .8rem;
+  pointer-events: none;
+  margin: 0 .1rem;
+}
+
 html {
   font-family: sans-serif;
   background-color: #111;
@@ -25,6 +39,7 @@ h3 {
   padding: 0 .25rem;
   position: relative;
   color: #333;
+  font-family: "Jura", sans-serif;
 }
 
 h1:after,

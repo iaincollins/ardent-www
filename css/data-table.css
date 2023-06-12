@@ -18,6 +18,7 @@
   background: #ccc;
   text-transform: uppercase;
   border-bottom: .25rem solid #111;
+  font-family: "Jura", sans-serif;
 }
 
 .data-table td {
