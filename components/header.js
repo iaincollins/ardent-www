@@ -8,6 +8,6 @@ export default () =>
     <p>
       Trade and Exploration Data
     </p>
-    <br/>
-    <small><a style={{ textDecoration: 'none'}} href="https://github.com/iaincollins/ardent-www">v{Package.version} (BETA)</a></small>
+    <br />
+    <small><a style={{ textDecoration: 'none' }} href='https://github.com/iaincollins/ardent-www'>v{Package.version} (BETA)</a></small>
   </div>
