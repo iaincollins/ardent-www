@@ -1,0 +1,47 @@
+.data-table th,
+.data-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  padding: .5rem;
+}
+
+.data-table .rc-table-row-expand-icon-cell {
+  display: none;
+}
+
+.data-table table {
+  border-spacing: 0;
+}
+
+.data-table th {
+  color: #111;
+  background: #ccc;
+  text-transform: uppercase;
+  border-bottom: .25rem solid #111;
+}
+
+.data-table td {
+  background: #222;
+}
+
+.data-table tr.rc-table-row td {
+  margin-bottom: .5rem;
+  border-bottom: .25rem solid #111;
+}
+
+.data-table tr.rc-table-row:hover td {
+  background: #333;
+  cursor: pointer;
+}
+
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td {
+  background: #ccc;
+  color: #111;
+  cursor: pointer;
+  border-bottom: none;
+}
+
+.data-table tr.rc-table-row + tr.rc-table-expanded-row > td {
+  background: #333 linear-gradient(0deg, rgba(34,34,34,1) 0%, rgba(51,51,51,1) 100%);
+  border-bottom: .25rem solid #111;
+}

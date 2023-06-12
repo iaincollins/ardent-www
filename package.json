@@ -1,0 +1,33 @@
+{
+  "name": "ardent-www",
+  "version": "0.1.0",
+  "description": "Ardent Website",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx next start -p 3000",
+    "build": "npx next build",
+    "dev": "npx next dev -p 3000",
+    "lint": "npx standard --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iaincollins/ardent-spike.git"
+  },
+  "author": "",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/iaincollins/ardent-spike/issues"
+  },
+  "homepage": "https://github.com/iaincollins/ardent-spike#readme",
+  "dependencies": {
+    "@tanstack/react-table": "^8.9.2",
+    "next": "^13.4.4",
+    "prettyoutput": "^1.2.0",
+    "rc-table": "^7.32.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "standard": "^17.1.0"
+  }
+}

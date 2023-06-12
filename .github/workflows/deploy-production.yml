@@ -1,0 +1,42 @@
+name: Deploy Ardent Website to Production
+
+# This deployment script assumes the following are configured in GitHub actions:
+#
+#  SSH_PRIVATE_KEY [secret]
+#  DEPLOY_HOST [variable]
+#  DEPLOY_USER [variable]
+#  DEPLOY_DIR [variable]
+#
+# It also assumes the service has been previously run using pm2:
+#
+#  pm2 start npm --name "{repository name}" -- run start
+#  pm2 save
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  SERVICE_NAME: ${{ github.event.repository.name }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Deploy to Server
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ARGS: "-rlgoDzvc -i --delete"
+        SOURCE: "./"
+        REMOTE_HOST: ${{ vars.DEPLOY_HOST }}
+        REMOTE_USER: ${{ vars.DEPLOY_USER }}
+        TARGET: "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}"
+        EXCLUDE: ".git*, *.md, LICENSE, node_modules/"
+        SCRIPT_AFTER: |
+          cd "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}"
+          npm install
+          npm run build
+          pm2 restart "${{ env.SERVICE_NAME }}" --cron-restart="55 7 * * *"
+          echo $RSYNC_STDOUT
