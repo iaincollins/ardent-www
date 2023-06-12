@@ -63,6 +63,7 @@ h3 {
   position: relative;
   color: #333;
   font-family: "Jura", sans-serif;
+  margin-bottom: 0rem;
 }
 
 h1:after,
@@ -197,15 +198,14 @@ pre {
     2.00rem 100%,
     0 calc(100% - 2.00rem),
     0 0,
-    .2rem  .2rem ,
+    .2rem 0,
     .2rem calc(100% - 2.00rem - 0.08rem),
     calc(2.00rem + 0.08rem) calc(100% - .2rem),
     100% calc(100% - .2rem),
-    100% 0rem,
-    .2rem 0rem
+    100% 0,
+    .2rem 0
   );
 }
-
 
 .breadcrumb {
   margin-bottom: 0;

@@ -107,8 +107,8 @@ export default () => {
           <table style={{ marginTop: '1rem' }}>
             <thead>
               <tr>
-                <th align='left'><h3 style={{ margin: 0 }}>Exports</h3></th>
-                <th align='left'><h3 style={{ margin: 0 }}>Imports</h3></th>
+                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Exports</h3></th>
+                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Imports</h3></th>
               </tr>
             </thead>
             <tbody>

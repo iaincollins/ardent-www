@@ -74,8 +74,8 @@ export default () => {
           <table>
             <thead>
               <tr>
-                <th align='left'><h3 style={{ margin: 0 }}>Exports</h3></th>
-                <th align='left'><h3 style={{ margin: 0 }}>Imports</h3></th>
+                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Exports</h3></th>
+                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Imports</h3></th>
               </tr>
             </thead>
             <tbody>
@@ -181,7 +181,7 @@ function ExpandedExportsRow ({ record }) {
     })()
   }, [record.commodityName])
 
-  if (!exports) return <div className='loading-bar' />
+  if (!exports) return <div className='loading-bar' style={{ marginTop: '.75rem' }} />
 
   return (
     <>
@@ -218,7 +218,7 @@ function ExpandedImportsRow ({ record }) {
     })()
   }, [record])
 
-  if (!imports) return <div className='loading-bar' />
+  if (!imports) return <div className='loading-bar' style={{ marginTop: '.75rem' }} />
 
   return (
     <>
