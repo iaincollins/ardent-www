@@ -28,6 +28,21 @@
   pointer-events: none;
 }
 
+.fx-background::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(25, 25, 25, 1) 50%, rgba(10, 10, 10, 1) 50%);
+  z-index: -10;
+  background-size: 100% 10px;
+  pointer-events: none;
+  filter: blur(.15rem);
+}
+
 .fx-overlay::after {
   content: " ";
   display: block;
@@ -49,9 +64,8 @@
   left: 0;
   bottom: 0;
   right: 0;
-  background: radial-gradient(circle, rgba(255,255,255,.1) 0, rgba(0,0,0,.5) 100%), linear-gradient(rgba(25, 25, 25, 1) 50%, rgba(10, 10, 10, 1) 50%);
-  z-index: -10;
-  background-size: 100% 10px;
+  background: radial-gradient(circle, rgba(255,255,255,.1) 0, rgba(0,0,0,.5) 100%);
+  z-index: -5;
   pointer-events: none;
   filter: blur(.15rem);
 }

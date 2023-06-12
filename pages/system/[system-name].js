@@ -114,7 +114,7 @@ export default () => {
             <tbody>
               <tr>
                 <td valign='top' style={{ width: '50%' }}>
-                  {!exports && <div className='loading-bar' />}
+                  {!exports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
                   {exports &&
                     <Table
                       className='data-table'
@@ -149,7 +149,7 @@ export default () => {
                     />}
                 </td>
                 <td valign='top' style={{ width: '50%' }}>
-                  {!imports && <div className='loading-bar' />}
+                  {!imports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
                   {imports &&
                     <Table
                       className='data-table'

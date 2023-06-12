@@ -21,6 +21,7 @@ html {
   background-color: #111;
   color: #eee;
   filter: sepia(.1) contrast(1.1);
+  /* filter: brightness(.6) sepia(2) hue-rotate(330deg) saturate(3) contrast(1.2) brightness(1.6); */
 }
 
 html h1,

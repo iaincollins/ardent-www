@@ -6,4 +6,5 @@ export default ({ children }) =>
     {children}
     <div className='fx-scanlines' />
     <div className='fx-overlay' />
+    <div className='fx-background' />
   </>
