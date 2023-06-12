@@ -11,16 +11,47 @@
   opacity: .5;
   background-size: 100% 2px, 3px 100%;
   pointer-events: none;
+  z-index: 30;
 }
 
-.fx-overlay {
-  box-shadow: 0 0 2rem 2rem rgba(0,0,0,.5) inset;
+.fx-scanlines::after {
+  content: " ";
   display: block;
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 10;
+  background: linear-gradient(rgba(0,0,0,0) 50%, rgba(0, 0, 0, .03) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.04), rgba(0, 0, 255, 0.04));
+  z-index: 10010; /* 10000 and above so is on top of notifications */
+  background-size: 100% 3px, 3px 100%;
   pointer-events: none;
+}
+
+.fx-overlay::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  box-shadow: 0 0 2rem 2rem rgba(0,0,0,.3) inset;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.fx-overlay::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: radial-gradient(circle, rgba(255,255,255,.1) 0, rgba(0,0,0,.5) 100%), linear-gradient(rgba(25, 25, 25, 1) 50%, rgba(10, 10, 10, 1) 50%);
+  z-index: -10;
+  background-size: 100% 10px;
+  pointer-events: none;
+  filter: blur(.15rem);
 }

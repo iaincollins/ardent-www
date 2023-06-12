@@ -121,15 +121,15 @@ pre {
   display: block;
   max-width: 21rem;
   white-space: nowrap;
-  filter: grayscale(1);
   z-index: 20;
 }
 
 .logo h1 {
   display: block;
-  color: darkred;
+  color: #333;
   margin: 0;
   text-align: right;
+  text-shadow: 0 0 1rem rgba(0,0,0,.75);
 }
 
 .logo h1::before,
@@ -161,8 +161,8 @@ pre {
 
 .logo p,
 .logo p:after {
-  background: darkred;
-  color: rgb(255, 221, 221);
+  background: #444;
+  color: #ccc;
 }
 
 .logo small {
@@ -172,13 +172,18 @@ pre {
 
 .stats {
   position: absolute;
-  top: .7rem;
-  right: .7rem;
+  top: 0;
+  right: 0;
+  padding: .5rem .75rem;
   pointer-events: none;
   text-align: right;
-  font-size: .9rem;
-  font-family: monospace;
+  font-size: .8rem;
+  text-transform: uppercase;
   z-index: -3;
+  background: rgba(50,50,50,.75);
+  color: #ccc;
+  clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem));
+
 }
 
 .breadcrumb {
