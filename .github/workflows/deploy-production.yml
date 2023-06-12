@@ -6,6 +6,10 @@ name: Deploy Ardent Website to Production
 #  DEPLOY_HOST [variable]
 #  DEPLOY_USER [variable]
 #  DEPLOY_DIR [variable]
+#  AWS_SECRET_ACCESS_KEY [secret]
+#  AWS_ACCESS_KEY_ID [variable]
+#  AWS_CLOUDFRONT_REGION [variable]
+#  AWS_CLOUDFRONT_DISTRIBUTION_ID [variable]
 #
 # It also assumes the service has been previously run using pm2:
 #
@@ -40,3 +44,11 @@ jobs:
           npm run build
           pm2 restart "${{ env.SERVICE_NAME }}"
           echo $RSYNC_STDOUT
+    - name: Invalidate CloudFront cache
+      uses: chetan/invalidate-cloudfront-action@v2
+      env:
+        DISTRIBUTION: ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+        PATHS: "/*"
+        AWS_REGION: ${{ vars.AWS_CLOUDFRONT_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

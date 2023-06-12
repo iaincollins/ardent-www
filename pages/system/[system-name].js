@@ -104,7 +104,7 @@ export default () => {
                 onClick: onSystemsRowClick.bind(null, record, index)
               })}
             />}
-          <table style={{marginTop: '1rem'}}>
+          <table style={{ marginTop: '1rem' }}>
             <thead>
               <tr>
                 <th align='left'><h3 style={{ margin: 0 }}>Exports</h3></th>

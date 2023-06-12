@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import Package from '../package.json'
 
 import { API_BASE_URL } from '../lib/consts'
@@ -10,7 +9,7 @@ export default () => {
   useEffect(() => {
     (async () => {
       const res = await fetch(`${API_BASE_URL}/v1/stats`)
-      let stats = await res.json()
+      const stats = await res.json()
       setStats(stats)
     })()
   }, [])
@@ -29,9 +28,9 @@ export default () => {
       </div>
       {stats &&
         <div className='stats'>
-          Star Systems: {stats.systems.toLocaleString()}<br/>
-          Trade Orders: {stats.trade.tradeOrders.toLocaleString()}<br/>
-          Updates today: {stats.trade.updatedInLast24Hours.toLocaleString()}<br/>
+          Star Systems: {stats.systems.toLocaleString()}<br />
+          Trade Orders: {stats.trade.tradeOrders.toLocaleString()}<br />
+          Updates today: {stats.trade.updatedInLast24Hours.toLocaleString()}<br />
         </div>}
       {/* {stats && JSON.stringify(stats, null, 2)} */}
     </>
