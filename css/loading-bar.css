@@ -4,6 +4,7 @@
   background-color: #444;
   width: 100%;
   overflow: hidden;
+  margin: .5rem 0;
 }
 
 .loading-bar:after {

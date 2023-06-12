@@ -75,11 +75,13 @@ export default () => {
         {' : '}
         <Link href='/commodities'>System</Link>
       </p>
+      {!system && <div className='loading-bar' />}
       {system &&
         <>
           <h2>{system.systemName}</h2>
           <pre>{prettyoutput(system)}</pre>
           <h2>Nearby Systems</h2>
+          {!nearbySystems && <div className='loading-bar' />}
           {nearbySystems &&
             <Table
               className='data-table'
