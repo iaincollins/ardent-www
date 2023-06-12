@@ -9,7 +9,7 @@ html {
 }
 
 a {
-  color: orange;
+  color: white;
 }
 
 a:hover {
@@ -21,10 +21,10 @@ h2,
 h3 {
   text-transform: uppercase;
   margin-bottom: .5rem;
-  color: #222;
   display: inline-block;
   padding: 0 .25rem;
   position: relative;
+  color: #333;
 }
 
 h1:after,
@@ -36,8 +36,8 @@ h3:after {
   width: 1rem;
   height: 100%;
   content: '';
-  background: #ccc;
   z-index: -1;
+  background: #ccc;
 }
 
 h1:after {
@@ -60,6 +60,7 @@ h3::before {
   content: '';
   z-index: -1;
   background: #ccc;
+
 }
 
 table {
@@ -73,6 +74,7 @@ small {
 
 .logo {
   position: relative;
+  top: -.5rem;
   left: -1rem;
   display: block;
   max-width: 21rem;
@@ -82,14 +84,14 @@ small {
 
 .logo h1 {
   display: block;
-  color: rgb(159, 39, 39);
+  color: darkred;
   margin: 0;
   text-align: right;
 }
 
 .logo h1::before,
 .logo h1::after {
-  background: white;
+  background: #eee;
 }
 
 .logo p {
@@ -116,11 +118,18 @@ small {
 
 .logo p,
 .logo p:after {
-  background:rgb(108, 17, 17);
+  background: darkred;
+  color: rgb(255, 221, 221);
+}
+
+.logo small {
+  margin-left: 2rem;
+  text-transform: lowercase;
 }
 
 .breadcrumb {
   margin-bottom: 0;
+  margin-top: .5rem;
 }
 
 pre {
