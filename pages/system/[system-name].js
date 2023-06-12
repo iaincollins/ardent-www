@@ -45,24 +45,22 @@ export default () => {
       const exports = await getExports(systemName)
       exports.forEach(c => {
         c.key = c.commodityId
-        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-        c.maxProfit = c.maxSellPrice - c.minBuyPrice
         c.symbol = c.commodityName
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+        delete c.commodityName
+        delete c.commodityId
       })
       setExports(exports)
 
       const imports = await getImports(systemName)
       imports.forEach(c => {
         c.key = c.commodityId
-        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-        c.maxProfit = c.maxSellPrice - c.minBuyPrice
         c.symbol = c.commodityName
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+        delete c.commodityName
+        delete c.commodityId
       })
       setImports(imports)
     })()
@@ -106,7 +104,7 @@ export default () => {
                 onClick: onSystemsRowClick.bind(null, record, index)
               })}
             />}
-          <table>
+          <table style={{marginTop: '1rem'}}>
             <thead>
               <tr>
                 <th align='left'><h3 style={{ margin: 0 }}>Exports</h3></th>

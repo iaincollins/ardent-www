@@ -127,6 +127,17 @@ small {
   text-transform: lowercase;
 }
 
+.stats {
+  position: absolute;
+  top: .7rem;
+  right: .7rem;
+  pointer-events: none;
+  text-align: right;
+  font-size: .9rem;
+  font-family: monospace;
+  z-index: -3;
+}
+
 .breadcrumb {
   margin-bottom: 0;
   margin-top: .5rem;

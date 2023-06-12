@@ -37,6 +37,7 @@ export default () => {
         c.symbol = c.commodityName
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        delete c.commodityId
         delete c.commodityName
       })
       setExports(exports)
@@ -50,6 +51,7 @@ export default () => {
         c.symbol = c.commodityName
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        delete c.commodityId
         delete c.commodityName
       })
       setImports(imports)
@@ -165,6 +167,15 @@ function ExpandedExportsRow ({ record }) {
       const commodityName = record.symbol
       const systemName = record.systemName
       const exports = await getExportsForCommodityBySystem(systemName, commodityName)
+      exports.forEach(c => {
+        c.key = c.commodityId
+        c.symbol = c.commodityName
+        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        delete c.commodityId
+        delete c.commodityName
+        delete c.distance
+      })
       setExports(exports)
     })()
   }, [record.commodityName])
@@ -173,7 +184,7 @@ function ExpandedExportsRow ({ record }) {
 
   return (
     <>
-      {record.name} exporters in
+      {record.name} for sale in
       {' '}
       <Link href={`/system/${record.systemName}`}>
         <strong>{record.systemName}</strong>
@@ -193,6 +204,15 @@ function ExpandedImportsRow ({ record }) {
       const commodityName = record.symbol
       const systemName = record.systemName
       const imports = await getImportsForCommodityBySystem(systemName, commodityName)
+      imports.forEach(c => {
+        c.key = c.commodityId
+        c.symbol = c.commodityName
+        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        delete c.commodityId
+        delete c.commodityName
+        delete c.distance
+      })
       setImports(imports)
     })()
   }, [record])
@@ -201,7 +221,7 @@ function ExpandedImportsRow ({ record }) {
 
   return (
     <>
-      {record.name} importers in
+      {record.name} in demand in
       {' '}
       <Link href={`/system/${record.systemName}`}>
         <strong>{record.systemName}</strong>

@@ -38,5 +38,5 @@ jobs:
           cd "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}"
           npm install
           npm run build
-          pm2 restart "${{ env.SERVICE_NAME }}" --cron-restart="55 7 * * *"
+          pm2 restart "${{ env.SERVICE_NAME }}"
           echo $RSYNC_STDOUT
