@@ -19,13 +19,15 @@ export default () => {
       if (!commodityName) return
 
       const c = await getCommodity(commodityName)
-      c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-      c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-      c.maxProfit = c.maxSellPrice - c.minBuyPrice
-      c.symbol = c.commodityName
-      c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-      c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-      delete c.commodityName
+      if (c) {
+        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+        c.maxProfit = c.maxSellPrice - c.minBuyPrice
+        c.symbol = c.commodityName
+        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        delete c.commodityName
+      }
       setCommodity(c)
 
       const exports = await getExports(commodityName)
@@ -65,17 +67,18 @@ export default () => {
         <i className='icarus-terminal-chevron-right' />
         <Link href='/commodities'>Commodities</Link>
       </p>
-      {!commodity && <div className='loading-bar' style={{ marginTop: '1.5rem' }} />}
+      {commodity === undefined && <div className='loading-bar' style={{ marginTop: '1.5rem' }} />}
+      {commodity === null && <><h3>Error</h3><p>Commodity not found</p></>}
       {commodity &&
         <>
           <h2>{commodity.name}</h2>
-          <p style={{ margin: 0 }}><small>{commodity.category}</small></p>
+          <p style={{ marginTop: '0.5rem' }}><small>{commodity.category}</small></p>
           <pre>{prettyoutput(commodity)}</pre>
           <table>
             <thead>
               <tr>
-                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Exports</h3></th>
-                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Imports</h3></th>
+                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Commodity Exporters</h3></th>
+                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Commodity Importers</h3></th>
               </tr>
             </thead>
             <tbody>
@@ -234,7 +237,7 @@ function ExpandedImportsRow ({ record }) {
 
 async function getCommodity (commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/commodity/name/${commodityName}`)
-  return await res.json()
+  return (res.status === 200) ? await res.json() : null
 }
 
 async function getExports (commodityName) {

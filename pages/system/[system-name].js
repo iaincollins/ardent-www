@@ -32,37 +32,39 @@ export default () => {
       const system = await getSystem(systemName)
       setSystem(system)
 
-      const nearbySystems = await getNearbySystems(systemName)
-      nearbySystems.forEach(s => {
-        s.distance = distance(
-          [system.systemX, system.systemY, system.systemZ],
-          [s.systemX, s.systemY, s.systemZ]
-        )
-      })
-      setNearbySystems(nearbySystems.filter((s, i) => i < 5))
-      console.log(nearbySystems)
+      if (system) {
+        const nearbySystems = await getNearbySystems(systemName)
+        nearbySystems.forEach(s => {
+          s.distance = distance(
+            [system.systemX, system.systemY, system.systemZ],
+            [s.systemX, s.systemY, s.systemZ]
+          )
+        })
+        setNearbySystems(nearbySystems.filter((s, i) => i < 5))
+        console.log(nearbySystems)
 
-      const exports = await getExports(systemName)
-      exports.forEach(c => {
-        c.key = c.commodityId
-        c.symbol = c.commodityName
-        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-        delete c.commodityName
-        delete c.commodityId
-      })
-      setExports(exports)
+        const exports = await getExports(systemName)
+        exports.forEach(c => {
+          c.key = c.commodityId
+          c.symbol = c.commodityName
+          c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+          c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+          delete c.commodityName
+          delete c.commodityId
+        })
+        setExports(exports)
 
-      const imports = await getImports(systemName)
-      imports.forEach(c => {
-        c.key = c.commodityId
-        c.symbol = c.commodityName
-        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-        delete c.commodityName
-        delete c.commodityId
-      })
-      setImports(imports)
+        const imports = await getImports(systemName)
+        imports.forEach(c => {
+          c.key = c.commodityId
+          c.symbol = c.commodityName
+          c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+          c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+          delete c.commodityName
+          delete c.commodityId
+        })
+        setImports(imports)
+      }
     })()
   }, [router.query['system-name']])
 
@@ -73,7 +75,8 @@ export default () => {
         <i className='icarus-terminal-chevron-right' />
         <Link href='/commodities'>System</Link>
       </p>
-      {!system && <div className='loading-bar' style={{ marginTop: '1.5rem' }} />}
+      {system === undefined && <div className='loading-bar' style={{ marginTop: '1.5rem' }} />}
+      {system === null && <><h3>Error</h3><p>System not found</p></>}
       {system &&
         <>
           <h2>{system.systemName}</h2>
@@ -107,8 +110,8 @@ export default () => {
           <table style={{ marginTop: '1rem' }}>
             <thead>
               <tr>
-                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Exports</h3></th>
-                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Imports</h3></th>
+                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>System Exports</h3></th>
+                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>System Imports</h3></th>
               </tr>
             </thead>
             <tbody>
@@ -193,7 +196,7 @@ export default () => {
 
 async function getSystem (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}`)
-  return await res.json()
+  return (res.status === 200) ? await res.json() : null
 }
 
 async function getNearbySystems (systemName) {
