@@ -248,11 +248,13 @@ async function getImports (commodityName) {
 }
 
 async function getExportsForCommodityBySystem (systemName, commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}/nearby/exports?maxDistance=1`)
-  return await res.json()
+  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/exports`)
+  const exports = await res.json()
+  return exports.filter(c => c.commodityName === commodityName)
 }
 
 async function getImportsForCommodityBySystem (systemName, commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}/nearby/imports?maxDistance=1`)
-  return await res.json()
+  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/imports`)
+  const imports = await res.json()
+  return imports.filter(c => c.commodityName === commodityName)
 }
