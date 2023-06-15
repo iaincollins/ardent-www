@@ -120,10 +120,10 @@ export default () => {
               distance([system.systemX, system.systemY, system.systemZ], COLONIA_COORDINATES) > 100 &&
                 <span>Deep Space</span>}
             </p>
-            <p className='object-information'>
+            {/* <p className='object-information'>
               <label>Last Updated</label>
               <span>{timeBetweenTimestamps(system.updatedAt)} ago</span>
-            </p>
+            </p> */}
           </div>
           <h2>Nearby Systems</h2>
           {!nearbySystems && <div className='loading-bar' />}
