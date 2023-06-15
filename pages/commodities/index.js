@@ -76,7 +76,7 @@ export default () => {
               align: 'right',
               render: (v, r) =>
                 <>
-                  ~ {v.toLocaleString()}
+                  ~ {v.toLocaleString()} CR
                   <br />
                   <small>MAX {r.maxProfit.toLocaleString()} CR</small>
                 </>

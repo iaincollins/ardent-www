@@ -3,10 +3,12 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Table from 'rc-table'
 import prettyoutput from 'prettyoutput'
+import { timeBetweenTimestamps } from '../../lib/utils/dates'
 import commoditiesInfo from '../../lib/commodities.json'
+import { formatSystemSector } from '../../lib/utils/system-sectors'
 import distance from '../../lib/utils/distance'
 
-import { API_BASE_URL } from '../../lib/consts'
+import { API_BASE_URL, SOL_COORDINATES, COLONIA_COORDINATES } from '../../lib/consts'
 
 export default () => {
   const router = useRouter()
@@ -80,7 +82,49 @@ export default () => {
       {system &&
         <>
           <h2>{system.systemName}</h2>
-          <pre>{prettyoutput(system)}</pre>
+          <div>
+            <p className='object-information'>
+              <label>System Address</label>
+              <span>{system.systemAddress}</span>
+            </p>
+            <p className='object-information'>
+              <label>System Location</label>
+              <span>{system.systemX}, {system.systemY}, {system.systemZ}</span>
+            </p>
+            <p className='object-information'>
+              <label>Ardent Sector</label>
+              <span>{formatSystemSector(system.systemSector)}</span>
+            </p>
+            <p className='object-information'>
+              <label>Trade Zone</label>
+              {distance([system.systemX, system.systemY, system.systemZ], SOL_COORDINATES) <= 200 &&
+                <span>
+                  Core Systems
+                  {' '}
+                  {system.systemName !== 'Sol' && <>({Math.ceil(distance([system.systemX, system.systemY, system.systemZ], SOL_COORDINATES)).toLocaleString()} Ly from Sol)</>}
+                </span>}
+              {distance([system.systemX, system.systemY, system.systemZ], SOL_COORDINATES) > 200 &&
+              distance([system.systemX, system.systemY, system.systemZ], SOL_COORDINATES) <= 400 &&
+                <span>
+                  Core Systems, Periphery
+                  {' '}
+                  ({Math.ceil(distance([system.systemX, system.systemY, system.systemZ], SOL_COORDINATES)).toLocaleString()} Ly from Sol)
+                </span>}
+              {distance([system.systemX, system.systemY, system.systemZ], COLONIA_COORDINATES) <= 100 &&
+                <span>
+                  Colonia Systems
+                  {' '}
+                  {system.systemName !== 'Colonia' && <>({Math.ceil(distance([system.systemX, system.systemY, system.systemZ], COLONIA_COORDINATES)).toLocaleString()} Ly from Colonia)</>}
+                </span>}
+              {distance([system.systemX, system.systemY, system.systemZ], SOL_COORDINATES) > 400 &&
+              distance([system.systemX, system.systemY, system.systemZ], COLONIA_COORDINATES) > 100 &&
+                <span>Deep Space</span>}
+            </p>
+            <p className='object-information'>
+              <label>Last Updated</label>
+              <span>{timeBetweenTimestamps(system.updatedAt)} ago</span>
+            </p>
+          </div>
           <h2>Nearby Systems</h2>
           {!nearbySystems && <div className='loading-bar' />}
           {nearbySystems &&

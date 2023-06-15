@@ -1,0 +1,23 @@
+.object-information {
+  margin-bottom: .25rem;
+  margin-top: .5rem;
+}
+
+.object-information label {
+  opacity: .5;
+  width: 9rem;
+  padding-right: 1rem;
+  display: inline-block;
+  text-align: right;
+  vertical-align: middle;
+  text-transform: uppercase;
+  font-size: .8rem;
+}
+
+.object-information span {
+  vertical-align: middle;
+}
+
+.object-information progress {
+  margin-right: 1rem;
+}

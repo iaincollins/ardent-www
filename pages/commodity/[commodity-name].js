@@ -72,8 +72,47 @@ export default () => {
       {commodity &&
         <>
           <h2>{commodity.name}</h2>
-          <p style={{ marginTop: '0.5rem' }}><small>{commodity.category}</small></p>
-          <pre>{prettyoutput(commodity)}</pre>
+          {/* <p style={{ marginTop: '0.25rem' }}><small>{commodity.category}</small></p> */}
+          <div>
+            <p className='object-information'>
+              <label>Commodity type</label>
+              <span>{commodity.category}</span>
+            </p>
+            <p className='object-information'>
+              <label>Export price</label>
+              <span>~ {commodity.avgBuyPrice.toLocaleString()} CR/T ({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR/T)</span>
+            </p>
+            <p className='object-information'>
+              <label>Import price</label>
+              <span>~ {commodity.avgSellPrice.toLocaleString()} CR/T ({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR/T)</span>
+            </p>
+            <p className='object-information'>
+              <label>Average profit</label>
+              <span>~ {commodity.avgProfit.toLocaleString()} CR/T ({commodity.avgProfitMargin}% margin)</span>
+            </p>
+            <p className='object-information'>
+              <label>Total supply</label>
+              <span>
+                <progress
+                  max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                  value={commodity.totalStock}
+                  style={{ maxWidth: '10rem' }}
+                />
+                {commodity.totalStock.toLocaleString()} T
+              </span>
+            </p>
+            <p className='object-information'>
+              <label>Total demand</label>
+              <span>
+                <progress
+                  max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                  value={commodity.totalDemand}
+                  style={{ maxWidth: '10rem' }}
+                />
+                {commodity.totalDemand.toLocaleString()} T
+              </span>
+            </p>
+          </div>
           <table>
             <thead>
               <tr>
@@ -185,7 +224,6 @@ function ExpandedExportsRow ({ record }) {
   }, [record.commodityName])
 
   if (!exports) return <div className='loading-bar' style={{ marginTop: '.75rem' }} />
-
   return (
     <>
       {record.name} for sale in
