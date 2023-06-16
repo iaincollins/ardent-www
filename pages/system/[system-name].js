@@ -16,6 +16,8 @@ export default () => {
   const [nearbySystems, setNearbySystems] = useState()
   const [exports, setExports] = useState()
   const [imports, setImports] = useState()
+  const [produces, setProduces] = useState()
+  const [consumes, setConsumes] = useState()
 
   const onSystemsRowClick = (record, index, event) => {
     router.push(`/system/${record.systemName}`)
@@ -30,6 +32,8 @@ export default () => {
       setNearbySystems(undefined)
       setExports(undefined)
       setImports(undefined)
+      setProduces(undefined)
+      setConsumes(undefined)
 
       const system = await getSystem(systemName)
       if (system) {
@@ -61,6 +65,8 @@ export default () => {
         console.log(nearbySystems)
 
         const exports = await getExports(systemName)
+        const commoditesProduced = []
+        const commoditesConsumed = []
         exports.forEach(c => {
           c.key = c.commodityId
           c.symbol = c.commodityName
@@ -68,8 +74,12 @@ export default () => {
           c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
           delete c.commodityName
           delete c.commodityId
+          if (c.statusFlags?.includes('Producer') && c.fleetCarrier !== 1) {
+            if (!commoditesProduced.includes(c.name)) { commoditesProduced.push(c.name) }
+          }
         })
         setExports(exports)
+        // setProduces(commoditesProduced)
 
         const imports = await getImports(systemName)
         imports.forEach(c => {
@@ -79,8 +89,12 @@ export default () => {
           c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
           delete c.commodityName
           delete c.commodityId
+          if (c.statusFlags?.includes('Consumer') && c.fleetCarrier !== 1) {
+            if (!commoditesConsumed.includes(c.name)) { commoditesConsumed.push(c.name) }
+          }
         })
         setImports(imports)
+        // setConsumes(commoditesConsumed)
       }
     })()
   }, [router.query['system-name']])
@@ -93,7 +107,7 @@ export default () => {
         <Link href='/commodities'>Systems</Link>
       </p>
       {system === undefined && <div className='loading-bar' style={{ marginTop: '1.5rem' }} />}
-      {system === null && <><h3>Error</h3><p>System not found</p></>}
+      {system === null && <><h2>Error</h2><p>Error; System not found</p></>}
       {system &&
         <>
           <h2>
@@ -120,6 +134,24 @@ export default () => {
                 {system.tradeZoneDistance !== undefined && <> ({system.tradeZoneDistance})</>}
               </span>
             </p>
+            <p className='object-information'>
+              <label>Export orders</label>
+              <span>{exports?.length?.toLocaleString() ?? '-'}</span>
+            </p>
+            <p className='object-information'>
+              <label>Import orders</label>
+              <span>{imports?.length?.toLocaleString() ?? '-'}</span>
+            </p>
+            {produces !== 'undefined' && (produces?.length ?? 0) > 0 &&
+              <p className='object-information'>
+                <label>Produces</label>
+                <span>{produces?.join(', ')}</span>
+              </p>}
+            {consumes !== 'undefined' && (consumes?.length ?? 0) > 0 &&
+              <p className='object-information'>
+                <label>Consumes</label>
+                <span>{consumes?.join(', ')}</span>
+              </p>}
             {/* <p className='object-information'>
               <label>Last Updated</label>
               <span>{timeBetweenTimestamps(system.updatedAt)} ago</span>
@@ -147,7 +179,9 @@ export default () => {
                   dataIndex: 'distance',
                   key: 'distance',
                   align: 'right',
-                  render: (v) => <>{Math.floor(v).toLocaleString()} Ly</>
+                  render: (v) => v < 1
+                    ? '< 1 Ly'
+                    : <>{Math.floor(v).toLocaleString()} Ly</>
                 }
               ]}
               data={nearbySystems}

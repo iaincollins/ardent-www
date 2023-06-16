@@ -24,7 +24,7 @@ export default () => {
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
         c.maxProfit = c.maxSellPrice - c.minBuyPrice
         c.symbol = c.commodityName
-        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? 'Unknown'
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
         delete c.commodityName
       }
@@ -68,7 +68,7 @@ export default () => {
         <Link href='/commodities'>Commodities</Link>
       </p>
       {commodity === undefined && <div className='loading-bar' style={{ marginTop: '1.5rem' }} />}
-      {commodity === null && <><h3>Error</h3><p>Commodity not found</p></>}
+      {commodity === null && <><h2>Error</h2><p>Error: Commodity not found</p></>}
       {commodity &&
         <>
           <h2>
@@ -81,20 +81,27 @@ export default () => {
               <label>Commodity type</label>
               <span>{commodity.category}</span>
             </p>
-            {typeof commodity.avgBuyPrice === 'number' &&
-              <p className='object-information'>
-                <label>Export price</label>
-                <span>~ {commodity.avgBuyPrice.toLocaleString()} CR/T ({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR/T)</span>
-              </p>}
-            {typeof commodity.avgSellPrice === 'number' &&
-              <p className='object-information'>
-                <label>Import price</label>
-                <span>~ {commodity.avgSellPrice.toLocaleString()} CR/T ({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR/T)</span>
-              </p>}
+
+            <p className='object-information'>
+              <label>Export price</label>
+              <span>
+                {typeof commodity.avgBuyPrice === 'number'
+                  ? <>~ {commodity.avgBuyPrice.toLocaleString()} CR ({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</>
+                  : <>Insufficent data</>}
+              </span>
+            </p>
+            <p className='object-information'>
+              <label>Import price</label>
+              <span>
+                {typeof commodity.avgSellPrice === 'number'
+                  ? <>~ {commodity.avgSellPrice.toLocaleString()} CR ({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</>
+                  : <>Insufficent data</>}
+              </span>
+            </p>
             {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
               <p className='object-information'>
                 <label>Average profit</label>
-                <span>~ {commodity.avgProfit.toLocaleString()} CR/T ({commodity.avgProfitMargin}% margin)</span>
+                <span>~ {commodity.avgProfit.toLocaleString()} CR ({commodity.avgProfitMargin}% margin)</span>
               </p>}
             <p className='object-information'>
               <label>Total supply</label>

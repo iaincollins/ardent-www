@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Table from 'rc-table'
-import commoditiesInfo from '../../lib/commodities.json'
+import commoditiesInfo from '../lib/commodities.json'
 
-import { API_BASE_URL } from '../../lib/consts'
+import { API_BASE_URL } from '../lib/consts'
 
 export default () => {
   const router = useRouter()
