@@ -32,6 +32,21 @@ export default () => {
       setImports(undefined)
 
       const system = await getSystem(systemName)
+      if (system) {
+        const systemCoordinates = [system.systemX, system.systemY, system.systemZ]
+        if (distance(systemCoordinates, SOL_COORDINATES) <= 200) {
+          system.tradeZone = 'Core Systems'
+          system.tradeZoneDistance = `${distance(systemCoordinates, SOL_COORDINATES).toFixed().toLocaleString()} Ly from Sol`
+        } else if (distance(systemCoordinates, SOL_COORDINATES) <= 400) {
+          system.tradeZone = 'Core Systems Periphery'
+          system.tradeZoneDistance = `${distance(systemCoordinates, SOL_COORDINATES).toFixed().toLocaleString()} Ly from Sol`
+        } else if (distance(systemCoordinates, COLONIA_COORDINATES) <= 100) {
+          system.tradeZone = 'Colonia Systems'
+          system.tradeZoneDistance = `${distance(systemCoordinates, COLONIA_COORDINATES).toFixed().toLocaleString()} Ly from Colonia`
+        } else {
+          system.tradeZone = 'Deep Space'
+        }
+      }
       setSystem(system)
 
       if (system) {
@@ -97,35 +112,17 @@ export default () => {
             </p>
             <p className='object-information'>
               <label>Trade Zone</label>
-              {distance([system.systemX, system.systemY, system.systemZ], SOL_COORDINATES) <= 200 &&
-                <span>
-                  Core Systems
-                  {' '}
-                  {system.systemName !== 'Sol' && <>({Math.ceil(distance([system.systemX, system.systemY, system.systemZ], SOL_COORDINATES)).toLocaleString()} Ly from Sol)</>}
-                </span>}
-              {distance([system.systemX, system.systemY, system.systemZ], SOL_COORDINATES) > 200 &&
-              distance([system.systemX, system.systemY, system.systemZ], SOL_COORDINATES) <= 400 &&
-                <span>
-                  Core Systems, Periphery
-                  {' '}
-                  ({Math.ceil(distance([system.systemX, system.systemY, system.systemZ], SOL_COORDINATES)).toLocaleString()} Ly from Sol)
-                </span>}
-              {distance([system.systemX, system.systemY, system.systemZ], COLONIA_COORDINATES) <= 100 &&
-                <span>
-                  Colonia Systems
-                  {' '}
-                  {system.systemName !== 'Colonia' && <>({Math.ceil(distance([system.systemX, system.systemY, system.systemZ], COLONIA_COORDINATES)).toLocaleString()} Ly from Colonia)</>}
-                </span>}
-              {distance([system.systemX, system.systemY, system.systemZ], SOL_COORDINATES) > 400 &&
-              distance([system.systemX, system.systemY, system.systemZ], COLONIA_COORDINATES) > 100 &&
-                <span>Deep Space</span>}
+              <span>
+                {system.tradeZone}
+                {system.tradeZoneDistance !== undefined && <> ({system.tradeZoneDistance})</>}
+              </span>
             </p>
             {/* <p className='object-information'>
               <label>Last Updated</label>
               <span>{timeBetweenTimestamps(system.updatedAt)} ago</span>
             </p> */}
           </div>
-          <h2>Nearby Systems</h2>
+          <h3>Nearby Systems</h3>
           {!nearbySystems && <div className='loading-bar' />}
           {nearbySystems &&
             <Table
@@ -191,7 +188,15 @@ export default () => {
                       data={exports}
                       expandable={{
                         expandRowByClick: true,
-                        expandedRowRender: record => <pre>{prettyoutput(record)}</pre>
+                        expandedRowRender: record =>
+                          <>
+                            Importing
+                            {' '}
+                            <Link href={`/commodity/${record.symbol}`}>
+                              <strong>{record.name}</strong>
+                            </Link>
+                            <pre>{prettyoutput(record)}</pre>
+                          </>
                       }}
                     />}
                 </td>
@@ -226,7 +231,15 @@ export default () => {
                       data={imports}
                       expandable={{
                         expandRowByClick: true,
-                        expandedRowRender: record => <pre>{prettyoutput(record)}</pre>
+                        expandedRowRender: record =>
+                          <>
+                            Exporting
+                            {' '}
+                            <Link href={`/commodity/${record.symbol}`}>
+                              <strong>{record.name}</strong>
+                            </Link>
+                            <pre>{prettyoutput(record)}</pre>
+                          </>
                       }}
                     />}
                 </td>

@@ -42,13 +42,13 @@ h1,
 h2,
 h3 {
   text-transform: uppercase;
-  margin-bottom: .5rem;
   display: inline-block;
-  padding: 0 .25rem;
   position: relative;
   color: #333;
   font-family: "Jura", sans-serif;
-  margin-bottom: 0rem;
+  margin-top: .75rem;
+  margin-bottom: 0;
+  padding: 0 .25rem;
 }
 
 h1:after,
