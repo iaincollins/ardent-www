@@ -5,8 +5,8 @@ html {
   font-family: sans-serif;
   background-color: #111;
   color: #eee;
-  filter: sepia(.1) contrast(1.1);
-  /* filter: brightness(.6) sepia(2) hue-rotate(330deg) saturate(3) contrast(1.2) brightness(1.6); */
+  filter: sepia(.2) contrast(1.1);
+  /* filter: brightness(.6) sepia(2) hue-rotate(350deg) saturate(2.5) contrast(1.1) brightness(1.4); */
 }
 
 html h1,
