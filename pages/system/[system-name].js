@@ -90,13 +90,16 @@ export default () => {
       <p className='breadcrumb'>
         <Link href='/'>Home</Link>
         <i className='icarus-terminal-chevron-right' />
-        <Link href='/commodities'>System</Link>
+        <Link href='/commodities'>Systems</Link>
       </p>
       {system === undefined && <div className='loading-bar' style={{ marginTop: '1.5rem' }} />}
       {system === null && <><h3>Error</h3><p>System not found</p></>}
       {system &&
         <>
-          <h2>{system.systemName}</h2>
+          <h2>
+            <i className='icon icarus-terminal-system-bodies' />
+            {system.systemName}
+          </h2>
           <div>
             <p className='object-information'>
               <label>System Address</label>
@@ -133,7 +136,11 @@ export default () => {
                   dataIndex: 'systemName',
                   key: 'systemName',
                   align: 'left',
-                  xrender: (v, r) => <>{v}<br /> <small>{r.stationName}</small></>
+                  render: (v, r) =>
+                    <>
+                      <i className='icon icarus-terminal-star' />
+                      {v}
+                    </>
                 },
                 {
                   title: 'Distance',
@@ -168,7 +175,13 @@ export default () => {
                           dataIndex: 'name',
                           key: 'name',
                           align: 'left',
-                          render: (v, r) => <>{v}<br /> <small>{r.stationName}</small></>
+                          render: (v, r) =>
+                            <>
+                              <i className='icon icarus-terminal-cargo' />
+                              {v}
+                              <br />
+                              <small>{r.stationName}</small>
+                            </>
                         },
                         {
                           title: 'Stock',
@@ -190,7 +203,7 @@ export default () => {
                         expandRowByClick: true,
                         expandedRowRender: record =>
                           <>
-                            Importing
+                            <em>{record.stationName}</em> importing
                             {' '}
                             <Link href={`/commodity/${record.symbol}`}>
                               <strong>{record.name}</strong>
@@ -211,7 +224,13 @@ export default () => {
                           dataIndex: 'name',
                           key: 'name',
                           align: 'left',
-                          render: (v, r) => <>{v}<br /> <small>{r.stationName}</small></>
+                          render: (v, r) =>
+                            <>
+                              <i className='icon icarus-terminal-cargo' />
+                              {v}
+                              <br />
+                              <small>{r.stationName}</small>
+                            </>
                         },
                         {
                           title: 'Demand',
@@ -233,7 +252,7 @@ export default () => {
                         expandRowByClick: true,
                         expandedRowRender: record =>
                           <>
-                            Exporting
+                            <em>{record.stationName}</em> exporting
                             {' '}
                             <Link href={`/commodity/${record.symbol}`}>
                               <strong>{record.name}</strong>

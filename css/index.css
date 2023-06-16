@@ -15,7 +15,8 @@
 i[class^="icarus-terminal-"],
 i[class*=" icarus-terminal-"] {
   font-size: inherit;
-  font-size: .8rem;
+  line-height: inherit;
+  vertical-align: middle;
   pointer-events: none;
   margin: 0 .1rem;
 }

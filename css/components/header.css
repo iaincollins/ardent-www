@@ -54,7 +54,14 @@
   text-transform: lowercase;
 }
 
-.stats {
+.header-navigation {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: .25rem;
+}
+
+.header-stats {
   position: absolute;
   top: 0;
   right: 0;
@@ -64,16 +71,16 @@
   font-size: .8rem;
   text-transform: uppercase;
   z-index: -3;
-  background: rgba(70,70,70,.5);
+  background: rgba(70,70,70,.3);
   color: #ccc;
   clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem));
 }
 
-.stats:before {
+.header-stats:before {
   content: '';
   position: absolute;
   inset: 0; 
-  background: #888;
+  background: rgba(70,70,70,.6);;
   clip-path: polygon(
     0 0,
     100% 0,

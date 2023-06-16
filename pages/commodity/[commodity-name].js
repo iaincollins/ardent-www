@@ -71,25 +71,31 @@ export default () => {
       {commodity === null && <><h3>Error</h3><p>Commodity not found</p></>}
       {commodity &&
         <>
-          <h2>{commodity.name}</h2>
+          <h2>
+            <i className='icon icarus-terminal-cargo' />
+            {commodity.name}
+          </h2>
           {/* <p style={{ marginTop: '0.25rem' }}><small>{commodity.category}</small></p> */}
           <div>
             <p className='object-information'>
               <label>Commodity type</label>
               <span>{commodity.category}</span>
             </p>
-            <p className='object-information'>
-              <label>Export price</label>
-              <span>~ {commodity.avgBuyPrice.toLocaleString()} CR/T ({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR/T)</span>
-            </p>
-            <p className='object-information'>
-              <label>Import price</label>
-              <span>~ {commodity.avgSellPrice.toLocaleString()} CR/T ({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR/T)</span>
-            </p>
-            <p className='object-information'>
-              <label>Average profit</label>
-              <span>~ {commodity.avgProfit.toLocaleString()} CR/T ({commodity.avgProfitMargin}% margin)</span>
-            </p>
+            {typeof commodity.avgBuyPrice === 'number' &&
+              <p className='object-information'>
+                <label>Export price</label>
+                <span>~ {commodity.avgBuyPrice.toLocaleString()} CR/T ({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR/T)</span>
+              </p>}
+            {typeof commodity.avgSellPrice === 'number' &&
+              <p className='object-information'>
+                <label>Import price</label>
+                <span>~ {commodity.avgSellPrice.toLocaleString()} CR/T ({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR/T)</span>
+              </p>}
+            {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
+              <p className='object-information'>
+                <label>Average profit</label>
+                <span>~ {commodity.avgProfit.toLocaleString()} CR/T ({commodity.avgProfitMargin}% margin)</span>
+              </p>}
             <p className='object-information'>
               <label>Total supply</label>
               <span>
@@ -133,7 +139,13 @@ export default () => {
                           dataIndex: 'systemName',
                           key: 'systemName',
                           align: 'left',
-                          render: (v, r) => <>{v}<br /> <small>{r.stationName}</small></>
+                          render: (v, r) =>
+                            <>
+                              <i className='icon icarus-terminal-star' />
+                              {v}
+                              <br />
+                              <small>{r.stationName}</small>
+                            </>
                         },
                         {
                           title: 'Stock',
@@ -168,7 +180,13 @@ export default () => {
                           dataIndex: 'systemName',
                           key: 'systemName',
                           align: 'left',
-                          render: (v, r) => <>{v}<br /> <small>{r.stationName}</small></>
+                          render: (v, r) =>
+                            <>
+                              <i className='icon icarus-terminal-star' />
+                              {v}
+                              <br />
+                              <small>{r.stationName}</small>
+                            </>
                         },
                         {
                           title: 'Demand',
@@ -226,7 +244,7 @@ function ExpandedExportsRow ({ record }) {
   if (!exports) return <div className='loading-bar' style={{ marginTop: '.75rem' }} />
   return (
     <>
-      {record.name} for sale in
+      <em>{record.name}</em> for sale in
       {' '}
       <Link href={`/system/${record.systemName}`}>
         <strong>{record.systemName}</strong>
@@ -263,7 +281,7 @@ function ExpandedImportsRow ({ record }) {
 
   return (
     <>
-      {record.name} in demand in
+      <em>{record.name}</em> in demand in
       {' '}
       <Link href={`/system/${record.systemName}`}>
         <strong>{record.systemName}</strong>
