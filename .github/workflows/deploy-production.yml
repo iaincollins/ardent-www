@@ -32,7 +32,7 @@ jobs:
       uses: easingthemes/ssh-deploy@main
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        ARGS: "-rlgoDzvc -i --delete"
+        ARGS: "-rlgoDzvc -i"
         SOURCE: "./"
         REMOTE_HOST: ${{ vars.DEPLOY_HOST }}
         REMOTE_USER: ${{ vars.DEPLOY_USER }}
