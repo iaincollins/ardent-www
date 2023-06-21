@@ -67,7 +67,7 @@ function ExpandedRow ({ record }) {
   return (
     <>
       <p style={{ marginTop: '.5rem' }}>
-        <strong>{record.name}</strong> demand in
+        Demand for <strong>{record.name}</strong> in
         {' '}
         <Link href={`/system/${record.systemName}`}>
           <strong>{record.systemName}</strong>
