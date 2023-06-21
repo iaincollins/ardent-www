@@ -52,3 +52,20 @@
   margin-left: -.25rem;
   float: left;
 }
+
+.data-table--mini {
+  max-height: 15rem;
+  overflow: scroll;
+}
+
+.data-table--mini tr,
+.data-table--mini td {
+  background: none !important;
+  border: none !important;
+  font-size: .9rem;
+}
+
+.data-table--mini tr small,
+.data-table--mini td small {
+  font-size: .8rem;
+}

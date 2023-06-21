@@ -1,6 +1,6 @@
 {
   "name": "ardent-www",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "Ardent Industry Website",
   "main": "index.js",
   "scripts": {

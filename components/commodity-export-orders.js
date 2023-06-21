@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Table from 'rc-table'
-import prettyoutput from 'prettyoutput'
-import commoditiesInfo from '../lib/commodities.json'
+import { timeBetweenTimestamps } from '../lib/utils/dates'
 import { API_BASE_URL } from '../lib/consts'
 
 export default ({ commodities }) => {
@@ -21,6 +20,8 @@ export default ({ commodities }) => {
               {v}
               <br />
               <small>{r.stationName}</small>
+              <br />
+              <small style={{ textTransform: 'none', opacity: 0.5 }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
             </>
         },
         {
@@ -57,15 +58,6 @@ function ExpandedRow ({ record }) {
       const commodityName = record.symbol
       const systemName = record.systemName
       const exports = await getExportsForCommodityBySystem(systemName, commodityName)
-      exports.forEach(c => {
-        c.key = c.commodityId
-        c.symbol = c.commodityName
-        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        delete c.commodityId
-        delete c.commodityName
-        delete c.distance
-      })
       setExports(exports)
     })()
   }, [record.commodityName])
@@ -73,12 +65,47 @@ function ExpandedRow ({ record }) {
   if (!exports) return <div className='loading-bar' style={{ marginTop: '.75rem' }} />
   return (
     <>
-      <em>{record.name}</em> for sale in
-      {' '}
-      <Link href={`/system/${record.systemName}`}>
-        <strong>{record.systemName}</strong>
-      </Link>
-      {exports && <pre>{prettyoutput(exports)}</pre>}
+      <p style={{ marginTop: '.5rem' }}>
+        <strong>{record.name}</strong> supply in
+        {' '}
+        <Link href={`/system/${record.systemName}`}>
+          <strong>{record.systemName}</strong>
+        </Link>
+      </p>
+      <Table
+        className='data-table--mini'
+        columns={[
+          {
+            title: 'Location',
+            dataIndex: 'stationName',
+            key: 'stationName',
+            align: 'left'
+          },
+          {
+            title: 'Updated',
+            dataIndex: 'updatedAt',
+            key: 'updatedAt',
+            align: 'right',
+            render: (v) => <>{timeBetweenTimestamps(v)} ago</>
+          },
+          {
+            title: 'Stock',
+            dataIndex: 'stock',
+            key: 'stock',
+            align: 'right',
+            render: (v) => <>{v.toLocaleString()} T</>
+          },
+          {
+            title: 'Price',
+            dataIndex: 'buyPrice',
+            key: 'buyPrice',
+            align: 'right',
+            render: (v) => <>{v.toLocaleString()} CR</>
+          }
+        ]}
+        showHeader={false}
+        data={exports}
+      />
     </>
   )
 }

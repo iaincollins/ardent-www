@@ -26,6 +26,11 @@ html label {
   text-shadow: 0 0 15px rgba(0,0,0,.8), 0 0 15px rgba(255,255,255,.8);
 }
 
+body,
+p {
+  font-size: 1rem;
+}
+
 a,
 * {
   cursor: url('../../public/images/cursor.png'), default;
@@ -100,7 +105,8 @@ table {
 
 small {
   text-transform: uppercase;
-  opacity: .7; 
+  opacity: .8; 
+  font-size: .9rem;
 }
 
 pre {

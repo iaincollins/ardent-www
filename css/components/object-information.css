@@ -4,14 +4,14 @@
 }
 
 .object-information label {
-  opacity: .75;
   width: 9rem;
   padding-right: 1rem;
   display: inline-block;
   text-align: right;
   vertical-align: middle;
   text-transform: uppercase;
-  font-size: .8rem;
+  opacity: .8; 
+  font-size: .9rem;
 }
 
 .object-information span {

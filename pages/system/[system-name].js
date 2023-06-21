@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Table from 'rc-table'
-import prettyoutput from 'prettyoutput'
+import prettyOutput from 'prettyoutput'
 import { timeBetweenTimestamps } from '../../lib/utils/dates'
 import commoditiesInfo from '../../lib/commodities.json'
 import { formatSystemSector } from '../../lib/utils/system-sectors'
@@ -40,13 +40,17 @@ export default () => {
         const systemCoordinates = [system.systemX, system.systemY, system.systemZ]
         if (distance(systemCoordinates, SOL_COORDINATES) <= 200) {
           system.tradeZone = 'Core Systems'
-          system.tradeZoneDistance = `${distance(systemCoordinates, SOL_COORDINATES).toFixed().toLocaleString()} Ly from Sol`
+          if (system.systemName !== 'Sol') {
+            system.tradeZoneDistance = `${distance(systemCoordinates, SOL_COORDINATES).toFixed().toLocaleString()} Ly from Sol`
+          }
         } else if (distance(systemCoordinates, SOL_COORDINATES) <= 400) {
-          system.tradeZone = 'Core Systems Periphery'
+          system.tradeZone = 'Core Systems, Periphery'
           system.tradeZoneDistance = `${distance(systemCoordinates, SOL_COORDINATES).toFixed().toLocaleString()} Ly from Sol`
         } else if (distance(systemCoordinates, COLONIA_COORDINATES) <= 100) {
           system.tradeZone = 'Colonia Systems'
-          system.tradeZoneDistance = `${distance(systemCoordinates, COLONIA_COORDINATES).toFixed().toLocaleString()} Ly from Colonia`
+          if (system.systemName !== 'Colonia') {
+            system.tradeZoneDistance = `${distance(systemCoordinates, COLONIA_COORDINATES).toFixed().toLocaleString()} Ly from Colonia`
+          }
         } else {
           system.tradeZone = 'Deep Space'
         }
@@ -62,7 +66,6 @@ export default () => {
           )
         })
         setNearbySystems(nearbySystems.filter((s, i) => i < 5))
-        console.log(nearbySystems)
 
         const exports = await getExports(systemName)
         const commoditesProduced = []
@@ -215,6 +218,8 @@ export default () => {
                               {v}
                               <br />
                               <small>{r.stationName}</small>
+                              <br />
+                              <small style={{ textTransform: 'none', opacity: 0.5 }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
                             </>
                         },
                         {
@@ -235,15 +240,7 @@ export default () => {
                       data={exports}
                       expandable={{
                         expandRowByClick: true,
-                        expandedRowRender: record =>
-                          <>
-                            <em>{record.stationName}</em> importing
-                            {' '}
-                            <Link href={`/commodity/${record.symbol}`}>
-                              <strong>{record.name}</strong>
-                            </Link>
-                            <pre>{prettyoutput(record)}</pre>
-                          </>
+                        expandedRowRender: r => <NearbyImporters commodity={r} />
                       }}
                     />}
                 </td>
@@ -264,6 +261,8 @@ export default () => {
                               {v}
                               <br />
                               <small>{r.stationName}</small>
+                              <br />
+                              <small style={{ textTransform: 'none', opacity: 0.5 }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
                             </>
                         },
                         {
@@ -284,15 +283,7 @@ export default () => {
                       data={imports}
                       expandable={{
                         expandRowByClick: true,
-                        expandedRowRender: record =>
-                          <>
-                            <em>{record.stationName}</em> exporting
-                            {' '}
-                            <Link href={`/commodity/${record.symbol}`}>
-                              <strong>{record.name}</strong>
-                            </Link>
-                            <pre>{prettyoutput(record)}</pre>
-                          </>
+                        expandedRowRender: r => <NearbyExporters commodity={r} />
                       }}
                     />}
                 </td>
@@ -300,6 +291,134 @@ export default () => {
             </tbody>
           </table>
         </>}
+    </>
+  )
+}
+
+function NearbyImporters ({ commodity }) {
+  const [nearbyImporters, setNearbyImporters] = useState()
+
+  useEffect(() => {
+    (async () => {
+      setNearbyImporters(await getNearbyImportersOfCommodity(commodity.systemName, commodity.symbol))
+    })()
+  }, [commodity.commodityName, commodity.systemName])
+
+  return (
+    <>
+      <p style={{ marginTop: '.5rem' }}>
+        <Link href={`/commodity/${commodity.symbol}`}>
+          <strong>{commodity.name}</strong>
+        </Link> in demand near <strong>{commodity.stationName}</strong>
+      </p>
+      {!nearbyImporters && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+      {nearbyImporters &&
+        <Table
+          className='data-table--mini'
+          columns={[
+            {
+              title: 'Location',
+              dataIndex: 'systemName',
+              key: 'systemName',
+              align: 'left',
+              render: (v, r) => <>{v}<br /><small>{r.stationName}</small></>
+            },
+            {
+              title: 'Distance',
+              dataIndex: 'distance',
+              key: 'distance',
+              align: 'right',
+              render: (v) => <>{v} Ly</>
+            },
+            {
+              title: 'Updated',
+              dataIndex: 'updatedAt',
+              key: 'updatedAt',
+              align: 'right',
+              render: (v) => <>{timeBetweenTimestamps(v)} ago</>
+            },
+            {
+              title: 'Demand',
+              dataIndex: 'demand',
+              key: 'demand',
+              align: 'right',
+              render: (v) => <>{v.toLocaleString()} T</>
+            },
+            {
+              title: 'Price',
+              dataIndex: 'sellPrice',
+              key: 'sellPrice',
+              align: 'right',
+              render: (v) => <>{v.toLocaleString()} CR</>
+            }
+          ]}
+          showHeader={false}
+          data={nearbyImporters}
+        />}
+    </>
+  )
+}
+
+function NearbyExporters ({ commodity }) {
+  const [nearbyExporters, setNearbyExporters] = useState()
+
+  useEffect(() => {
+    (async () => {
+      setNearbyExporters(await getNearbyExportersOfCommodity(commodity.systemName, commodity.symbol))
+    })()
+  }, [commodity.commodityName, commodity.systemName])
+
+  return (
+    <>
+      <p style={{ marginTop: '.5rem' }}>
+        <Link href={`/commodity/${commodity.symbol}`}>
+          <strong>{commodity.name}</strong>
+        </Link> in supply near <strong>{commodity.stationName}</strong>
+      </p>
+      {!nearbyExporters && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+      {nearbyExporters &&
+        <Table
+          className='data-table--mini'
+          columns={[
+            {
+              title: 'Location',
+              dataIndex: 'systemName',
+              key: 'systemName',
+              align: 'left',
+              render: (v, r) => <>{v}<br /><small>{r.stationName}</small></>
+            },
+            {
+              title: 'Distance',
+              dataIndex: 'distance',
+              key: 'distance',
+              align: 'right',
+              render: (v) => <>{v} Ly</>
+            },
+            {
+              title: 'Updated',
+              dataIndex: 'updatedAt',
+              key: 'updatedAt',
+              align: 'right',
+              render: (v) => <>{timeBetweenTimestamps(v)} ago</>
+            },
+            {
+              title: 'Stock',
+              dataIndex: 'stock',
+              key: 'stock',
+              align: 'right',
+              render: (v) => <>{v.toLocaleString()} T</>
+            },
+            {
+              title: 'Price',
+              dataIndex: 'sellPrice',
+              key: 'sellPrice',
+              align: 'right',
+              render: (v) => <>{v.toLocaleString()} CR</>
+            }
+          ]}
+          showHeader={false}
+          data={nearbyExporters}
+        />}
     </>
   )
 }
@@ -321,5 +440,15 @@ async function getExports (systemName) {
 
 async function getImports (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/imports`)
+  return await res.json()
+}
+
+async function getNearbyImportersOfCommodity (systemName, commodityName) {
+  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}/nearby/imports`)
+  return await res.json()
+}
+
+async function getNearbyExportersOfCommodity (systemName, commodityName) {
+  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}/nearby/exports`)
   return await res.json()
 }

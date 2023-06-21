@@ -13,7 +13,7 @@ export default () => {
   const [commodity, setCommodity] = useState()
   const [exports, setExports] = useState()
   const [imports, setImports] = useState()
-  
+
   useEffect(() => {
     (async () => {
       setCommodity(undefined)
@@ -106,7 +106,7 @@ export default () => {
             {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
               <p className='object-information'>
                 <label>Average profit</label>
-                <span>~ {commodity.avgProfit.toLocaleString()} CR ({commodity.avgProfitMargin}% margin)</span>
+                <span>{commodity.avgProfit.toLocaleString()} CR ({commodity.avgProfitMargin}% margin)</span>
               </p>}
             <p className='object-information'>
               <label>Total supply</label>
