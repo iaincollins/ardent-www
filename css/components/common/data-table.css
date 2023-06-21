@@ -55,7 +55,7 @@
 
 .data-table--mini {
   max-height: 15rem;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .data-table--mini tr,

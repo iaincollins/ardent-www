@@ -25,3 +25,41 @@ i[class*=" icarus-terminal-"] {
   margin-bottom: 0;
   margin-top: .5rem;
 }
+
+html,
+.scrollable {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+.scrollable::-webkit-scrollbar {
+  width: 0px;
+}
+
+.scrollable {
+  scrollbar-width: none;
+  overflow-x: hidden !important;
+}
+
+@-moz-document url-prefix() {
+  /* For Firefox */
+  .scrollable {
+    scrollbar-width: auto !important;
+    scrollbar-color: auto !important;
+  }
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 16px;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background: #eee;
+  min-height: 4rem;
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background-image: linear-gradient(90deg, transparent 41.67%, #ccc 41.67%, #ccc 50%, transparent 50%, transparent 91.67%, #ccc 91.67%, #ccc 100%);
+  background-size: 48.00px 48.00px;
+  background-position-x: 10px;
+}

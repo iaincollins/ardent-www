@@ -19,7 +19,7 @@ export default ({ commodities }) => {
               <i className='icon icarus-terminal-star' />
               {v}
               <br />
-              <small>{r.stationName}</small>
+              <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
               <br />
               <small style={{ textTransform: 'none', opacity: 0.5 }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
             </>
@@ -73,13 +73,14 @@ function ExpandedRow ({ record }) {
         </Link>
       </p>
       <Table
-        className='data-table--mini'
+        className='data-table--mini scrollable'
         columns={[
           {
             title: 'Location',
             dataIndex: 'stationName',
             key: 'stationName',
-            align: 'left'
+            align: 'left',
+            render: (v, r) => <>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</>
           },
           {
             title: 'Updated',

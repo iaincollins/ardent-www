@@ -307,21 +307,21 @@ function NearbyImporters ({ commodity }) {
   return (
     <>
       <p style={{ marginTop: '.5rem' }}>
-        <Link href={`/commodity/${commodity.symbol}`}>
+        Demand for <Link href={`/commodity/${commodity.symbol}`}>
           <strong>{commodity.name}</strong>
-        </Link> in demand near <strong>{commodity.stationName}</strong>
+        </Link> in nearby systems
       </p>
       {!nearbyImporters && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
       {nearbyImporters &&
         <Table
-          className='data-table--mini'
+          className='data-table--mini scrollable'
           columns={[
             {
               title: 'Location',
               dataIndex: 'systemName',
               key: 'systemName',
               align: 'left',
-              render: (v, r) => <>{v}<br /><small>{r.stationName}</small></>
+              render: (v, r) => <>{v}<br /><small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small></>
             },
             {
               title: 'Distance',
@@ -371,21 +371,21 @@ function NearbyExporters ({ commodity }) {
   return (
     <>
       <p style={{ marginTop: '.5rem' }}>
-        <Link href={`/commodity/${commodity.symbol}`}>
+        Supplies of <Link href={`/commodity/${commodity.symbol}`}>
           <strong>{commodity.name}</strong>
-        </Link> in supply near <strong>{commodity.stationName}</strong>
+        </Link> in nearby systems
       </p>
       {!nearbyExporters && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
       {nearbyExporters &&
         <Table
-          className='data-table--mini'
+          className='data-table--mini scrollable'
           columns={[
             {
               title: 'Location',
               dataIndex: 'systemName',
               key: 'systemName',
               align: 'left',
-              render: (v, r) => <>{v}<br /><small>{r.stationName}</small></>
+              render: (v, r) => <>{v}<br /><small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small></>
             },
             {
               title: 'Distance',
