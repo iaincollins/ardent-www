@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import Table from 'rc-table'
-import prettyoutput from 'prettyoutput'
+import CommodityExportOrders from '../../components/commodity-export-orders'
+import CommodityImportOrders from '../../components/commodity-import-orders'
+import CommodityReport from '../../components/commodity-report'
 import commoditiesInfo from '../../lib/commodities.json'
 
 import { API_BASE_URL } from '../../lib/consts'
@@ -12,9 +13,13 @@ export default () => {
   const [commodity, setCommodity] = useState()
   const [exports, setExports] = useState()
   const [imports, setImports] = useState()
-
+  
   useEffect(() => {
     (async () => {
+      setCommodity(undefined)
+      setExports(undefined)
+      setImports(undefined)
+
       const commodityName = router.query?.['commodity-name']
       if (!commodityName) return
 
@@ -126,174 +131,60 @@ export default () => {
               </span>
             </p>
           </div>
+          <h2>Core Systems Trade Report</h2>
+          <p>
+            Best export and import prices for <strong>{commodity.name}</strong>
+            {' '}near the Sol system.
+          </p>
+          <p>
+            <small style={{ textTransform: 'none' }}>
+              Trade reports only include orders for at least 1000 T and do not
+              include Fleet Carrier market data.
+            </small>
+          </p>
+          <CommodityReport commodityName={commodity.name} reportName='core-systems-1000' />
+          <h2>Colonia Systems Trade Report</h2>
+          <p>
+            Best export and import prices for <strong>{commodity.name}</strong>
+            {' '}near the Colonia system.
+          </p>
+          <p>
+            <small style={{ textTransform: 'none' }}>
+              Trade reports only include orders for at least 1000 T and do not
+              include Fleet Carrier market data.
+            </small>
+          </p>
+          <CommodityReport commodityName={commodity.name} reportName='colonia-systems-1000' />
+          <h2>Live Trade Data</h2>
+          <p>
+            All known export and import orders for <strong>{commodity.name}</strong>.
+          </p>
+          <p>
+            <small style={{ textTransform: 'none' }}>
+              Live trade data updated in real time. Results may be cached for up to 5 minutes.
+            </small>
+          </p>
           <table>
             <thead>
               <tr>
-                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Commodity Exporters</h3></th>
-                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Commodity Importers</h3></th>
+                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Exporters</h3></th>
+                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Importers</h3></th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td valign='top' style={{ width: '50%' }}>
                   {!exports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
-                  {exports &&
-                    <Table
-                      className='data-table'
-                      columns={[
-                        {
-                          title: 'System',
-                          dataIndex: 'systemName',
-                          key: 'systemName',
-                          align: 'left',
-                          render: (v, r) =>
-                            <>
-                              <i className='icon icarus-terminal-star' />
-                              {v}
-                              <br />
-                              <small>{r.stationName}</small>
-                            </>
-                        },
-                        {
-                          title: 'Stock',
-                          dataIndex: 'stock',
-                          key: 'stock',
-                          align: 'right',
-                          render: (v) => <>{v.toLocaleString()} T</>
-                        },
-                        {
-                          title: 'Price',
-                          dataIndex: 'buyPrice',
-                          key: 'buyPrice',
-                          align: 'right',
-                          render: (v) => <>{v.toLocaleString()} CR</>
-                        }
-                      ]}
-                      data={exports}
-                      expandable={{
-                        expandRowByClick: true,
-                        expandedRowRender: (record) => <ExpandedExportsRow record={record} />
-                      }}
-                    />}
+                  {exports && <CommodityExportOrders commodities={exports} />}
                 </td>
                 <td valign='top' style={{ width: '50%' }}>
                   {!imports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
-                  {imports &&
-                    <Table
-                      className='data-table'
-                      columns={[
-                        {
-                          title: 'System',
-                          dataIndex: 'systemName',
-                          key: 'systemName',
-                          align: 'left',
-                          render: (v, r) =>
-                            <>
-                              <i className='icon icarus-terminal-star' />
-                              {v}
-                              <br />
-                              <small>{r.stationName}</small>
-                            </>
-                        },
-                        {
-                          title: 'Demand',
-                          dataIndex: 'demand',
-                          key: 'demand',
-                          align: 'right',
-                          render: (v) => <>{v.toLocaleString()} T</>
-                        },
-                        {
-                          title: 'Price',
-                          dataIndex: 'sellPrice',
-                          key: 'sellPrice',
-                          align: 'right',
-                          render: (v) => <>{v.toLocaleString()} CR</>
-                        }
-                      ]}
-                      data={imports}
-                      expandable={{
-                        expandRowByClick: true,
-                        expandedRowRender: (record) => <ExpandedImportsRow record={record} />
-                      }}
-                    />}
+                  {imports && <CommodityImportOrders commodities={imports} />}
                 </td>
               </tr>
             </tbody>
           </table>
         </>}
-    </>
-  )
-}
-
-function ExpandedExportsRow ({ record }) {
-  if (!record) return
-
-  const [exports, setExports] = useState()
-
-  useEffect(() => {
-    (async () => {
-      const commodityName = record.symbol
-      const systemName = record.systemName
-      const exports = await getExportsForCommodityBySystem(systemName, commodityName)
-      exports.forEach(c => {
-        c.key = c.commodityId
-        c.symbol = c.commodityName
-        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        delete c.commodityId
-        delete c.commodityName
-        delete c.distance
-      })
-      setExports(exports)
-    })()
-  }, [record.commodityName])
-
-  if (!exports) return <div className='loading-bar' style={{ marginTop: '.75rem' }} />
-  return (
-    <>
-      <em>{record.name}</em> for sale in
-      {' '}
-      <Link href={`/system/${record.systemName}`}>
-        <strong>{record.systemName}</strong>
-      </Link>
-      {exports && <pre>{prettyoutput(exports)}</pre>}
-    </>
-  )
-}
-
-function ExpandedImportsRow ({ record }) {
-  if (!record) return
-
-  const [imports, setImports] = useState()
-
-  useEffect(() => {
-    (async () => {
-      const commodityName = record.symbol
-      const systemName = record.systemName
-      const imports = await getImportsForCommodityBySystem(systemName, commodityName)
-      imports.forEach(c => {
-        c.key = c.commodityId
-        c.symbol = c.commodityName
-        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        delete c.commodityId
-        delete c.commodityName
-        delete c.distance
-      })
-      setImports(imports)
-    })()
-  }, [record])
-
-  if (!imports) return <div className='loading-bar' style={{ marginTop: '.75rem' }} />
-
-  return (
-    <>
-      <em>{record.name}</em> in demand in
-      {' '}
-      <Link href={`/system/${record.systemName}`}>
-        <strong>{record.systemName}</strong>
-      </Link>
-      {imports && <pre>{prettyoutput(imports)}</pre>}
     </>
   )
 }
@@ -311,16 +202,4 @@ async function getExports (commodityName) {
 async function getImports (commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/commodity/name/${commodityName}/imports`)
   return await res.json()
-}
-
-async function getExportsForCommodityBySystem (systemName, commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/exports`)
-  const exports = await res.json()
-  return exports.filter(c => c.commodityName === commodityName)
-}
-
-async function getImportsForCommodityBySystem (systemName, commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/imports`)
-  const imports = await res.json()
-  return imports.filter(c => c.commodityName === commodityName)
 }

@@ -2,9 +2,9 @@
 
 This is the website for [ardent-industry.com](https://ardent-industry.com)
 
-It provides a web based interface to the Ardent API.
+It provides a web based interface to the Ardent API and Ardent Collector.
 
-As of 11 June 2023 this service is in public beta.
+As of June 2023 the website and API are in beta.
 
 * https://github.com/iaincollins/ardent-api
 * https://github.com/iaincollins/ardent-collector
