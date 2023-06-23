@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Table from 'rc-table'
-import prettyOutput from 'prettyoutput'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { timeBetweenTimestamps } from '../../lib/utils/dates'
 import commoditiesInfo from '../../lib/commodities.json'
 import { formatSystemSector } from '../../lib/utils/system-sectors'
@@ -192,104 +192,114 @@ export default () => {
                 onClick: onSystemsRowClick.bind(null, record, index)
               })}
             />}
-          <table style={{ marginTop: '1rem' }}>
-            <thead>
-              <tr>
-                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>System Exports</h3></th>
-                <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>System Imports</h3></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td valign='top' style={{ width: '50%' }}>
-                  {!exports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
-                  {exports &&
-                    <Table
-                      className='data-table'
-                      columns={[
-                        {
-                          title: 'Commodity',
-                          dataIndex: 'name',
-                          key: 'name',
-                          align: 'left',
-                          render: (v, r) =>
-                            <>
-                              <i className='icon icarus-terminal-cargo' />
-                              {v}
-                              <br />
-                              <small>{r.stationName}</small>
-                              <br />
-                              <small style={{ textTransform: 'none', opacity: 0.5 }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
-                            </>
-                        },
-                        {
-                          title: 'Stock',
-                          dataIndex: 'stock',
-                          key: 'stock',
-                          align: 'right',
-                          render: (v) => <>{v.toLocaleString()} T</>
-                        },
-                        {
-                          title: 'Price',
-                          dataIndex: 'buyPrice',
-                          key: 'buyPrice',
-                          align: 'right',
-                          render: (v) => <>{v.toLocaleString()} CR</>
-                        }
-                      ]}
-                      data={exports}
-                      expandable={{
-                        expandRowByClick: true,
-                        expandedRowRender: r => <NearbyImporters commodity={r} />
-                      }}
-                    />}
-                </td>
-                <td valign='top' style={{ width: '50%' }}>
-                  {!imports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
-                  {imports &&
-                    <Table
-                      className='data-table'
-                      columns={[
-                        {
-                          title: 'Commodity',
-                          dataIndex: 'name',
-                          key: 'name',
-                          align: 'left',
-                          render: (v, r) =>
-                            <>
-                              <i className='icon icarus-terminal-cargo' />
-                              {v}
-                              <br />
-                              <small>{r.stationName}</small>
-                              <br />
-                              <small style={{ textTransform: 'none', opacity: 0.5 }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
-                            </>
-                        },
-                        {
-                          title: 'Demand',
-                          dataIndex: 'demand',
-                          key: 'demand',
-                          align: 'right',
-                          render: (v) => <>{v.toLocaleString()} T</>
-                        },
-                        {
-                          title: 'Price',
-                          dataIndex: 'sellPrice',
-                          key: 'sellPrice',
-                          align: 'right',
-                          render: (v) => <>{v.toLocaleString()} CR</>
-                        }
-                      ]}
-                      data={imports}
-                      expandable={{
-                        expandRowByClick: true,
-                        expandedRowRender: r => <NearbyExporters commodity={r} />
-                      }}
-                    />}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <Tabs>
+            <TabList>
+              <Tab>System Imports</Tab>
+              <Tab>System Exports</Tab>
+            </TabList>
+            <TabPanel>
+              {!imports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+              {imports &&
+                <Table
+                  className='data-table'
+                  columns={[
+                    {
+                      title: 'Commodity',
+                      dataIndex: 'name',
+                      key: 'name',
+                      align: 'left',
+                      render: (v, r) =>
+                        <>
+                          <i className='icon icarus-terminal-cargo' />
+                          {v}
+                          <br />
+                          <small>{r.stationName}</small>
+                        </>
+                    },
+                    {
+                      title: 'Updated',
+                      dataIndex: 'updatedAt',
+                      key: 'updatedAt',
+                      align: 'right',
+                      width: 150,
+                      render: (v) => <>{timeBetweenTimestamps(v)} ago</>
+                    },
+                    {
+                      title: 'Demand',
+                      dataIndex: 'demand',
+                      key: 'demand',
+                      align: 'right',
+                      width: 150,
+                      render: (v) => <>{v.toLocaleString()} T</>
+                    },
+                    {
+                      title: 'Price',
+                      dataIndex: 'sellPrice',
+                      key: 'sellPrice',
+                      align: 'right',
+                      width: 150,
+                      render: (v) => <>{v.toLocaleString()} CR</>
+                    }
+                  ]}
+                  data={imports}
+                  expandable={{
+                    expandRowByClick: true,
+                    expandedRowRender: r => <NearbyExporters commodity={r} />
+                  }}
+                />}
+            </TabPanel>
+            <TabPanel>
+              {!exports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+              {exports &&
+                <Table
+                  className='data-table'
+                  columns={[
+                    {
+                      title: 'Commodity',
+                      dataIndex: 'name',
+                      key: 'name',
+                      align: 'left',
+                      render: (v, r) =>
+                        <>
+                          <i className='icon icarus-terminal-cargo' />
+                          {v}
+                          <br />
+                          <small>{r.stationName}</small>
+                        </>
+                    },
+                    {
+                      title: 'Updated',
+                      dataIndex: 'updatedAt',
+                      key: 'updatedAt',
+                      align: 'right',
+                      width: 150,
+                      render: (v) => <>{timeBetweenTimestamps(v)} ago</>
+                    },
+                    {
+                      title: 'Stock',
+                      dataIndex: 'stock',
+                      key: 'stock',
+                      align: 'right',
+                      width: 150,
+                      render: (v) => <>{v.toLocaleString()} T</>
+                    },
+                    {
+                      title: 'Price',
+                      dataIndex: 'buyPrice',
+                      key: 'buyPrice',
+                      align: 'right',
+                      width: 150,
+                      render: (v) => <>{v.toLocaleString()} CR</>
+                    }
+                  ]}
+                  data={exports}
+                  expandable={{
+                    expandRowByClick: true,
+                    expandedRowRender: r => <NearbyImporters commodity={r} />
+                  }}
+                />}
+            </TabPanel>
+          </Tabs>
         </>}
     </>
   )
@@ -335,6 +345,7 @@ function NearbyImporters ({ commodity }) {
               dataIndex: 'updatedAt',
               key: 'updatedAt',
               align: 'right',
+              width: 130,
               render: (v) => <>{timeBetweenTimestamps(v)} ago</>
             },
             {
@@ -342,6 +353,7 @@ function NearbyImporters ({ commodity }) {
               dataIndex: 'demand',
               key: 'demand',
               align: 'right',
+              width: 130,
               render: (v) => <>{v.toLocaleString()} T</>
             },
             {
@@ -349,6 +361,7 @@ function NearbyImporters ({ commodity }) {
               dataIndex: 'sellPrice',
               key: 'sellPrice',
               align: 'right',
+              width: 130,
               render: (v) => <>{v.toLocaleString()} CR</>
             }
           ]}
@@ -399,6 +412,7 @@ function NearbyExporters ({ commodity }) {
               dataIndex: 'updatedAt',
               key: 'updatedAt',
               align: 'right',
+              width: 130,
               render: (v) => <>{timeBetweenTimestamps(v)} ago</>
             },
             {
@@ -406,6 +420,7 @@ function NearbyExporters ({ commodity }) {
               dataIndex: 'stock',
               key: 'stock',
               align: 'right',
+              width: 130,
               render: (v) => <>{v.toLocaleString()} T</>
             },
             {
@@ -413,6 +428,7 @@ function NearbyExporters ({ commodity }) {
               dataIndex: 'sellPrice',
               key: 'sellPrice',
               align: 'right',
+              width: 130,
               render: (v) => <>{v.toLocaleString()} CR</>
             }
           ]}

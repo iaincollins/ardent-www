@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import CommodityExportOrders from './commodity-export-orders'
 import CommodityImportOrders from './commodity-import-orders'
 import commoditiesInfo from '../lib/commodities.json'
@@ -46,26 +47,22 @@ export default ({ commodityName, reportName = 'core-systems-1000' }) => {
   }, [commodityName, reportName])
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Exporters</h3></th>
-          <th align='left'><h3 style={{ margin: 0, top: '.5rem' }}>Importers</h3></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td valign='top' style={{ width: '50%' }}>
-            {!exports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
-            {exports && <CommodityExportOrders commodities={exports} />}
-          </td>
-          <td valign='top' style={{ width: '50%' }}>
-            {!imports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
-            {imports && <CommodityImportOrders commodities={imports} />}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <>
+      <Tabs>
+        <TabList>
+          <Tab>Imports</Tab>
+          <Tab>Exports</Tab>
+        </TabList>
+        <TabPanel>
+          {!imports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+          {imports && <CommodityImportOrders commodities={imports} />}
+        </TabPanel>
+        <TabPanel>
+          {!exports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+          {exports && <CommodityExportOrders commodities={exports} />}
+        </TabPanel>
+      </Tabs>
+    </>
   )
 }
 

@@ -1,7 +1,7 @@
 {
   "name": "ardent-www",
-  "version": "0.13.2",
-  "description": "Ardent Industry Website",
+  "version": "0.14.0",
+  "description": "Ardent Industry WWW Server",
   "main": "index.js",
   "scripts": {
     "start": "npx next start -p 3000",
@@ -25,7 +25,8 @@
     "prettyoutput": "^1.2.0",
     "rc-table": "^7.32.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-tabs": "^6.0.1"
   },
   "devDependencies": {
     "standard": "^17.1.0"

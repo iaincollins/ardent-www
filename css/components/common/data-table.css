@@ -1,3 +1,7 @@
+.data-table {
+  z-index: 3;
+}
+
 .data-table th,
 .data-table td {
   white-space: nowrap;
@@ -6,11 +10,13 @@
 }
 
 .data-table .rc-table-row-expand-icon-cell {
-  display: none;
+  width: 0;
+  padding: 0;
 }
 
 .data-table table {
   border-spacing: 0;
+  width: 100%;
 }
 
 .data-table th {
@@ -23,6 +29,8 @@
 
 .data-table td {
   background: #222;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .data-table tr.rc-table-row td {
@@ -44,6 +52,9 @@
   background: #333 linear-gradient(0deg, rgba(34,34,34,1) 0%, rgba(51,51,51,1) 100%);
   border-bottom: .25rem solid #111;
   box-shadow: 0 0 2rem 2rem rgba(0,0,0,.25) inset;
+  border-left: .2rem solid #ccc;
+  border-right: .2rem solid #ccc;
+  border-bottom: .2rem solid #ccc;
 }
 
 .data-table th .icon,

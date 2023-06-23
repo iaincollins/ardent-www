@@ -20,15 +20,22 @@ export default ({ commodities }) => {
               {v}
               <br />
               <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
-              <br />
-              <small style={{ textTransform: 'none', opacity: 0.5 }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
             </>
+        },
+        {
+          title: 'Updated',
+          dataIndex: 'updatedAt',
+          key: 'updatedAt',
+          align: 'right',
+          width: 150,
+          render: (v) => <>{timeBetweenTimestamps(v)} ago</>
         },
         {
           title: 'Stock',
           dataIndex: 'stock',
           key: 'stock',
           align: 'right',
+          width: 150,
           render: (v) => <>{v.toLocaleString()} T</>
         },
         {
@@ -36,6 +43,7 @@ export default ({ commodities }) => {
           dataIndex: 'buyPrice',
           key: 'buyPrice',
           align: 'right',
+          width: 150,
           render: (v) => <>{v.toLocaleString()} CR</>
         }
       ]}
@@ -80,6 +88,7 @@ function ExpandedRow ({ record }) {
             dataIndex: 'stationName',
             key: 'stationName',
             align: 'left',
+            width: 130,
             render: (v, r) => <>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</>
           },
           {
@@ -87,6 +96,7 @@ function ExpandedRow ({ record }) {
             dataIndex: 'updatedAt',
             key: 'updatedAt',
             align: 'right',
+            width: 130,
             render: (v) => <>{timeBetweenTimestamps(v)} ago</>
           },
           {
@@ -94,6 +104,7 @@ function ExpandedRow ({ record }) {
             dataIndex: 'stock',
             key: 'stock',
             align: 'right',
+            width: 130,
             render: (v) => <>{v.toLocaleString()} T</>
           },
           {
@@ -101,6 +112,7 @@ function ExpandedRow ({ record }) {
             dataIndex: 'buyPrice',
             key: 'buyPrice',
             align: 'right',
+            width: 130,
             render: (v) => <>{v.toLocaleString()} CR</>
           }
         ]}

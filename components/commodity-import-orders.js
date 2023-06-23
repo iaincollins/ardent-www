@@ -20,15 +20,22 @@ export default ({ commodities }) => {
               {v}
               <br />
               <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
-              <br />
-              <small style={{ textTransform: 'none', opacity: 0.5 }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
             </>
+        },
+        {
+          title: 'Updated',
+          dataIndex: 'updatedAt',
+          key: 'updatedAt',
+          align: 'right',
+          width: 150,
+          render: (v) => <>{timeBetweenTimestamps(v)} ago</>
         },
         {
           title: 'Demand',
           dataIndex: 'demand',
           key: 'demand',
           align: 'right',
+          width: 150,
           render: (v) => <>{v.toLocaleString()} T</>
         },
         {
@@ -36,6 +43,7 @@ export default ({ commodities }) => {
           dataIndex: 'sellPrice',
           key: 'sellPrice',
           align: 'right',
+          width: 150,
           render: (v) => <>{v.toLocaleString()} CR</>
         }
       ]}
@@ -88,6 +96,7 @@ function ExpandedRow ({ record }) {
             dataIndex: 'updatedAt',
             key: 'updatedAt',
             align: 'right',
+            width: 130,
             render: (v) => <>{timeBetweenTimestamps(v)} ago</>
           },
           {
@@ -95,6 +104,7 @@ function ExpandedRow ({ record }) {
             dataIndex: 'demand',
             key: 'demand',
             align: 'right',
+            width: 130,
             render: (v) => <>{v.toLocaleString()} T</>
           },
           {
@@ -102,6 +112,7 @@ function ExpandedRow ({ record }) {
             dataIndex: 'sellPrice',
             key: 'sellPrice',
             align: 'right',
+            width: 130,
             render: (v) => <>{v.toLocaleString()} CR</>
           }
         ]}
