@@ -42,6 +42,9 @@ export default () => {
       <p className='breadcrumb'>
         <Link href='/'>Home</Link>
       </p>
+      <p className='lead'>
+        Live trading and exploration data from <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent Industry</a>, powered by <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>.
+      </p>
       <h2>Commodities</h2>
       {!commodities && <div className='loading-bar' />}
       {commodities &&

@@ -167,11 +167,11 @@ export default () => {
                     <Tab>Exports</Tab>
                   </TabList>
                   <TabPanel>
-                    {!imports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+                    {!imports && <div className='loading-bar' style={{ marginTop: '.75rem', marginBottom: 0 }} />}
                     {imports && <CommodityImportOrders commodities={imports} />}
                   </TabPanel>
                   <TabPanel>
-                    {!exports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+                    {!exports && <div className='loading-bar' style={{ marginTop: '.75rem', marginBottom: 0 }} />}
                     {exports && <CommodityExportOrders commodities={exports} />}
                   </TabPanel>
                 </Tabs>
