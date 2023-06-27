@@ -1,0 +1,31 @@
+
+@media only screen and (max-width: 768px) {
+  h2,
+  h3 {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc(100% - .5rem);
+  }
+
+  .is-hidden-mobile {
+    display: none;
+    width: 0;
+    padding: 0;
+  }
+
+  .max-width-mobile {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .data-table--striped-not-mobile tbody tr:nth-child(odd) td {
+    background: rgba(255,255,255,.1) !important;
+  }
+
+  .is-visible-mobile {
+    display: none;
+  }
+}

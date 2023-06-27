@@ -7,19 +7,29 @@ import { API_BASE_URL } from '../lib/consts'
 export default ({ commodities }) => {
   return (
     <Table
-      className='data-table'
+      className='data-table data-table--interactive'
       columns={[
         {
           title: 'System',
           dataIndex: 'systemName',
           key: 'systemName',
           align: 'left',
+          className: 'max-width-mobile',
           render: (v, r) =>
             <>
-              <i className='icon icarus-terminal-star' />
-              {v}
-              <br />
+              <i className='icon icarus-terminal-star' />{v}<br />
               <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
+              <div className='is-visible-mobile'>
+                <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
+                <table className='data-table--mini'>
+                  <tbody style={{ textTransform: 'uppercase' }}>
+                    <tr>
+                      <td><span className='data-table__label'>Stock</span>{r.stock.toLocaleString()} T</td>
+                      <td><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </>
         },
         {
@@ -28,7 +38,8 @@ export default ({ commodities }) => {
           key: 'updatedAt',
           align: 'right',
           width: 150,
-          render: (v) => <>{timeBetweenTimestamps(v)} ago</>
+          className: 'is-hidden-mobile',
+          render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
         },
         {
           title: 'Stock',
@@ -36,6 +47,7 @@ export default ({ commodities }) => {
           key: 'stock',
           align: 'right',
           width: 150,
+          className: 'is-hidden-mobile',
           render: (v) => <>{v.toLocaleString()} T</>
         },
         {
@@ -44,6 +56,7 @@ export default ({ commodities }) => {
           key: 'buyPrice',
           align: 'right',
           width: 150,
+          className: 'is-hidden-mobile',
           render: (v) => <>{v.toLocaleString()} CR</>
         }
       ]}
@@ -73,7 +86,7 @@ function ExpandedRow ({ record }) {
   if (!exports) return <div className='loading-bar' style={{ marginTop: '.75rem' }} />
   return (
     <>
-      <p style={{ marginTop: '.5rem' }}>
+      <p style={{ whiteSpace: 'normal', marginTop: '.5rem' }}>
         Supplies of <strong>{record.name}</strong> in
         {' '}
         <Link href={`/system/${record.systemName}`}>
@@ -81,15 +94,37 @@ function ExpandedRow ({ record }) {
         </Link>
       </p>
       <Table
-        className='data-table--mini scrollable'
+        className='data-table--mini data-table--striped-not-mobile scrollable'
         columns={[
           {
             title: 'Location',
             dataIndex: 'stationName',
             key: 'stationName',
             align: 'left',
-            width: 130,
-            render: (v, r) => <>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</>
+            className: 'max-width-mobile',
+            render: (v, r) =>
+              <>
+                <span className='is-hidden-mobile'>
+                  {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+                </span>
+                <div className='is-visible-mobile'>
+                  <table className='data-table--mini data-table--striped'>
+                    <tbody style={{ textTransform: 'uppercase' }}>
+                      <tr>
+                        <td colSpan={2}>
+                          {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+                          <br />
+                          <span style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><span class='data-table__label'>Stock</span>{r.stock.toLocaleString()} T</td>
+                        <td><span class='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </>
           },
           {
             title: 'Updated',
@@ -97,6 +132,7 @@ function ExpandedRow ({ record }) {
             key: 'updatedAt',
             align: 'right',
             width: 130,
+            className: 'is-hidden-mobile',
             render: (v) => <>{timeBetweenTimestamps(v)} ago</>
           },
           {
@@ -105,6 +141,7 @@ function ExpandedRow ({ record }) {
             key: 'stock',
             align: 'right',
             width: 130,
+            className: 'is-hidden-mobile',
             render: (v) => <>{v.toLocaleString()} T</>
           },
           {
@@ -113,6 +150,7 @@ function ExpandedRow ({ record }) {
             key: 'buyPrice',
             align: 'right',
             width: 130,
+            className: 'is-hidden-mobile',
             render: (v) => <>{v.toLocaleString()} CR</>
           }
         ]}

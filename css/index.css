@@ -1,5 +1,6 @@
 @import url('variables.css');
 @import url('fx.css');
+@import url('responsive.css');
 @import url('html-elements/index.css');
 @import url('components/header.css');
 @import url('components/tabs.css');

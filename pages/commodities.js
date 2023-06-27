@@ -39,37 +39,59 @@ export default () => {
 
   return (
     <>
-      <p className='breadcrumb'>
+      {/* <p className='breadcrumb'>
         <Link href='/'>Home</Link>
-      </p>
+      </p> */}
       <p className='lead'>
-        Live trading and exploration data from <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent Industry</a>, powered by <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>.
+        Commodity trading data from <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent Industry</a>
+      </p>
+      <p>
+        <small><em>Live data from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a></em></small>
       </p>
       <h2>Commodities</h2>
       {!commodities && <div className='loading-bar' />}
       {commodities &&
         <Table
-          className='data-table'
+          className='data-table data-table--interactive'
           columns={[
             {
               title: 'Name',
               dataIndex: 'name',
               key: 'commodityName',
               align: 'left',
-              render: (v, r) => <>{v}<br /><small>{r.category}</small></>
-            },
-            {
-              title: 'Avg Export CR/T',
-              dataIndex: 'avgBuyPrice',
-              key: 'avgBuyPrice',
-              align: 'right',
-              render: (v) => <>{v.toLocaleString()} CR</>
+              render: (v, r) =>
+                <>
+                  {v}<br /><small>{r.category}</small>
+                  <div className='is-visible-mobile'>
+                    <table className='data-table--mini data-table-striped'>
+                      <tbody style={{ textTransform: 'uppercase' }}>
+                        <tr>
+                          <td><span class='data-table__label'>Avg Import CR/T</span>{r.avgSellPrice.toLocaleString()} CR</td>
+                          <td><span class='data-table__label'>Avg Profit CR/T</span>{r.avgProfit.toLocaleString()} CR</td>
+                        </tr>
+                        <tr>
+                          <td><span class='data-table__label'>Avg Export CR/T</span>{r.avgBuyPrice.toLocaleString()} CR</td>
+                          <td><span class='data-table__label'>Max Profit CR/T</span>{r.maxProfit.toLocaleString()} CR</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </>
             },
             {
               title: 'Avg Import CR/T',
               dataIndex: 'avgSellPrice',
               key: 'avgSellPrice',
               align: 'right',
+              className: 'is-hidden-mobile',
+              render: (v) => <>{v.toLocaleString()} CR</>
+            },
+            {
+              title: 'Avg Export CR/T',
+              dataIndex: 'avgBuyPrice',
+              key: 'avgBuyPrice',
+              align: 'right',
+              className: 'is-hidden-mobile',
               render: (v) => <>{v.toLocaleString()} CR</>
             },
             {
@@ -77,12 +99,13 @@ export default () => {
               dataIndex: 'avgProfit',
               key: 'avgProfit',
               align: 'right',
+              className: 'is-hidden-mobile',
               render: (v, r) =>
-                <>
+                <div style={{ textTransform: 'uppercase' }}>
                   {v.toLocaleString()} CR
                   <br />
-                  <small>MAX {r.maxProfit.toLocaleString()} CR</small>
-                </>
+                  <small>Max {r.maxProfit.toLocaleString()} CR</small>
+                </div>
             }
           ]}
           data={commodities}

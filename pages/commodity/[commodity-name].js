@@ -132,9 +132,9 @@ export default () => {
           </div>
           <Tabs>
             <TabList>
-              <Tab>Core Systems</Tab>
-              <Tab>Colonia Systems</Tab>
-              <Tab>Live Market Data</Tab>
+              <Tab>Core<span className='is-hidden-mobile'> Systems</span></Tab>
+              <Tab>Colonia<span className='is-hidden-mobile'> Systems</span></Tab>
+              <Tab>Live<span className='is-hidden-mobile'> Market Data</span></Tab>
             </TabList>
             <div className='tab-panel__container'>
               <TabPanel>
@@ -150,7 +150,7 @@ export default () => {
                 <div className='tab-panel__header'>
                   <p>
                     Best bulk export and import prices for <strong>{commodity.name}</strong>
-                    {' '}in the Colonia region.
+                    {' '}near Colonia.
                   </p>
                 </div>
                 <CommodityReport commodityName={commodity.name} reportName='colonia-systems-1000' />
@@ -158,7 +158,7 @@ export default () => {
               <TabPanel>
                 <div className='tab-panel__header'>
                   <p>
-                    Latest best prices for all known exporters and importers of <strong>{commodity.name}</strong>.
+                    Latest best prices for <strong>{commodity.name}</strong> anywhere in the galaxy.
                   </p>
                 </div>
                 <Tabs>

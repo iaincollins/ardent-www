@@ -38,12 +38,9 @@
   border-bottom: .25rem solid #111;
 }
 
-.data-table tr.rc-table-row:hover td {
-  background: #333;
-}
-
-.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td {
-  background: #ccc;
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td,
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])):hover td {
+  background: #ccc !important;
   color: #111;
   border-bottom: none;
 }
@@ -55,6 +52,7 @@
   border-left: .2rem solid #ccc;
   border-right: .2rem solid #ccc;
   border-bottom: .2rem solid #ccc;
+  background: rgba(255,255,255,.1) !important;
 }
 
 .data-table th .icon,
@@ -80,3 +78,19 @@
 .data-table--mini td small {
   font-size: .8rem;
 }
+
+.data-table__label {
+  display: block;
+  opacity: .5;
+}
+
+table.data-table--striped > tbody > tr:nth-child(odd) > td,
+.data-table--striped > .rc-table-container > .rc-table-content > table > tbody > tr:nth-child(odd) > td {
+  background: rgba(255,255,255,.1) !important;
+}
+
+table.data-table--interactive > tbody > tr.rc-table-row:hover > td,
+.data-table--interactive > .rc-table-container > .rc-table-content > table > tbody > tr.rc-table-row:hover > td {
+  background: rgba(255,255,255,.15);
+}
+

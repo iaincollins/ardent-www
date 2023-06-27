@@ -39,10 +39,12 @@ export default () => {
           <button className='button'><i className='icon icarus-terminal-system-orbits' /></button>
         </div>
         {stats &&
-          <div className='header-stats'>
-            Star Systems: {stats.systems.toLocaleString()}<br />
-            Trade Orders: {stats.trade.tradeOrders.toLocaleString()}<br />
-            Updates today: {stats.trade.updatedInLast24Hours.toLocaleString()}<br />
+          <div className='is-hidden-mobile'>
+            <div className='header-stats'>
+              Star Systems: {stats.systems.toLocaleString()}<br />
+              Trade Orders: {stats.trade.tradeOrders.toLocaleString()}<br />
+              Updates today: {stats.trade.updatedInLast24Hours.toLocaleString()}<br />
+            </div>
           </div>}
       </header>
     </>

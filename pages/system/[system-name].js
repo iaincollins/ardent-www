@@ -65,7 +65,7 @@ export default () => {
             [s.systemX, s.systemY, s.systemZ]
           )
         })
-        setNearbySystems(nearbySystems.filter((s, i) => i < 5))
+        setNearbySystems(nearbySystems.filter((s, i) => i < 100))
 
         const exports = await getExports(systemName)
         const commoditesProduced = []
@@ -117,7 +117,7 @@ export default () => {
             <i className='icon icarus-terminal-system-bodies' />
             {system.systemName}
           </h2>
-          <div>
+          <div style={{ marginBottom: '1rem' }}>
             <p className='object-information'>
               <label>System Address</label>
               <span>{system.systemAddress}</span>
@@ -160,43 +160,45 @@ export default () => {
               <span>{timeBetweenTimestamps(system.updatedAt)} ago</span>
             </p> */}
           </div>
-          <h3>Nearby Systems</h3>
-          {!nearbySystems && <div className='loading-bar' />}
-          {nearbySystems &&
-            <Table
-              className='data-table'
-              columns={[
-                {
-                  title: 'System',
-                  dataIndex: 'systemName',
-                  key: 'systemName',
-                  align: 'left',
-                  render: (v, r) =>
-                    <>
-                      <i className='icon icarus-terminal-star' />
-                      {v}
-                    </>
-                },
-                {
-                  title: 'Distance',
-                  dataIndex: 'distance',
-                  key: 'distance',
-                  align: 'right',
-                  render: (v) => v < 1
-                    ? '< 1 Ly'
-                    : <>{Math.floor(v).toLocaleString()} Ly</>
-                }
-              ]}
-              data={nearbySystems}
-              onRow={(record, index) => ({
-                onClick: onSystemsRowClick.bind(null, record, index)
-              })}
-            />}
           <Tabs>
             <TabList>
-              <Tab>System Imports</Tab>
-              <Tab>System Exports</Tab>
+              <Tab>Nearby<span className='is-hidden-mobile'> Systems</span></Tab>
+              <Tab>Imports</Tab>
+              <Tab>Exports</Tab>
             </TabList>
+            <TabPanel>
+              {!nearbySystems && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+              {nearbySystems &&
+                <Table
+                  className='data-table'
+                  columns={[
+                    {
+                      title: 'System',
+                      dataIndex: 'systemName',
+                      key: 'systemName',
+                      align: 'left',
+                      render: (v, r) =>
+                        <>
+                          <i className='icon icarus-terminal-star' />
+                          {v}
+                        </>
+                    },
+                    {
+                      title: 'Distance',
+                      dataIndex: 'distance',
+                      key: 'distance',
+                      align: 'right',
+                      render: (v) => v < 1
+                        ? '< 1 Ly'
+                        : <>{Math.floor(v).toLocaleString()} Ly</>
+                    }
+                  ]}
+                  data={nearbySystems}
+                  onRow={(record, index) => ({
+                    onClick: onSystemsRowClick.bind(null, record, index)
+                  })}
+                />}
+            </TabPanel>
             <TabPanel>
               {!imports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
               {imports &&
@@ -208,12 +210,22 @@ export default () => {
                       dataIndex: 'name',
                       key: 'name',
                       align: 'left',
+                      className: 'max-width-mobile',
                       render: (v, r) =>
                         <>
-                          <i className='icon icarus-terminal-cargo' />
-                          {v}
-                          <br />
-                          <small>{r.stationName}</small>
+                          <i className='icon icarus-terminal-cargo' />{v}<br />
+                          <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
+                          <div className='is-visible-mobile'>
+                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
+                            <table className='data-table--mini'>
+                              <tbody style={{ textTransform: 'uppercase' }}>
+                                <tr>
+                                  <td><span className='data-table__label'>Demand</span>{r.demand.toLocaleString()} T</td>
+                                  <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </>
                     },
                     {
@@ -222,7 +234,8 @@ export default () => {
                       key: 'updatedAt',
                       align: 'right',
                       width: 150,
-                      render: (v) => <>{timeBetweenTimestamps(v)} ago</>
+                      className: 'is-hidden-mobile',
+                      render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
                     },
                     {
                       title: 'Demand',
@@ -230,6 +243,7 @@ export default () => {
                       key: 'demand',
                       align: 'right',
                       width: 150,
+                      className: 'is-hidden-mobile',
                       render: (v) => <>{v.toLocaleString()} T</>
                     },
                     {
@@ -238,6 +252,7 @@ export default () => {
                       key: 'sellPrice',
                       align: 'right',
                       width: 150,
+                      className: 'is-hidden-mobile',
                       render: (v) => <>{v.toLocaleString()} CR</>
                     }
                   ]}
@@ -259,12 +274,22 @@ export default () => {
                       dataIndex: 'name',
                       key: 'name',
                       align: 'left',
+                      className: 'max-width-mobile',
                       render: (v, r) =>
                         <>
-                          <i className='icon icarus-terminal-cargo' />
-                          {v}
-                          <br />
-                          <small>{r.stationName}</small>
+                          <i className='icon icarus-terminal-cargo' />{v}<br />
+                          <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
+                          <div className='is-visible-mobile'>
+                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
+                            <table className='data-table--mini'>
+                              <tbody style={{ textTransform: 'uppercase' }}>
+                                <tr>
+                                  <td><span className='data-table__label'>Stock</span>{r.stock.toLocaleString()} T</td>
+                                  <td><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </>
                     },
                     {
@@ -273,7 +298,8 @@ export default () => {
                       key: 'updatedAt',
                       align: 'right',
                       width: 150,
-                      render: (v) => <>{timeBetweenTimestamps(v)} ago</>
+                      className: 'is-hidden-mobile',
+                      render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
                     },
                     {
                       title: 'Stock',
@@ -281,6 +307,7 @@ export default () => {
                       key: 'stock',
                       align: 'right',
                       width: 150,
+                      className: 'is-hidden-mobile',
                       render: (v) => <>{v.toLocaleString()} T</>
                     },
                     {
@@ -289,6 +316,7 @@ export default () => {
                       key: 'buyPrice',
                       align: 'right',
                       width: 150,
+                      className: 'is-hidden-mobile',
                       render: (v) => <>{v.toLocaleString()} CR</>
                     }
                   ]}
@@ -324,21 +352,45 @@ function NearbyImporters ({ commodity }) {
       {!nearbyImporters && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
       {nearbyImporters &&
         <Table
-          className='data-table--mini scrollable'
+          className='data-table--mini data-table--striped-not-mobile scrollable'
           columns={[
             {
               title: 'Location',
               dataIndex: 'systemName',
               key: 'systemName',
               align: 'left',
-              render: (v, r) => <>{v}<br /><small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small></>
+              className: 'max-width-mobile',
+              render: (v, r) =>
+                <>
+                  <span className='is-hidden-mobile'>
+                    {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+                  </span>
+                  <div className='is-visible-mobile'>
+                    <table className='data-table--mini data-table--striped'>
+                      <tbody style={{ textTransform: 'uppercase' }}>
+                        <tr>
+                          <td colSpan={2}>
+                            {r.systemName} <span style={{ opacity: 0.5 }}> ({r.distance} Ly) </span>
+                            <br />
+                            <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><span class='data-table__label'>Demand</span>{r.demand.toLocaleString()} T</td>
+                          <td><span class='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </>
             },
             {
               title: 'Distance',
               dataIndex: 'distance',
               key: 'distance',
               align: 'right',
-              render: (v) => <>{v} Ly</>
+              className: 'is-hidden-mobile',
+              render: (v) => <span style={{ opacity: 0.5 }}>{v} Ly</span>
             },
             {
               title: 'Updated',
@@ -346,7 +398,8 @@ function NearbyImporters ({ commodity }) {
               key: 'updatedAt',
               align: 'right',
               width: 130,
-              render: (v) => <>{timeBetweenTimestamps(v)} ago</>
+              className: 'is-hidden-mobile',
+              render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
             },
             {
               title: 'Demand',
@@ -354,6 +407,7 @@ function NearbyImporters ({ commodity }) {
               key: 'demand',
               align: 'right',
               width: 130,
+              className: 'is-hidden-mobile',
               render: (v) => <>{v.toLocaleString()} T</>
             },
             {
@@ -362,6 +416,7 @@ function NearbyImporters ({ commodity }) {
               key: 'sellPrice',
               align: 'right',
               width: 130,
+              className: 'is-hidden-mobile',
               render: (v) => <>{v.toLocaleString()} CR</>
             }
           ]}
@@ -398,13 +453,38 @@ function NearbyExporters ({ commodity }) {
               dataIndex: 'systemName',
               key: 'systemName',
               align: 'left',
-              render: (v, r) => <>{v}<br /><small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small></>
+              className: 'max-width-mobile',
+              render: (v, r) =>
+                <>
+                  <span className='is-hidden-mobile'>
+                    {r.systemName}<br />
+                    <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
+                  </span>
+                  <div className='is-visible-mobile'>
+                    <table className='data-table--mini data-table--striped'>
+                      <tbody style={{ textTransform: 'uppercase' }}>
+                        <tr>
+                          <td colSpan={2}>
+                            {r.systemName} <span style={{ opacity: 0.5 }}> ({r.distance} Ly) </span>
+                            <br />
+                            <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><span class='data-table__label'>Stock</span>{r.stock.toLocaleString()} T</td>
+                          <td><span class='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </>
             },
             {
               title: 'Distance',
               dataIndex: 'distance',
               key: 'distance',
               align: 'right',
+              className: 'is-hidden-mobile',
               render: (v) => <>{v} Ly</>
             },
             {
@@ -413,7 +493,8 @@ function NearbyExporters ({ commodity }) {
               key: 'updatedAt',
               align: 'right',
               width: 130,
-              render: (v) => <>{timeBetweenTimestamps(v)} ago</>
+              className: 'is-hidden-mobile',
+              render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
             },
             {
               title: 'Stock',
@@ -421,14 +502,16 @@ function NearbyExporters ({ commodity }) {
               key: 'stock',
               align: 'right',
               width: 130,
+              className: 'is-hidden-mobile',
               render: (v) => <>{v.toLocaleString()} T</>
             },
             {
               title: 'Price',
-              dataIndex: 'sellPrice',
-              key: 'sellPrice',
+              dataIndex: 'buyPrice',
+              key: 'buyPrice',
               align: 'right',
               width: 130,
+              className: 'is-hidden-mobile',
               render: (v) => <>{v.toLocaleString()} CR</>
             }
           ]}
@@ -445,7 +528,7 @@ async function getSystem (systemName) {
 }
 
 async function getNearbySystems (systemName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=20`)
+  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=25`)
   return await res.json()
 }
 
