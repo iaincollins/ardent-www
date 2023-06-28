@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/iaincollins/ardent-spike#readme",
   "dependencies": {
-    "@tanstack/react-table": "^8.9.2",
     "next": "^13.4.4",
     "prettyoutput": "^1.2.0",
     "rc-table": "^7.32.1",
