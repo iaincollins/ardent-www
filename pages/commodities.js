@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import Table from 'rc-table'
 import commoditiesInfo from '../lib/commodities.json'
 
@@ -43,16 +42,13 @@ export default () => {
         <Link href='/'>Home</Link>
       </p> */}
       <p className='lead'>
-        Commodity trading data from <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent Industry</a>
+        Live trade data provided by <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent Industry</a> using data from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>
       </p>
-      <p>
-        <small><em>Live data from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a></em></small>
-      </p>
-      <h2>Commodities</h2>
+      <h2 style={{ marginBottom: 0 }}>Commodities</h2>
       {!commodities && <div className='loading-bar' />}
       {commodities &&
         <Table
-          className='data-table data-table--interactive'
+          className='data-table data-table--striped data-table--interactive'
           columns={[
             {
               title: 'Name',
@@ -63,7 +59,7 @@ export default () => {
                 <>
                   {v}<br /><small>{r.category}</small>
                   <div className='is-visible-mobile'>
-                    <table className='data-table--mini data-table-striped'>
+                    <table className='data-table--mini'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
                           <td><span class='data-table__label'>Avg Import CR/T</span>{r.avgSellPrice.toLocaleString()} CR</td>
@@ -79,7 +75,7 @@ export default () => {
                 </>
             },
             {
-              title: 'Avg Import CR/T',
+              title: 'Avg import CR/T',
               dataIndex: 'avgSellPrice',
               key: 'avgSellPrice',
               align: 'right',
@@ -87,7 +83,7 @@ export default () => {
               render: (v) => <>{v.toLocaleString()} CR</>
             },
             {
-              title: 'Avg Export CR/T',
+              title: 'Avg export CR/T',
               dataIndex: 'avgBuyPrice',
               key: 'avgBuyPrice',
               align: 'right',
@@ -95,7 +91,7 @@ export default () => {
               render: (v) => <>{v.toLocaleString()} CR</>
             },
             {
-              title: 'Profit CR/T',
+              title: 'Avg profit CR/T',
               dataIndex: 'avgProfit',
               key: 'avgProfit',
               align: 'right',

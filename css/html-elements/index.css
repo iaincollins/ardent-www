@@ -53,9 +53,9 @@ h3 {
   color: #333;
   font-family: "Jura", sans-serif;
   margin-top: .75rem;
-  margin-bottom: 0;
   padding: 0rem .25rem;
   z-index: 1;
+  margin-bottom: .225rem;
 }
 
 h1:after,
@@ -69,6 +69,11 @@ h3:after {
   content: '';
   z-index: -1;
   background: #ccc;
+}
+
+h1 {
+  font-style: italic;
+  padding-right: .5rem;
 }
 
 h1:after {

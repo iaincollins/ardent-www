@@ -81,55 +81,69 @@ export default () => {
             <i className='icon icarus-terminal-cargo' />
             {commodity.name}
           </h2>
-          <div style={{ marginBottom: '1rem' }}>
-            <p className='object-information'>
-              <label>category</label>
-              <span>{commodity.category}</span>
-            </p>
-            <p className='object-information'>
-              <label>Export price</label>
-              <span>
-                {typeof commodity.avgBuyPrice === 'number'
-                  ? <>~ {commodity.avgBuyPrice.toLocaleString()} CR ({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</>
+          <table className='properties-table'>
+            <tbody>
+              <tr>
+                <th>Category</th>
+                <td>{commodity.category}</td>
+              </tr>
+              <tr>
+                <th>Export price</th>
+                <td>{typeof commodity.avgBuyPrice === 'number'
+                  ? <>
+                    {commodity.avgBuyPrice.toLocaleString()} CR/T
+                    {' '}
+                    <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>
+                    </>
                   : <>Insufficent data</>}
-              </span>
-            </p>
-            <p className='object-information'>
-              <label>Import price</label>
-              <span>
-                {typeof commodity.avgSellPrice === 'number'
-                  ? <>~ {commodity.avgSellPrice.toLocaleString()} CR ({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</>
+                </td>
+              </tr>
+              <tr>
+                <th>Import price</th>
+                <td>{typeof commodity.avgSellPrice === 'number'
+                  ? <>
+                    {commodity.avgSellPrice.toLocaleString()} CR/T
+                    {' '}
+                    <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>
+                    </>
                   : <>Insufficent data</>}
-              </span>
-            </p>
-            {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
-              <p className='object-information'>
-                <label>Average profit</label>
-                <span>{commodity.avgProfit.toLocaleString()} CR ({commodity.avgProfitMargin}% margin)</span>
-              </p>}
-            <p className='object-information'>
-              <label>Total supply</label>
-              <span>
-                <progress
-                  max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                  value={commodity.totalStock}
-                  style={{ maxWidth: '10rem' }}
-                />
-                {commodity.totalStock.toLocaleString()} T
-              </span>
-            </p>
-            <p className='object-information'>
-              <label>Total demand</label>
-              <span>
-                <progress
-                  max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                  value={commodity.totalDemand}
-                  style={{ maxWidth: '10rem' }}
-                />
-                {commodity.totalDemand.toLocaleString()} T
-              </span>
-            </p>
-          </div>
+                </td>
+              </tr>
+              {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
+                <tr>
+                  <th>Average profit</th>
+                  <td>
+                    {commodity.avgProfit.toLocaleString()} CR/T
+                    {' '}
+                    <small>({commodity.avgProfitMargin}% margin)</small>
+                  </td>
+                </tr>}
+              <tr>
+                <th>Total supply</th>
+                <td>
+                  <progress
+                    max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                    value={commodity.totalStock}
+                    style={{ maxWidth: '10rem' }}
+                  />
+                  <br />
+                  {commodity.totalStock.toLocaleString()} T
+                </td>
+              </tr>
+              <tr>
+                <th>Total demand</th>
+                <td>
+                  <progress
+                    max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                    value={commodity.totalDemand}
+                    style={{ maxWidth: '10rem' }}
+                  />
+                  <br />
+                  {commodity.totalDemand.toLocaleString()} T
+                </td>
+              </tr>
+            </tbody>
+          </table>
           <Tabs>
             <TabList>
               <Tab>Core<span className='is-hidden-mobile'> Systems</span></Tab>
@@ -158,7 +172,7 @@ export default () => {
               <TabPanel>
                 <div className='tab-panel__header'>
                   <p>
-                    Latest best prices for <strong>{commodity.name}</strong> anywhere in the galaxy.
+                    Latest best prices for <strong>{commodity.name}</strong> anywhere in the known galaxy.
                   </p>
                 </div>
                 <Tabs>

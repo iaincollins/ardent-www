@@ -117,49 +117,37 @@ export default () => {
             <i className='icon icarus-terminal-system-bodies' />
             {system.systemName}
           </h2>
-          <div style={{ marginBottom: '1rem' }}>
-            <p className='object-information'>
-              <label>System Address</label>
-              <span>{system.systemAddress}</span>
-            </p>
-            <p className='object-information'>
-              <label>System Location</label>
-              <span>{system.systemX}, {system.systemY}, {system.systemZ}</span>
-            </p>
-            <p className='object-information'>
-              <label>Ardent Sector</label>
-              <span>{formatSystemSector(system.systemSector)}</span>
-            </p>
-            <p className='object-information'>
-              <label>Trade Zone</label>
-              <span>
-                {system.tradeZone}
-                {system.tradeZoneDistance !== undefined && <> ({system.tradeZoneDistance})</>}
-              </span>
-            </p>
-            <p className='object-information'>
-              <label>Export orders</label>
-              <span>{exports?.length?.toLocaleString() ?? '-'}</span>
-            </p>
-            <p className='object-information'>
-              <label>Import orders</label>
-              <span>{imports?.length?.toLocaleString() ?? '-'}</span>
-            </p>
-            {produces !== 'undefined' && (produces?.length ?? 0) > 0 &&
-              <p className='object-information'>
-                <label>Produces</label>
-                <span>{produces?.join(', ')}</span>
-              </p>}
-            {consumes !== 'undefined' && (consumes?.length ?? 0) > 0 &&
-              <p className='object-information'>
-                <label>Consumes</label>
-                <span>{consumes?.join(', ')}</span>
-              </p>}
-            {/* <p className='object-information'>
-              <label>Last Updated</label>
-              <span>{timeBetweenTimestamps(system.updatedAt)} ago</span>
-            </p> */}
-          </div>
+          <table className='properties-table'>
+            <tbody>
+              <tr>
+                <th>System address</th>
+                <td>{system.systemAddress}</td>
+              </tr>
+              <tr>
+                <th>System location</th>
+                <td>{system.systemX}, {system.systemY}, {system.systemZ}</td>
+              </tr>
+              <tr>
+                <th>Ardent sector</th>
+                <td>{formatSystemSector(system.systemSector)}</td>
+              </tr>
+              <tr>
+                <th>Trade zone</th>
+                <td>
+                  {system.tradeZone}
+                  {system.tradeZoneDistance !== undefined && <small><br />({system.tradeZoneDistance})</small>}
+                </td>
+              </tr>
+              <tr>
+                <th># exports</th>
+                <td>{exports?.length?.toLocaleString() ?? '-'}</td>
+              </tr>
+              <tr>
+                <th># imports</th>
+                <td>{imports?.length?.toLocaleString() ?? '-'}</td>
+              </tr>
+            </tbody>
+          </table>
           <Tabs>
             <TabList>
               <Tab>Nearby<span className='is-hidden-mobile'> Systems</span></Tab>
@@ -170,7 +158,7 @@ export default () => {
               {!nearbySystems && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
               {nearbySystems &&
                 <Table
-                  className='data-table'
+                  className='data-table data-table--striped data-table--interactive'
                   columns={[
                     {
                       title: 'System',
@@ -203,7 +191,7 @@ export default () => {
               {!imports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
               {imports &&
                 <Table
-                  className='data-table'
+                  className='data-table data-table--striped data-table--interactive'
                   columns={[
                     {
                       title: 'Commodity',
@@ -267,7 +255,7 @@ export default () => {
               {!exports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
               {exports &&
                 <Table
-                  className='data-table'
+                  className='data-table data-table--striped data-table--interactive'
                   columns={[
                     {
                       title: 'Commodity',
@@ -352,7 +340,7 @@ function NearbyImporters ({ commodity }) {
       {!nearbyImporters && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
       {nearbyImporters &&
         <Table
-          className='data-table--mini data-table--striped-not-mobile scrollable'
+          className='data-table--mini data-table--striped scrollable'
           columns={[
             {
               title: 'Location',
@@ -363,7 +351,8 @@ function NearbyImporters ({ commodity }) {
               render: (v, r) =>
                 <>
                   <span className='is-hidden-mobile'>
-                    {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+                    {r.systemName}<br />
+                    <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
                   </span>
                   <div className='is-visible-mobile'>
                     <table className='data-table--mini data-table--striped'>
@@ -446,7 +435,7 @@ function NearbyExporters ({ commodity }) {
       {!nearbyExporters && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
       {nearbyExporters &&
         <Table
-          className='data-table--mini scrollable'
+          className='data-table--mini data-table--striped scrollable'
           columns={[
             {
               title: 'Location',
@@ -485,7 +474,7 @@ function NearbyExporters ({ commodity }) {
               key: 'distance',
               align: 'right',
               className: 'is-hidden-mobile',
-              render: (v) => <>{v} Ly</>
+              render: (v) => <span style={{ opacity: 0.5 }}>{v} Ly</span>
             },
             {
               title: 'Updated',

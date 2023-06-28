@@ -19,18 +19,18 @@ export default () => {
   return (
     <>
       <Head>
-        <title>Ardent Industry – Trade & Exploration Data</title>
+        <title>Ardent Industry – trade & exploration data</title>
       </Head>
       <header>
         <div className='logo'>
           <h1>
             Ardent Industry
           </h1>
-          <p>
-            Trade & Exploration Data
+          <p style={{ fontStyle: 'italic' }}>
+            Trade & Exploration
           </p>
           <br />
-          <small><a style={{ textDecoration: 'none' }} href='https://github.com/iaincollins/ardent-www'>v{Package.version} (BETA)</a></small>
+          <small><a style={{ textDecoration: 'none', textTransform: 'uppercase', opacity: 0.5 }} href='https://github.com/iaincollins/ardent-www'>v{Package.version} (BETA)</a></small>
         </div>
         <div className='header-navigation' style={{ display: 'none' }}>
           <Link href='/commodities'>

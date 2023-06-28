@@ -67,15 +67,14 @@
   overflow: auto;
 }
 
-.data-table--mini tr,
-.data-table--mini td {
-  background: none !important;
+table.data-table--mini > tbody > tr > td,
+.data-table--mini > .rc-table-container > .rc-table-content > table > tbody > tr > td {
+  background: none;
   border: none !important;
   font-size: .9rem;
 }
 
-.data-table--mini tr small,
-.data-table--mini td small {
+.data-table--mini > .rc-table-container > .rc-table-content > table > tbody > tr > td small {
   font-size: .8rem;
 }
 
@@ -84,13 +83,15 @@
   opacity: .5;
 }
 
-table.data-table--striped > tbody > tr:nth-child(odd) > td,
-.data-table--striped > .rc-table-container > .rc-table-content > table > tbody > tr:nth-child(odd) > td {
-  background: rgba(255,255,255,.1) !important;
+table.data-table--striped > tbody > tr:nth-child(odd of .rc-table-row) > td,
+.data-table--striped > .rc-table-container > .rc-table-content > table > tbody > tr:nth-child(odd of .rc-table-row) > td {
+  background: rgba(255,255,255,.1);
 }
 
 table.data-table--interactive > tbody > tr.rc-table-row:hover > td,
-.data-table--interactive > .rc-table-container > .rc-table-content > table > tbody > tr.rc-table-row:hover > td {
+table.data-table--striped.data-table--interactive > tbody > tr.rc-table-row:hover > td,
+.data-table--interactive > .rc-table-container > .rc-table-content > table > tbody > tr.rc-table-row:hover > td,
+.data-table--striped.data-table--interactive > .rc-table-container > .rc-table-content > table > tbody > tr.rc-table-row:hover > td {
   background: rgba(255,255,255,.15);
 }
 

@@ -7,7 +7,7 @@ import { API_BASE_URL } from '../lib/consts'
 export default ({ commodities }) => {
   return (
     <Table
-      className='data-table data-table--interactive'
+      className='data-table data-table--striped data-table--interactive'
       columns={[
         {
           title: 'System',
@@ -94,7 +94,7 @@ function ExpandedRow ({ record }) {
         </Link>
       </p>
       <Table
-        className='data-table--mini data-table--striped-not-mobile scrollable'
+        className='data-table--mini data-table--striped scrollable'
         columns={[
           {
             title: 'Location',
@@ -108,7 +108,7 @@ function ExpandedRow ({ record }) {
                   {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 </span>
                 <div className='is-visible-mobile'>
-                  <table className='data-table--mini data-table--striped'>
+                  <table className='data-table--mini'>
                     <tbody style={{ textTransform: 'uppercase' }}>
                       <tr>
                         <td colSpan={2}>

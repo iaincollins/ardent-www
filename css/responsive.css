@@ -6,7 +6,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: calc(100% - .5rem);
+    width: calc(100% - .25rem);
+    margin-bottom: 0 !important;
+    clip-path: polygon(0 0,calc(100% - 2.00rem) 0,100% 2.00rem,100% 100%,0 100%);
   }
 
   .is-hidden-mobile {
@@ -17,6 +19,16 @@
 
   .max-width-mobile {
     width: 100%;
+  }
+
+  table.properties-table > tbody > tr > th,
+  table.properties-table > tbody > tr > td {
+    text-align: left;
+    display: block;
+    padding: 0;
+  }
+  table.properties-table > tbody > tr > td {
+    padding-bottom: .25rem;
   }
 }
 
