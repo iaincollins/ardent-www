@@ -135,7 +135,7 @@ export default () => {
                 <th>Trade zone</th>
                 <td>
                   {system.tradeZone}
-                  {system.tradeZoneDistance !== undefined && <small><br />({system.tradeZoneDistance})</small>}
+                  {system.tradeZoneDistance !== undefined && <small style={{ textTransform: 'none' }}><br />{system.tradeZoneDistance}</small>}
                 </td>
               </tr>
               <tr>
@@ -351,7 +351,7 @@ function NearbyImporters ({ commodity }) {
               render: (v, r) =>
                 <>
                   <span className='is-hidden-mobile'>
-                    {r.systemName}<br />
+                    <i className='icon icarus-terminal-star' />{r.systemName}<br />
                     <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
                   </span>
                   <div className='is-visible-mobile'>
@@ -359,9 +359,11 @@ function NearbyImporters ({ commodity }) {
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
                           <td colSpan={2}>
-                            {r.systemName} <span style={{ opacity: 0.5 }}> ({r.distance} Ly) </span>
+                            <i className='icon icarus-terminal-star' />{r.systemName} <span style={{ opacity: 0.5, textTransform: 'none', float: 'right' }}>{r.distance} Ly</span>
                             <br />
                             <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
+                            <br />
+                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
                           </td>
                         </tr>
                         <tr>
@@ -446,7 +448,7 @@ function NearbyExporters ({ commodity }) {
               render: (v, r) =>
                 <>
                   <span className='is-hidden-mobile'>
-                    {r.systemName}<br />
+                    <i className='icon icarus-terminal-star' />{r.systemName}<br />
                     <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
                   </span>
                   <div className='is-visible-mobile'>
@@ -454,9 +456,11 @@ function NearbyExporters ({ commodity }) {
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
                           <td colSpan={2}>
-                            {r.systemName} <span style={{ opacity: 0.5 }}> ({r.distance} Ly) </span>
+                            <i className='icon icarus-terminal-star' />{r.systemName} <span style={{ opacity: 0.5, textTransform: 'none', float: 'right' }}>{r.distance} Ly</span>
                             <br />
                             <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
+                            <br />
+                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
                           </td>
                         </tr>
                         <tr>

@@ -9,11 +9,21 @@
 
 .logo h1 {
   display: block;
-  color: #333;
+  color: #444;
   margin: 0;
   text-align: right;
   text-shadow: 0 0 1rem rgba(0,0,0,.5);
   padding-left: 2rem;
+  padding-bottom: .25rem;
+  line-height: 2rem;
+  font-weight: 600;
+}
+
+.logo h1 em {
+  font-size: 2.4rem;
+  position: relative;
+  top: .1rem;
+  font-weight: 900;
 }
 
 .logo h1::before,

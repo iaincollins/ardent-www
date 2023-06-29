@@ -41,8 +41,8 @@ export default () => {
       {/* <p className='breadcrumb'>
         <Link href='/'>Home</Link>
       </p> */}
-      <p className='lead'>
-        Live trade data provided by <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent Industry</a> using data from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>
+      <p style={{ fontStyle: 'italic'}}>
+        Market intelligence from <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent Industry</a> sourced from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>
       </p>
       <h2 style={{ marginBottom: 0 }}>Commodities</h2>
       {!commodities && <div className='loading-bar' />}
@@ -57,7 +57,7 @@ export default () => {
               align: 'left',
               render: (v, r) =>
                 <>
-                  {v}<br /><small>{r.category}</small>
+                  <i className='icon icarus-terminal-cargo' />{v}<br /><small>{r.category}</small>
                   <div className='is-visible-mobile'>
                     <table className='data-table--mini'>
                       <tbody style={{ textTransform: 'uppercase' }}>
