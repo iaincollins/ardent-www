@@ -27,10 +27,8 @@ export default () => {
             <em>A</em>rdent <em>I</em>ndustry
           </h1>
           <p style={{ fontStyle: 'italic' }}>
-            Trade &amp; exploration insights
+            Trade &amp; exploration
           </p>
-          <br />
-          <small><a style={{ textDecoration: 'none', textTransform: 'uppercase', opacity: 0.5 }} href='https://github.com/iaincollins/ardent-www'>v{Package.version} (BETA)</a></small>
         </div>
         <div className='header-navigation' style={{ display: 'none' }}>
           <Link href='/commodities'>
@@ -41,9 +39,16 @@ export default () => {
         {stats &&
           <div className='is-hidden-mobile'>
             <div className='header-stats'>
-              Star Systems: {stats.systems.toLocaleString()}<br />
-              Trade Orders: {stats.trade.tradeOrders.toLocaleString()}<br />
-              Updates today: {stats.trade.updatedInLast24Hours.toLocaleString()}<br />
+              <span className='header-stats__label'>Star Systems</span>
+              <span className='header-stats__value'>{stats.systems.toLocaleString()}</span>
+              <br />
+              <span className='header-stats__label'>Trade Orders</span>
+              <span className='header-stats__value'>{stats.trade.tradeOrders.toLocaleString()}</span>
+              <br />
+              <span className='header-stats__label'>Updates today</span>
+              <span className='header-stats__value'>{stats.trade.updatedInLast24Hours.toLocaleString()}</span>
+              <br />
+              <a style={{ float: 'right', fontWeight: 'normal', opacity: 0.5, fontSize: '.7rem', textTransform: 'none' }} href='https://github.com/iaincollins/ardent-www'>ArdentOS v{Package.version}</a>
             </div>
           </div>}
       </header>

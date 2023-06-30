@@ -21,7 +21,7 @@
 
 .data-table th {
   color: #111;
-  background: #ccc;
+  background: var(--color-primary);
   text-transform: uppercase;
   border-bottom: .25rem solid #111;
   font-family: "Jura", sans-serif;
@@ -40,7 +40,7 @@
 
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td,
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])):hover td {
-  background: #ccc !important;
+  background: var(--color-primary) !important;
   color: #111;
   border-bottom: none;
 }
@@ -49,9 +49,9 @@
   background: #333 linear-gradient(0deg, rgba(34,34,34,1) 0%, rgba(51,51,51,1) 100%);
   border-bottom: .25rem solid #111;
   box-shadow: 0 0 2rem 2rem rgba(0,0,0,.25) inset;
-  border-left: .2rem solid #ccc;
-  border-right: .2rem solid #ccc;
-  border-bottom: .2rem solid #ccc;
+  border-left: .2rem solid var(--color-primary);
+  border-right: .2rem solid var(--color-primary);
+  border-bottom: .2rem solid var(--color-primary);
   background: rgba(255,255,255,.1) !important;
 }
 
@@ -63,7 +63,6 @@
 }
 
 .data-table--mini {
-  max-height: 15rem;
   overflow: auto;
 }
 
@@ -93,5 +92,10 @@ table.data-table--striped.data-table--interactive > tbody > tr.rc-table-row:hove
 .data-table--interactive > .rc-table-container > .rc-table-content > table > tbody > tr.rc-table-row:hover > td,
 .data-table--striped.data-table--interactive > .rc-table-container > .rc-table-content > table > tbody > tr.rc-table-row:hover > td {
   background: rgba(255,255,255,.15);
+  transition: background .25s;
 }
 
+table.data-table--two-equal-columns > tbody > tr > td,
+.data-table--two-equal-columns > .rc-table-container > .rc-table-content > table > tbody > tr > td {
+  width: 50%;
+}

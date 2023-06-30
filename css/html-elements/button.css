@@ -36,7 +36,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: #ccc;
+  background: var(--color-primary);
   border-radius: .2rem;
   clip-path: polygon(0 0,calc(100% - 1.00rem) 0,100% 1.00rem,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem),0 0,.2rem  .2rem ,.2rem calc(100% - 1.00rem - 0.08rem),calc(1.00rem + 0.08rem) calc(100% - .2rem),calc(100% - .2rem) calc(100% - .2rem),calc(100% - .2rem) calc(1.00rem + 0.08rem),calc(100% - 1.00rem - 0.08rem) .2rem,.2rem .2rem);
 }
@@ -53,7 +53,7 @@
   position: absolute;
   inset: 0;
   clip-path: polygon(0 0,calc(100% - 1.00rem) 0,100% 1.00rem,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem));
-  background-color: white;
+  background-color: var(--color-primary-light);
 }
 
 .button .icon {

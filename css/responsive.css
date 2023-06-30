@@ -26,6 +26,7 @@
     text-align: left;
     display: block;
     padding: 0;
+    width: 100%;
   }
   table.properties-table > tbody > tr > td {
     padding-bottom: .25rem;

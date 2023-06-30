@@ -1,6 +1,6 @@
 {
   "name": "ardent-www",
-  "version": "0.18.0",
+  "version": "0.19.0",
   "description": "Ardent Industry WWW Server",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
     "prettyoutput": "^1.2.0",
     "rc-table": "^7.32.1",
     "react": "^18.2.0",
+    "react-collapsible": "^2.10.0",
     "react-dom": "^18.2.0",
     "react-tabs": "^6.0.1"
   },

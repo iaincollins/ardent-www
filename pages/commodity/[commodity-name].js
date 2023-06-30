@@ -90,22 +90,26 @@ export default () => {
               <tr>
                 <th>Export price</th>
                 <td>{typeof commodity.avgBuyPrice === 'number'
-                  ? <>
-                    {commodity.avgBuyPrice.toLocaleString()} CR/T
-                    {' '}
-                    <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>
+                  ? (
+                    <>
+                      {commodity.avgBuyPrice.toLocaleString()} CR/T
+                      {' '}
+                      <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>
                     </>
+                    )
                   : <>Insufficent data</>}
                 </td>
               </tr>
               <tr>
                 <th>Import price</th>
                 <td>{typeof commodity.avgSellPrice === 'number'
-                  ? <>
-                    {commodity.avgSellPrice.toLocaleString()} CR/T
-                    {' '}
-                    <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>
+                  ? (
+                    <>
+                      {commodity.avgSellPrice.toLocaleString()} CR/T
+                      {' '}
+                      <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>
                     </>
+                    )
                   : <>Insufficent data</>}
                 </td>
               </tr>
@@ -148,14 +152,14 @@ export default () => {
             <TabList>
               <Tab>Core<span className='is-hidden-mobile'> Systems</span></Tab>
               <Tab>Colonia<span className='is-hidden-mobile'> Systems</span></Tab>
-              <Tab>Live<span className='is-hidden-mobile'> Market Data</span></Tab>
+              <Tab>Live<span className='is-hidden-mobile'> Data</span></Tab>
             </TabList>
             <div className='tab-panel__container'>
               <TabPanel>
                 <div className='tab-panel__header'>
                   <p>
-                    Best bulk export and import prices for <strong>{commodity.name}</strong>
-                    {' '}in the Core Systems (aka 'The Bubble').
+                    Best bulk export and import prices for <strong>{commodity.name}</strong> in
+                    the Core Systems (aka 'The Bubble').
                   </p>
                 </div>
                 <CommodityReport commodityName={commodity.name} reportName='core-systems-1000' />
@@ -163,8 +167,7 @@ export default () => {
               <TabPanel>
                 <div className='tab-panel__header'>
                   <p>
-                    Best bulk export and import prices for <strong>{commodity.name}</strong>
-                    {' '}near Colonia.
+                    Best bulk export and import prices for <strong>{commodity.name}</strong> near Colonia.
                   </p>
                 </div>
                 <CommodityReport commodityName={commodity.name} reportName='colonia-systems-1000' />
@@ -172,7 +175,7 @@ export default () => {
               <TabPanel>
                 <div className='tab-panel__header'>
                   <p>
-                    Latest best prices for <strong>{commodity.name}</strong> anywhere in the known galaxy.
+                    Latest best prices for <strong>{commodity.name}</strong>.
                   </p>
                 </div>
                 <Tabs>

@@ -1,8 +1,17 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Table from 'rc-table'
+import Collapsible from 'react-collapsible'
 import { timeBetweenTimestamps } from '../lib/utils/dates'
 import { API_BASE_URL } from '../lib/consts'
+import NearbyCommodityImporters from './nearby-commodity-importers'
+import NearbyCommodityExporters from './nearby-commodity-exporters'
+
+async function getImportsForCommodityBySystem (systemName, commodityName) {
+  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/imports`)
+  const exports = await res.json()
+  return exports.filter(c => c.commodityName === commodityName)
+}
 
 export default ({ commodities }) => {
   return (
@@ -10,7 +19,7 @@ export default ({ commodities }) => {
       className='data-table data-table--striped data-table--interactive'
       columns={[
         {
-          title: 'System',
+          title: 'Location',
           dataIndex: 'systemName',
           key: 'systemName',
           align: 'left',
@@ -21,7 +30,7 @@ export default ({ commodities }) => {
               <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
               <div className='is-visible-mobile'>
                 <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
-                <table className='data-table--mini'>
+                <table className='data-table--mini data-table--two-equal-columns'>
                   <tbody style={{ textTransform: 'uppercase' }}>
                     <tr>
                       <td><span className='data-table__label'>Demand</span>{r.demand.toLocaleString()} T</td>
@@ -63,36 +72,32 @@ export default ({ commodities }) => {
       data={commodities}
       expandable={{
         expandRowByClick: true,
-        expandedRowRender: (record) => <ExpandedRow record={record} />
+        expandedRowRender: (r) => <ExpandedRow r={r} />
       }}
     />
   )
 }
 
-function ExpandedRow ({ record }) {
-  if (!record) return
+function ExpandedRow ({ r }) {
+  if (!r) return
 
   const [imports, setImports] = useState()
 
   useEffect(() => {
     (async () => {
-      const commodityName = record.symbol
-      const systemName = record.systemName
+      const commodityName = r.symbol
+      const systemName = r.systemName
       const imports = await getImportsForCommodityBySystem(systemName, commodityName)
       setImports(imports)
     })()
-  }, [record])
+  }, [r])
 
   if (!imports) return <div className='loading-bar' style={{ marginTop: '.75rem' }} />
 
   return (
     <>
       <p style={{ whiteSpace: 'normal', marginTop: '.5rem' }}>
-        Demand for <strong>{record.name}</strong> in
-        {' '}
-        <Link href={`/system/${record.systemName}`}>
-          <strong>{record.systemName}</strong>
-        </Link>
+        Demand for <strong>{r.name}</strong> in <Link href={`/system/${r.systemName}`}>{r.systemName}</Link>
       </p>
       <Table
         className='data-table--mini data-table--striped scrollable'
@@ -109,7 +114,7 @@ function ExpandedRow ({ record }) {
                   {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 </span>
                 <div className='is-visible-mobile'>
-                  <table className='data-table--mini'>
+                  <table className='data-table--mini data-table--two-equal-columns'>
                     <tbody style={{ textTransform: 'uppercase' }}>
                       <tr>
                         <td colSpan={2}>
@@ -155,15 +160,40 @@ function ExpandedRow ({ record }) {
             render: (v) => <>{v.toLocaleString()} CR</>
           }
         ]}
-        showHeader={false}
         data={imports}
       />
+      <Collapsible
+        trigger={
+          <p style={{ marginTop: '1rem' }}>
+            <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
+            Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+          </p>
+        }
+        triggerWhenOpen={
+          <p style={{ marginTop: '1rem' }}>
+            <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
+            Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+          </p>
+        }
+      >
+        <NearbyCommodityExporters commodity={r} />
+      </Collapsible>
+      <Collapsible
+        trigger={
+          <p style={{ marginTop: '0rem' }}>
+            <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
+            Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+          </p>
+        }
+        triggerWhenOpen={
+          <p style={{ marginTop: '0rem' }}>
+            <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
+            Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+          </p>
+        }
+      >
+        <NearbyCommodityImporters commodity={r} />
+      </Collapsible>
     </>
   )
-}
-
-async function getImportsForCommodityBySystem (systemName, commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/imports`)
-  const exports = await res.json()
-  return exports.filter(c => c.commodityName === commodityName)
 }

@@ -1,6 +1,6 @@
 progress {
   --color-progress-background: transparent;
-  --color-progress-value: #ccc;
+  --color-progress-value: var(--color-primary);
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -8,8 +8,8 @@ progress {
   border-width: .15rem;
   border-style: solid;
   border-radius: 0;
-  border-color: var(--color-progress-value);
-  background: var(--color-progress-background); /* For Firefox */
+  border-color: var(--color-primary);
+  background: var(--color-primary-darker); /* For Firefox */
 }
 
 progress[value] {

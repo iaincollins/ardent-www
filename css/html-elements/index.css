@@ -4,9 +4,8 @@
 html {
   font-family: sans-serif;
   background-color: #111;
-  color: #eee;
+  color: var(--color-text);
   filter: sepia(.2) contrast(1.1);
-  /* filter: brightness(.6) sepia(2) hue-rotate(340deg) saturate(3) contrast(1.2) brightness(1.1); */
 }
 
 html h1,
@@ -37,7 +36,8 @@ a,
 }
 
 a {
-  color: white;
+  color: var(--color-text-link);
+  font-weight: bold;
 }
 
 a:hover {
@@ -50,7 +50,7 @@ h3 {
   text-transform: uppercase;
   display: inline-block;
   position: relative;
-  color: #333;
+  color: var(--color-text-inverted);
   font-family: "Jura", sans-serif;
   margin-top: .75rem;
   padding: 0rem .25rem;
@@ -68,7 +68,7 @@ h3:after {
   height: 100%;
   content: '';
   z-index: -1;
-  background: #ccc;
+  background: var(--color-primary);
 }
 
 h1 {
@@ -95,7 +95,7 @@ h3::before {
   left: 0rem;
   content: '';
   z-index: -1;
-  background: #ccc;
+  background: var(--color-primary);
 }
 
 h2 .icon {
@@ -111,7 +111,7 @@ table {
 small {
   text-transform: uppercase;
   opacity: .8; 
-  font-size: .9rem;
+  font-size: .8rem;
 }
 
 pre {

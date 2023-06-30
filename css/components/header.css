@@ -9,10 +9,10 @@
 
 .logo h1 {
   display: block;
-  color: #444;
+  color: var(--color-text-inverted);
   margin: 0;
   text-align: right;
-  text-shadow: 0 0 1rem rgba(0,0,0,.5);
+  text-shadow: 0 0 1rem rgba(0,0,0,.25);
   padding-left: 2rem;
   padding-bottom: .25rem;
   line-height: 2rem;
@@ -28,7 +28,7 @@
 
 .logo h1::before,
 .logo h1::after {
-  background: #eee;
+  background: var(--color-primary);
 }
 
 .logo p {
@@ -55,8 +55,8 @@
 
 .logo p,
 .logo p:after {
-  background: #444;
-  color: #ccc;
+  background: var(--color-primary-dark);
+  color: var(--color-primary);
 }
 
 .logo small {
@@ -75,14 +75,15 @@
   position: absolute;
   top: 0;
   right: 0;
-  padding: .5rem .75rem .75rem 1rem;
+  padding: .5rem .75rem .5rem 0rem;
   pointer-events: none;
   text-align: right;
-  font-size: .8rem;
+  font-size: .7rem;
+  line-height: .9rem;
   text-transform: uppercase;
   z-index: -3;
   background: rgba(70,70,70,.3);
-  color: #ccc;
+  color: var(--color-primary);
   clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem));
 }
 
@@ -90,7 +91,7 @@
   content: '';
   position: absolute;
   inset: 0; 
-  background: rgba(70,70,70,.6);;
+  background: rgba(70,70,70,.6);
   clip-path: polygon(
     0 0,
     100% 0,
@@ -105,4 +106,15 @@
     100% 0,
     .2rem 0
   );
+}
+
+.header-stats__label {
+  display: inline-block;
+  width: 7rem;
+  opacity: .5;
+}
+
+.header-stats__value {
+  display: inline-block;
+  width: 4.5rem;
 }

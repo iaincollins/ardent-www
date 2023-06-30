@@ -2,22 +2,30 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Table from 'rc-table'
+import Collapsible from 'react-collapsible'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { timeBetweenTimestamps } from '../../lib/utils/dates'
 import commoditiesInfo from '../../lib/commodities.json'
 import { formatSystemSector } from '../../lib/utils/system-sectors'
 import distance from '../../lib/utils/distance'
-
-import { API_BASE_URL, SOL_COORDINATES, COLONIA_COORDINATES } from '../../lib/consts'
+import LocalCommodityImporters from '../../components/local-commodity-importers'
+import LocalCommodityExporters from '../../components/local-commodity-exporters'
+import NearbyCommodityImporters from '../../components/nearby-commodity-importers'
+import NearbyCommodityExporters from '../../components/nearby-commodity-exporters'
+import {
+  API_BASE_URL,
+  SOL_COORDINATES,
+  COLONIA_COORDINATES
+} from '../../lib/consts'
 
 export default () => {
   const router = useRouter()
   const [system, setSystem] = useState()
   const [nearbySystems, setNearbySystems] = useState()
-  const [exports, setExports] = useState()
-  const [imports, setImports] = useState()
-  const [produces, setProduces] = useState()
+  const [importOrders, setImportOrders] = useState()
+  const [exportOrders, setExportOrders] = useState()
   const [consumes, setConsumes] = useState()
+  const [produces, setProduces] = useState()
 
   const onSystemsRowClick = (record, index, event) => {
     router.push(`/system/${record.systemName}`)
@@ -30,10 +38,10 @@ export default () => {
 
       setSystem(undefined)
       setNearbySystems(undefined)
-      setExports(undefined)
-      setImports(undefined)
-      setProduces(undefined)
+      setImportOrders(undefined)
+      setExportOrders(undefined)
       setConsumes(undefined)
+      setProduces(undefined)
 
       const system = await getSystem(systemName)
       if (system) {
@@ -58,46 +66,28 @@ export default () => {
       setSystem(system)
 
       if (system) {
-        const nearbySystems = await getNearbySystems(systemName)
-        nearbySystems.forEach(s => {
-          s.distance = distance(
-            [system.systemX, system.systemY, system.systemZ],
-            [s.systemX, s.systemY, s.systemZ]
-          )
-        })
-        setNearbySystems(nearbySystems.filter((s, i) => i < 100))
+        ;(async () => {
+          const nearbySystems = await getNearbySystems(systemName)
+          nearbySystems.forEach(s => {
+            s.distance = distance(
+              [system.systemX, system.systemY, system.systemZ],
+              [s.systemX, s.systemY, s.systemZ]
+            )
+          })
+          setNearbySystems(nearbySystems.filter((s, i) => i < 100))
+        })()
 
-        const exports = await getExports(systemName)
-        const commoditesProduced = []
-        const commoditesConsumed = []
-        exports.forEach(c => {
-          c.key = c.commodityId
-          c.symbol = c.commodityName
-          c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-          c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-          delete c.commodityName
-          delete c.commodityId
-          if (c.statusFlags?.includes('Producer') && c.fleetCarrier !== 1) {
-            if (!commoditesProduced.includes(c.name)) { commoditesProduced.push(c.name) }
-          }
-        })
-        setExports(exports)
-        // setProduces(commoditesProduced)
+        ;(async () => {
+          const { importOrders, commoditesConsumed } = await getImports(systemName)
+          setImportOrders(importOrders)
+          setConsumes(commoditesConsumed)
+        })()
 
-        const imports = await getImports(systemName)
-        imports.forEach(c => {
-          c.key = c.commodityId
-          c.symbol = c.commodityName
-          c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-          c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-          delete c.commodityName
-          delete c.commodityId
-          if (c.statusFlags?.includes('Consumer') && c.fleetCarrier !== 1) {
-            if (!commoditesConsumed.includes(c.name)) { commoditesConsumed.push(c.name) }
-          }
-        })
-        setImports(imports)
-        // setConsumes(commoditesConsumed)
+        ;(async () => {
+          const { exportOrders, commoditesConsumed } = await getExports(systemName)
+          setExportOrders(exportOrders)
+          setProduces(commoditesConsumed)
+        })()
       }
     })()
   }, [router.query['system-name']])
@@ -114,7 +104,7 @@ export default () => {
       {system &&
         <>
           <h2>
-            <i className='icon icarus-terminal-system-bodies' />
+            <i className='icon icarus-terminal-system-orbits' />
             {system.systemName}
           </h2>
           <table className='properties-table'>
@@ -135,25 +125,265 @@ export default () => {
                 <th>Trade zone</th>
                 <td>
                   {system.tradeZone}
-                  {system.tradeZoneDistance !== undefined && <small style={{ textTransform: 'none' }}><br />{system.tradeZoneDistance}</small>}
+                  {system.tradeZoneDistance !== undefined && <small><br />{system.tradeZoneDistance}</small>}
                 </td>
               </tr>
               <tr>
-                <th># exports</th>
-                <td>{exports?.length?.toLocaleString() ?? '-'}</td>
+                <th>Import Orders</th>
+                <td>{importOrders?.length?.toLocaleString() ?? '-'} </td>
               </tr>
               <tr>
-                <th># imports</th>
-                <td>{imports?.length?.toLocaleString() ?? '-'}</td>
+                <th>Export Orders</th>
+                <td>{exportOrders?.length?.toLocaleString() ?? '-'}</td>
+              </tr>
+              <tr>
+                <th>Commodities Consumed</th>
+                <td>{consumes?.length?.toLocaleString() ?? '-'}</td>
+              </tr>
+              <tr>
+                <th>Commodities Produced</th>
+                <td>{produces?.length?.toLocaleString() ?? '-'} </td>
               </tr>
             </tbody>
           </table>
           <Tabs>
             <TabList>
-              <Tab>Nearby<span className='is-hidden-mobile'> Systems</span></Tab>
               <Tab>Imports</Tab>
               <Tab>Exports</Tab>
+              <Tab>Nearby</Tab>
             </TabList>
+            <TabPanel>
+              {!importOrders && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+              {importOrders &&
+                <Table
+                  className='data-table data-table--striped data-table--interactive'
+                  columns={[
+                    {
+                      title: 'Commodity',
+                      dataIndex: 'name',
+                      key: 'name',
+                      align: 'left',
+                      className: 'max-width-mobile',
+                      render: (v, r) =>
+                        <>
+                          <i className='icon icarus-terminal-cargo' />{v}<br />
+                          <small>{r.importOrders.length} importing</small>
+                          <div className='is-visible-mobile'>
+                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
+                            <table className='data-table--mini'>
+                              <tbody style={{ textTransform: 'uppercase' }}>
+                                <tr>
+                                  <td><span className='data-table__label'>Total demand</span>{r.totalDemand.toLocaleString()} T</td>
+                                  <td>
+                                    <span className='data-table__label'>Price</span>
+                                    {r.avgPrice.toLocaleString()} CR
+                                    <br />
+                                    <small>MAX {r.bestPrice.toLocaleString()}</small>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </>
+                    },
+                    {
+                      title: 'Updated',
+                      dataIndex: 'updatedAt',
+                      key: 'updatedAt',
+                      align: 'right',
+                      width: 150,
+                      className: 'is-hidden-mobile',
+                      render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
+                    },
+                    {
+                      title: 'Total demand',
+                      dataIndex: 'totalDemand',
+                      key: 'totalDemand',
+                      align: 'right',
+                      width: 150,
+                      className: 'is-hidden-mobile',
+                      render: (v) => <>{v.toLocaleString()} T</>
+                    },
+                    {
+                      title: 'Avg price',
+                      dataIndex: 'avgPrice',
+                      key: 'avgPrice',
+                      align: 'right',
+                      width: 150,
+                      className: 'is-hidden-mobile',
+                      render: (v, r) =>
+                        <>
+                          {v.toLocaleString()} CR
+                          <br />
+                          <small>MAX {r.bestPrice.toLocaleString()} CR</small>
+                        </>
+                    }
+                  ]}
+                  data={importOrders}
+                  expandable={{
+                    expandRowByClick: true,
+                    expandedRowRender: r =>
+                      <>
+                        <p style={{ marginTop: '.5rem' }}>
+                          Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> in <strong>{r.systemName}</strong>
+                        </p>
+                        <LocalCommodityImporters
+                          commodityName={r.name}
+                          commoditySymbol={r.symbol}
+                          commodityOrders={r.importOrders}
+                        />
+                        <Collapsible
+                          trigger={
+                            <p style={{ marginTop: '1rem' }}>
+                              <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
+                              Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                            </p>
+                          }
+                          triggerWhenOpen={
+                            <p style={{ marginTop: '1rem' }}>
+                              <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
+                              Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                            </p>
+                          }
+                        >
+                          <NearbyCommodityExporters commodity={r} />
+                        </Collapsible>
+                        <Collapsible
+                          trigger={
+                            <p style={{ marginTop: '0rem' }}>
+                              <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
+                              Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                            </p>
+                          }
+                          triggerWhenOpen={
+                            <p style={{ marginTop: '0rem' }}>
+                              <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
+                              Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                            </p>
+                          }
+                        >
+                          <NearbyCommodityImporters commodity={r} />
+                        </Collapsible>
+                      </>
+                  }}
+                />}
+            </TabPanel>
+            <TabPanel>
+              {!exportOrders && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+              {exportOrders &&
+                <Table
+                  className='data-table data-table--striped data-table--interactive'
+                  columns={[
+                    {
+                      title: 'Commodity',
+                      dataIndex: 'name',
+                      key: 'name',
+                      align: 'left',
+                      className: 'max-width-mobile',
+                      render: (v, r) =>
+                        <>
+                          <i className='icon icarus-terminal-cargo' />{v}<br />
+                          <small>{r.exportOrders.length} exporting</small>
+                          <div className='is-visible-mobile'>
+                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
+                            <table className='data-table--mini'>
+                              <tbody style={{ textTransform: 'uppercase' }}>
+                                <tr>
+                                  <td><span className='data-table__label'>Total stock</span>{r.totalStock.toLocaleString()} T</td>
+                                  <td>
+                                    <span className='data-table__label'>Price</span>
+                                    {r.avgPrice.toLocaleString()} CR
+                                    <br />
+                                    <small>MAX {r.bestPrice.toLocaleString()}</small>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </>
+                    },
+                    {
+                      title: 'Updated',
+                      dataIndex: 'updatedAt',
+                      key: 'updatedAt',
+                      align: 'right',
+                      width: 150,
+                      className: 'is-hidden-mobile',
+                      render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
+                    },
+                    {
+                      title: 'Total stock',
+                      dataIndex: 'totalStock',
+                      key: 'totalStock',
+                      align: 'right',
+                      width: 150,
+                      className: 'is-hidden-mobile',
+                      render: (v) => <>{v.toLocaleString()} T</>
+                    },
+                    {
+                      title: 'Avg price',
+                      dataIndex: 'avgPrice',
+                      key: 'avgPrice',
+                      align: 'right',
+                      width: 150,
+                      className: 'is-hidden-mobile',
+                      render: (v, r) =>
+                        <>
+                          {v.toLocaleString()} CR
+                          <br />
+                          <small>MAX {r.bestPrice.toLocaleString()} CR</small>
+                        </>
+                    }
+                  ]}
+                  data={exportOrders}
+                  expandable={{
+                    expandRowByClick: true,
+                    expandedRowRender: r =>
+                      <>
+                        <p style={{ marginTop: '.5rem' }}>
+                          Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> in <strong>{r.systemName}</strong>
+                        </p>
+                        <LocalCommodityExporters
+                          commodityName={r.name}
+                          commoditySymbol={r.symbol}
+                          commodityOrders={r.exportOrders}
+                        />
+                        <Collapsible
+                          trigger={
+                            <p style={{ marginTop: '1rem' }}>
+                              <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
+                              Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                            </p>
+                          }
+                          triggerWhenOpen={
+                            <p style={{ marginTop: '1rem' }}>
+                              <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
+                              Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                            </p>
+                          }
+                        >
+                          <NearbyCommodityExporters commodity={r} />
+                        </Collapsible>
+                        <Collapsible
+                          trigger={
+                            <p style={{ marginTop: '0rem' }}>
+                              <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
+                              Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                            </p>
+                          }
+                          triggerWhenOpen={
+                            <p style={{ marginTop: '0rem' }}>
+                              <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
+                              Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                            </p>
+                          }
+                        >
+                          <NearbyCommodityImporters commodity={r} />
+                        </Collapsible>
+                      </>
+                  }}
+                />}
+            </TabPanel>
             <TabPanel>
               {!nearbySystems && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
               {nearbySystems &&
@@ -187,330 +417,8 @@ export default () => {
                   })}
                 />}
             </TabPanel>
-            <TabPanel>
-              {!imports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
-              {imports &&
-                <Table
-                  className='data-table data-table--striped data-table--interactive'
-                  columns={[
-                    {
-                      title: 'Commodity',
-                      dataIndex: 'name',
-                      key: 'name',
-                      align: 'left',
-                      className: 'max-width-mobile',
-                      render: (v, r) =>
-                        <>
-                          <i className='icon icarus-terminal-cargo' />{v}<br />
-                          <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
-                          <div className='is-visible-mobile'>
-                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
-                            <table className='data-table--mini'>
-                              <tbody style={{ textTransform: 'uppercase' }}>
-                                <tr>
-                                  <td><span className='data-table__label'>Demand</span>{r.demand.toLocaleString()} T</td>
-                                  <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </>
-                    },
-                    {
-                      title: 'Updated',
-                      dataIndex: 'updatedAt',
-                      key: 'updatedAt',
-                      align: 'right',
-                      width: 150,
-                      className: 'is-hidden-mobile',
-                      render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
-                    },
-                    {
-                      title: 'Demand',
-                      dataIndex: 'demand',
-                      key: 'demand',
-                      align: 'right',
-                      width: 150,
-                      className: 'is-hidden-mobile',
-                      render: (v) => <>{v.toLocaleString()} T</>
-                    },
-                    {
-                      title: 'Price',
-                      dataIndex: 'sellPrice',
-                      key: 'sellPrice',
-                      align: 'right',
-                      width: 150,
-                      className: 'is-hidden-mobile',
-                      render: (v) => <>{v.toLocaleString()} CR</>
-                    }
-                  ]}
-                  data={imports}
-                  expandable={{
-                    expandRowByClick: true,
-                    expandedRowRender: r => <NearbyExporters commodity={r} />
-                  }}
-                />}
-            </TabPanel>
-            <TabPanel>
-              {!exports && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
-              {exports &&
-                <Table
-                  className='data-table data-table--striped data-table--interactive'
-                  columns={[
-                    {
-                      title: 'Commodity',
-                      dataIndex: 'name',
-                      key: 'name',
-                      align: 'left',
-                      className: 'max-width-mobile',
-                      render: (v, r) =>
-                        <>
-                          <i className='icon icarus-terminal-cargo' />{v}<br />
-                          <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
-                          <div className='is-visible-mobile'>
-                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
-                            <table className='data-table--mini'>
-                              <tbody style={{ textTransform: 'uppercase' }}>
-                                <tr>
-                                  <td><span className='data-table__label'>Stock</span>{r.stock.toLocaleString()} T</td>
-                                  <td><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </>
-                    },
-                    {
-                      title: 'Updated',
-                      dataIndex: 'updatedAt',
-                      key: 'updatedAt',
-                      align: 'right',
-                      width: 150,
-                      className: 'is-hidden-mobile',
-                      render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
-                    },
-                    {
-                      title: 'Stock',
-                      dataIndex: 'stock',
-                      key: 'stock',
-                      align: 'right',
-                      width: 150,
-                      className: 'is-hidden-mobile',
-                      render: (v) => <>{v.toLocaleString()} T</>
-                    },
-                    {
-                      title: 'Price',
-                      dataIndex: 'buyPrice',
-                      key: 'buyPrice',
-                      align: 'right',
-                      width: 150,
-                      className: 'is-hidden-mobile',
-                      render: (v) => <>{v.toLocaleString()} CR</>
-                    }
-                  ]}
-                  data={exports}
-                  expandable={{
-                    expandRowByClick: true,
-                    expandedRowRender: r => <NearbyImporters commodity={r} />
-                  }}
-                />}
-            </TabPanel>
           </Tabs>
         </>}
-    </>
-  )
-}
-
-function NearbyImporters ({ commodity }) {
-  const [nearbyImporters, setNearbyImporters] = useState()
-
-  useEffect(() => {
-    (async () => {
-      setNearbyImporters(await getNearbyImportersOfCommodity(commodity.systemName, commodity.symbol))
-    })()
-  }, [commodity.commodityName, commodity.systemName])
-
-  return (
-    <>
-      <p style={{ marginTop: '.5rem' }}>
-        Demand for <Link href={`/commodity/${commodity.symbol}`}>
-          <strong>{commodity.name}</strong>
-        </Link> in nearby systems
-      </p>
-      {!nearbyImporters && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
-      {nearbyImporters &&
-        <Table
-          className='data-table--mini data-table--striped scrollable'
-          columns={[
-            {
-              title: 'Location',
-              dataIndex: 'systemName',
-              key: 'systemName',
-              align: 'left',
-              className: 'max-width-mobile',
-              render: (v, r) =>
-                <>
-                  <span className='is-hidden-mobile'>
-                    <i className='icon icarus-terminal-star' />{r.systemName}<br />
-                    <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
-                  </span>
-                  <div className='is-visible-mobile'>
-                    <table className='data-table--mini data-table--striped'>
-                      <tbody style={{ textTransform: 'uppercase' }}>
-                        <tr>
-                          <td colSpan={2}>
-                            <i className='icon icarus-terminal-star' />{r.systemName} <span style={{ opacity: 0.5, textTransform: 'none', float: 'right' }}>{r.distance} Ly</span>
-                            <br />
-                            <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
-                            <br />
-                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><span class='data-table__label'>Demand</span>{r.demand.toLocaleString()} T</td>
-                          <td><span class='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </>
-            },
-            {
-              title: 'Distance',
-              dataIndex: 'distance',
-              key: 'distance',
-              align: 'right',
-              className: 'is-hidden-mobile',
-              render: (v) => <span style={{ opacity: 0.5 }}>{v} Ly</span>
-            },
-            {
-              title: 'Updated',
-              dataIndex: 'updatedAt',
-              key: 'updatedAt',
-              align: 'right',
-              width: 130,
-              className: 'is-hidden-mobile',
-              render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
-            },
-            {
-              title: 'Demand',
-              dataIndex: 'demand',
-              key: 'demand',
-              align: 'right',
-              width: 130,
-              className: 'is-hidden-mobile',
-              render: (v) => <>{v.toLocaleString()} T</>
-            },
-            {
-              title: 'Price',
-              dataIndex: 'sellPrice',
-              key: 'sellPrice',
-              align: 'right',
-              width: 130,
-              className: 'is-hidden-mobile',
-              render: (v) => <>{v.toLocaleString()} CR</>
-            }
-          ]}
-          showHeader={false}
-          data={nearbyImporters}
-        />}
-    </>
-  )
-}
-
-function NearbyExporters ({ commodity }) {
-  const [nearbyExporters, setNearbyExporters] = useState()
-
-  useEffect(() => {
-    (async () => {
-      setNearbyExporters(await getNearbyExportersOfCommodity(commodity.systemName, commodity.symbol))
-    })()
-  }, [commodity.commodityName, commodity.systemName])
-
-  return (
-    <>
-      <p style={{ marginTop: '.5rem' }}>
-        Supplies of <Link href={`/commodity/${commodity.symbol}`}>
-          <strong>{commodity.name}</strong>
-        </Link> in nearby systems
-      </p>
-      {!nearbyExporters && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
-      {nearbyExporters &&
-        <Table
-          className='data-table--mini data-table--striped scrollable'
-          columns={[
-            {
-              title: 'Location',
-              dataIndex: 'systemName',
-              key: 'systemName',
-              align: 'left',
-              className: 'max-width-mobile',
-              render: (v, r) =>
-                <>
-                  <span className='is-hidden-mobile'>
-                    <i className='icon icarus-terminal-star' />{r.systemName}<br />
-                    <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
-                  </span>
-                  <div className='is-visible-mobile'>
-                    <table className='data-table--mini data-table--striped'>
-                      <tbody style={{ textTransform: 'uppercase' }}>
-                        <tr>
-                          <td colSpan={2}>
-                            <i className='icon icarus-terminal-star' />{r.systemName} <span style={{ opacity: 0.5, textTransform: 'none', float: 'right' }}>{r.distance} Ly</span>
-                            <br />
-                            <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
-                            <br />
-                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><span class='data-table__label'>Stock</span>{r.stock.toLocaleString()} T</td>
-                          <td><span class='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </>
-            },
-            {
-              title: 'Distance',
-              dataIndex: 'distance',
-              key: 'distance',
-              align: 'right',
-              className: 'is-hidden-mobile',
-              render: (v) => <span style={{ opacity: 0.5 }}>{v} Ly</span>
-            },
-            {
-              title: 'Updated',
-              dataIndex: 'updatedAt',
-              key: 'updatedAt',
-              align: 'right',
-              width: 130,
-              className: 'is-hidden-mobile',
-              render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
-            },
-            {
-              title: 'Stock',
-              dataIndex: 'stock',
-              key: 'stock',
-              align: 'right',
-              width: 130,
-              className: 'is-hidden-mobile',
-              render: (v) => <>{v.toLocaleString()} T</>
-            },
-            {
-              title: 'Price',
-              dataIndex: 'buyPrice',
-              key: 'buyPrice',
-              align: 'right',
-              width: 130,
-              className: 'is-hidden-mobile',
-              render: (v) => <>{v.toLocaleString()} CR</>
-            }
-          ]}
-          showHeader={false}
-          data={nearbyExporters}
-        />}
     </>
   )
 }
@@ -527,20 +435,116 @@ async function getNearbySystems (systemName) {
 
 async function getExports (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/exports`)
-  return await res.json()
+  const exportOrders = await res.json()
+  const exportOrdersGroupedByCommodity = {}
+  exportOrders.forEach(c => {
+    c.key = c.commodityId
+    c.symbol = c.commodityName
+    c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+    c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+    delete c.commodityName
+    delete c.commodityId
+
+    if (!exportOrdersGroupedByCommodity[c.name]) {
+      exportOrdersGroupedByCommodity[c.name] = {
+        key: c.symbol,
+        name: c.name,
+        symbol: c.symbol,
+        category: c.category,
+        systemName: c.systemName,
+        totalStock: 0,
+        prices: [],
+        avgPrice: 0,
+        bestPrice: null,
+        updatedAt: null,
+        exportOrders: []
+      }
+    }
+
+    exportOrdersGroupedByCommodity[c.name].exportOrders.push(c)
+    exportOrdersGroupedByCommodity[c.name].totalStock += c.stock
+    for (let i = 0; i < c.stock; i++) {
+      exportOrdersGroupedByCommodity[c.name].prices.push(c.sellPrice)
+    }
+    exportOrdersGroupedByCommodity[c.name].avgPrice = Math.round(average(exportOrdersGroupedByCommodity[c.name].prices))
+    if (exportOrdersGroupedByCommodity[c.name].bestPrice === null ||
+        c.buyPrice < exportOrdersGroupedByCommodity[c.name].bestPrice) {
+      exportOrdersGroupedByCommodity[c.name].bestPrice = c.buyPrice
+    }
+    if (exportOrdersGroupedByCommodity[c.name].updatedAt === null ||
+        c.updatedAt > exportOrdersGroupedByCommodity[c.name].updatedAt) {
+      exportOrdersGroupedByCommodity[c.name].updatedAt = c.updatedAt
+    }
+  })
+
+  const commoditesProduced = []
+  exportOrders.forEach(c => {
+    if (c.statusFlags?.includes('Producer') && c.fleetCarrier !== 1) {
+      if (!commoditesProduced.includes(c.name)) { commoditesProduced.push(c.name) }
+    }
+  })
+
+  return {
+    exportOrders: Object.values(exportOrdersGroupedByCommodity),
+    commoditesProduced
+  }
 }
 
 async function getImports (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/imports`)
-  return await res.json()
+  const importOrders = await res.json()
+  const importOrdersGroupedByCommodity = {}
+  importOrders.forEach(c => {
+    c.key = c.commodityId
+    c.symbol = c.commodityName
+    c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+    c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+    delete c.commodityName
+    delete c.commodityId
+
+    if (!importOrdersGroupedByCommodity[c.name]) {
+      importOrdersGroupedByCommodity[c.name] = {
+        key: c.symbol,
+        name: c.name,
+        symbol: c.symbol,
+        category: c.category,
+        systemName: c.systemName,
+        totalDemand: 0,
+        prices: [],
+        avgPrice: 0,
+        bestPrice: null,
+        updatedAt: null,
+        importOrders: []
+      }
+    }
+
+    importOrdersGroupedByCommodity[c.name].importOrders.push(c)
+    importOrdersGroupedByCommodity[c.name].totalDemand += c.demand
+    for (let i = 0; i < c.demand; i++) {
+      importOrdersGroupedByCommodity[c.name].prices.push(c.sellPrice)
+    }
+    importOrdersGroupedByCommodity[c.name].avgPrice = Math.round(average(importOrdersGroupedByCommodity[c.name].prices))
+    if (importOrdersGroupedByCommodity[c.name].bestPrice === null ||
+        c.sellPrice > importOrdersGroupedByCommodity[c.name].bestPrice) {
+      importOrdersGroupedByCommodity[c.name].bestPrice = c.sellPrice
+    }
+    if (importOrdersGroupedByCommodity[c.name].updatedAt === null ||
+        c.updatedAt > importOrdersGroupedByCommodity[c.name].updatedAt) {
+      importOrdersGroupedByCommodity[c.name].updatedAt = c.updatedAt
+    }
+  })
+
+  const commoditesConsumed = []
+  importOrders.forEach(c => {
+    if (c.statusFlags?.includes('Consumer') && c.fleetCarrier !== 1) {
+      if (!commoditesConsumed.includes(c.name)) { commoditesConsumed.push(c.name) }
+    }
+  })
+
+  return {
+    importOrders: Object.values(importOrdersGroupedByCommodity),
+    commoditesConsumed
+  }
 }
 
-async function getNearbyImportersOfCommodity (systemName, commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}/nearby/imports`)
-  return await res.json()
-}
-
-async function getNearbyExportersOfCommodity (systemName, commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}/nearby/exports`)
-  return await res.json()
-}
+function average (arr) { return arr.reduce((a, b) => a + b) / arr.length }
