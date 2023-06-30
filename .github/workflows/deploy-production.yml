@@ -28,6 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Generate env.GITH_SHA_SHORT
+      run: echo "GIT_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
     - name: Deploy to Server
       uses: easingthemes/ssh-deploy@main
       env:
@@ -36,13 +38,26 @@ jobs:
         SOURCE: "./"
         REMOTE_HOST: ${{ vars.DEPLOY_HOST }}
         REMOTE_USER: ${{ vars.DEPLOY_USER }}
-        TARGET: "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}"
-        EXCLUDE: ".git*, *.md, LICENSE, node_modules/"
+        TARGET: "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}-${{ env.GIT_SHA_SHORT}}"
+        EXCLUDE: ".git*, *.md, .next, LICENSE, node_modules/"
+        SCRIPT_BEFORE: |
+          rm -rf "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}.tmp"
+          cp -R "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}" "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}-${{ env.GIT_SHA_SHORT}}" || :
         SCRIPT_AFTER: |
-          cd "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}"
-          npm install
+          cd "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}-${{ env.GIT_SHA_SHORT}}"
+          npm install --omit=dev 
           npm run build
-          pm2 restart "${{ env.SERVICE_NAME }}"
+          cd ..
+          date
+          pm2 stop "${{ env.SERVICE_NAME }}"
+          pm2 delete "${{ env.SERVICE_NAME }}"
+          mv "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}" "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}.tmp" || :
+          mv "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}-${{ env.GIT_SHA_SHORT}}" "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}"
+          cd "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}"
+          pm2 start npm --name "${{ env.SERVICE_NAME }}" -- run start
+          date
+          pm2 save
+          rm -rf "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}.tmp"
           echo $RSYNC_STDOUT
     - name: Invalidate CloudFront cache
       uses: chetan/invalidate-cloudfront-action@v2
