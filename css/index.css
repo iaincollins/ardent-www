@@ -78,3 +78,7 @@ body::-webkit-scrollbar-track,
   background-size: 48.00px 48.00px;
   background-position-x: 10px;
 }
+
+.Collapsible {
+  max-width: calc(100vw - 5rem);
+}
