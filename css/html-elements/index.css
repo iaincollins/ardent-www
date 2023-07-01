@@ -63,7 +63,7 @@ h2:after,
 h3:after {
   position: absolute;
   display: inline-block;
-  right: -.99rem;
+  right: -.98rem;
   width: 1rem;
   height: 100%;
   content: '';

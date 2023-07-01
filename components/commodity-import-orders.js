@@ -166,13 +166,13 @@ function ExpandedRow ({ r }) {
         trigger={
           <p style={{ marginTop: '1rem' }}>
             <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-            Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+            Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
           </p>
         }
         triggerWhenOpen={
           <p style={{ marginTop: '1rem' }}>
             <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-            Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+            Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
           </p>
         }
       >
@@ -182,13 +182,13 @@ function ExpandedRow ({ r }) {
         trigger={
           <p style={{ marginTop: '0rem' }}>
             <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-            Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+            Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
           </p>
         }
         triggerWhenOpen={
           <p style={{ marginTop: '0rem' }}>
             <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-            Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+            Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
           </p>
         }
       >

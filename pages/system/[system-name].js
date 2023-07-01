@@ -129,19 +129,24 @@ export default () => {
                 </td>
               </tr>
               <tr>
-                <th>Import Orders</th>
+                <td colspan={2} align='left'>
+                  <h3 style={{ marginTop: 0, marginBottom: '.5rem' }}>Commodities</h3>
+                </td>
+              </tr>
+              <tr>
+                <th>Imported</th>
                 <td>{importOrders?.length?.toLocaleString() ?? '-'} </td>
               </tr>
               <tr>
-                <th>Export Orders</th>
+                <th>Exported</th>
                 <td>{exportOrders?.length?.toLocaleString() ?? '-'}</td>
               </tr>
               <tr>
-                <th>Commodities Consumed</th>
+                <th>Consumed</th>
                 <td>{consumes?.length?.toLocaleString() ?? '-'}</td>
               </tr>
               <tr>
-                <th>Commodities Produced</th>
+                <th>Produced</th>
                 <td>{produces?.length?.toLocaleString() ?? '-'} </td>
               </tr>
             </tbody>
@@ -236,13 +241,13 @@ export default () => {
                           trigger={
                             <p style={{ marginTop: '1rem' }}>
                               <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-                              Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                              Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
                             </p>
                           }
                           triggerWhenOpen={
                             <p style={{ marginTop: '1rem' }}>
                               <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-                              Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                              Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
                             </p>
                           }
                         >
@@ -252,13 +257,13 @@ export default () => {
                           trigger={
                             <p style={{ marginTop: '0rem' }}>
                               <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-                              Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                              Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
                             </p>
                           }
                           triggerWhenOpen={
                             <p style={{ marginTop: '0rem' }}>
                               <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-                              Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                              Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
                             </p>
                           }
                         >
@@ -352,13 +357,13 @@ export default () => {
                           trigger={
                             <p style={{ marginTop: '1rem' }}>
                               <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-                              Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                              Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
                             </p>
                           }
                           triggerWhenOpen={
                             <p style={{ marginTop: '1rem' }}>
                               <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-                              Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                              Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
                             </p>
                           }
                         >
@@ -368,13 +373,13 @@ export default () => {
                           trigger={
                             <p style={{ marginTop: '0rem' }}>
                               <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-                              Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                              Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
                             </p>
                           }
                           triggerWhenOpen={
                             <p style={{ marginTop: '0rem' }}>
                               <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-                              Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> near <strong>{r.systemName}</strong>
+                              Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
                             </p>
                           }
                         >
@@ -468,7 +473,7 @@ async function getExports (systemName) {
     }
     exportOrdersGroupedByCommodity[c.name].avgPrice = Math.round(average(exportOrdersGroupedByCommodity[c.name].prices))
     if (exportOrdersGroupedByCommodity[c.name].bestPrice === null ||
-        c.buyPrice < exportOrdersGroupedByCommodity[c.name].bestPrice) {
+        c.buyPrice > exportOrdersGroupedByCommodity[c.name].bestPrice) {
       exportOrdersGroupedByCommodity[c.name].bestPrice = c.buyPrice
     }
     if (exportOrdersGroupedByCommodity[c.name].updatedAt === null ||

@@ -28,6 +28,7 @@ export default ({ commodity }) => {
       {nearbyExporters &&
         <Table
           className='data-table--mini data-table--striped scrollable'
+          style={{ marginBottom: '.5rem' }}
           columns={[
             {
               title: 'Location',

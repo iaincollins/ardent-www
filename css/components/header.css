@@ -55,7 +55,7 @@
 
 .logo p,
 .logo p:after {
-  background: var(--color-primary-dark);
+  background: var(--color-primary-darker);
   color: var(--color-primary);
 }
 
