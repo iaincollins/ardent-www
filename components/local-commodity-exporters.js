@@ -31,7 +31,7 @@ export default ({ commodityOrders }) => {
                           </td>
                         </tr>
                         <tr>
-                          <td><span class='data-table__label'>Stock</span>{r.demand.toLocaleString()} T</td>
+                          <td><span class='data-table__label'>Stock</span>{r.stock.toLocaleString()} T</td>
                           <td><span class='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
                         </tr>
                       </tbody>
@@ -59,7 +59,7 @@ export default ({ commodityOrders }) => {
             },
             {
               title: 'Price',
-              dataIndex: 'sellPrice',
+              dataIndex: 'buyPrice',
               key: 'buyPrice',
               align: 'right',
               width: 130,

@@ -469,7 +469,7 @@ async function getExports (systemName) {
     exportOrdersGroupedByCommodity[c.name].exportOrders.push(c)
     exportOrdersGroupedByCommodity[c.name].totalStock += c.stock
     for (let i = 0; i < c.stock; i++) {
-      exportOrdersGroupedByCommodity[c.name].prices.push(c.sellPrice)
+      exportOrdersGroupedByCommodity[c.name].prices.push(c.buyPrice)
     }
     exportOrdersGroupedByCommodity[c.name].avgPrice = Math.round(average(exportOrdersGroupedByCommodity[c.name].prices))
     if (exportOrdersGroupedByCommodity[c.name].bestPrice === null ||
