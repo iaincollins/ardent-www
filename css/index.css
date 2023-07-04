@@ -78,6 +78,20 @@ body::-webkit-scrollbar-track,
   background-position-x: 10px;
 }
 
+body::-webkit-scrollbar-track {
+  background-image: linear-gradient(90deg, transparent 41.67%, var(--color-window-scrollbar-track) 41.67%, var(--color-window-scrollbar-track) 50%, transparent 50%, transparent 91.67%, var(--color-window-scrollbar-track) 91.67%, var(--color-window-scrollbar-track) 100%);
+}
+
 .Collapsible {
   white-space: normal;
+}
+
+.trade-orders__trigger {
+  font-size: .9rem;
+}
+
+.trade-orders__trigger .icarus-terminal-chevron-right,
+.trade-orders__trigger .icarus-terminal-chevron-down {
+  margin-right: .15rem !important;
+  font-size: .9rem;
 }

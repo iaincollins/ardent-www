@@ -52,7 +52,7 @@
   border-left: .2rem solid var(--color-primary);
   border-right: .2rem solid var(--color-primary);
   border-bottom: .2rem solid var(--color-primary);
-  background: rgba(255,255,255,.1) !important;
+  background: rgba(255,255,255,.05) !important;
 }
 
 .data-table th .icon,
@@ -84,7 +84,11 @@ table.data-table--mini > tbody > tr > td,
 
 table.data-table--striped > tbody > tr:nth-child(odd of .rc-table-row) > td,
 .data-table--striped > .rc-table-container > .rc-table-content > table > tbody > tr:nth-child(odd of .rc-table-row) > td {
-  background: rgba(255,255,255,.1);
+  background: rgba(0,0,0,0.1);
+}
+table.data-table--striped > tbody > tr:nth-child(even of .rc-table-row) > td,
+.data-table--striped > .rc-table-container > .rc-table-content > table > tbody > tr:nth-child(even of .rc-table-row) > td {
+  background: rgba(0,0,0,0.4);
 }
 
 table.data-table--interactive > tbody > tr.rc-table-row:hover > td,
@@ -92,7 +96,6 @@ table.data-table--striped.data-table--interactive > tbody > tr.rc-table-row:hove
 .data-table--interactive > .rc-table-container > .rc-table-content > table > tbody > tr.rc-table-row:hover > td,
 .data-table--striped.data-table--interactive > .rc-table-container > .rc-table-content > table > tbody > tr.rc-table-row:hover > td {
   background: rgba(255,255,255,.15);
-  transition: background .25s;
 }
 
 table.data-table--two-equal-columns > tbody > tr > td,

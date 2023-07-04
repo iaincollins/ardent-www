@@ -14,5 +14,7 @@
   --color-primary-dark: hsl(0, 0%, 60%);
   --color-primary-darker: hsl(0, 0%, 40%);
 
-  --color-window-scrollbar-thumb: hsl(0, 0%, 80%);
+  	
+  --color-window-scrollbar-thumb: rgb(250, 241, 228);
+  --color-window-scrollbar-track: rgb(103, 100, 94);
 }

@@ -4,7 +4,7 @@
   left: -1rem;
   display: inline-block;
   white-space: nowrap;
-  z-index: 20;
+  z-index: 40;
 }
 
 .logo h1 {
@@ -17,7 +17,19 @@
   padding-bottom: .25rem;
   line-height: 2rem;
   font-weight: 600;
+  font-style: italic;
+  padding-right: .5rem;
+  float: none;
 }
+
+.logo h1:after {
+  margin-left: .5rem;
+  height: 2.4rem;
+  width: 1.5rem;
+  aspect-ratio: none;
+  clip-path: polygon(0 0, 0 100%, 100% 0);;
+}
+
 
 .logo h1 em {
   font-size: 2.4rem;
@@ -82,9 +94,9 @@
   line-height: .9rem;
   text-transform: uppercase;
   z-index: -3;
-  background: rgba(70,70,70,.3);
+  background: rgba(70,70,70,.5);
   color: var(--color-primary);
-  clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem));
+  clip-path: polygon(0 0,100% 0,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem));
 }
 
 .header-stats:before {
@@ -96,12 +108,12 @@
     0 0,
     100% 0,
     100% 100%,
-    2.00rem 100%,
-    0 calc(100% - 2.00rem),
+    1.00rem 100%,
+    0 calc(100% - 1.00rem),
     0 0,
     .2rem 0,
-    .2rem calc(100% - 2.00rem - 0.08rem),
-    calc(2.00rem + 0.08rem) calc(100% - .2rem),
+    .2rem calc(100% - 1.00rem - 0.08rem),
+    calc(1.00rem + 0.08rem) calc(100% - .2rem),
     100% calc(100% - .2rem),
     100% 0,
     .2rem 0
@@ -110,8 +122,8 @@
 
 .header-stats__label {
   display: inline-block;
-  width: 7rem;
-  opacity: .5;
+  width: 6.5rem;
+  opacity: .75;
 }
 
 .header-stats__value {

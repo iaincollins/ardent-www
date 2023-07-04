@@ -32,24 +32,25 @@ export default ({ commodity }) => {
           columns={[
             {
               title: 'Location',
-              dataIndex: 'systemName',
-              key: 'systemName',
+              dataIndex: 'stationName',
+              key: 'stationName',
               align: 'left',
               className: 'max-width-mobile',
               render: (v, r) =>
                 <>
                   <span className='is-hidden-mobile'>
-                    <i className='icon icarus-terminal-star' /><Link href={`/system/${r.systemName}`}>{r.systemName}</Link><br />
-                    <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
+                    {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                   </span>
                   <div className='is-visible-mobile'>
                     <table className='data-table--mini data-table--striped data-table--two-equal-columns'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
                           <td colSpan={2}>
-                            <i className='icon icarus-terminal-star' />{r.systemName} <span style={{ opacity: 0.5, textTransform: 'none', float: 'right' }}>{r.distance} Ly</span>
+                            {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                             <br />
-                            <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
+                            <span style={{ textTransform: 'none' }}>
+                              <Link href={`/system/${r.systemName}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} Ly</span>
+                            </span>
                             <br />
                             <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
                           </td>
@@ -64,12 +65,20 @@ export default ({ commodity }) => {
                 </>
             },
             {
+              title: 'System',
+              dataIndex: 'systemName',
+              key: 'systemName',
+              align: 'right',
+              className: 'is-hidden-mobile',
+              render: (v) => <span style={{ opacity: 0.75 }}><Link href={`/system/${v}`}>{v}</Link></span>
+            },
+            {
               title: 'Distance',
               dataIndex: 'distance',
               key: 'distance',
               align: 'right',
               className: 'is-hidden-mobile',
-              render: (v) => <span style={{ opacity: 0.5 }}>{v} Ly</span>
+              render: (v) => <span style={{ opacity: 0.75 }}>{v} Ly</span>
             },
             {
               title: 'Updated',
