@@ -23,7 +23,7 @@ export default ({ commodityName, reportName = 'core-systems-1000' }) => {
         c.avgProfit = c.avgSellPrice - c.avgBuyPrice
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
         c.maxProfit = c.maxSellPrice - c.minBuyPrice
-        c.symbol = c.commodityName
+        c.symbol = c.commodityName.toLowerCase()
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
         delete c.commodityId
@@ -36,7 +36,7 @@ export default ({ commodityName, reportName = 'core-systems-1000' }) => {
         c.avgProfit = c.avgSellPrice - c.avgBuyPrice
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
         c.maxProfit = c.maxSellPrice - c.minBuyPrice
-        c.symbol = c.commodityName
+        c.symbol = c.commodityName.toLowerCase()
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
         delete c.commodityId

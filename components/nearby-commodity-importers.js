@@ -38,29 +38,20 @@ export default ({ commodity }) => {
               className: 'max-width-mobile',
               render: (v, r) =>
                 <>
-                  <span className='is-hidden-mobile'>
-                    {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                  </span>
+                  {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                   <div className='is-visible-mobile'>
-                    <table className='data-table--mini data-table--striped data-table--two-equal-columns'>
+                    <small style={{ textTransform: 'none' }}>
+                      <Link href={`/system/${r.systemName}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} Ly</span>
+                    </small>
+                    <table className='data-table--mini data-table--compact data-table--two-equal-columns'>
                       <tbody style={{ textTransform: 'uppercase' }}>
-                        <tr>
-                          <td colSpan={2}>
-                            {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                            <br />
-                            <span style={{ textTransform: 'none' }}>
-                              <Link href={`/system/${r.systemName}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} Ly</span>
-                            </span>
-                            <br />
-                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
-                          </td>
-                        </tr>
                         <tr>
                           <td><span class='data-table__label'>Demand</span>{r.demand.toLocaleString()} T</td>
                           <td><span class='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                         </tr>
                       </tbody>
                     </table>
+                    <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
                   </div>
                 </>
             },

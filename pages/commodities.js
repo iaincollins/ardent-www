@@ -23,7 +23,7 @@ export default () => {
           c.avgProfit = c.avgSellPrice - c.avgBuyPrice
           c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
           c.maxProfit = c.maxSellPrice - c.minBuyPrice
-          c.symbol = c.commodityName
+          c.symbol = c.commodityName.toLowerCase()
           c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
           c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
           return c
@@ -59,7 +59,7 @@ export default () => {
                 <>
                   <i className='icon icarus-terminal-cargo' />{v}<br /><small>{r.category}</small>
                   <div className='is-visible-mobile'>
-                    <table className='data-table--mini data-table--two-equal-columns'>
+                    <table className='data-table--mini data-table--compact data-table--two-equal-columns'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
                           <td><span class='data-table__label'>Avg Import CR/T</span>{r.avgSellPrice.toLocaleString()} CR</td>

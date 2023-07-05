@@ -173,10 +173,9 @@ export default () => {
                       render: (v, r) =>
                         <>
                           <i className='icon icarus-terminal-cargo' />{v}{r?.consumer === true && <> <small>(Consumer)</small></>}<br />
-                          <small>{r.importOrders.length} importers</small>
+                          <small>{r.importOrders.length === 1 ? '1 importer ' : `${r.importOrders.length} importers`}</small>
                           <div className='is-visible-mobile'>
-                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
-                            <table className='data-table--mini'>
+                            <table className='data-table--mini data-table--compact data-table--two-equal-columns'>
                               <tbody style={{ textTransform: 'uppercase' }}>
                                 <tr>
                                   <td><span className='data-table__label'>Total demand</span>{r.totalDemand.toLocaleString()} T</td>
@@ -184,11 +183,12 @@ export default () => {
                                     <span className='data-table__label'>Price</span>
                                     {r.avgPrice.toLocaleString()} CR
                                     <br />
-                                    <small>MAX {r.bestPrice.toLocaleString()}</small>
+                                    <small>MAX {r.bestPrice.toLocaleString()} CR</small>
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
+                            <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
                           </div>
                         </>
                     },
@@ -289,10 +289,9 @@ export default () => {
                       render: (v, r) =>
                         <>
                           <i className='icon icarus-terminal-cargo' />{v}{r?.producer === true && <> <small>(Producer)</small></>}<br />
-                          <small>{r.exportOrders.length} exporters</small>
+                          <small>{r.exportOrders.length === 1 ? '1 exporter ' : `${r.exportOrders.length} exporters`}</small>
                           <div className='is-visible-mobile'>
-                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
-                            <table className='data-table--mini'>
+                            <table className='data-table--mini data-table--two-equal-columns data-table--compact'>
                               <tbody style={{ textTransform: 'uppercase' }}>
                                 <tr>
                                   <td><span className='data-table__label'>Total stock</span>{r.totalStock.toLocaleString()} T</td>
@@ -300,11 +299,12 @@ export default () => {
                                     <span className='data-table__label'>Price</span>
                                     {r.avgPrice.toLocaleString()} CR
                                     <br />
-                                    <small>MAX {r.bestPrice.toLocaleString()}</small>
+                                    <small>MIN {r.bestPrice.toLocaleString()} CR</small>
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
+                            <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
                           </div>
                         </>
                     },
@@ -337,7 +337,7 @@ export default () => {
                         <>
                           {v.toLocaleString()} CR
                           <br />
-                          <small>MAX {r.bestPrice.toLocaleString()} CR</small>
+                          <small>MIN {r.bestPrice.toLocaleString()} CR</small>
                         </>
                     }
                   ]}
@@ -445,7 +445,7 @@ async function getExports (systemName) {
   const exportOrdersGroupedByCommodity = {}
   exportOrders.forEach(c => {
     c.key = c.commodityId
-    c.symbol = c.commodityName
+    c.symbol = c.commodityName.toLowerCase()
     c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
     c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
     delete c.commodityName
@@ -473,7 +473,7 @@ async function getExports (systemName) {
     exportOrdersGroupedByCommodity[c.name].totalPrice += c.buyPrice * c.stock
     exportOrdersGroupedByCommodity[c.name].avgPrice = Math.round(exportOrdersGroupedByCommodity[c.name].totalPrice / exportOrdersGroupedByCommodity[c.name].totalStock)
     if (exportOrdersGroupedByCommodity[c.name].bestPrice === null ||
-        c.buyPrice > exportOrdersGroupedByCommodity[c.name].bestPrice) {
+        c.buyPrice < exportOrdersGroupedByCommodity[c.name].bestPrice) {
       exportOrdersGroupedByCommodity[c.name].bestPrice = c.buyPrice
     }
     if (exportOrdersGroupedByCommodity[c.name].updatedAt === null ||
@@ -501,7 +501,7 @@ async function getImports (systemName) {
   const importOrdersGroupedByCommodity = {}
   importOrders.forEach(c => {
     c.key = c.commodityId
-    c.symbol = c.commodityName
+    c.symbol = c.commodityName.toLowerCase()
     c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
     c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
     delete c.commodityName

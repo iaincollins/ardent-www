@@ -1396,5 +1396,71 @@
     "symbol": "OnionHeadC",
     "category": "Legal Drugs",
     "name": "Onionhead Gamma Strain"
+  },
+  {
+    "id": "129015433",
+    "symbol": "AncientRelicTG",
+    "category": "Salvage",
+    "name": "Unclassified Relic"
+  },
+  {
+    "id": "129022087",
+    "symbol": "unocuppiedescapepod",
+    "category": "Salvage",
+    "name": "Unoccupied Escape Pod"
+  },
+  {
+    "id": "129019258",
+    "symbol": "ThargoidTissueSampleType5",
+    "category": "Salvage",
+    "name": "Thargoid Tissue Sample Type 5"
+  },
+  {
+    "id": "129019259",
+    "symbol": "ThargoidGeneratorTissueSample",
+    "category": "Salvage",
+    "name": "Thargoid Generator Tissue Sample"
+  },
+  {
+    "id": "129022395",
+    "symbol": "ThargoidTissueSampleType6",
+    "category": "Salvage",
+    "name": "Thargoid Glaive Tissue Sample"
+  },
+  {
+    "id": "129022398",
+    "symbol": "ThargoidTissueSampleType9a",
+    "category": "Salvage",
+    "name": "Thargoid Titan Deep Tissue Sample"
+  },
+  {
+    "id": "129022399",
+    "symbol": "ThargoidTissueSampleType9b",
+    "category": "Salvage",
+    "name": "Thargoid Titan Tissue Sample"
+  },
+  {
+    "id": "129022400",
+    "symbol": "ThargoidTissueSampleType9c",
+    "category": "Salvage",
+    "name": "Thargoid Titan Partial Tissue Sample"
+  },
+  {
+    "id": "129022402",
+    "symbol": "ThargoidTissueSampleType10a",
+    "category": "Salvage",
+    "name": "Thargoid Titan Maw Deep Tissue Sample"
+  },
+  {
+    "id": "129022403",
+    "symbol": "ThargoidTissueSampleType10b",
+    "category": "Salvage",
+    "name": "Thargoid Titan Maw Tissue Sample"
+  },
+  {
+    "id": "129022404",
+    "symbol": "ThargoidTissueSampleType10c",
+    "category": "Salvage",
+    "name": "Thargoid Titan Maw Partial Tissue Sample"
   }
 ]

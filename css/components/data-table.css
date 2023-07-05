@@ -71,6 +71,16 @@ table.data-table--mini > tbody > tr > td,
   font-size: .9rem;
 }
 
+.data-table--compact {
+  margin-top: .5rem;
+}
+
+table.data-table--compact > tbody > tr > td,
+.data-table--compact > .rc-table-container > .rc-table-content > table > tbody > tr > td {
+  padding: 0 0 .5rem 0;
+  vertical-align: top;
+}
+
 .data-table--mini > .rc-table-container > .rc-table-content > table > tbody > tr > td small {
   font-size: .8rem;
 }

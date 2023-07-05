@@ -30,7 +30,7 @@ export default () => {
         c.avgProfit = c.avgSellPrice - c.avgBuyPrice
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
         c.maxProfit = c.maxSellPrice - c.minBuyPrice
-        c.symbol = c.commodityName
+        c.symbol = c.commodityName.toLowerCase()
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? 'Unknown'
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
         delete c.commodityName
@@ -43,7 +43,7 @@ export default () => {
         c.avgProfit = c.avgSellPrice - c.avgBuyPrice
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
         c.maxProfit = c.maxSellPrice - c.minBuyPrice
-        c.symbol = c.commodityName
+        c.symbol = c.commodityName.toLowerCase()
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
         delete c.commodityId
@@ -57,7 +57,7 @@ export default () => {
         c.avgProfit = c.avgSellPrice - c.avgBuyPrice
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
         c.maxProfit = c.maxSellPrice - c.minBuyPrice
-        c.symbol = c.commodityName
+        c.symbol = c.commodityName.toLowerCase()
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
         delete c.commodityId
@@ -89,19 +89,6 @@ export default () => {
                 <td>{commodity.category}</td>
               </tr>
               <tr>
-                <th>Export price</th>
-                <td>{typeof commodity.avgBuyPrice === 'number'
-                  ? (
-                    <>
-                      {commodity.avgBuyPrice.toLocaleString()} CR/T
-                      {' '}
-                      <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>
-                    </>
-                    )
-                  : <>Insufficent data</>}
-                </td>
-              </tr>
-              <tr>
                 <th>Import price</th>
                 <td>{typeof commodity.avgSellPrice === 'number'
                   ? (
@@ -114,9 +101,22 @@ export default () => {
                   : <>Insufficent data</>}
                 </td>
               </tr>
+              <tr>
+                <th>Export price</th>
+                <td>{typeof commodity.avgBuyPrice === 'number'
+                  ? (
+                    <>
+                      {commodity.avgBuyPrice.toLocaleString()} CR/T
+                      {' '}
+                      <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>
+                    </>
+                    )
+                  : <>Insufficent data</>}
+                </td>
+              </tr>
               {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
                 <tr>
-                  <th>Average profit</th>
+                  <th>Typical profit</th>
                   <td>
                     {commodity.avgProfit.toLocaleString()} CR/T
                     {' '}
@@ -124,27 +124,29 @@ export default () => {
                   </td>
                 </tr>}
               <tr>
-                <th>Total supply</th>
-                <td>
-                  <progress
-                    max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                    value={commodity.totalStock}
-                    style={{ maxWidth: '10rem' }}
-                  />
-                  <br />
-                  <small>{commodity.totalStock.toLocaleString()} T</small>
-                </td>
-              </tr>
-              <tr>
                 <th>Total demand</th>
                 <td>
                   <progress
                     max={Math.max(commodity.totalStock, commodity.totalDemand)}
                     value={commodity.totalDemand}
-                    style={{ maxWidth: '10rem' }}
+                    style={{ maxWidth: '12rem' }}
                   />
-                  <br />
-                  <small>{commodity.totalDemand.toLocaleString()} T</small>
+                  <p style={{ margin: '0 0 .15rem 0' }}>
+                    <small>{commodity.totalDemand.toLocaleString()} T</small>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <th>Total supply</th>
+                <td>
+                  <progress
+                    max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                    value={commodity.totalStock}
+                    style={{ maxWidth: '12rem' }}
+                  />
+                  <p style={{ margin: '0 0 .15rem 0' }}>
+                    <small>{commodity.totalStock.toLocaleString()} T</small>
+                  </p>
                 </td>
               </tr>
             </tbody>

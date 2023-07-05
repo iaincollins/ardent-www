@@ -10,7 +10,6 @@ progress {
   border-radius: 0;
   border-color: var(--color-primary);
   background: var(--color-primary-darker); /* For Firefox */
-  margin-bottom: .15rem;
 }
 
 progress[value] {
