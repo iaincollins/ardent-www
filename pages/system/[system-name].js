@@ -85,9 +85,9 @@ export default () => {
         })()
 
         ;(async () => {
-          const { exportOrders, commoditesConsumed } = await getExports(systemName)
+          const { exportOrders, commoditesProduced } = await getExports(systemName)
           setExportOrders(exportOrders)
-          setProduces(commoditesConsumed)
+          setProduces(commoditesProduced)
         })()
       }
     })()
@@ -143,11 +143,11 @@ export default () => {
                 <td>{exportOrders?.length?.toLocaleString() ?? '-'}</td>
               </tr>
               <tr>
-                <th>Consumed</th>
+                <th>Consumes</th>
                 <td>{consumes?.length?.toLocaleString() ?? '-'}</td>
               </tr>
               <tr>
-                <th>Produced</th>
+                <th>Produces</th>
                 <td>{produces?.length?.toLocaleString() ?? '-'} </td>
               </tr>
             </tbody>
@@ -172,8 +172,8 @@ export default () => {
                       className: 'max-width-mobile',
                       render: (v, r) =>
                         <>
-                          <i className='icon icarus-terminal-cargo' />{v}<br />
-                          <small>{r.importOrders.length} importing</small>
+                          <i className='icon icarus-terminal-cargo' />{v}{r?.consumer === true && <> <small>(Consumer)</small></>}<br />
+                          <small>{r.importOrders.length} importers</small>
                           <div className='is-visible-mobile'>
                             <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
                             <table className='data-table--mini'>
@@ -288,8 +288,8 @@ export default () => {
                       className: 'max-width-mobile',
                       render: (v, r) =>
                         <>
-                          <i className='icon icarus-terminal-cargo' />{v}<br />
-                          <small>{r.exportOrders.length} exporting</small>
+                          <i className='icon icarus-terminal-cargo' />{v}{r?.producer === true && <> <small>(Producer)</small></>}<br />
+                          <small>{r.exportOrders.length} exporters</small>
                           <div className='is-visible-mobile'>
                             <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
                             <table className='data-table--mini'>
@@ -463,6 +463,7 @@ async function getExports (systemName) {
         avgPrice: 0,
         bestPrice: null,
         updatedAt: null,
+        producer: c.statusFlags?.includes('Producer') ?? false,
         exportOrders: []
       }
     }
@@ -518,6 +519,7 @@ async function getImports (systemName) {
         avgPrice: 0,
         bestPrice: null,
         updatedAt: null,
+        consumer: c.statusFlags?.includes('Consumer') ?? false,
         importOrders: []
       }
     }
