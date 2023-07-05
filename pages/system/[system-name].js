@@ -8,6 +8,7 @@ import { timeBetweenTimestamps } from '../../lib/utils/dates'
 import commoditiesInfo from '../../lib/commodities.json'
 import { formatSystemSector } from '../../lib/utils/system-sectors'
 import distance from '../../lib/utils/distance'
+import Loader from '../../components/loader'
 import LocalCommodityImporters from '../../components/local-commodity-importers'
 import LocalCommodityExporters from '../../components/local-commodity-exporters'
 import NearbyCommodityImporters from '../../components/nearby-commodity-importers'
@@ -99,8 +100,8 @@ export default () => {
         <i className='icarus-terminal-chevron-right' />
         <Link href='/commodities'>Systems</Link>
       </p>
-      {system === undefined && <div className='loading-bar' style={{ marginTop: '1.5rem' }} />}
-      {system === null && <><h2>Error</h2><p>Error; System not found</p></>}
+      {system === undefined && <Loader />}
+      {system === null && <><h2>Error</h2><p className='clear'>System not found</p></>}
       {system &&
         <>
           <h2>
@@ -130,7 +131,7 @@ export default () => {
               </tr>
               <tr>
                 <td colspan={2} align='left'>
-                  <h3 style={{ marginTop: 0, marginBottom: '.5rem' }}>Commodities</h3>
+                  <h3 style={{ marginBottom: '.5rem' }}>Commodities</h3>
                 </td>
               </tr>
               <tr>
@@ -458,7 +459,7 @@ async function getExports (systemName) {
         category: c.category,
         systemName: c.systemName,
         totalStock: 0,
-        prices: [],
+        totalPrice: 0,
         avgPrice: 0,
         bestPrice: null,
         updatedAt: null,
@@ -468,10 +469,8 @@ async function getExports (systemName) {
 
     exportOrdersGroupedByCommodity[c.name].exportOrders.push(c)
     exportOrdersGroupedByCommodity[c.name].totalStock += c.stock
-    for (let i = 0; i < c.stock; i++) {
-      exportOrdersGroupedByCommodity[c.name].prices.push(c.buyPrice)
-    }
-    exportOrdersGroupedByCommodity[c.name].avgPrice = Math.round(average(exportOrdersGroupedByCommodity[c.name].prices))
+    exportOrdersGroupedByCommodity[c.name].totalPrice += c.buyPrice * c.stock
+    exportOrdersGroupedByCommodity[c.name].avgPrice = Math.round(exportOrdersGroupedByCommodity[c.name].totalPrice / exportOrdersGroupedByCommodity[c.name].totalStock)
     if (exportOrdersGroupedByCommodity[c.name].bestPrice === null ||
         c.buyPrice > exportOrdersGroupedByCommodity[c.name].bestPrice) {
       exportOrdersGroupedByCommodity[c.name].bestPrice = c.buyPrice
@@ -515,7 +514,7 @@ async function getImports (systemName) {
         category: c.category,
         systemName: c.systemName,
         totalDemand: 0,
-        prices: [],
+        totalPrice: 0,
         avgPrice: 0,
         bestPrice: null,
         updatedAt: null,
@@ -525,10 +524,8 @@ async function getImports (systemName) {
 
     importOrdersGroupedByCommodity[c.name].importOrders.push(c)
     importOrdersGroupedByCommodity[c.name].totalDemand += c.demand
-    for (let i = 0; i < c.demand; i++) {
-      importOrdersGroupedByCommodity[c.name].prices.push(c.sellPrice)
-    }
-    importOrdersGroupedByCommodity[c.name].avgPrice = Math.round(average(importOrdersGroupedByCommodity[c.name].prices))
+    importOrdersGroupedByCommodity[c.name].totalPrice += c.sellPrice * c.demand
+    importOrdersGroupedByCommodity[c.name].avgPrice = Math.round(importOrdersGroupedByCommodity[c.name].totalPrice / importOrdersGroupedByCommodity[c.name].totalDemand)
     if (importOrdersGroupedByCommodity[c.name].bestPrice === null ||
         c.sellPrice > importOrdersGroupedByCommodity[c.name].bestPrice) {
       importOrdersGroupedByCommodity[c.name].bestPrice = c.sellPrice
@@ -552,4 +549,4 @@ async function getImports (systemName) {
   }
 }
 
-function average (arr) { return arr.reduce((a, b) => a + b) / arr.length }
+// function average (arr) { return arr.reduce((a, b) => a + b) / arr.length }

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Head from 'next/head'
 import Package from '../package.json'
 
 import { API_BASE_URL } from '../lib/consts'
@@ -18,9 +17,6 @@ export default () => {
 
   return (
     <>
-      <Head>
-        <title>Ardent Industry – Trade &amp; exploration data</title>
-      </Head>
       <header>
         <div className='logo'>
           <h1>

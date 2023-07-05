@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import Loader from '../../components/loader'
 import CommodityExportOrders from '../../components/commodity-export-orders'
 import CommodityImportOrders from '../../components/commodity-import-orders'
 import CommodityReport from '../../components/commodity-report'
@@ -73,8 +74,8 @@ export default () => {
         <i className='icarus-terminal-chevron-right' />
         <Link href='/commodities'>Commodities</Link>
       </p>
-      {commodity === undefined && <div className='loading-bar' style={{ marginTop: '1.5rem' }} />}
-      {commodity === null && <><h2>Error</h2><p>Error: Commodity not found</p></>}
+      {commodity === undefined && <Loader />}
+      {commodity === null && <><h2>Error</h2><p className='clear'>Commodity not found</p></>}
       {commodity &&
         <>
           <h2>
@@ -131,7 +132,7 @@ export default () => {
                     style={{ maxWidth: '10rem' }}
                   />
                   <br />
-                  {commodity.totalStock.toLocaleString()} T
+                  <small>{commodity.totalStock.toLocaleString()} T</small>
                 </td>
               </tr>
               <tr>
@@ -143,7 +144,7 @@ export default () => {
                     style={{ maxWidth: '10rem' }}
                   />
                   <br />
-                  {commodity.totalDemand.toLocaleString()} T
+                  <small>{commodity.totalDemand.toLocaleString()} T</small>
                 </td>
               </tr>
             </tbody>
@@ -158,8 +159,8 @@ export default () => {
               <TabPanel>
                 <div className='tab-panel__header'>
                   <p>
-                    Best bulk export and import prices for <strong>{commodity.name}</strong> in
-                    the Core Systems (aka 'The Bubble').
+                    Best bulk trading prices for <strong>{commodity.name}</strong> in
+                    the Core Systems (aka "The Bubble")
                   </p>
                 </div>
                 <CommodityReport commodityName={commodity.name} reportName='core-systems-1000' />
@@ -167,7 +168,7 @@ export default () => {
               <TabPanel>
                 <div className='tab-panel__header'>
                   <p>
-                    Best bulk export and import prices for <strong>{commodity.name}</strong> near Colonia.
+                    Best bulk trading prices for <strong>{commodity.name}</strong> in systems near Colonia
                   </p>
                 </div>
                 <CommodityReport commodityName={commodity.name} reportName='colonia-systems-1000' />
@@ -175,7 +176,7 @@ export default () => {
               <TabPanel>
                 <div className='tab-panel__header'>
                   <p>
-                    Latest best prices for <strong>{commodity.name}</strong>.
+                    Best prices for <strong>{commodity.name}</strong> anywhere in the galaxy
                   </p>
                 </div>
                 <Tabs>
