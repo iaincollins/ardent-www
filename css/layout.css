@@ -20,6 +20,23 @@
   pointer-events: none;
 }
 
+.layout__frame::before {
+  position: absolute;
+  z-index: 1000;
+  content: "";
+  background: var(--color-primary);
+  clip-path: polygon(0 0,calc(100% - 2.00rem) 0,100% 2.00rem,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem));
+  pointer-events: none;
+  background: rgba(255,255,255,.05);
+  zoom: 1;
+  inset: 0;
+  top: .25rem;
+  left: .25rem;
+  right: .25rem;
+  bottom: .25rem;
+  filter: blur(5rem);
+}
+
 .layout__content {
   overflow: auto;
   position: absolute;
