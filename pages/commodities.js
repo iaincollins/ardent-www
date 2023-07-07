@@ -41,9 +41,9 @@ export default () => {
       {/* <p className='breadcrumb'>
         <Link href='/'>Home</Link>
       </p> */}
-      <p style={{ fontStyle: 'italic', textAlign: 'center' }}>
-        Provided by <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent Industry</a> using
-        data from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>
+      <p style={{ fontStyle: 'italic', textAlign: 'center', opacity: 0.75 }}>
+        Data from <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent Industry</a> powered
+        by <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>
       </p>
       <h2 style={{ marginBottom: 0 }}>Commodities</h2>
       {!commodities && <div className='loading-bar' />}
@@ -111,8 +111,7 @@ export default () => {
           })}
         />}
       <p className='muted' style={{ fontSize: '.9rem', fontStyle: 'italic', textAlign: 'center', marginTop: '2rem' }}>
-        Trade and exploration data for
-        the <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a> universe
+        Trade and exploration data for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>
       </p>
       <p className='muted' style={{ fontSize: '.9rem', fontStyle: 'italic', textAlign: 'center', margin: '1rem 0 2rem 0' }}>
         <a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS</a>

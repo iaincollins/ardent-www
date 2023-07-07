@@ -11,6 +11,11 @@
     clip-path: polygon(0 0,calc(100% - 2.00rem) 0,100% 2.00rem,100% 100%,0 100%);
   }
 
+  .header__logo h1,
+  .header__logo p {
+    padding-left: 1.5rem;
+  }
+
   .is-hidden-mobile {
     display: none;
     width: 0;
@@ -34,6 +39,7 @@
 
   .react-tabs__tab {
     padding: 0 .25rem;
+    font-size: .95rem;
   }
 }
 
