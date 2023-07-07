@@ -32,8 +32,8 @@
     padding-bottom: .25rem;
   }
 
-  .layout__content {
-    font-size: .95rem;
+  .react-tabs__tab {
+    padding: 0 .25rem;
   }
 }
 
