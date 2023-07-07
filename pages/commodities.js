@@ -42,8 +42,8 @@ export default () => {
         <Link href='/'>Home</Link>
       </p> */}
       <p style={{ fontStyle: 'italic', textAlign: 'center' }}>
-        Market insight by <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent Industry</a> sourced
-        from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>
+        Provided by <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent Industry</a> using
+        data from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>
       </p>
       <h2 style={{ marginBottom: 0 }}>Commodities</h2>
       {!commodities && <div className='loading-bar' />}
