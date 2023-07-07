@@ -1,9 +1,5 @@
 
 @media only screen and (max-width: 768px) {
-  html {
-    font-size: .9rem;
-  }
-  
   h2,
   h3,
   h4 {
@@ -34,6 +30,10 @@
   }
   table.properties-table > tbody > tr > td {
     padding-bottom: .25rem;
+  }
+
+  .layout__content {
+    font-size: .95rem;
   }
 }
 

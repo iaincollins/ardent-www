@@ -96,14 +96,18 @@ body::-webkit-scrollbar-track {
 
 .trade-orders__trigger {
   font-size: .9rem;
+  position: relative;
+  padding-left: 1.25rem
 }
 
 .trade-orders__trigger:hover {
   color: var(--color-text-link);
 }
 
-.trade-orders__trigger .icarus-terminal-chevron-right,
-.trade-orders__trigger .icarus-terminal-chevron-down {
+.trade-orders__trigger i {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0;
   margin-right: .15rem !important;
   font-size: .9rem;
 }

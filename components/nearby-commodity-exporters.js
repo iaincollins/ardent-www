@@ -40,9 +40,9 @@ export default ({ commodity }) => {
                 <>
                   {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                   <div className='is-visible-mobile'>
-                    <small style={{ textTransform: 'none' }}>
+                    <span style={{ textTransform: 'none' }}>
                       <Link href={`/system/${r.systemName}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} Ly</span>
-                    </small>
+                    </span>
                     <table className='data-table--mini data-table--compact  data-table--two-equal-columns'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
