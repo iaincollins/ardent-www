@@ -1,4 +1,4 @@
-.logo {
+.header__logo {
   position: relative;
   top: -.5rem;
   left: -1rem;
@@ -7,7 +7,7 @@
   z-index: 40;
 }
 
-.logo h1 {
+.header__logo h1 {
   display: block;
   color: var(--color-text-inverted);
   margin: 0;
@@ -22,7 +22,7 @@
   float: none;
 }
 
-.logo h1:after {
+.header__logo h1:after {
   margin-left: .5rem;
   height: 2.4rem;
   width: 1.5rem;
@@ -30,20 +30,19 @@
   clip-path: polygon(0 0, 0 100%, 100% 0);;
 }
 
-
-.logo h1 em {
+.header__logo h1 em {
   font-size: 2.4rem;
   position: relative;
   top: .1rem;
   font-weight: 900;
 }
 
-.logo h1::before,
-.logo h1::after {
+.header__logo h1::before,
+.header__logo h1::after {
   background: var(--color-primary);
 }
 
-.logo p {
+.header__logo p {
   clear: both;
   position: relative;
   display: inline-block;
@@ -53,7 +52,7 @@
   font-size: 1rem;
 }
 
-.logo p:after {
+.header__logo p:after {
   position: absolute;
   display: inline-block;
   right: -.99rem;
@@ -65,45 +64,42 @@
   z-index: -2;
 }
 
-.logo p,
-.logo p:after {
+.header__logo p,
+.header__logo p:after {
   background: var(--color-primary-darker);
   color: var(--color-primary);
 }
 
-.logo small {
+.header__logo small {
   margin-left: 2rem;
   text-transform: lowercase;
 }
 
-.header-navigation {
+.header__navigation {
   position: absolute;
   top: 0;
   right: 0;
   padding: .25rem;
 }
 
-.header-stats {
+.header__stats {
   position: absolute;
   top: 0;
   right: 0;
-  padding: .5rem .75rem .5rem 0rem;
-  pointer-events: none;
+  padding: .5rem 2.25rem .25rem 0rem;
   text-align: right;
   font-size: .7rem;
   line-height: .9rem;
   text-transform: uppercase;
-  z-index: -3;
-  background: rgba(70,70,70,.5);
-  color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-text-inverted);
   clip-path: polygon(0 0,100% 0,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem));
 }
 
-.header-stats:before {
+.header__stats::before {
   content: '';
   position: absolute;
-  inset: 0; 
-  background: rgba(70,70,70,.6);
+  inset: 0;
   clip-path: polygon(
     0 0,
     100% 0,
@@ -120,13 +116,19 @@
   );
 }
 
-.header-stats__label {
+.header__stats a {
+  color: var(--color-text-inverted);
+  text-decoration: none;
+  border-bottom: 1px dotted  var(--color-text-inverted);
+}
+
+.header__stats__label {
   display: inline-block;
-  width: 6.5rem;
+  width: 6.25rem;
   opacity: .75;
 }
 
-.header-stats__value {
+.header__stats__value {
   display: inline-block;
   width: 4.5rem;
 }

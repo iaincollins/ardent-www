@@ -18,15 +18,15 @@ export default () => {
   return (
     <>
       <header>
-        <div className='logo'>
+        <div className='header__logo'>
           <h1>
             <em>A</em>rdent <em>I</em>ndustry
           </h1>
           <p style={{ fontStyle: 'italic' }}>
-            Trade &amp; exploration
+            Trade &amp; exploration data
           </p>
         </div>
-        <div className='header-navigation' style={{ display: 'none' }}>
+        <div className='header__navigation' style={{ display: 'none' }}>
           <Link href='/commodities'>
             <button className='button'><i className='icon icarus-terminal-cargo' /></button>
           </Link>
@@ -34,17 +34,17 @@ export default () => {
         </div>
         {stats &&
           <div className='is-hidden-mobile'>
-            <div className='header-stats'>
-              <span className='header-stats__label'>Star systems</span>
-              <span className='header-stats__value'>{stats.systems.toLocaleString()}</span>
+            <div className='header__stats'>
+              <span className='header__stats__label'>Star systems</span>
+              <span className='header__stats__value'>{stats.systems.toLocaleString()}</span>
               <br />
-              <span className='header-stats__label'>Trade orders</span>
-              <span className='header-stats__value'>{stats.trade.tradeOrders.toLocaleString()}</span>
+              <span className='header__stats__label'>Trade orders</span>
+              <span className='header__stats__value'>{stats.trade.tradeOrders.toLocaleString()}</span>
               <br />
-              <span className='header-stats__label'>Updated today</span>
-              <span className='header-stats__value'>{stats.trade.updatedInLast24Hours.toLocaleString()}</span>
+              <span className='header__stats__label'>Updates today</span>
+              <span className='header__stats__value'>{stats.trade.updatedInLast24Hours.toLocaleString()}</span>
               <br />
-              <a style={{ float: 'right', fontWeight: 'normal', opacity: 0.5, fontSize: '.7rem', textTransform: 'none' }} href='https://github.com/iaincollins/ardent-www'>ArdentOS v{Package.version}</a>
+              <a style={{ textTransform: 'none' }} href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS v{Package.version} (beta)</a>
             </div>
           </div>}
       </header>

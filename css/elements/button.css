@@ -31,7 +31,7 @@
   backdrop-filter: blur(.5rem);
 }
 
-.button:after {
+.button::after {
   content: "";
   position: absolute;
   inset: 0;

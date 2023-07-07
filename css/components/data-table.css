@@ -92,11 +92,11 @@ table.data-table--compact > tbody > tr > td,
 
 table.data-table--striped > tbody > tr:nth-child(odd of .rc-table-row) > td,
 .data-table--striped > .rc-table-container > .rc-table-content > table > tbody > tr:nth-child(odd of .rc-table-row) > td {
-  background: rgba(0,0,0,0.1);
+  background: rgba(0,0,0,.1);
 }
 table.data-table--striped > tbody > tr:nth-child(even of .rc-table-row) > td,
 .data-table--striped > .rc-table-container > .rc-table-content > table > tbody > tr:nth-child(even of .rc-table-row) > td {
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.3);
 }
 
 table.data-table--interactive > tbody > tr.rc-table-row:hover > td,

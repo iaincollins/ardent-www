@@ -1,7 +1,7 @@
 {
   "name": "ardent-www",
-  "version": "0.21.0",
-  "description": "Ardent Industry WWW Server",
+  "version": "0.22.0",
+  "description": "Ardent Industry",
   "main": "index.js",
   "scripts": {
     "start": "npx next start -p 3000",
@@ -21,7 +21,6 @@
   "homepage": "https://github.com/iaincollins/ardent-spike#readme",
   "dependencies": {
     "next": "^13.4.4",
-    "prettyoutput": "^1.2.0",
     "rc-table": "^7.32.1",
     "react": "^18.2.0",
     "react-collapsible": "^2.10.0",

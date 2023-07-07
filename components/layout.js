@@ -2,9 +2,13 @@ import Header from './header'
 
 export default ({ children }) =>
   <>
-    <Header />
-    {children}
-    <div className='fx-scanlines' />
-    <div className='fx-overlay' />
-    <div className='fx-background' />
+    <div className='layout__frame'>
+      <div className='fx__background' />
+      <Header />
+      <div className='layout__content scrollable'>
+        {children}
+      </div>
+    </div>
+    <div className='fx__scanlines' />
+    <div className='fx__overlay' />
   </>

@@ -3,6 +3,7 @@
 @import url('elements/index.css');
 @import url('fx.css');
 @import url('helpers.css');
+@import url('layout.css');
 @import url('components/header.css');
 @import url('components/tabs.css');
 @import url('components/loader.css');
@@ -24,11 +25,6 @@ i[class*=" icarus-terminal-"] {
   vertical-align: middle;
   pointer-events: none;
   margin: 0 .1rem;
-}
-
-.breadcrumb {
-  margin-bottom: .5rem;
-  margin-top: .5rem;
 }
 
 body,
@@ -67,7 +63,11 @@ body::-webkit-scrollbar-thumb,
 }
 
 .scrollable::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.scrollable::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-lighter);
 }
 
 body::-webkit-scrollbar-thumb {
@@ -85,12 +85,21 @@ body::-webkit-scrollbar-track {
   background-image: linear-gradient(90deg, transparent 41.67%, var(--color-window-scrollbar-track) 41.67%, var(--color-window-scrollbar-track) 50%, transparent 50%, transparent 91.67%, var(--color-window-scrollbar-track) 91.67%, var(--color-window-scrollbar-track) 100%);
 }
 
+.breadcrumb {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
 .Collapsible {
   white-space: normal;
 }
 
 .trade-orders__trigger {
   font-size: .9rem;
+}
+
+.trade-orders__trigger:hover {
+  color: var(--color-text-link);
 }
 
 .trade-orders__trigger .icarus-terminal-chevron-right,

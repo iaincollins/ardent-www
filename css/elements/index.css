@@ -3,9 +3,11 @@
 
 html {
   font-family: sans-serif;
-  background-color: #111;
+  background-color: var(--color-background);
   color: var(--color-text);
-  filter: sepia(.2) contrast(1.1);
+  filter: sepia(.2) contrast(1.2);
+  background: white;
+  overflow: hidden;
 }
 
 html h1,

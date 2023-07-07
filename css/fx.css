@@ -1,4 +1,4 @@
-.fx-scanlines::before {
+.fx__scanlines::before {
   content: " ";
   display: block;
   position: fixed;
@@ -14,7 +14,7 @@
   z-index: 50;
 }
 
-/* .fx-scanlines::after {
+.fx__scanlines::after {
   content: " ";
   display: block;
   position: fixed;
@@ -26,9 +26,9 @@
   z-index: 10010;
   background-size: 100% 3px, 3px 100%;
   pointer-events: none;
-} */
+}
 
-.fx-background::before {
+.fx__background::before {
   content: " ";
   display: block;
   position: fixed;
@@ -43,7 +43,7 @@
   filter: blur(.15rem);
 }
 
-.fx-overlay::after {
+.fx__overlay::after {
   content: " ";
   display: block;
   position: fixed;
@@ -56,7 +56,7 @@
   pointer-events: none;
 }
 
-.fx-overlay::before {
+.fx__overlay::before {
   content: " ";
   display: block;
   position: fixed;
@@ -64,8 +64,7 @@
   left: 0;
   bottom: 0;
   right: 0;
-  background: radial-gradient(circle, rgba(255,255,255,.1) 0, rgba(0,0,0,.5) 100%);
+  background: radial-gradient(circle, rgba(255,255,255,.1) 0, rgba(0,0,0,.8) 100%);
   z-index: -5;
   pointer-events: none;
-  filter: blur(.15rem);
 }
