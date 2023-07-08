@@ -56,12 +56,17 @@ export default () => {
           system.tradeZone = 'Core Systems, Periphery'
           system.tradeZoneDistance = `${distance(systemCoordinates, SOL_COORDINATES).toFixed().toLocaleString()} Ly from Sol`
         } else if (distance(systemCoordinates, COLONIA_COORDINATES) <= 100) {
-          system.tradeZone = 'Colonia Systems'
+          system.tradeZone = 'Colonia Region'
           if (system.systemName !== 'Colonia') {
             system.tradeZoneDistance = `${distance(systemCoordinates, COLONIA_COORDINATES).toFixed().toLocaleString()} Ly from Colonia`
           }
         } else {
           system.tradeZone = 'Deep Space'
+          system.tradeZoneDistance = <>
+            {`${distance(systemCoordinates, SOL_COORDINATES).toFixed().toLocaleString()} Ly from Sol`}
+            <br />
+            {`${distance(systemCoordinates, COLONIA_COORDINATES).toFixed().toLocaleString()} Ly from Colonia`}
+          </>
         }
       }
       setSystem(system)

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Table from 'rc-table'
+import Loader from '../components/loader'
 import commoditiesInfo from '../lib/commodities.json'
 
 import { API_BASE_URL } from '../lib/consts'
@@ -16,37 +17,38 @@ export default () => {
   useEffect(() => {
     (async () => {
       const res = await fetch(`${API_BASE_URL}/v1/commodities`)
-      let commodities = await res.json()
-      commodities = commodities
-        .map(c => {
+      let commoditiesFromServer = await res.json()
+      let listOfCommodities = commoditiesInfo
+        .map(commodity => {
+          const commodityFromServer = (commoditiesFromServer.find(el => commodity.symbol.toLowerCase() === el.commodityName.toLowerCase()))
+          const c = (commodityFromServer) ? {...commodity, ...commodityFromServer } : commodity
           c.key = c.commodityId
           c.avgProfit = c.avgSellPrice - c.avgBuyPrice
           c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
           c.maxProfit = c.maxSellPrice - c.minBuyPrice
-          c.symbol = c.commodityName.toLowerCase()
-          c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-          c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+          if (!c.totalDemand) c.totalDemand = 0
+          if (!c.totalStock) c.totalStock = 0
+          if (!c.avgBuyPrice) c.avgBuyPrice = 0
+          if (!c.avgSellPrice) c.avgSellPrice = 0
           return c
         })
-        .filter(c => c.avgProfit > 0)
-        .filter(c => c.totalStock > 0)
-        .filter(c => c.totalDemand > 0)
-        .sort((a, b) => b.avgProfit - a.avgProfit)
-      setCommodities(commodities)
+        // .filter(c => c.avgProfit > 0)
+        // .filter(c => c.totalStock > 0)
+        // .filter(c => c.totalDemand > 0)
+        //.sort((a, b) => b.avgProfit - a.avgProfit)
+        .sort((a, b) => a.name.localeCompare(b.name))
+      setCommodities(listOfCommodities)
     })()
   }, [])
+
+  if (commodities === undefined) return <Loader />
 
   return (
     <>
       {/* <p className='breadcrumb'>
         <Link href='/'>Home</Link>
       </p> */}
-      <p style={{ fontStyle: 'italic', textAlign: 'center', opacity: 0.75 }}>
-        Data from <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent Industry</a> powered
-        by <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>
-      </p>
       <h2 style={{ marginBottom: 0 }}>Commodities</h2>
-      {!commodities && <div className='loading-bar' />}
       {commodities &&
         <Table
           className='data-table data-table--striped data-table--interactive'
@@ -63,12 +65,12 @@ export default () => {
                     <table className='data-table--mini data-table--compact data-table--two-equal-columns'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
-                          <td><span class='data-table__label'>Avg Import CR/T</span>{r.avgSellPrice.toLocaleString()} CR</td>
-                          <td><span class='data-table__label'>Avg Profit CR/T</span>{r.avgProfit.toLocaleString()} CR</td>
+                          <td><span class='data-table__label'>Avg Import CR/T</span>{r.avgSellPrice > 0 ? <>{r.avgSellPrice.toLocaleString()} CR</> : '-'}</td>
+                          <td><span class='data-table__label'>Avg Profit CR/T</span>{r.avgProfit > 0 ? <>{r.avgProfit.toLocaleString()} CR</> : '-'}</td>
                         </tr>
                         <tr>
-                          <td><span class='data-table__label'>Avg Export CR/T</span>{r.avgBuyPrice.toLocaleString()} CR</td>
-                          <td><span class='data-table__label'>Max Profit CR/T</span>{r.maxProfit.toLocaleString()} CR</td>
+                          <td><span class='data-table__label'>Avg Export CR/T</span>{r.avgBuyPrice > 0 ? <>{r.avgBuyPrice.toLocaleString()} CR</> : '-'}</td>
+                          <td><span class='data-table__label'>Max Profit CR/T</span>{r.maxProfit > 0 ? <>{r.maxProfit.toLocaleString()} CR</> : '-'}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -81,7 +83,7 @@ export default () => {
               key: 'avgSellPrice',
               align: 'right',
               className: 'is-hidden-mobile',
-              render: (v) => <>{v.toLocaleString()} CR</>
+              render: (v) => v > 0 ? <>{v.toLocaleString()} CR</> : '-'
             },
             {
               title: 'Avg export CR/T',
@@ -89,7 +91,7 @@ export default () => {
               key: 'avgBuyPrice',
               align: 'right',
               className: 'is-hidden-mobile',
-              render: (v) => <>{v.toLocaleString()} CR</>
+              render: (v) => v > 0 ? <>{v.toLocaleString()} CR</> : '-'
             },
             {
               title: 'Avg profit CR/T',
@@ -97,11 +99,11 @@ export default () => {
               key: 'avgProfit',
               align: 'right',
               className: 'is-hidden-mobile',
-              render: (v, r) =>
+              render: (v, r) => 
                 <div style={{ textTransform: 'uppercase' }}>
-                  {v.toLocaleString()} CR
+                  { v > 0 ? <>{v.toLocaleString()} CR</> : '-'}
                   <br />
-                  <small>Max {r.maxProfit.toLocaleString()} CR</small>
+                 { v > 0 ? <small>Max {r.maxProfit.toLocaleString()} CR</small> : ''}
                 </div>
             }
           ]}
@@ -110,10 +112,13 @@ export default () => {
             onClick: onRowClick.bind(null, record, index)
           })}
         />}
-      <p className='muted' style={{ fontSize: '.9rem', fontStyle: 'italic', textAlign: 'center', marginTop: '2rem' }}>
+      <p className='muted' style={{ fontStyle: 'italic', textAlign: 'center', marginTop: '2rem' }}>
         Trade and exploration data for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>
       </p>
-      <p className='muted' style={{ fontSize: '.9rem', fontStyle: 'italic', textAlign: 'center', margin: '1rem 0 2rem 0' }}>
+      <p className='muted' style={{ fontStyle: 'italic', textAlign: 'center' }}>
+        Live data feed powered by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a> / <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>
+      </p>
+      <p className='muted' style={{ fontStyle: 'italic', textAlign: 'center' }}>
         <a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS</a>
         <span className='muted'> | </span>
         <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent API</a>

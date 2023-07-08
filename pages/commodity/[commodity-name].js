@@ -156,7 +156,7 @@ export default () => {
           <Tabs>
             <TabList>
               <Tab>Core<span className='is-hidden-mobile'> Systems</span></Tab>
-              <Tab>Colonia<span className='is-hidden-mobile'> Systems</span></Tab>
+              <Tab>Colonia<span className='is-hidden-mobile'> Region</span></Tab>
               <Tab>Live<span className='is-hidden-mobile'> Data</span></Tab>
             </TabList>
             <div className='tab-panel__container'>
@@ -164,7 +164,7 @@ export default () => {
                 <div className='tab-panel__header'>
                   <p>
                     Best bulk trading prices for <strong>{commodity.name}</strong> in
-                    the Core Systems (aka "The Bubble")
+                    systems near the Core Worlds (aka "The Bubble")
                   </p>
                 </div>
                 <CommodityReport commodityName={commodity.name} reportName='core-systems-1000' />
