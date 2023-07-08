@@ -33,6 +33,8 @@ export default () => {
         c.symbol = c.commodityName.toLowerCase()
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? 'Unknown'
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        if (!c.totalDemand) c.totalDemand = 0
+        if (!c.totalStock) c.totalStock = 0
         delete c.commodityName
       }
       setCommodity(c)

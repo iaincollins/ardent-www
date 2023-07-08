@@ -143,11 +143,11 @@ export default () => {
                 <td>{exportOrders?.length?.toLocaleString() ?? '-'}</td>
               </tr>
               <tr>
-                <th>Consumes</th>
+                <th>Consumed</th>
                 <td>{consumes?.length?.toLocaleString() ?? '-'}</td>
               </tr>
               <tr>
-                <th>Produces</th>
+                <th>Produced</th>
                 <td>{produces?.length?.toLocaleString() ?? '-'} </td>
               </tr>
             </tbody>
