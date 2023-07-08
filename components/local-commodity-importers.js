@@ -22,8 +22,8 @@ export default ({ commodityOrders }) => {
                     <table className='data-table--mini data-table--compact data-table--two-equal-columns'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
-                          <td><span class='data-table__label'>Demand</span>{r.demand.toLocaleString()} T</td>
-                          <td><span class='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
+                          <td><span className='data-table__label'>Demand</span>{r.demand.toLocaleString()} T</td>
+                          <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                         </tr>
                       </tbody>
                     </table>

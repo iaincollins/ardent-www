@@ -31,8 +31,8 @@ export default ({ commodityOrders }) => {
                           </td>
                         </tr>
                         <tr>
-                          <td><span class='data-table__label'>Stock</span>{r.stock.toLocaleString()} T</td>
-                          <td><span class='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                          <td><span className='data-table__label'>Stock</span>{r.stock.toLocaleString()} T</td>
+                          <td><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
                         </tr>
                       </tbody>
                     </table>

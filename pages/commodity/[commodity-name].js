@@ -25,7 +25,7 @@ export default () => {
       const commodityName = router.query?.['commodity-name']
       if (!commodityName) return
 
-      const c = await getCommodity(commodityName)
+      let c = await getCommodity(commodityName)
       if (c) {
         c.avgProfit = c.avgSellPrice - c.avgBuyPrice
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
@@ -33,11 +33,12 @@ export default () => {
         c.symbol = c.commodityName.toLowerCase()
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? 'Unknown'
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        if (!c.totalDemand) c.totalDemand = 0
-        if (!c.totalStock) c.totalStock = 0
         delete c.commodityName
       }
-      setCommodity(c)
+      if (!c) c = commoditiesInfo.find(el => el.symbol.toLowerCase() === commodityName.toLowerCase())
+      if (c && !c.totalDemand) c.totalDemand = 0
+      if (c && !c.totalStock) c.totalStock = 0
+      setCommodity(c || null)
 
       const exports = await getExports(commodityName)
       exports.forEach(c => {
