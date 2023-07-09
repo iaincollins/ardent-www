@@ -34,7 +34,7 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      const systemName = router.query?.['system-name']
+      const systemName = router.query?.['system-name']?.replaceAll('+', ' ')
       if (!systemName) return
 
       setSystem(undefined)
@@ -50,22 +50,22 @@ export default () => {
         if (distance(systemCoordinates, SOL_COORDINATES) <= 200) {
           system.tradeZone = 'Core Systems'
           if (system.systemName !== 'Sol') {
-            system.tradeZoneDistance = `${distance(systemCoordinates, SOL_COORDINATES).toFixed().toLocaleString()} Ly from Sol`
+            system.tradeZoneDistance = `${distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol`
           }
         } else if (distance(systemCoordinates, SOL_COORDINATES) <= 400) {
           system.tradeZone = 'Core Systems, Periphery'
-          system.tradeZoneDistance = `${distance(systemCoordinates, SOL_COORDINATES).toFixed().toLocaleString()} Ly from Sol`
+          system.tradeZoneDistance = `${distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol`
         } else if (distance(systemCoordinates, COLONIA_COORDINATES) <= 100) {
           system.tradeZone = 'Colonia Region'
           if (system.systemName !== 'Colonia') {
-            system.tradeZoneDistance = `${distance(systemCoordinates, COLONIA_COORDINATES).toFixed().toLocaleString()} Ly from Colonia`
+            system.tradeZoneDistance = `${distance(systemCoordinates, COLONIA_COORDINATES)} Ly from Colonia`
           }
         } else {
           system.tradeZone = 'Deep Space'
           system.tradeZoneDistance = <>
-            {`${distance(systemCoordinates, SOL_COORDINATES).toFixed().toLocaleString()} Ly from Sol`}
+            {`${distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol`}
             <br />
-            {`${distance(systemCoordinates, COLONIA_COORDINATES).toFixed().toLocaleString()} Ly from Colonia`}
+            {`${distance(systemCoordinates, COLONIA_COORDINATES)} Ly from Colonia`}
           </>
         }
       }
@@ -100,11 +100,10 @@ export default () => {
 
   return (
     <>
-      <p className='breadcrumb'>
-        <Link href='/'>Home</Link>
-        <i className='icarus-terminal-chevron-right' />
-        <Link href='/commodities'>Systems</Link>
-      </p>
+      <ul className='breadcrumbs'>
+        <li><Link href='/'>Home</Link></li>
+        <li><Link href='/commodities'>Systems</Link></li>
+      </ul>
       {system === undefined && <Loader />}
       {system === null && <><h2>Error</h2><p className='clear'>System not found</p></>}
       {system &&

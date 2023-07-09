@@ -120,11 +120,13 @@
   color: var(--color-text-inverted);
   text-decoration: none;
   border-bottom: 1px dotted  var(--color-text-inverted);
+  font-weight: 600;
 }
 
 .header__stats__label {
   display: inline-block;
   width: 6.25rem;
+  font-weight: 600;
   opacity: .75;
 }
 

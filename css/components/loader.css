@@ -17,6 +17,19 @@
   text-align: center;
 }
 
+#loader:before {
+  position: absolute;
+  top: -1.8rem;
+  height: 9rem;
+  width: 9rem;
+  display: block;
+  content: '';
+  border-radius: 5rem;
+  background: black;
+  box-shadow: 0 0 5rem black;
+  filter: blur(2rem);
+}
+
 .loader__row {
   display: flex;
 }

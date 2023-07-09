@@ -48,7 +48,7 @@ export default () => {
       {/* <p className='breadcrumb'>
         <Link href='/'>Home</Link>
       </p> */}
-      <h2 style={{ marginBottom: 0 }}>Commodities</h2>
+      <h2 style={{ marginTop: '1rem', marginBottom: '-0.1rem' }}>Commodities</h2>
       {commodities &&
         <Table
           className='data-table data-table--striped data-table--interactive'
@@ -113,10 +113,10 @@ export default () => {
           })}
         />}
       <p className='muted' style={{ fontStyle: 'italic', textAlign: 'center', marginTop: '2rem' }}>
-        Trade and exploration data for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>
+        Trade &amp; exploration data for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>
       </p>
       <p className='muted' style={{ fontStyle: 'italic', textAlign: 'center' }}>
-        Live data feed powered by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a> / <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>
+        Real time data from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a> by  <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>
       </p>
       <p className='muted' style={{ fontStyle: 'italic', textAlign: 'center' }}>
         <a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS</a>

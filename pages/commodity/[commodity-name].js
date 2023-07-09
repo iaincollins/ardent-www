@@ -40,20 +40,6 @@ export default () => {
       if (c && !c.totalStock) c.totalStock = 0
       setCommodity(c || null)
 
-      const exports = await getExports(commodityName)
-      exports.forEach(c => {
-        c.key = c.commodityId
-        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-        c.maxProfit = c.maxSellPrice - c.minBuyPrice
-        c.symbol = c.commodityName.toLowerCase()
-        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        delete c.commodityId
-        delete c.commodityName
-      })
-      setExports(exports)
-
       const imports = await getImports(commodityName)
       imports.forEach(c => {
         c.key = c.commodityId
@@ -67,16 +53,29 @@ export default () => {
         delete c.commodityName
       })
       setImports(imports)
+
+      const exports = await getExports(commodityName)
+      exports.forEach(c => {
+        c.key = c.commodityId
+        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+        c.maxProfit = c.maxSellPrice - c.minBuyPrice
+        c.symbol = c.commodityName.toLowerCase()
+        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        delete c.commodityId
+        delete c.commodityName
+      })
+      setExports(exports)
     })()
   }, [router.query['commodity-name']])
 
   return (
     <>
-      <p className='breadcrumb'>
-        <Link href='/'>Home</Link>
-        <i className='icarus-terminal-chevron-right' />
-        <Link href='/commodities'>Commodities</Link>
-      </p>
+      <ul className='breadcrumbs'>
+        <li><Link href='/'>Home</Link></li>
+        <li><Link href='/commodities'>Commodities</Link></li>
+      </ul>
       {commodity === undefined && <Loader />}
       {commodity === null && <><h2>Error</h2><p className='clear'>Commodity not found</p></>}
       {commodity &&
@@ -135,7 +134,7 @@ export default () => {
                     style={{ maxWidth: '12rem' }}
                   />
                   <p style={{ margin: '0 0 .15rem 0' }}>
-                    <small>{commodity.totalDemand.toLocaleString()} T</small>
+                    {commodity.totalDemand > 0 ? <>{commodity.totalDemand.toLocaleString()} T</> : '-'}
                   </p>
                 </td>
               </tr>
@@ -148,19 +147,45 @@ export default () => {
                     style={{ maxWidth: '12rem' }}
                   />
                   <p style={{ margin: '0 0 .15rem 0' }}>
-                    <small>{commodity.totalStock.toLocaleString()} T</small>
+                    {commodity.totalStock > 0 ? <>{commodity.totalStock.toLocaleString()} T</> : '-'}
                   </p>
                 </td>
               </tr>
             </tbody>
           </table>
-          <Tabs>
+          {imports === undefined && <Loader />}
+          {imports && 
+            <Tabs>
+              <TabList>
+                <Tab>Imports</Tab>
+                <Tab>Exports</Tab>
+              </TabList>
+              <TabPanel>
+                {!imports && <div className='loading-bar' style={{ marginTop: '.75rem', marginBottom: 0 }} />}
+                {imports && <CommodityImportOrders commodities={imports} />}
+              </TabPanel>
+              <TabPanel>
+                {!exports && <div className='loading-bar' style={{ marginTop: '.75rem', marginBottom: 0 }} />}
+                {exports && <CommodityExportOrders commodities={exports} />}
+              </TabPanel>
+            </Tabs>
+          }
+          {/* <Tabs>
             <TabList>
+              <Tab>Live<span className='is-hidden-mobile'> Data</span></Tab>
               <Tab>Core<span className='is-hidden-mobile'> Systems</span></Tab>
               <Tab>Colonia<span className='is-hidden-mobile'> Region</span></Tab>
-              <Tab>Live<span className='is-hidden-mobile'> Data</span></Tab>
+              
             </TabList>
             <div className='tab-panel__container'>
+            <TabPanel>
+                <div className='tab-panel__header'>
+                  <p>
+                    Best prices for <strong>{commodity.name}</strong> anywhere in the galaxy
+                  </p>
+                </div>
+               
+              </TabPanel>
               <TabPanel>
                 <div className='tab-panel__header'>
                   <p>
@@ -178,29 +203,8 @@ export default () => {
                 </div>
                 <CommodityReport commodityName={commodity.name} reportName='colonia-systems-1000' />
               </TabPanel>
-              <TabPanel>
-                <div className='tab-panel__header'>
-                  <p>
-                    Best prices for <strong>{commodity.name}</strong> anywhere in the galaxy
-                  </p>
-                </div>
-                <Tabs>
-                  <TabList>
-                    <Tab>Imports</Tab>
-                    <Tab>Exports</Tab>
-                  </TabList>
-                  <TabPanel>
-                    {!imports && <div className='loading-bar' style={{ marginTop: '.75rem', marginBottom: 0 }} />}
-                    {imports && <CommodityImportOrders commodities={imports} />}
-                  </TabPanel>
-                  <TabPanel>
-                    {!exports && <div className='loading-bar' style={{ marginTop: '.75rem', marginBottom: 0 }} />}
-                    {exports && <CommodityExportOrders commodities={exports} />}
-                  </TabPanel>
-                </Tabs>
-              </TabPanel>
             </div>
-          </Tabs>
+          </Tabs> */}
         </>}
     </>
   )

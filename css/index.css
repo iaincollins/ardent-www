@@ -5,6 +5,7 @@
 @import url('helpers.css');
 @import url('layout.css');
 @import url('components/header.css');
+@import url('components/breadcrumb.css');
 @import url('components/tabs.css');
 @import url('components/loader.css');
 @import url('components/loading-bar.css');
@@ -83,11 +84,6 @@ body::-webkit-scrollbar-track,
 
 body::-webkit-scrollbar-track {
   background-image: linear-gradient(90deg, transparent 41.67%, var(--color-window-scrollbar-track) 41.67%, var(--color-window-scrollbar-track) 50%, transparent 50%, transparent 91.67%, var(--color-window-scrollbar-track) 91.67%, var(--color-window-scrollbar-track) 100%);
-}
-
-.breadcrumb {
-  margin-bottom: 1rem;
-  margin-top: 1rem;
 }
 
 .Collapsible {
