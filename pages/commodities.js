@@ -17,8 +17,8 @@ export default () => {
   useEffect(() => {
     (async () => {
       const res = await fetch(`${API_BASE_URL}/v1/commodities`)
-      let commoditiesFromServer = await res.json()
-      let listOfCommodities = commoditiesInfo
+      const commoditiesFromServer = await res.json()
+      const listOfCommodities = commoditiesInfo
         .map(commodity => {
           const commodityFromServer = (commoditiesFromServer.find(el => commodity.symbol.toLowerCase() === el.commodityName.toLowerCase()))
           const c = (commodityFromServer) ? {...commodity, ...commodityFromServer } : commodity
@@ -35,7 +35,7 @@ export default () => {
         // .filter(c => c.avgProfit > 0)
         // .filter(c => c.totalStock > 0)
         // .filter(c => c.totalDemand > 0)
-        //.sort((a, b) => b.avgProfit - a.avgProfit)
+        // .sort((a, b) => b.avgProfit - a.avgProfit)
         .sort((a, b) => a.name.localeCompare(b.name))
       setCommodities(listOfCommodities)
     })()
@@ -48,7 +48,7 @@ export default () => {
       {/* <p className='breadcrumb'>
         <Link href='/'>Home</Link>
       </p> */}
-      <h2 style={{ marginTop: '1rem', marginBottom: '-0.1rem' }}>Commodities</h2>
+      <h2 style={{ marginTop: '1.2rem', marginBottom: '-0.1rem' }}>Commodities</h2>
       {commodities &&
         <Table
           className='data-table data-table--striped data-table--interactive'
@@ -101,9 +101,9 @@ export default () => {
               className: 'is-hidden-mobile',
               render: (v, r) => 
                 <div style={{ textTransform: 'uppercase' }}>
-                  { v > 0 ? <>{v.toLocaleString()} CR</> : '-'}
+                  {v > 0 ? <>{v.toLocaleString()} CR</> : '-'}
                   <br />
-                 { v > 0 ? <small>Max {r.maxProfit.toLocaleString()} CR</small> : ''}
+                  {v > 0 ? <small>Max {r.maxProfit.toLocaleString()} CR</small> : ''}
                 </div>
             }
           ]}

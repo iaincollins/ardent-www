@@ -5,7 +5,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import Loader from '../../components/loader'
 import CommodityExportOrders from '../../components/commodity-export-orders'
 import CommodityImportOrders from '../../components/commodity-import-orders'
-import CommodityReport from '../../components/commodity-report'
+// import CommodityReport from '../../components/commodity-report'
 import commoditiesInfo from '../../lib/commodities.json'
 
 import { API_BASE_URL } from '../../lib/consts'
@@ -154,7 +154,7 @@ export default () => {
             </tbody>
           </table>
           {imports === undefined && <Loader />}
-          {imports && 
+          {imports &&
             <Tabs>
               <TabList>
                 <Tab>Imports</Tab>
@@ -168,23 +168,21 @@ export default () => {
                 {!exports && <div className='loading-bar' style={{ marginTop: '.75rem', marginBottom: 0 }} />}
                 {exports && <CommodityExportOrders commodities={exports} />}
               </TabPanel>
-            </Tabs>
-          }
-          {/* <Tabs>
+            </Tabs>}
+          {/*
+          <Tabs>
             <TabList>
               <Tab>Live<span className='is-hidden-mobile'> Data</span></Tab>
               <Tab>Core<span className='is-hidden-mobile'> Systems</span></Tab>
               <Tab>Colonia<span className='is-hidden-mobile'> Region</span></Tab>
-              
             </TabList>
             <div className='tab-panel__container'>
-            <TabPanel>
+              <TabPanel>
                 <div className='tab-panel__header'>
                   <p>
                     Best prices for <strong>{commodity.name}</strong> anywhere in the galaxy
                   </p>
                 </div>
-               
               </TabPanel>
               <TabPanel>
                 <div className='tab-panel__header'>

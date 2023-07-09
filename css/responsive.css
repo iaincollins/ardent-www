@@ -7,7 +7,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: calc(100% - 1.3rem);
+    width: calc(100% - 1.25rem);
     clip-path: polygon(0 0,calc(100% - 1.5rem) 0,100% 2rem,100% 100%,0 100%);
     padding-left: .25rem;
     padding-right: 1rem;
@@ -15,11 +15,13 @@
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 
   h3 {
-    font-size: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
   }
 
   .header__logo h1,

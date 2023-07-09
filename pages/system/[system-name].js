@@ -62,11 +62,13 @@ export default () => {
           }
         } else {
           system.tradeZone = 'Deep Space'
-          system.tradeZoneDistance = <>
-            {`${distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol`}
-            <br />
-            {`${distance(systemCoordinates, COLONIA_COORDINATES)} Ly from Colonia`}
-          </>
+          system.tradeZoneDistance = (
+            <>
+              {`${distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol`}
+              <br />
+              {`${distance(systemCoordinates, COLONIA_COORDINATES)} Ly from Colonia`}
+            </>
+          )
         }
       }
       setSystem(system)
@@ -133,11 +135,11 @@ export default () => {
                   {system.tradeZoneDistance !== undefined && <small style={{ textTransform: 'none' }}><br />{system.tradeZoneDistance}</small>}
                 </td>
               </tr>
-              <tr>
-                <td colspan={2} align='left'>
-                  <h3 style={{ marginBottom: '.5rem' }}>Commodities</h3>
-                </td>
-              </tr>
+            </tbody>
+          </table>
+          <h3>Commodities</h3>
+          <table className='properties-table'>
+            <tbody>
               <tr>
                 <th>Imported</th>
                 <td>{importOrders?.length?.toLocaleString() ?? '-'} </td>
