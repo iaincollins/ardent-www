@@ -12,10 +12,11 @@ table.properties-table > tbody > tr > td {
 
 table.properties-table > tbody > tr > th {
   font-family: "Jura", sans-serif;
-  opacity: .5;
+  opacity: .8;
   text-align: right;
   padding: 0 1rem;
   width: 10rem;
+  font-size: 1.05rem;
 }
 
 table.properties-table > tbody > tr > td {

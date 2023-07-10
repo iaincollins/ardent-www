@@ -229,20 +229,48 @@ export default () => {
           <table className='properties-table'>
             <tbody>
               <tr>
-                <th>Imported</th>
-                <td>{importOrders?.length?.toLocaleString() ?? '-'} </td>
+                <th className='is-hidden-mobile'>Imported</th>
+                <td>
+                  {importOrders !== undefined &&
+                    <>
+                      {importOrders.length.toLocaleString()}
+                      <span className='is-visible-mobile muted'> imported</span>
+                    </>}
+                  {importOrders === undefined && '-'}
+                </td>
               </tr>
               <tr>
-                <th>Exported</th>
-                <td>{exportOrders?.length?.toLocaleString() ?? '-'}</td>
+                <th className='is-hidden-mobile'>Exported</th>
+                <td>
+                  {exportOrders !== undefined &&
+                    <>
+                      {exportOrders.length.toLocaleString()}
+                      <span className='is-visible-mobile muted'> exported</span>
+                    </>}
+                  {exportOrders === undefined && '-'}
+                </td>
               </tr>
               <tr>
-                <th>Consumed</th>
-                <td>{consumes?.length?.toLocaleString() ?? '-'}</td>
+                <th className='is-hidden-mobile'>Consumed</th>
+                <td>
+                  {consumes !== undefined &&
+                    <>
+                      {consumes.length.toLocaleString()}
+                      <span className='is-visible-mobile muted'> consumed</span>
+                    </>}
+                  {consumes === undefined && '-'}
+                </td>
               </tr>
               <tr>
-                <th>Produced</th>
-                <td>{produces?.length?.toLocaleString() ?? '-'} </td>
+                <th className='is-hidden-mobile'>Produced</th>
+                <td>
+                  {produces !== undefined &&
+                    <>
+                      {produces.length.toLocaleString()}
+                      <span className='is-visible-mobile muted'> produced</span>
+                    </>}
+                  {produces === undefined && '-'}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -269,7 +297,7 @@ export default () => {
                           <i className='icon icarus-terminal-cargo' />{v}{r?.consumer === true && <> <small>(Consumer)</small></>}<br />
                           <small>{r.importOrders.length === 1 ? '1 importer ' : `${r.importOrders.length} importers`}</small>
                           <div className='is-visible-mobile'>
-                            <table className='data-table--mini data-table--compact data-table--two-equal-columns'>
+                            <table className='data-table--mini data-table--compact two-column-table'>
                               <tbody style={{ textTransform: 'uppercase' }}>
                                 <tr>
                                   <td><span className='data-table__label'>Total demand</span>{r.totalDemand.toLocaleString()} T</td>
@@ -385,7 +413,7 @@ export default () => {
                           <i className='icon icarus-terminal-cargo' />{v}{r?.producer === true && <> <small>(Producer)</small></>}<br />
                           <small>{r.exportOrders.length === 1 ? '1 exporter ' : `${r.exportOrders.length} exporters`}</small>
                           <div className='is-visible-mobile'>
-                            <table className='data-table--mini data-table--two-equal-columns data-table--compact'>
+                            <table className='data-table--mini two-column-table data-table--compact'>
                               <tbody style={{ textTransform: 'uppercase' }}>
                                 <tr>
                                   <td><span className='data-table__label'>Total stock</span>{r.totalStock.toLocaleString()} T</td>

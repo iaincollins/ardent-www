@@ -35,13 +35,13 @@ export default () => {
         {stats &&
           <div className='is-hidden-mobile'>
             <div className='header__stats'>
-              <span className='header__stats__label'>Star systems</span>
+              <span className='header__stats__label'>Star systems </span>
               <span className='header__stats__value'>{stats.systems.toLocaleString()}</span>
               <br />
-              <span className='header__stats__label'>Trade orders</span>
+              <span className='header__stats__label'>Trade orders </span>
               <span className='header__stats__value'>{stats.trade.tradeOrders.toLocaleString()}</span>
               <br />
-              <span className='header__stats__label'>Updates today</span>
+              <span className='header__stats__label'>Updates today </span>
               <span className='header__stats__value'>{stats.trade.updatedInLast24Hours.toLocaleString()}</span>
               <br />
               <a style={{ textTransform: 'none' }} href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS v{Package.version} (beta)</a>

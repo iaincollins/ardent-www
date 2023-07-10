@@ -21,7 +21,7 @@ export default () => {
       const listOfCommodities = commoditiesInfo
         .map(commodity => {
           const commodityFromServer = (commoditiesFromServer.find(el => commodity.symbol.toLowerCase() === el.commodityName.toLowerCase()))
-          const c = (commodityFromServer) ? {...commodity, ...commodityFromServer } : commodity
+          const c = (commodityFromServer) ? { ...commodity, ...commodityFromServer } : commodity
           c.key = c.commodityId
           c.avgProfit = c.avgSellPrice - c.avgBuyPrice
           c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
@@ -62,7 +62,7 @@ export default () => {
                 <>
                   <i className='icon icarus-terminal-cargo' />{v}<br /><small>{r.category}</small>
                   <div className='is-visible-mobile'>
-                    <table className='data-table--mini data-table--compact data-table--two-equal-columns'>
+                    <table className='data-table--mini data-table--compact two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
                           <td><span className='data-table__label'>Avg Import CR/T</span>{r.avgSellPrice > 0 ? <>{r.avgSellPrice.toLocaleString()} CR</> : '-'}</td>
@@ -99,7 +99,7 @@ export default () => {
               key: 'avgProfit',
               align: 'right',
               className: 'is-hidden-mobile',
-              render: (v, r) => 
+              render: (v, r) =>
                 <div style={{ textTransform: 'uppercase' }}>
                   {v > 0 ? <>{v.toLocaleString()} CR</> : '-'}
                   <br />

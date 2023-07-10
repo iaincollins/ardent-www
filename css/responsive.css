@@ -29,8 +29,20 @@
     padding-left: 1.5rem;
   }
 
+  .header__logo h1 {
+    padding-top: .2rem;
+    padding-bottom: .1em;
+  }
+
+  .header__logo h1,
+  .header__logo h1 em {
+    top: 0;
+    font-size: 1.8rem !important;
+    height: 2rem;
+  }
+
   .is-hidden-mobile {
-    display: none;
+    display: none !important;
     width: 0;
     padding: 0;
   }
@@ -46,8 +58,9 @@
     padding: 0;
     width: 100%;
   }
+
   table.properties-table > tbody > tr > td {
-    padding-bottom: .25rem;
+    padding-bottom: .5rem;
   }
 
   .react-tabs__tab {
@@ -62,6 +75,6 @@
   }
 
   .is-visible-mobile {
-    display: none;
+    display: none !important;
   }
 }

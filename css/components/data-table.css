@@ -32,6 +32,11 @@
   text-overflow: ellipsis;
 }
 
+/* Don't apply above nowrapping to p tag in cells */
+.data-table td p {
+  white-space: normal;
+}
+
 .data-table tr.rc-table-row td {
   margin-bottom: .5rem;
   border-top: .25rem solid #111;
@@ -104,9 +109,4 @@ table.data-table--striped.data-table--interactive > tbody > tr.rc-table-row:hove
 .data-table--interactive > .rc-table-container > .rc-table-content > table > tbody > tr.rc-table-row:hover > td,
 .data-table--striped.data-table--interactive > .rc-table-container > .rc-table-content > table > tbody > tr.rc-table-row:hover > td {
   background: rgba(255,255,255,.15);
-}
-
-table.data-table--two-equal-columns > tbody > tr > td,
-.data-table--two-equal-columns > .rc-table-container > .rc-table-content > table > tbody > tr > td {
-  width: 50%;
 }

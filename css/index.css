@@ -90,7 +90,6 @@ body::-webkit-scrollbar-track {
   white-space: normal;
 }
 
-
 .trade-orders__trigger {
   font-size: .9rem;
   position: relative;
@@ -132,4 +131,9 @@ body::-webkit-scrollbar-track {
   top: .1rem !important;
   left: 0;
   font-size: .9rem !important;
+}
+
+table.two-column-table > tbody > tr > td,
+.two-column-table > .rc-table-container > .rc-table-content > table > tbody > tr > td {
+  width: 50%;
 }

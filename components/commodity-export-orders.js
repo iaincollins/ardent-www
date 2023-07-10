@@ -29,7 +29,7 @@ export default ({ commodities }) => {
               <i className='icon icarus-terminal-star' />{v}<br />
               <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
               <div className='is-visible-mobile'>
-                <table className='data-table--mini data-table--compact data-table--two-equal-columns'>
+                <table className='data-table--mini data-table--compact two-column-table'>
                   <tbody style={{ textTransform: 'uppercase' }}>
                     <tr>
                       <td><span className='data-table__label'>Stock</span>{r.stock.toLocaleString()} T</td>
@@ -121,7 +121,7 @@ function ExpandedRow ({ r }) {
               <>
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 <div className='is-visible-mobile'>
-                  <table className='data-table--mini data-table--compact data-table--two-equal-columns'>
+                  <table className='data-table--mini data-table--compact two-column-table'>
                     <tbody style={{ textTransform: 'uppercase' }}>
                       <tr>
                         <td><span className='data-table__label'>Stock</span>{r.stock.toLocaleString()} T</td>

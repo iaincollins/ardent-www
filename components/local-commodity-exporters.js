@@ -21,7 +21,7 @@ export default ({ commodityOrders }) => {
                     {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                   </span>
                   <div className='is-visible-mobile'>
-                    <table className='data-table--mini data-table--striped data-table--two-equal-columns'>
+                    <table className='data-table--mini data-table--striped two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
                           <td colSpan={2}>

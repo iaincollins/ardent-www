@@ -19,7 +19,7 @@ export default ({ commodityOrders }) => {
                 <>
                   {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                   <div className='is-visible-mobile'>
-                    <table className='data-table--mini data-table--compact data-table--two-equal-columns'>
+                    <table className='data-table--mini data-table--compact two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
                           <td><span className='data-table__label'>Demand</span>{r.demand.toLocaleString()} T</td>

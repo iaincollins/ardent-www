@@ -43,7 +43,7 @@ export default ({ commodity }) => {
                     <span style={{ textTransform: 'none' }}>
                       <Link href={`/system/${r.systemName}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} Ly</span>
                     </span>
-                    <table className='data-table--mini data-table--compact data-table--two-equal-columns'>
+                    <table className='data-table--mini data-table--compact two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
                           <td><span className='data-table__label'>Demand</span>{r.demand.toLocaleString()} T</td>
