@@ -46,7 +46,7 @@ export default ({ commodities }) => {
           dataIndex: 'updatedAt',
           key: 'updatedAt',
           align: 'right',
-          width: 150,
+          width: 110,
           className: 'is-hidden-mobile',
           render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
         },
@@ -55,7 +55,7 @@ export default ({ commodities }) => {
           dataIndex: 'demand',
           key: 'demand',
           align: 'right',
-          width: 150,
+          width: 140,
           className: 'is-hidden-mobile',
           render: (v) => <>{v.toLocaleString()} T</>
         },
@@ -64,7 +64,7 @@ export default ({ commodities }) => {
           dataIndex: 'sellPrice',
           key: 'sellPrice',
           align: 'right',
-          width: 150,
+          width: 140,
           className: 'is-hidden-mobile',
           render: (v) => <>{v.toLocaleString()} CR</>
         }
@@ -147,7 +147,7 @@ function ExpandedRow ({ r }) {
             dataIndex: 'demand',
             key: 'demand',
             align: 'right',
-            width: 120,
+            width: 130,
             className: 'is-hidden-mobile',
             render: (v) => <>{v.toLocaleString()} T</>
           },
@@ -156,7 +156,7 @@ function ExpandedRow ({ r }) {
             dataIndex: 'sellPrice',
             key: 'sellPrice',
             align: 'right',
-            width: 120,
+            width: 130,
             className: 'is-hidden-mobile',
             render: (v) => <>{v.toLocaleString()} CR</>
           }

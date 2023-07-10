@@ -46,7 +46,7 @@ export default ({ commodities }) => {
           dataIndex: 'updatedAt',
           key: 'updatedAt',
           align: 'right',
-          width: 150,
+          width: 110,
           className: 'is-hidden-mobile',
           render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
         },
@@ -55,7 +55,7 @@ export default ({ commodities }) => {
           dataIndex: 'stock',
           key: 'stock',
           align: 'right',
-          width: 150,
+          width: 140,
           className: 'is-hidden-mobile',
           render: (v) => <>{v.toLocaleString()} T</>
         },
@@ -64,7 +64,7 @@ export default ({ commodities }) => {
           dataIndex: 'buyPrice',
           key: 'buyPrice',
           align: 'right',
-          width: 150,
+          width: 140,
           className: 'is-hidden-mobile',
           render: (v) => <>{v.toLocaleString()} CR</>
         }

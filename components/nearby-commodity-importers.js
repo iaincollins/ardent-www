@@ -68,6 +68,7 @@ export default ({ commodity }) => {
               dataIndex: 'distance',
               key: 'distance',
               align: 'right',
+              width: 100,
               className: 'is-hidden-mobile',
               render: (v) => <span style={{ opacity: 0.75 }}>{v} Ly</span>
             },
@@ -76,7 +77,7 @@ export default ({ commodity }) => {
               dataIndex: 'updatedAt',
               key: 'updatedAt',
               align: 'right',
-              width: 130,
+              width: 100,
               className: 'is-hidden-mobile',
               render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
             },
@@ -85,7 +86,7 @@ export default ({ commodity }) => {
               dataIndex: 'demand',
               key: 'demand',
               align: 'right',
-              width: 130,
+              width: 110,
               className: 'is-hidden-mobile',
               render: (v) => <>{v.toLocaleString()} T</>
             },
