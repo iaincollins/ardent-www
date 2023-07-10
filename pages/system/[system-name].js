@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Table from 'rc-table'
@@ -22,11 +22,14 @@ import {
 export default () => {
   const router = useRouter()
   const [system, setSystem] = useState()
+  const [stationsInSystem, setStationsInSystem] = useState()
+  const [fleetCarriersInSystem, setFleetCarriersInSystem] = useState()
   const [nearbySystems, setNearbySystems] = useState()
   const [importOrders, setImportOrders] = useState()
   const [exportOrders, setExportOrders] = useState()
   const [consumes, setConsumes] = useState()
   const [produces, setProduces] = useState()
+  const [lastUpdatedAt, setLastUpdatedAt] = useState()
 
   const onSystemsRowClick = (record, index, event) => {
     router.push(`/system/${record.systemName}`)
@@ -34,18 +37,24 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      const systemName = router.query?.['system-name']?.replaceAll('+', ' ')
+      const systemName = router.query?.['system-name']?.replaceAll('+', ' ').trim()
       if (!systemName) return
 
       setSystem(undefined)
+      setStationsInSystem(undefined)
       setNearbySystems(undefined)
       setImportOrders(undefined)
       setExportOrders(undefined)
       setConsumes(undefined)
       setProduces(undefined)
+      setLastUpdatedAt(undefined)
+
+      let mostRecentUpdatedAt
 
       const system = await getSystem(systemName)
       if (system) {
+        mostRecentUpdatedAt = system.updatedAt
+        setLastUpdatedAt(mostRecentUpdatedAt)
         const systemCoordinates = [system.systemX, system.systemY, system.systemZ]
         if (distance(systemCoordinates, SOL_COORDINATES) <= 200) {
           system.tradeZone = 'Core Systems'
@@ -70,6 +79,9 @@ export default () => {
             </>
           )
         }
+        const marketsInSystem = (await getMarketsInSystem(systemName)).stations
+        setStationsInSystem(marketsInSystem.filter(station => station.fleetCarrier !== 1))
+        setFleetCarriersInSystem(marketsInSystem.filter(station => station.fleetCarrier === 1))
       }
       setSystem(system)
 
@@ -88,12 +100,23 @@ export default () => {
         ;(async () => {
           const { importOrders, commoditesConsumed } = await getImports(systemName)
           setImportOrders(importOrders)
+          importOrders.forEach(order => {
+            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+              console.log(order.updatedAt, 'new than:', mostRecentUpdatedAt)
+              mostRecentUpdatedAt = order.updatedAt
+            }
+          })
+          setLastUpdatedAt(mostRecentUpdatedAt)
           setConsumes(commoditesConsumed)
         })()
 
         ;(async () => {
           const { exportOrders, commoditesProduced } = await getExports(systemName)
           setExportOrders(exportOrders)
+          exportOrders.forEach(order => {
+            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) mostRecentUpdatedAt = order.updatedAt
+          })
+          setLastUpdatedAt(mostRecentUpdatedAt)
           setProduces(commoditesProduced)
         })()
       }
@@ -134,6 +157,71 @@ export default () => {
                   {system.tradeZone}
                   {system.tradeZoneDistance !== undefined && <small style={{ textTransform: 'none' }}><br />{system.tradeZoneDistance}</small>}
                 </td>
+              </tr>
+              <tr>
+                <th>Trade markets</th>
+                <td>
+                  {stationsInSystem?.length > 0 &&
+                    <Collapsible
+                      trigger={
+                        <p className='collapsible__trigger'>
+                          <i className='collapsible__trigger-icon icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
+                          <span className='collapsible__trigger-text'>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'market' : 'markets'}</span>
+                        </p>
+                      }
+                      triggerWhenOpen={
+                        <p className='collapsible__trigger'>
+                          <i className='collapsible__trigger-icon icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
+                          <span className='collapsible__trigger-text'>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'market' : 'markets'}</span>
+                        </p>
+                      }
+                    >
+                      <ul>
+                        {stationsInSystem.map(station =>
+                          <Fragment key={`marketId_${station.marketId}`}>
+                            <li>{station.stationName}</li>
+                          </Fragment>
+                        )}
+                      </ul>
+                    </Collapsible>}
+                  {stationsInSystem?.length === 0 && <small>No markets</small>}
+                  {stationsInSystem === undefined && '-'}
+                </td>
+              </tr>
+              <tr>
+                <th>Fleet Carriers</th>
+                <td>
+                  {fleetCarriersInSystem?.length > 0 &&
+                    <Collapsible
+                      trigger={
+                        <p className='collapsible__trigger'>
+                          <i className='collapsible__trigger-icon icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
+                          <span className='collapsible__trigger-text'>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'carrier' : 'carriers'}</span>
+                        </p>
+                      }
+                      triggerWhenOpen={
+                        <p className='collapsible__trigger'>
+                          <i className='collapsible__trigger-icon icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
+                          <span className='collapsible__trigger-text'>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'carrier' : 'carriers'}</span>
+                        </p>
+                      }
+                    >
+                      <ul>
+                        {fleetCarriersInSystem.map(station =>
+                          <Fragment key={`marketId_${station.marketId}`}>
+                            <li>{station.stationName}</li>
+                          </Fragment>
+                        )}
+                      </ul>
+                    </Collapsible>}
+                  {fleetCarriersInSystem?.length === 0 && <small>No carriers</small>}
+                  {fleetCarriersInSystem === undefined && '-'}
+                </td>
+              </tr>
+              <tr>
+                <th>Updated</th>
+                {/* <td>{timeBetweenTimestamps(system.updatedAt)} ago</td> */}
+                <td>{timeBetweenTimestamps(lastUpdatedAt)} ago</td>
               </tr>
             </tbody>
           </table>
@@ -437,6 +525,12 @@ export default () => {
 
 async function getSystem (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}`)
+  return (res.status === 200) ? await res.json() : null
+}
+
+async function getMarketsInSystem (systemName) {
+  // @TODO No API endpoint for stations yet, so using 'markets' endpoint
+  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/markets`)
   return (res.status === 200) ? await res.json() : null
 }
 

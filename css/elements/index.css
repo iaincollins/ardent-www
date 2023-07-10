@@ -113,3 +113,14 @@ small {
 pre {
   font-size: .9rem;
 }
+
+ul {
+  margin-top: .5rem;
+  margin-left: 0;
+  padding-left: 1.5rem;
+  list-style-type: square;
+}
+
+ul li {
+  text-transform: none;
+}

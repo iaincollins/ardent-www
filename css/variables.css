@@ -5,7 +5,7 @@
 
   --color-text-link: white;
   --color-text: hsl(0, 0%, 90%);
-  --color-text-muted: hsl(0, 0%, 90% .75);
+  --color-text-muted: hsla(0, 0%, 90%, .75);
   --color-text-inverted: hsl(0, 0%, 20%);
   --color-text-inverted-muted: hsla(0, 0%, 20%, .75);
 
