@@ -14,9 +14,7 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      setCommodities(
-        (await getCommodities()).sort((a, b) => a.name.localeCompare(b.name))
-      )
+      setCommodities(await getCommodities())
     })()
   }, [])
 

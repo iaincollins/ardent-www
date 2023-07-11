@@ -124,7 +124,7 @@ function ExpandedRow ({ r }) {
                   <table className='data-table--mini data-table--compact two-column-table'>
                     <tbody style={{ textTransform: 'uppercase' }}>
                       <tr>
-                        <td><span className='data-table__label'>Demand</span>{r.demand.toLocaleString()} T</td>
+                        <td><span className='data-table__label'>Demand</span>{r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>Unlimited</small>}</td>
                         <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                       </tr>
                     </tbody>
@@ -149,7 +149,7 @@ function ExpandedRow ({ r }) {
             align: 'right',
             width: 130,
             className: 'is-hidden-mobile',
-            render: (v) => <>{v.toLocaleString()} T</>
+            render: (v) => <>{v > 0 ? `${v.toLocaleString()} T` : <small>Unlimited</small>}</>
           },
           {
             title: 'Price',

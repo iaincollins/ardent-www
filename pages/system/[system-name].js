@@ -625,7 +625,7 @@ async function getExports (systemName) {
   })
 
   return {
-    exportOrders: Object.values(exportOrdersGroupedByCommodity),
+    exportOrders: Object.values(exportOrdersGroupedByCommodity).sort((a, b) => a.name.localeCompare(b.name)),
     commoditesProduced
   }
 }
@@ -685,7 +685,7 @@ async function getImports (systemName) {
   })
 
   return {
-    importOrders: Object.values(importOrdersGroupedByCommodity),
+    importOrders: Object.values(importOrdersGroupedByCommodity).sort((a, b) => a.name.localeCompare(b.name)),
     commoditesConsumed
   }
 }
