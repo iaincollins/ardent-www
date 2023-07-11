@@ -153,6 +153,9 @@ export default () => {
               </tr>
             </tbody>
           </table>
+          <p className='clear muted' style={{ padding: '0 0 1rem .25rem' }}>
+            Average prices and total supply/demand updated hourly
+          </p>
           {imports === undefined && <Loader />}
           {imports &&
             <Tabs>

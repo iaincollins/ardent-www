@@ -5,3 +5,11 @@
 .muted {
   opacity: .75;
 }
+
+.text-positive {
+  color: var(--color-positive);
+}
+
+.text-negative {
+  color: var(--color-negative);
+}

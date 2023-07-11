@@ -5,7 +5,7 @@ import Table from 'rc-table'
 import Collapsible from 'react-collapsible'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { timeBetweenTimestamps } from '../../lib/utils/dates'
-import commoditiesInfo from '../../lib/commodities.json'
+import { getCommodities } from '../../lib/commodities'
 import { formatSystemSector } from '../../lib/utils/system-sectors'
 import distance from '../../lib/utils/distance'
 import Loader from '../../components/loader'
@@ -37,7 +37,7 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      const systemName = router.query?.['system-name']?.replaceAll('+', ' ').trim()
+      const systemName = router.query?.['system-name']?.trim()
       if (!systemName) return
 
       setSystem(undefined)
@@ -79,30 +79,20 @@ export default () => {
             </>
           )
         }
-        const marketsInSystem = (await getMarketsInSystem(systemName)).stations
-        setStationsInSystem(marketsInSystem.filter(station => station.fleetCarrier !== 1))
-        setFleetCarriersInSystem(marketsInSystem.filter(station => station.fleetCarrier === 1))
+        const marketsInSystem = await getMarketsInSystem(systemName)
+        if (marketsInSystem?.length > 0) {
+          setStationsInSystem(marketsInSystem.filter(station => station.fleetCarrier !== 1))
+          setFleetCarriersInSystem(marketsInSystem.filter(station => station.fleetCarrier === 1))
+        }
       }
       setSystem(system)
 
       if (system) {
         ;(async () => {
-          const nearbySystems = await getNearbySystems(systemName)
-          nearbySystems.forEach(s => {
-            s.distance = distance(
-              [system.systemX, system.systemY, system.systemZ],
-              [s.systemX, s.systemY, s.systemZ]
-            )
-          })
-          setNearbySystems(nearbySystems.filter((s, i) => i < 100))
-        })()
-
-        ;(async () => {
           const { importOrders, commoditesConsumed } = await getImports(systemName)
           setImportOrders(importOrders)
           importOrders.forEach(order => {
             if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-              console.log(order.updatedAt, 'new than:', mostRecentUpdatedAt)
               mostRecentUpdatedAt = order.updatedAt
             }
           })
@@ -114,10 +104,23 @@ export default () => {
           const { exportOrders, commoditesProduced } = await getExports(systemName)
           setExportOrders(exportOrders)
           exportOrders.forEach(order => {
-            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) mostRecentUpdatedAt = order.updatedAt
+            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+              mostRecentUpdatedAt = order.updatedAt
+            }
           })
           setLastUpdatedAt(mostRecentUpdatedAt)
           setProduces(commoditesProduced)
+        })()
+
+        ;(async () => {
+          const nearbySystems = await getNearbySystems(systemName)
+          nearbySystems.forEach(s => {
+            s.distance = distance(
+              [system.systemX, system.systemY, system.systemZ],
+              [s.systemX, s.systemY, s.systemZ]
+            )
+          })
+          setNearbySystems(nearbySystems.filter((s, i) => i < 100))
         })()
       }
     })()
@@ -189,7 +192,7 @@ export default () => {
                 </td>
               </tr>
               <tr>
-                <th>Fleet Carriers</th>
+                <th>Trade Carriers</th>
                 <td>
                   {fleetCarriersInSystem?.length > 0 &&
                     <Collapsible
@@ -219,7 +222,7 @@ export default () => {
                 </td>
               </tr>
               <tr>
-                <th>Updated</th>
+                <th>Last update</th>
                 {/* <td>{timeBetweenTimestamps(system.updatedAt)} ago</td> */}
                 <td>{timeBetweenTimestamps(lastUpdatedAt)} ago</td>
               </tr>
@@ -274,6 +277,9 @@ export default () => {
               </tr>
             </tbody>
           </table>
+          <p className='clear muted' style={{ padding: '0 0 1rem .25rem' }}>
+            Updates to markets delayed by up to 5 minutes
+          </p>
           <Tabs>
             <TabList>
               <Tab>Imports</Tab>
@@ -300,12 +306,13 @@ export default () => {
                             <table className='data-table--mini data-table--compact two-column-table'>
                               <tbody style={{ textTransform: 'uppercase' }}>
                                 <tr>
-                                  <td><span className='data-table__label'>Total demand</span>{r.totalDemand.toLocaleString()} T</td>
+                                  <td><span className='data-table__label'>Total demand</span>{r.totalDemand > 0 ? `${r.totalDemand.toLocaleString()} T` : <small>Unlimited</small>}</td>
                                   <td>
                                     <span className='data-table__label'>Price</span>
                                     {r.avgPrice.toLocaleString()} CR
                                     <br />
-                                    <small>MAX {r.bestPrice.toLocaleString()} CR</small>
+                                    {r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
+                                    {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
                                   </td>
                                 </tr>
                               </tbody>
@@ -330,7 +337,7 @@ export default () => {
                       align: 'right',
                       width: 150,
                       className: 'is-hidden-mobile',
-                      render: (v) => <>{v.toLocaleString()} T</>
+                      render: (v) => <>{v > 0 ? `${v.toLocaleString()} T` : <small>Unlimited</small>}</>
                     },
                     {
                       title: 'Avg price',
@@ -343,7 +350,8 @@ export default () => {
                         <>
                           {v.toLocaleString()} CR
                           <br />
-                          <small>MAX {r.bestPrice.toLocaleString()} CR</small>
+                          {r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
+                          {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
                         </>
                     }
                   ]}
@@ -421,7 +429,8 @@ export default () => {
                                     <span className='data-table__label'>Price</span>
                                     {r.avgPrice.toLocaleString()} CR
                                     <br />
-                                    <small>MIN {r.bestPrice.toLocaleString()} CR</small>
+                                    {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
+                                    {r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
                                   </td>
                                 </tr>
                               </tbody>
@@ -459,7 +468,8 @@ export default () => {
                         <>
                           {v.toLocaleString()} CR
                           <br />
-                          <small>MIN {r.bestPrice.toLocaleString()} CR</small>
+                          {v < r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.galacticAvgPrice - v).toLocaleString()} CR</small>}
+                          {v > r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(v - r.galacticAvgPrice).toLocaleString()} CR</small>}
                         </>
                     }
                   ]}
@@ -568,52 +578,49 @@ async function getNearbySystems (systemName) {
 }
 
 async function getExports (systemName) {
+  const allCommodities = await getCommodities()
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/exports`)
   const exportOrders = await res.json()
   const exportOrdersGroupedByCommodity = {}
   exportOrders.forEach(c => {
-    c.key = c.commodityId
-    c.symbol = c.commodityName.toLowerCase()
-    c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-    c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-    delete c.commodityName
-    delete c.commodityId
+    const symbol = c.commodityName.toLowerCase()
 
-    if (!exportOrdersGroupedByCommodity[c.name]) {
-      exportOrdersGroupedByCommodity[c.name] = {
-        key: c.symbol,
-        name: c.name,
-        symbol: c.symbol,
-        category: c.category,
+    if (!exportOrdersGroupedByCommodity[symbol]) {
+      exportOrdersGroupedByCommodity[symbol] = {
+        key: symbol,
+        symbol,
+        name: (allCommodities.find(el => el.symbol.toLowerCase() === symbol))?.name ?? c.commodityName,
+        category: (allCommodities.find(el => el.symbol.toLowerCase() === symbol))?.category ?? '',
         systemName: c.systemName,
         totalStock: 0,
         totalPrice: 0,
         avgPrice: 0,
         bestPrice: null,
+        galacticAvgPrice: (allCommodities.find(el => el.symbol.toLowerCase() === symbol))?.avgSellPrice ?? 0,
         updatedAt: null,
         producer: c.statusFlags?.includes('Producer') ?? false,
         exportOrders: []
       }
     }
 
-    exportOrdersGroupedByCommodity[c.name].exportOrders.push(c)
-    exportOrdersGroupedByCommodity[c.name].totalStock += c.stock
-    exportOrdersGroupedByCommodity[c.name].totalPrice += c.buyPrice * c.stock
-    exportOrdersGroupedByCommodity[c.name].avgPrice = Math.round(exportOrdersGroupedByCommodity[c.name].totalPrice / exportOrdersGroupedByCommodity[c.name].totalStock)
-    if (exportOrdersGroupedByCommodity[c.name].bestPrice === null ||
-        c.buyPrice < exportOrdersGroupedByCommodity[c.name].bestPrice) {
-      exportOrdersGroupedByCommodity[c.name].bestPrice = c.buyPrice
+    exportOrdersGroupedByCommodity[symbol].exportOrders.push(c)
+    exportOrdersGroupedByCommodity[symbol].totalStock += c.stock
+    exportOrdersGroupedByCommodity[symbol].totalPrice += c.buyPrice * c.stock
+    exportOrdersGroupedByCommodity[symbol].avgPrice = Math.round(exportOrdersGroupedByCommodity[symbol].totalPrice / exportOrdersGroupedByCommodity[symbol].totalStock)
+    if (exportOrdersGroupedByCommodity[symbol].bestPrice === null ||
+        c.buyPrice < exportOrdersGroupedByCommodity[symbol].bestPrice) {
+      exportOrdersGroupedByCommodity[symbol].bestPrice = c.buyPrice
     }
-    if (exportOrdersGroupedByCommodity[c.name].updatedAt === null ||
-        c.updatedAt > exportOrdersGroupedByCommodity[c.name].updatedAt) {
-      exportOrdersGroupedByCommodity[c.name].updatedAt = c.updatedAt
+    if (exportOrdersGroupedByCommodity[symbol].updatedAt === null ||
+        c.updatedAt > exportOrdersGroupedByCommodity[symbol].updatedAt) {
+      exportOrdersGroupedByCommodity[symbol].updatedAt = c.updatedAt
     }
   })
 
   const commoditesProduced = []
   exportOrders.forEach(c => {
     if (c.statusFlags?.includes('Producer') && c.fleetCarrier !== 1) {
-      if (!commoditesProduced.includes(c.name)) { commoditesProduced.push(c.name) }
+      if (!commoditesProduced.includes(c.commodityName)) { commoditesProduced.push(c.commodityName) }
     }
   })
 
@@ -624,52 +631,56 @@ async function getExports (systemName) {
 }
 
 async function getImports (systemName) {
+  const allCommodities = await getCommodities()
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/imports`)
   const importOrders = await res.json()
   const importOrdersGroupedByCommodity = {}
   importOrders.forEach(c => {
-    c.key = c.commodityId
-    c.symbol = c.commodityName.toLowerCase()
-    c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-    c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-    delete c.commodityName
-    delete c.commodityId
+    const symbol = c.commodityName.toLowerCase()
+    const commodityMetadata = allCommodities.find(el => el.symbol.toLowerCase() === symbol)
+    if (!commodityMetadata) return
+    if (!c.sellPrice) return
 
-    if (!importOrdersGroupedByCommodity[c.name]) {
-      importOrdersGroupedByCommodity[c.name] = {
-        key: c.symbol,
-        name: c.name,
-        symbol: c.symbol,
-        category: c.category,
+    if (!importOrdersGroupedByCommodity[symbol]) {
+      importOrdersGroupedByCommodity[symbol] = {
+        key: symbol,
+        symbol,
+        name: commodityMetadata?.name ?? c.commodityName,
+        category: commodityMetadata?.category ?? '',
         systemName: c.systemName,
         totalDemand: 0,
         totalPrice: 0,
         avgPrice: 0,
         bestPrice: null,
+        galacticAvgPrice: commodityMetadata?.avgSellPrice ?? 0,
         updatedAt: null,
         consumer: c.statusFlags?.includes('Consumer') ?? false,
         importOrders: []
       }
     }
 
-    importOrdersGroupedByCommodity[c.name].importOrders.push(c)
-    importOrdersGroupedByCommodity[c.name].totalDemand += c.demand
-    importOrdersGroupedByCommodity[c.name].totalPrice += c.sellPrice * c.demand
-    importOrdersGroupedByCommodity[c.name].avgPrice = Math.round(importOrdersGroupedByCommodity[c.name].totalPrice / importOrdersGroupedByCommodity[c.name].totalDemand)
-    if (importOrdersGroupedByCommodity[c.name].bestPrice === null ||
-        c.sellPrice > importOrdersGroupedByCommodity[c.name].bestPrice) {
-      importOrdersGroupedByCommodity[c.name].bestPrice = c.sellPrice
+    importOrdersGroupedByCommodity[symbol].importOrders.push(c)
+    importOrdersGroupedByCommodity[symbol].totalDemand += c.demand
+    if (importOrdersGroupedByCommodity[symbol].totalDemand > 0) {
+      importOrdersGroupedByCommodity[symbol].totalPrice += c.sellPrice * c.demand
+      importOrdersGroupedByCommodity[symbol].avgPrice = Math.round(importOrdersGroupedByCommodity[symbol].totalPrice / importOrdersGroupedByCommodity[symbol].totalDemand)
+    } else if (!importOrdersGroupedByCommodity[symbol].avgPrice) {
+      importOrdersGroupedByCommodity[symbol].avgPrice = c.sellPrice
     }
-    if (importOrdersGroupedByCommodity[c.name].updatedAt === null ||
-        c.updatedAt > importOrdersGroupedByCommodity[c.name].updatedAt) {
-      importOrdersGroupedByCommodity[c.name].updatedAt = c.updatedAt
+    if (importOrdersGroupedByCommodity[symbol].bestPrice === null ||
+        c.sellPrice > importOrdersGroupedByCommodity[symbol].bestPrice) {
+      importOrdersGroupedByCommodity[symbol].bestPrice = c.sellPrice
+    }
+    if (importOrdersGroupedByCommodity[symbol].updatedAt === null ||
+        c.updatedAt > importOrdersGroupedByCommodity[symbol].updatedAt) {
+      importOrdersGroupedByCommodity[symbol].updatedAt = c.updatedAt
     }
   })
 
   const commoditesConsumed = []
   importOrders.forEach(c => {
     if (c.statusFlags?.includes('Consumer') && c.fleetCarrier !== 1) {
-      if (!commoditesConsumed.includes(c.name)) { commoditesConsumed.push(c.name) }
+      if (!commoditesConsumed.includes(c.commodityName)) { commoditesConsumed.push(c.commodityName) }
     }
   })
 

@@ -137,3 +137,7 @@ table.two-column-table > tbody > tr > td,
 .two-column-table > .rc-table-container > .rc-table-content > table > tbody > tr > td {
   width: 50%;
 }
+
+.commodity__price {
+  opacity: 1;
+}

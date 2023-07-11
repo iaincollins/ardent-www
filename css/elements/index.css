@@ -10,11 +10,6 @@ html {
   user-select: none;
 }
 
-html h1,
-html h2,
-html h3,
-html h4,
-html h5,
 html p,
 html li,
 html span,
@@ -64,6 +59,7 @@ h4 {
   clear: both;
   background: var(--color-primary);
   border-right: 0.01rem solid var(--color-primary);
+  text-shadow: 0 0 .8rem rgba(0,0,0,.8);  
 }
 
 h1:after,

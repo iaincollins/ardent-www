@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Table from 'rc-table'
 import Loader from '../components/loader'
-import commoditiesInfo from '../lib/commodities.json'
-
-import { API_BASE_URL } from '../lib/consts'
+import { getCommodities } from '../lib/commodities'
 
 export default () => {
   const router = useRouter()
@@ -16,28 +14,9 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch(`${API_BASE_URL}/v1/commodities`)
-      const commoditiesFromServer = await res.json()
-      const listOfCommodities = commoditiesInfo
-        .map(commodity => {
-          const commodityFromServer = (commoditiesFromServer.find(el => commodity.symbol.toLowerCase() === el.commodityName.toLowerCase()))
-          const c = (commodityFromServer) ? { ...commodity, ...commodityFromServer } : commodity
-          c.key = c.commodityId
-          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-          c.maxProfit = c.maxSellPrice - c.minBuyPrice
-          if (!c.totalDemand) c.totalDemand = 0
-          if (!c.totalStock) c.totalStock = 0
-          if (!c.avgBuyPrice) c.avgBuyPrice = 0
-          if (!c.avgSellPrice) c.avgSellPrice = 0
-          return c
-        })
-        // .filter(c => c.avgProfit > 0)
-        // .filter(c => c.totalStock > 0)
-        // .filter(c => c.totalDemand > 0)
-        // .sort((a, b) => b.avgProfit - a.avgProfit)
-        .sort((a, b) => a.name.localeCompare(b.name))
-      setCommodities(listOfCommodities)
+      setCommodities(
+        (await getCommodities()).sort((a, b) => a.name.localeCompare(b.name))
+      )
     })()
   }, [])
 

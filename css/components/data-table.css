@@ -43,7 +43,9 @@
 }
 
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td,
-.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])):hover td {
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td > *,
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])):hover td,
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])):hover td > * {
   background: var(--color-primary) !important;
   color: #111;
   border-bottom: none;

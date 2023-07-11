@@ -1,6 +1,6 @@
 :root {
-  --color-danger: rgb(252, 72, 72);
-  --color-success: rgb(77, 255, 201);
+  --color-negative: rgb(171, 164, 143);
+  --color-positive: rgb(237, 237, 219);
   --color-info: rgb(206, 237, 255);
 
   --color-text-link: white;

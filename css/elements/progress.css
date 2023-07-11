@@ -1,5 +1,5 @@
 progress {
-  --color-progress-background: transparent;
+  --color-progress-background: var(--color-primary-darker);
   --color-progress-value: var(--color-primary);
   -webkit-appearance: none;
   appearance: none;
@@ -9,7 +9,7 @@ progress {
   border-style: solid;
   border-radius: 0;
   border-color: var(--color-primary);
-  background: var(--color-primary-darker); /* For Firefox */
+  background: var(--color-primary-darker);
   padding: .125rem;
 }
 
