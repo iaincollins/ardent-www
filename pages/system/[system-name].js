@@ -429,8 +429,8 @@ export default () => {
                                     <span className='data-table__label'>Price</span>
                                     {r.avgPrice.toLocaleString()} CR
                                     <br />
-                                    {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
-                                    {r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
+                                    {r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
+                                    {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
                                   </td>
                                 </tr>
                               </tbody>
@@ -468,8 +468,8 @@ export default () => {
                         <>
                           {v.toLocaleString()} CR
                           <br />
-                          {v < r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.galacticAvgPrice - v).toLocaleString()} CR</small>}
-                          {v > r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(v - r.galacticAvgPrice).toLocaleString()} CR</small>}
+                          {r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
+                          {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
                         </>
                     }
                   ]}
