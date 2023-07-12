@@ -76,18 +76,21 @@ export default () => {
             </>
           )
         }
-        const marketsInSystem = await getMarketsInSystem(systemName)
-        if (marketsInSystem?.length > 0) {
-          setStationsInSystem(marketsInSystem.filter(station => station.fleetCarrier !== 1))
-          setFleetCarriersInSystem(marketsInSystem.filter(station => station.fleetCarrier === 1))
-        } else {
-          setStationsInSystem([])
-          setFleetCarriersInSystem([])
-        }
       }
       setSystem(system)
 
       if (system) {
+        ;(async () => {
+          const marketsInSystem = await getMarketsInSystem(systemName)
+          if (marketsInSystem?.length > 0) {
+            setStationsInSystem(marketsInSystem.filter(station => station.fleetCarrier !== 1))
+            setFleetCarriersInSystem(marketsInSystem.filter(station => station.fleetCarrier === 1))
+          } else {
+            setStationsInSystem([])
+            setFleetCarriersInSystem([])
+          }
+        })()
+
         ;(async () => {
           const importOrders = await getImports(systemName)
           setImportOrders(importOrders)
@@ -210,7 +213,7 @@ export default () => {
                       <ul>
                         {fleetCarriersInSystem.map(station =>
                           <Fragment key={`marketId_${station.marketId}`}>
-                            <li>{station.stationName}</li>
+                            <li>Carrier {station.stationName}</li>
                           </Fragment>
                         )}
                       </ul>
@@ -230,15 +233,18 @@ export default () => {
             <TabList>
               <Tab>
                 <span className='is-hidden-mobile'>Imports</span>
-                <span className='is-visible-mobile'>Imp</span>
-                {importOrders !== undefined && ` [${importOrders.length}]`}
+                <span className='is-visible-mobile'>Imp.</span>
+                <span className='muted'> [{importOrders?.length ?? '-'}]</span>
               </Tab>
               <Tab>
                 <span className='is-hidden-mobile'>Exports</span>
-                <span className='is-visible-mobile'>Exp</span>
-                {exportOrders !== undefined && ` [${exportOrders.length}]`}
+                <span className='is-visible-mobile'>Exp.</span>
+                <span className='muted'> [{exportOrders?.length ?? '-'}]</span>
               </Tab>
-              <Tab>Nearby</Tab>
+              <Tab>
+                <span className='is-hidden-mobile'>Nearby</span>
+                <span className='is-visible-mobile'>Near</span>
+              </Tab>
             </TabList>
             <TabPanel>
               {!importOrders && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
@@ -254,8 +260,9 @@ export default () => {
                       className: 'max-width-mobile',
                       render: (v, r) =>
                         <>
-                          <i className='icon icarus-terminal-cargo' />{v}{r?.consumer === true && <> <small>(Consumer)</small></>}<br />
+                          <i className='icon icarus-terminal-cargo' />{v}<br />
                           <small>{r.importOrders.length === 1 ? '1 importer ' : `${r.importOrders.length} importers`}</small>
+                          {r?.consumer === true && <small> | Consumer</small>}
                           <div className='is-visible-mobile'>
                             <table className='data-table--mini data-table--compact two-column-table'>
                               <tbody style={{ textTransform: 'uppercase' }}>
@@ -372,8 +379,9 @@ export default () => {
                       className: 'max-width-mobile',
                       render: (v, r) =>
                         <>
-                          <i className='icon icarus-terminal-cargo' />{v}{r?.producer === true && <> <small>(Producer)</small></>}<br />
+                          <i className='icon icarus-terminal-cargo' />{v}<br />
                           <small>{r.exportOrders.length === 1 ? '1 exporter ' : `${r.exportOrders.length} exporters`}</small>
+                          {r?.producer === true && <small> | Producer</small>}
                           <div className='is-visible-mobile'>
                             <table className='data-table--mini two-column-table data-table--compact'>
                               <tbody style={{ textTransform: 'uppercase' }}>

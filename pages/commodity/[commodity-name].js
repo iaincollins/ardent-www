@@ -100,7 +100,7 @@ export default () => {
                       <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>
                     </>
                     )
-                  : <>Insufficent data</>}
+                  : <span class='muted'>Insufficent data</span>}
                 </td>
               </tr>
               <tr>
@@ -113,7 +113,7 @@ export default () => {
                       <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>
                     </>
                     )
-                  : <>Insufficent data</>}
+                  : <span class='muted'>Insufficent data</span>}
                 </td>
               </tr>
               {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&

@@ -64,8 +64,8 @@
   }
 
   .react-tabs__tab {
-    padding: 0;
-    font-size: 1rem;
+    padding-left: .25rem;
+    padding-right: .25rem;
   }
 }
 

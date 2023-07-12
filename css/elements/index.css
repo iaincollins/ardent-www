@@ -111,9 +111,8 @@ pre {
 }
 
 ul {
-  margin-top: .5rem;
-  margin-left: 0;
-  padding-left: 1.5rem;
+  margin: .5rem 0;
+  padding-left: 2rem;
   list-style-type: square;
 }
 
