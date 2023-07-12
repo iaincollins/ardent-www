@@ -18,14 +18,16 @@ export default () => {
   return (
     <>
       <header>
-        <div className='header__logo'>
-          <h1>
-            <em>A</em>rdent <em>I</em>ndustry
-          </h1>
-          <p style={{ fontStyle: 'italic' }}>
-            Trade &amp; exploration data
-          </p>
-        </div>
+        <Link href='/' className='--no-hover'>
+          <div className='header__logo'>
+            <h1>
+              <em>A</em>rdent <em>I</em>ndustry
+            </h1>
+            <p style={{ fontStyle: 'italic' }}>
+              Trade &amp; exploration data
+            </p>
+          </div>
+        </Link>
         <div className='header__navigation' style={{ display: 'none' }}>
           <Link href='/commodities'>
             <button className='button'><i className='icon icarus-terminal-cargo' /></button>

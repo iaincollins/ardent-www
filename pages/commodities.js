@@ -22,10 +22,10 @@ export default () => {
 
   return (
     <>
-      {/* <p className='breadcrumb'>
-        <Link href='/'>Home</Link>
-      </p> */}
-      <h2 style={{ marginTop: '1.2rem', marginBottom: '-0.1rem' }}>Commodities</h2>
+      <h2 style={{ marginTop: '1.2rem', marginBottom: '-.1rem', width: 'auto' }}>
+        Commodities
+        <span className='is-visible-mobile' style={{ marginRight: '.5rem' }} />
+      </h2>
       {commodities &&
         <Table
           className='data-table data-table--striped data-table--interactive'

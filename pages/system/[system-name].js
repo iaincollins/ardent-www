@@ -27,8 +27,6 @@ export default () => {
   const [nearbySystems, setNearbySystems] = useState()
   const [importOrders, setImportOrders] = useState()
   const [exportOrders, setExportOrders] = useState()
-  const [consumes, setConsumes] = useState()
-  const [produces, setProduces] = useState()
   const [lastUpdatedAt, setLastUpdatedAt] = useState()
 
   const onSystemsRowClick = (record, index, event) => {
@@ -42,11 +40,10 @@ export default () => {
 
       setSystem(undefined)
       setStationsInSystem(undefined)
+      setFleetCarriersInSystem(undefined)
       setNearbySystems(undefined)
       setImportOrders(undefined)
       setExportOrders(undefined)
-      setConsumes(undefined)
-      setProduces(undefined)
       setLastUpdatedAt(undefined)
 
       let mostRecentUpdatedAt
@@ -83,13 +80,16 @@ export default () => {
         if (marketsInSystem?.length > 0) {
           setStationsInSystem(marketsInSystem.filter(station => station.fleetCarrier !== 1))
           setFleetCarriersInSystem(marketsInSystem.filter(station => station.fleetCarrier === 1))
+        } else {
+          setStationsInSystem([])
+          setFleetCarriersInSystem([])
         }
       }
       setSystem(system)
 
       if (system) {
         ;(async () => {
-          const { importOrders, commoditesConsumed } = await getImports(systemName)
+          const importOrders = await getImports(systemName)
           setImportOrders(importOrders)
           importOrders.forEach(order => {
             if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
@@ -97,11 +97,10 @@ export default () => {
             }
           })
           setLastUpdatedAt(mostRecentUpdatedAt)
-          setConsumes(commoditesConsumed)
         })()
 
         ;(async () => {
-          const { exportOrders, commoditesProduced } = await getExports(systemName)
+          const exportOrders = await getExports(systemName)
           setExportOrders(exportOrders)
           exportOrders.forEach(order => {
             if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
@@ -109,7 +108,6 @@ export default () => {
             }
           })
           setLastUpdatedAt(mostRecentUpdatedAt)
-          setProduces(commoditesProduced)
         })()
 
         ;(async () => {
@@ -187,7 +185,7 @@ export default () => {
                         )}
                       </ul>
                     </Collapsible>}
-                  {stationsInSystem?.length === 0 && <small>No markets</small>}
+                  {stationsInSystem?.length === 0 && <span className='muted'>No markets</span>}
                   {stationsInSystem === undefined && '-'}
                 </td>
               </tr>
@@ -217,7 +215,7 @@ export default () => {
                         )}
                       </ul>
                     </Collapsible>}
-                  {fleetCarriersInSystem?.length === 0 && <small>No carriers</small>}
+                  {fleetCarriersInSystem?.length === 0 && <span className='muted'>No carriers</span>}
                   {fleetCarriersInSystem === undefined && '-'}
                 </td>
               </tr>
@@ -228,59 +226,18 @@ export default () => {
               </tr>
             </tbody>
           </table>
-          <h3>Commodities</h3>
-          <table className='properties-table'>
-            <tbody>
-              <tr>
-                <th className='is-hidden-mobile'>Imported</th>
-                <td>
-                  {importOrders !== undefined &&
-                    <>
-                      {importOrders.length.toLocaleString()}
-                      <span className='is-visible-mobile muted'> imported</span>
-                    </>}
-                  {importOrders === undefined && '-'}
-                </td>
-              </tr>
-              <tr>
-                <th className='is-hidden-mobile'>Exported</th>
-                <td>
-                  {exportOrders !== undefined &&
-                    <>
-                      {exportOrders.length.toLocaleString()}
-                      <span className='is-visible-mobile muted'> exported</span>
-                    </>}
-                  {exportOrders === undefined && '-'}
-                </td>
-              </tr>
-              <tr>
-                <th className='is-hidden-mobile'>Consumed</th>
-                <td>
-                  {consumes !== undefined &&
-                    <>
-                      {consumes.length.toLocaleString()}
-                      <span className='is-visible-mobile muted'> consumed</span>
-                    </>}
-                  {consumes === undefined && '-'}
-                </td>
-              </tr>
-              <tr>
-                <th className='is-hidden-mobile'>Produced</th>
-                <td>
-                  {produces !== undefined &&
-                    <>
-                      {produces.length.toLocaleString()}
-                      <span className='is-visible-mobile muted'> produced</span>
-                    </>}
-                  {produces === undefined && '-'}
-                </td>
-              </tr>
-            </tbody>
-          </table>
           <Tabs>
             <TabList>
-              <Tab>Imports</Tab>
-              <Tab>Exports</Tab>
+              <Tab>
+                <span className='is-hidden-mobile'>Imports</span>
+                <span className='is-visible-mobile'>Imp</span>
+                {importOrders !== undefined && ` [${importOrders.length}]`}
+              </Tab>
+              <Tab>
+                <span className='is-hidden-mobile'>Exports</span>
+                <span className='is-visible-mobile'>Exp</span>
+                {exportOrders !== undefined && ` [${exportOrders.length}]`}
+              </Tab>
               <Tab>Nearby</Tab>
             </TabList>
             <TabPanel>
@@ -290,7 +247,7 @@ export default () => {
                   className='data-table data-table--striped data-table--interactive'
                   columns={[
                     {
-                      title: 'Commodity',
+                      title: 'Commodities imported',
                       dataIndex: 'name',
                       key: 'name',
                       align: 'left',
@@ -408,7 +365,7 @@ export default () => {
                   className='data-table data-table--striped data-table--interactive'
                   columns={[
                     {
-                      title: 'Commodity',
+                      title: 'Commodities exported',
                       dataIndex: 'name',
                       key: 'name',
                       align: 'left',
@@ -526,7 +483,7 @@ export default () => {
                   className='data-table data-table--striped data-table--interactive'
                   columns={[
                     {
-                      title: 'System',
+                      title: 'Nearest systems',
                       dataIndex: 'systemName',
                       key: 'systemName',
                       align: 'left',
@@ -614,17 +571,8 @@ async function getExports (systemName) {
     }
   })
 
-  const commoditesProduced = []
-  exportOrders.forEach(c => {
-    if (c.statusFlags?.includes('Producer') && c.fleetCarrier !== 1) {
-      if (!commoditesProduced.includes(c.commodityName)) { commoditesProduced.push(c.commodityName) }
-    }
-  })
-
-  return {
-    exportOrders: Object.values(exportOrdersGroupedByCommodity).sort((a, b) => a.name.localeCompare(b.name)),
-    commoditesProduced
-  }
+  return Object.values(exportOrdersGroupedByCommodity)
+    .sort((a, b) => a.name.localeCompare(b.name))
 }
 
 async function getImports (systemName) {
@@ -674,17 +622,8 @@ async function getImports (systemName) {
     }
   })
 
-  const commoditesConsumed = []
-  importOrders.forEach(c => {
-    if (c.statusFlags?.includes('Consumer') && c.fleetCarrier !== 1) {
-      if (!commoditesConsumed.includes(c.commodityName)) { commoditesConsumed.push(c.commodityName) }
-    }
-  })
-
-  return {
-    importOrders: Object.values(importOrdersGroupedByCommodity).sort((a, b) => a.name.localeCompare(b.name)),
-    commoditesConsumed
-  }
+  return Object.values(importOrdersGroupedByCommodity)
+    .sort((a, b) => a.name.localeCompare(b.name))
 }
 
 // function average (arr) { return arr.reduce((a, b) => a + b) / arr.length }
