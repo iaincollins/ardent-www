@@ -277,9 +277,6 @@ export default () => {
               </tr>
             </tbody>
           </table>
-          <p className='clear muted' style={{ padding: '0 0 1rem .25rem' }}>
-            Updates to markets delayed by up to 5 minutes
-          </p>
           <Tabs>
             <TabList>
               <Tab>Imports</Tab>

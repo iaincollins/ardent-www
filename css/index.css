@@ -141,3 +141,9 @@ table.two-column-table > tbody > tr > td,
 .commodity__price {
   opacity: 1;
 }
+
+.rc-table-placeholder {
+  text-transform: uppercase;
+  opacity: .8;
+  font-size: .9rem;
+}
