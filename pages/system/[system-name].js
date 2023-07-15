@@ -267,7 +267,7 @@ export default () => {
                             <table className='data-table--mini data-table--compact two-column-table'>
                               <tbody style={{ textTransform: 'uppercase' }}>
                                 <tr>
-                                  <td><span className='data-table__label'>Total demand</span>{r.totalDemand > 0 ? `${r.totalDemand.toLocaleString()} T` : <small>Unlimited</small>}</td>
+                                  <td><span className='data-table__label'>Total demand</span>{r.totalDemand > 0 ? `${r.totalDemand.toLocaleString()} T` : <small>No demand</small>}</td>
                                   <td>
                                     <span className='data-table__label'>Price</span>
                                     {r.avgPrice.toLocaleString()} CR
@@ -298,7 +298,7 @@ export default () => {
                       align: 'right',
                       width: 150,
                       className: 'is-hidden-mobile',
-                      render: (v) => <>{v > 0 ? `${v.toLocaleString()} T` : <small>Unlimited</small>}</>
+                      render: (v) => <>{v > 0 ? `${v.toLocaleString()} T` : <small>No demand</small>}</>
                     },
                     {
                       title: 'Avg price',
