@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Table from 'rc-table'
 import { timeBetweenTimestamps } from '../lib/utils/dates'
+import TradeBracketIcon from './trade-bracket'
 import { API_BASE_URL } from '../lib/consts'
 
 const MAX_ROWS_TO_DISPLAY = 10
@@ -46,7 +47,11 @@ export default ({ commodity }) => {
                     <table className='data-table--mini data-table--compact  two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
-                          <td><span className='data-table__label'>Stock</span>{r.stock.toLocaleString()} T</td>
+                          <td>
+                            <span className='data-table__label'>Stock</span>
+                            {r.stock.toLocaleString()} T
+                            <TradeBracketIcon bracket={r.stockBracket} />
+                          </td>
                           <td><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
                         </tr>
                       </tbody>
@@ -88,7 +93,11 @@ export default ({ commodity }) => {
               align: 'right',
               width: 110,
               className: 'is-hidden-mobile',
-              render: (v) => <>{v.toLocaleString()} T</>
+              render: (v, r) =>
+                <>
+                  {v.toLocaleString()} T
+                  <TradeBracketIcon bracket={r.stockBracket} />
+                </>
             },
             {
               title: 'Price',

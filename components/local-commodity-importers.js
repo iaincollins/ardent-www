@@ -1,5 +1,6 @@
 import Table from 'rc-table'
 import { timeBetweenTimestamps } from '../lib/utils/dates'
+import TradeBracketIcon from './trade-bracket'
 
 export default ({ commodityOrders }) => {
   return (
@@ -22,7 +23,11 @@ export default ({ commodityOrders }) => {
                     <table className='data-table--mini data-table--compact two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
-                          <td><span className='data-table__label'>Demand</span>{r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>No demand</small>}</td>
+                          <td>
+                            <span className='data-table__label'>Demand</span>
+                            {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>No demand</small>}
+                            <TradeBracketIcon bracket={r.demandBracket} />
+                          </td>
                           <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                         </tr>
                       </tbody>
@@ -47,7 +52,11 @@ export default ({ commodityOrders }) => {
               align: 'right',
               width: 130,
               className: 'is-hidden-mobile',
-              render: (v) => <>{v > 0 ? `${v.toLocaleString()} T` : <small>No demand</small>}</>
+              render: (v, r) =>
+                <>
+                  {v > 0 ? `${v.toLocaleString()} T` : <small>No demand</small>}
+                  <TradeBracketIcon bracket={r.demandBracket} />
+                </>
             },
             {
               title: 'Price',

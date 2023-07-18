@@ -8,7 +8,7 @@ import { timeBetweenTimestamps } from '../../lib/utils/dates'
 import { getCommodities } from '../../lib/commodities'
 import { formatSystemSector } from '../../lib/utils/system-sectors'
 import distance from '../../lib/utils/distance'
-import Loader from '../../components/loader'
+import Layout from '../../components/layout'
 import LocalCommodityImporters from '../../components/local-commodity-importers'
 import LocalCommodityExporters from '../../components/local-commodity-exporters'
 import NearbyCommodityImporters from '../../components/nearby-commodity-importers'
@@ -23,6 +23,7 @@ export default () => {
   const router = useRouter()
   const [system, setSystem] = useState()
   const [stationsInSystem, setStationsInSystem] = useState()
+  const [settlementsInSystem, setSettlementsInSystem] = useState()
   const [fleetCarriersInSystem, setFleetCarriersInSystem] = useState()
   const [nearbySystems, setNearbySystems] = useState()
   const [importOrders, setImportOrders] = useState()
@@ -41,6 +42,7 @@ export default () => {
       setSystem(undefined)
       setStationsInSystem(undefined)
       setFleetCarriersInSystem(undefined)
+      setSettlementsInSystem(undefined)
       setNearbySystems(undefined)
       setImportOrders(undefined)
       setExportOrders(undefined)
@@ -81,14 +83,12 @@ export default () => {
 
       if (system) {
         ;(async () => {
-          const marketsInSystem = await getMarketsInSystem(systemName)
-          if (marketsInSystem?.length > 0) {
-            setStationsInSystem(marketsInSystem.filter(station => station.fleetCarrier !== 1))
-            setFleetCarriersInSystem(marketsInSystem.filter(station => station.fleetCarrier === 1))
-          } else {
-            setStationsInSystem([])
-            setFleetCarriersInSystem([])
-          }
+          const stations = await getStationsInSystem(systemName)
+          setStationsInSystem(stations.filter(
+            station => station.stationType !== 'Fleet Carrier' && station.stationType !== 'Odyssey Settlement')
+          )
+          setSettlementsInSystem(stations.filter(station => station.stationType === 'Odyssey Settlement'))
+          setFleetCarriersInSystem(stations.filter(station => station.stationType === 'Fleet Carrier'))
         })()
 
         ;(async () => {
@@ -128,12 +128,11 @@ export default () => {
   }, [router.query['system-name']])
 
   return (
-    <>
+    <Layout loading={system === undefined}>
       <ul className='breadcrumbs'>
         <li><Link href='/'>Home</Link></li>
         <li><Link href='/commodities'>Systems</Link></li>
       </ul>
-      {system === undefined && <Loader />}
       {system === null && <><h2>Error</h2><p className='clear'>System not found</p></>}
       {system &&
         <>
@@ -163,20 +162,20 @@ export default () => {
                 </td>
               </tr>
               <tr>
-                <th>Trade markets</th>
+                <th>Stations</th>
                 <td>
                   {stationsInSystem?.length > 0 &&
                     <Collapsible
                       trigger={
                         <p className='collapsible__trigger'>
                           <i className='collapsible__trigger-icon icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-                          <span className='collapsible__trigger-text'>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'market' : 'markets'}</span>
+                          <span className='collapsible__trigger-text'>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'station' : 'stations'}</span>
                         </p>
                       }
                       triggerWhenOpen={
                         <p className='collapsible__trigger'>
                           <i className='collapsible__trigger-icon icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-                          <span className='collapsible__trigger-text'>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'market' : 'markets'}</span>
+                          <span className='collapsible__trigger-text'>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'station' : 'stations'}</span>
                         </p>
                       }
                     >
@@ -193,7 +192,37 @@ export default () => {
                 </td>
               </tr>
               <tr>
-                <th>Trade Carriers</th>
+                <th>Settlements</th>
+                <td>
+                  {settlementsInSystem?.length > 0 &&
+                    <Collapsible
+                      trigger={
+                        <p className='collapsible__trigger'>
+                          <i className='collapsible__trigger-icon icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
+                          <span className='collapsible__trigger-text'>{settlementsInSystem.length} {settlementsInSystem.length === 1 ? 'settlement' : 'settlements'}</span>
+                        </p>
+                      }
+                      triggerWhenOpen={
+                        <p className='collapsible__trigger'>
+                          <i className='collapsible__trigger-icon icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
+                          <span className='collapsible__trigger-text'>{settlementsInSystem.length} {settlementsInSystem.length === 1 ? 'settlement' : 'settlements'}</span>
+                        </p>
+                      }
+                    >
+                      <ul>
+                        {settlementsInSystem.map(station =>
+                          <Fragment key={`marketId_${station.marketId}`}>
+                            <li>{station.stationName}</li>
+                          </Fragment>
+                        )}
+                      </ul>
+                    </Collapsible>}
+                  {settlementsInSystem?.length === 0 && <span className='muted'>No markets</span>}
+                  {settlementsInSystem === undefined && '-'}
+                </td>
+              </tr>
+              <tr>
+                <th>Fleet Carriers</th>
                 <td>
                   {fleetCarriersInSystem?.length > 0 &&
                     <Collapsible
@@ -213,7 +242,7 @@ export default () => {
                       <ul>
                         {fleetCarriersInSystem.map(station =>
                           <Fragment key={`marketId_${station.marketId}`}>
-                            <li>Carrier {station.stationName}</li>
+                            <li>Fleet Carrier {station.stationName}</li>
                           </Fragment>
                         )}
                       </ul>
@@ -247,7 +276,7 @@ export default () => {
               </Tab>
             </TabList>
             <TabPanel>
-              {!importOrders && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+              {!importOrders && <div className='loading-bar loading-bar--tab' />}
               {importOrders &&
                 <Table
                   className='data-table data-table--striped data-table--interactive'
@@ -366,7 +395,7 @@ export default () => {
                 />}
             </TabPanel>
             <TabPanel>
-              {!exportOrders && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+              {!exportOrders && <div className='loading-bar loading-bar--tab' />}
               {exportOrders &&
                 <Table
                   className='data-table data-table--striped data-table--interactive'
@@ -485,7 +514,7 @@ export default () => {
                 />}
             </TabPanel>
             <TabPanel>
-              {!nearbySystems && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+              {!nearbySystems && <div className='loading-bar loading-bar--tab' />}
               {nearbySystems &&
                 <Table
                   className='data-table data-table--striped data-table--interactive'
@@ -519,7 +548,7 @@ export default () => {
             </TabPanel>
           </Tabs>
         </>}
-    </>
+    </Layout>
   )
 }
 
@@ -528,9 +557,9 @@ async function getSystem (systemName) {
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getMarketsInSystem (systemName) {
+async function getStationsInSystem (systemName) {
   // @TODO No API endpoint for stations yet, so using 'markets' endpoint
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/markets`)
+  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/stations`)
   return (res.status === 200) ? await res.json() : null
 }
 
@@ -558,7 +587,7 @@ async function getExports (systemName) {
         totalPrice: 0,
         avgPrice: 0,
         bestPrice: null,
-        galacticAvgPrice: (allCommodities.find(el => el.symbol.toLowerCase() === symbol))?.avgSellPrice ?? 0,
+        galacticAvgPrice: (allCommodities.find(el => el.symbol.toLowerCase() === symbol))?.avgBuyPrice ?? 0,
         updatedAt: null,
         producer: c.statusFlags?.includes('Producer') ?? false,
         exportOrders: []

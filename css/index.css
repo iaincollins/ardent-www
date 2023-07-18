@@ -147,3 +147,10 @@ table.two-column-table > tbody > tr > td,
   opacity: .8;
   font-size: .9rem;
 }
+
+.trade-bracket-icon {
+  position: relative;
+  top: -.1rem;
+  font-size: .9rem !important;
+  display: inline-block;
+}

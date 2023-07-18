@@ -54,11 +54,11 @@ export default ({ commodityName, reportName = 'core-systems-1000' }) => {
           <Tab>Exports</Tab>
         </TabList>
         <TabPanel>
-          {!imports && <div className='loading-bar' style={{ marginTop: '.75rem', marginBottom: 0 }} />}
+          {!imports && <div className='loading-bar loading-bar--tab' />}
           {imports && <CommodityImportOrders commodities={imports} />}
         </TabPanel>
         <TabPanel>
-          {!exports && <div className='loading-bar' style={{ marginTop: '.75rem', marginBottom: 0 }} />}
+          {!exports && <div className='loading-bar loading-bar--tab' />}
           {exports && <CommodityExportOrders commodities={exports} />}
         </TabPanel>
       </Tabs>

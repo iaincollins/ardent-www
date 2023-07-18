@@ -6,10 +6,22 @@
   opacity: .75;
 }
 
+.transparent {
+  opacity: 0;
+}
+
 .text-positive {
   color: var(--color-positive);
 }
 
 .text-negative {
   color: var(--color-negative);
+}
+
+.flip-vertical {
+  transform: rotateY(180deg)
+}
+
+.flip-horizontal {
+  transform: rotateX(180deg)
 }

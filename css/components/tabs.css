@@ -1,8 +1,45 @@
-.react-tabs__tab-list {
+.tab-panel__container {
   position: relative;
-  top: .02rem;
+}
+
+.tab-panel__container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.tab-panel__container::before {
+  content: "";
+  position: absolute;
+  height: 5rem;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  clip-path: polygon(0 0,calc(100% - 2.00rem) 0,100% 2.00rem,100% 100%,0 100%);
+  background: linear-gradient(
+    to bottom,
+    var(--color-primary),
+    30%,
+    transparent
+  );
+}
+
+.react-tabs__tab-list {
   margin: 0;
   padding: 0;
+}
+
+.react-tabs__tab-list:after {
+  position: absolute;
+  display: block;
+  left: 0;
+  width: calc(100% - .25rem);
+  content: '';
+  height: 2.19rem;
+  background: var(--color-primary);
+  z-index: -1;
 }
 
 .react-tabs__tab {
@@ -58,37 +95,6 @@
   background: var(--color-primary);
   color: var(--color-text-inverted);
   z-index: 3;
-}
-
-.tab-panel__container {
-  xpadding: 0 .5rem .5rem .5rem;
-  position: relative;
-}
-
-.tab-panel__container::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  xbackground: var(--color-primary);
-  xclip-path: polygon(0 0,calc(100% - 2.00rem) 0,100% 2.00rem,100% 100%,0 100%,0 0,.2rem  .2rem ,.2rem calc(100% - .2rem),calc(100% - .2rem) calc(100% - .2rem),calc(100% - .2rem) calc(2.00rem + 0.08rem),calc(100% - 2.00rem - 0.08rem) .2rem,.2rem .2rem);
-}
-
-.tab-panel__container::before {
-  content: "";
-  position: absolute;
-  height: 5rem;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  clip-path: polygon(0 0,calc(100% - 2.00rem) 0,100% 2.00rem,100% 100%,0 100%);
-  background: linear-gradient(
-    to bottom,
-    var(--color-primary),
-    30%,
-    transparent
-  );
 }
 
 .tab-panel__header {

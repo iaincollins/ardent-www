@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import Loader from '../../components/loader'
-import CommodityExportOrders from '../../components/commodity-export-orders'
+import Layout from '../../components/layout'
 import CommodityImportOrders from '../../components/commodity-import-orders'
+import CommodityExportOrders from '../../components/commodity-export-orders'
 // import CommodityReport from '../../components/commodity-report'
 import commoditiesInfo from '../../lib/commodities.json'
 
@@ -71,12 +71,11 @@ export default () => {
   }, [router.query['commodity-name']])
 
   return (
-    <>
+    <Layout loading={commodity === undefined || imports === undefined}>
       <ul className='breadcrumbs'>
         <li><Link href='/'>Home</Link></li>
         <li><Link href='/commodities'>Commodities</Link></li>
       </ul>
-      {commodity === undefined && <Loader />}
       {commodity === null && <><h2>Error</h2><p className='clear'>Commodity not found</p></>}
       {commodity &&
         <>
@@ -156,7 +155,6 @@ export default () => {
           {/* <p className='clear muted' style={{ padding: '0 0 1rem .25rem' }}>
             Galactic prices and total supply/demand updated daily
           </p> */}
-          {imports === undefined && <Loader />}
           {imports &&
             <Tabs>
               <TabList>
@@ -164,11 +162,11 @@ export default () => {
                 <Tab>Exports</Tab>
               </TabList>
               <TabPanel>
-                {!imports && <div className='loading-bar' style={{ marginTop: '.75rem', marginBottom: 0 }} />}
+                {!imports && <div className='loading-bar loading-bar--tab' />}
                 {imports && <CommodityImportOrders commodities={imports} />}
               </TabPanel>
               <TabPanel>
-                {!exports && <div className='loading-bar' style={{ marginTop: '.75rem', marginBottom: 0 }} />}
+                {!exports && <div className='loading-bar loading-bar--tab' />}
                 {exports && <CommodityExportOrders commodities={exports} />}
               </TabPanel>
             </Tabs>}
@@ -207,7 +205,7 @@ export default () => {
             </div>
           </Tabs> */}
         </>}
-    </>
+    </Layout>
   )
 }
 

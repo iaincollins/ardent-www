@@ -8,7 +8,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  opacity: .75;
   zoom: 1.5;
   transition: .25s ease-in-out;
   z-index: 3000;

@@ -17,6 +17,14 @@
   transform-origin: 0% 50%;
 }
 
+.loading-bar--tab {
+  position: relative;
+  margin-left: .2rem;
+  height: 1.8rem;
+  top: -.3rem;
+  width: calc(100% - .4rem);
+}
+
 @keyframes loadingBarAnimation {
   0% {
     transform:  translateX(0) scaleX(0);
