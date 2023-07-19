@@ -14,6 +14,10 @@
   color: var(--color-positive);
 }
 
+.text-warning {
+  color: var(--color-warning);
+}
+
 .text-negative {
   color: var(--color-negative);
 }

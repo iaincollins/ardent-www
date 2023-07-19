@@ -153,4 +153,5 @@ table.two-column-table > tbody > tr > td,
   top: -.1rem;
   font-size: .9rem !important;
   display: inline-block;
+  text-shadow: none;
 }
