@@ -68,11 +68,13 @@
     padding-right: .25rem;
   }
 
-  .trade-bracket-icon {
+  i.trade-bracket-icon {
+    top: -.05rem;
     padding-right: .25rem;
+    font-size: .8rem !important;
   }
 
-  .trade-bracket-icon.flip-vertical {
+  i.trade-bracket-icon.flip-vertical {
     padding-right: 0;
     padding-left: .25rem;
   }

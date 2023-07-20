@@ -4,6 +4,7 @@ import Table from 'rc-table'
 import Collapsible from 'react-collapsible'
 import { timeBetweenTimestamps } from '../lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
+import StationIcon from './station-icon'
 import { API_BASE_URL } from '../lib/consts'
 import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
@@ -128,7 +129,9 @@ function ExpandedRow ({ r }) {
             className: 'max-width-mobile',
             render: (v, r) =>
               <>
+                <StationIcon stationType={r.stationType} />
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+                {r.distanceToArrival && <small> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                 <div className='is-visible-mobile'>
                   <table className='data-table--mini data-table--compact two-column-table'>
                     <tbody style={{ textTransform: 'uppercase' }}>

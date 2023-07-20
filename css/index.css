@@ -25,6 +25,7 @@ i[class*=" icarus-terminal-"] {
   line-height: inherit;
   vertical-align: middle;
   pointer-events: none;
+  font-weight: normal;
   margin: 0 .1rem;
 }
 
@@ -154,4 +155,12 @@ table.two-column-table > tbody > tr > td,
   font-size: .9rem !important;
   display: inline-block;
   text-shadow: none;
+}
+
+.station-icon {
+  position: relative;
+  top: -.05rem;
+  padding-right: .2rem;
+  font-size: 1.25rem !important;
+  line-height: 1rem !important;
 }

@@ -18,7 +18,7 @@ export default () => {
   return (
     <>
       <header>
-        <Link href='/' className='--no-hover'>
+        <Link href='/' className='--no-hover' style={{ border: 'none' }}>
           <div className='header__logo'>
             <h1>
               <em>A</em>rdent <em>I</em>ndustry

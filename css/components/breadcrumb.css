@@ -38,6 +38,7 @@
   color: var(--color-text-inverted);
   text-decoration: none;
   pointer-events: all;
+  border: none;
 }
 
 .breadcrumbs li:first-child {

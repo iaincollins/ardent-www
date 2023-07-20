@@ -1,6 +1,7 @@
 import Table from 'rc-table'
 import { timeBetweenTimestamps } from '../lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
+import StationIcon from './station-icon'
 
 export default ({ commodityOrders }) => {
   return (
@@ -18,19 +19,12 @@ export default ({ commodityOrders }) => {
               className: 'max-width-mobile',
               render: (v, r) =>
                 <>
-                  <span className='is-hidden-mobile'>
-                    {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                  </span>
+                  <StationIcon stationType={r.stationType} />
+                  {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+                  {r.distanceToArrival && <small> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                   <div className='is-visible-mobile'>
-                    <table className='data-table--mini data-table--striped two-column-table'>
+                    <table className='data-table--mini data-table--compact two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>
-                        <tr>
-                          <td colSpan={2}>
-                            {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                            <br />
-                            <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
-                          </td>
-                        </tr>
                         <tr>
                           <td>
                             <span className='data-table__label'>Stock</span>
@@ -41,6 +35,7 @@ export default ({ commodityOrders }) => {
                         </tr>
                       </tbody>
                     </table>
+                    <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
                   </div>
                 </>
             },

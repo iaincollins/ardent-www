@@ -19,6 +19,8 @@ html button,
 html th,
 html td,
 html label {
+  font-family: 'Jura';
+  font-weight: bold;
   text-shadow: 0 0 15px rgba(0,0,0,.8), 0 0 15px rgba(255,255,255,.8);
 }
 
@@ -34,10 +36,13 @@ a,
 
 a {
   color: var(--color-text-link);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--color-text-muted);
 }
 
 a:hover:not(.--no-hover) {
   filter: contrast(1.5);
+  border-bottom: 1px dotted var(--color-text-link);
 }
 
 h1,
