@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Table from 'rc-table'
 import Collapsible from 'react-collapsible'
+import { CollapsibleTrigger } from '../../components/collapsible-trigger'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { timeBetweenTimestamps } from '../../lib/utils/dates'
 import { getCommodities } from '../../lib/commodities'
@@ -13,6 +14,7 @@ import LocalCommodityImporters from '../../components/local-commodity-importers'
 import LocalCommodityExporters from '../../components/local-commodity-exporters'
 import NearbyCommodityImporters from '../../components/nearby-commodity-importers'
 import NearbyCommodityExporters from '../../components/nearby-commodity-exporters'
+import StationIcon from '../../components/station-icon'
 import {
   API_BASE_URL,
   SOL_COORDINATES,
@@ -25,6 +27,7 @@ export default () => {
   const [stationsInSystem, setStationsInSystem] = useState()
   const [settlementsInSystem, setSettlementsInSystem] = useState()
   const [fleetCarriersInSystem, setFleetCarriersInSystem] = useState()
+  const [megashipsInSystem, setMegashipsInSystem] = useState()
   const [nearbySystems, setNearbySystems] = useState()
   const [importOrders, setImportOrders] = useState()
   const [exportOrders, setExportOrders] = useState()
@@ -41,8 +44,9 @@ export default () => {
 
       setSystem(undefined)
       setStationsInSystem(undefined)
-      setFleetCarriersInSystem(undefined)
       setSettlementsInSystem(undefined)
+      setFleetCarriersInSystem(undefined)
+      setMegashipsInSystem(undefined)
       setNearbySystems(undefined)
       setImportOrders(undefined)
       setExportOrders(undefined)
@@ -85,10 +89,14 @@ export default () => {
         ;(async () => {
           const stations = await getStationsInSystem(systemName)
           setStationsInSystem(stations.filter(
-            station => station.stationType !== 'Fleet Carrier' && station.stationType !== 'Odyssey Settlement')
-          )
-          setSettlementsInSystem(stations.filter(station => station.stationType === 'Odyssey Settlement'))
+            station => station.stationType !== 'Fleet Carrier' &&
+                       station.stationType !== 'Odyssey Settlement' &&
+                       station.stationType !== 'Megaship' &&
+                       station.stationType !== null
+          ))
+          setSettlementsInSystem(stations.filter(station => station.stationType === 'Odyssey Settlement' || station.stationType === null))
           setFleetCarriersInSystem(stations.filter(station => station.stationType === 'Fleet Carrier'))
+          setMegashipsInSystem(stations.filter(station => station.stationType === 'Megaship'))
         })()
 
         ;(async () => {
@@ -136,7 +144,7 @@ export default () => {
       {system === null && <><h2>Error</h2><p className='clear'>System not found</p></>}
       {system &&
         <>
-          <h2>
+          <h2 className='heading--with-icon'>
             <i className='icon icarus-terminal-system-orbits' />
             {system.systemName}
           </h2>
@@ -162,32 +170,24 @@ export default () => {
                 </td>
               </tr>
               <tr>
-                <th>Stations</th>
+                <th>Stations/Ports</th>
                 <td>
                   {stationsInSystem?.length > 0 &&
                     <Collapsible
-                      trigger={
-                        <p className='collapsible__trigger'>
-                          <i className='collapsible__trigger-icon icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-                          <span className='collapsible__trigger-text'>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'station' : 'stations'}</span>
-                        </p>
-                      }
-                      triggerWhenOpen={
-                        <p className='collapsible__trigger'>
-                          <i className='collapsible__trigger-icon icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-                          <span className='collapsible__trigger-text'>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'station' : 'stations'}</span>
-                        </p>
-                      }
+                      trigger={<CollapsibleTrigger>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'station/port' : 'stations/ports'}</CollapsibleTrigger>}
+                      triggerWhenOpen={<CollapsibleTrigger open>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'station/port' : 'stations/ports'}</CollapsibleTrigger>}
                     >
-                      <ul>
-                        {stationsInSystem.map(station =>
-                          <Fragment key={`marketId_${station.marketId}`}>
-                            <li>{station.stationName}</li>
-                          </Fragment>
-                        )}
-                      </ul>
+                      {stationsInSystem.map(station =>
+                        <Fragment key={`marketId_${station.marketId}`}>
+                          <p style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                            <StationIcon stationType={station.stationType} />
+                            {station.stationName}
+                            {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                          </p>
+                        </Fragment>
+                      )}
                     </Collapsible>}
-                  {stationsInSystem?.length === 0 && <span className='muted'>No markets</span>}
+                  {stationsInSystem?.length === 0 && <span className='muted'>None</span>}
                   {stationsInSystem === undefined && '-'}
                 </td>
               </tr>
@@ -196,29 +196,47 @@ export default () => {
                 <td>
                   {settlementsInSystem?.length > 0 &&
                     <Collapsible
-                      trigger={
-                        <p className='collapsible__trigger'>
-                          <i className='collapsible__trigger-icon icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-                          <span className='collapsible__trigger-text'>{settlementsInSystem.length} {settlementsInSystem.length === 1 ? 'settlement' : 'settlements'}</span>
-                        </p>
-                      }
-                      triggerWhenOpen={
-                        <p className='collapsible__trigger'>
-                          <i className='collapsible__trigger-icon icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-                          <span className='collapsible__trigger-text'>{settlementsInSystem.length} {settlementsInSystem.length === 1 ? 'settlement' : 'settlements'}</span>
-                        </p>
-                      }
+                      trigger={<CollapsibleTrigger>{settlementsInSystem.length} {settlementsInSystem.length === 1 ? 'settlement' : 'settlements'}</CollapsibleTrigger>}
+                      triggerWhenOpen={<CollapsibleTrigger open>{settlementsInSystem.length} {settlementsInSystem.length === 1 ? 'settlement' : 'settlements'}</CollapsibleTrigger>}
                     >
-                      <ul>
-                        {settlementsInSystem.map(station =>
-                          <Fragment key={`marketId_${station.marketId}`}>
-                            <li>{station.stationName}</li>
-                          </Fragment>
-                        )}
-                      </ul>
+                      {settlementsInSystem.map(station =>
+                        <Fragment key={`marketId_${station.marketId}`}>
+                          <p style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                            <StationIcon stationType={station.stationType} />
+                            {station.stationName}
+                            {station.bodyName && <small> {station.bodyName.replace(`${station.systemName} `, '')}</small>}
+                            {station.bodyName && station.distanceToArrival !== null && <small>, </small>}
+                            {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                          </p>
+                        </Fragment>
+                      )}
                     </Collapsible>}
-                  {settlementsInSystem?.length === 0 && <span className='muted'>No markets</span>}
+                  {settlementsInSystem?.length === 0 && <span className='muted'>None</span>}
                   {settlementsInSystem === undefined && '-'}
+                </td>
+              </tr>
+              <tr>
+                <th>Megaships</th>
+                <td>
+                  {megashipsInSystem?.length > 0 &&
+                    <Collapsible
+                      trigger={<CollapsibleTrigger>{megashipsInSystem.length} {megashipsInSystem.length === 1 ? 'megaship' : 'megaships'}</CollapsibleTrigger>}
+                      triggerWhenOpen={<CollapsibleTrigger open>{megashipsInSystem.length} {megashipsInSystem.length === 1 ? 'megaship' : 'megaships'}</CollapsibleTrigger>}
+                    >
+                      {megashipsInSystem.map(station =>
+                        <Fragment key={`marketId_${station.marketId}`}>
+                          <p style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                            <StationIcon stationType={station.stationType} />
+                            {station.stationName}
+                            {station.updatedAt && <small> {timeBetweenTimestamps(station.updatedAt)} ago</small>}
+                            {station.updatedAt && station.distanceToArrival !== null && <small>, </small>}
+                            {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                          </p>
+                        </Fragment>
+                      )}
+                    </Collapsible>}
+                  {megashipsInSystem?.length === 0 && <span className='muted'>None</span>}
+                  {megashipsInSystem === undefined && '-'}
                 </td>
               </tr>
               <tr>
@@ -226,34 +244,27 @@ export default () => {
                 <td>
                   {fleetCarriersInSystem?.length > 0 &&
                     <Collapsible
-                      trigger={
-                        <p className='collapsible__trigger'>
-                          <i className='collapsible__trigger-icon icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-                          <span className='collapsible__trigger-text'>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'carrier' : 'carriers'}</span>
-                        </p>
-                      }
-                      triggerWhenOpen={
-                        <p className='collapsible__trigger'>
-                          <i className='collapsible__trigger-icon icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-                          <span className='collapsible__trigger-text'>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'carrier' : 'carriers'}</span>
-                        </p>
-                      }
+                      trigger={<CollapsibleTrigger>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'carrier' : 'carriers'}</CollapsibleTrigger>}
+                      triggerWhenOpen={<CollapsibleTrigger open>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'carrier' : 'carriers'}</CollapsibleTrigger>}
                     >
-                      <ul>
-                        {fleetCarriersInSystem.map(station =>
-                          <Fragment key={`marketId_${station.marketId}`}>
-                            <li>Fleet Carrier {station.stationName}</li>
-                          </Fragment>
-                        )}
-                      </ul>
+                      {fleetCarriersInSystem.map(station =>
+                        <Fragment key={`marketId_${station.marketId}`}>
+                          <p style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                            <StationIcon stationType={station.stationType} />
+                            Fleet Carrier {station.stationName}
+                            {station.updatedAt && <small> {timeBetweenTimestamps(station.updatedAt)} ago</small>}
+                            {station.updatedAt && station.distanceToArrival !== null && <small>, </small>}
+                            {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                          </p>
+                        </Fragment>
+                      )}
                     </Collapsible>}
-                  {fleetCarriersInSystem?.length === 0 && <span className='muted'>No carriers</span>}
+                  {fleetCarriersInSystem?.length === 0 && <span className='muted'>None</span>}
                   {fleetCarriersInSystem === undefined && '-'}
                 </td>
               </tr>
               <tr>
                 <th>Last update</th>
-                {/* <td>{timeBetweenTimestamps(system.updatedAt)} ago</td> */}
                 <td>{timeBetweenTimestamps(lastUpdatedAt)} ago</td>
               </tr>
             </tbody>
@@ -262,12 +273,12 @@ export default () => {
             <TabList>
               <Tab>
                 <span className='is-hidden-mobile'>Imports</span>
-                <span className='is-visible-mobile'>Imp.</span>
+                <span className='is-visible-mobile'>Imp</span>
                 <span className='muted'> [{importOrders?.length ?? '-'}]</span>
               </Tab>
               <Tab>
                 <span className='is-hidden-mobile'>Exports</span>
-                <span className='is-visible-mobile'>Exp.</span>
+                <span className='is-visible-mobile'>Exp</span>
                 <span className='muted'> [{exportOrders?.length ?? '-'}]</span>
               </Tab>
               <Tab>
@@ -359,34 +370,14 @@ export default () => {
                           commodityOrders={r.importOrders}
                         />
                         <Collapsible
-                          trigger={
-                            <p className='trade-orders__trigger' style={{ marginTop: '1rem' }}>
-                              <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-                              Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
-                            </p>
-                          }
-                          triggerWhenOpen={
-                            <p className='trade-orders__trigger' style={{ marginTop: '1rem' }}>
-                              <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-                              Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
-                            </p>
-                          }
+                          trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
+                          triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                         >
                           <NearbyCommodityExporters commodity={r} />
                         </Collapsible>
                         <Collapsible
-                          trigger={
-                            <p className='trade-orders__trigger' style={{ marginTop: '0rem' }}>
-                              <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-                              Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
-                            </p>
-                          }
-                          triggerWhenOpen={
-                            <p className='trade-orders__trigger' style={{ marginTop: '0rem' }}>
-                              <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-                              Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
-                            </p>
-                          }
+                          trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
+                          triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                         >
                           <NearbyCommodityImporters commodity={r} />
                         </Collapsible>
@@ -478,34 +469,14 @@ export default () => {
                           commodityOrders={r.exportOrders}
                         />
                         <Collapsible
-                          trigger={
-                            <p className='trade-orders__trigger' style={{ marginTop: '1rem' }}>
-                              <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-                              Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
-                            </p>
-                          }
-                          triggerWhenOpen={
-                            <p className='trade-orders__trigger' style={{ marginTop: '1rem' }}>
-                              <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-                              Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
-                            </p>
-                          }
+                          trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
+                          triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                         >
                           <NearbyCommodityExporters commodity={r} />
                         </Collapsible>
                         <Collapsible
-                          trigger={
-                            <p className='trade-orders__trigger' style={{ marginTop: '0rem' }}>
-                              <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-                              Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
-                            </p>
-                          }
-                          triggerWhenOpen={
-                            <p className='trade-orders__trigger' style={{ marginTop: '0rem' }}>
-                              <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-                              Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
-                            </p>
-                          }
+                          trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
+                          triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                         >
                           <NearbyCommodityImporters commodity={r} />
                         </Collapsible>

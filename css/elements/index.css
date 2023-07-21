@@ -67,10 +67,7 @@ h4 {
   text-shadow: 0 0 .8rem rgba(0,0,0,.8);  
 }
 
-h1:after,
-h2:after,
-h3:after,
-h4:after {
+h1:after {
   position: absolute;
   top: 0;
   display: inline-block;
@@ -86,6 +83,8 @@ h4:after {
 h2 {
   font-size: 2rem;
   line-height: 2rem;
+  padding-right: 1.25rem;
+  clip-path: polygon(0 0,calc(100% - 1.1rem) 0,100% 2.1rem,100% 100%,0 100%);
 }
 
 h3 {
@@ -93,12 +92,15 @@ h3 {
   line-height: 1.7rem;
 }
 
-h2 .icon {
-  position: relative;
+h2.heading--with-icon {
+  padding-left: 2.4rem;
+}
+
+h2.heading--with-icon .icon {
+  position: absolute;
   top: .05rem;
-  font-size: 1.5rem !important;
-  padding-right: .05rem;
-  float: left;
+  left: .1rem;
+  font-size: 1.75rem !important;
 }
 
 table {

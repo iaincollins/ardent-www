@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Table from 'rc-table'
 import Collapsible from 'react-collapsible'
+import { CollapsibleTrigger } from './collapsible-trigger'
 import { timeBetweenTimestamps } from '../lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
 import StationIcon from './station-icon'
@@ -29,7 +30,10 @@ export default ({ commodities }) => {
           render: (v, r) =>
             <>
               <i className='icon icarus-terminal-star' />{v}<br />
-              <small>{r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}</small>
+              <small>
+                {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+                {(r?.distanceToArrival ?? null) !== null && <small> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+              </small>
               <div className='is-visible-mobile'>
                 <table className='data-table--mini data-table--compact two-column-table'>
                   <tbody style={{ textTransform: 'uppercase' }}>
@@ -131,7 +135,7 @@ function ExpandedRow ({ r }) {
               <>
                 <StationIcon stationType={r.stationType} />
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                {r.distanceToArrival && <small> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                {(r?.distanceToArrival ?? null) !== null && <small> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                 <div className='is-visible-mobile'>
                   <table className='data-table--mini data-table--compact two-column-table'>
                     <tbody style={{ textTransform: 'uppercase' }}>
@@ -184,34 +188,14 @@ function ExpandedRow ({ r }) {
         data={exports}
       />
       <Collapsible
-        trigger={
-          <p className='trade-orders__trigger' style={{ marginTop: '1rem' }}>
-            <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-            Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
-          </p>
-        }
-        triggerWhenOpen={
-          <p className='trade-orders__trigger' style={{ marginTop: '1rem' }}>
-            <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-            Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
-          </p>
-        }
+        trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
+        triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
       >
         <NearbyCommodityExporters commodity={r} />
       </Collapsible>
       <Collapsible
-        trigger={
-          <p className='trade-orders__trigger' style={{ marginTop: '0rem' }}>
-            <i className='icarus-terminal-chevron-right' style={{ position: 'relative', top: '-.1rem' }} />
-            Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
-          </p>
-        }
-        triggerWhenOpen={
-          <p className='trade-orders__trigger' style={{ marginTop: '0rem' }}>
-            <i className='icarus-terminal-chevron-down' style={{ position: 'relative', top: '-.1rem' }} />
-            Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong>
-          </p>
-        }
+        trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
+        triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
       >
         <NearbyCommodityImporters commodity={r} />
       </Collapsible>

@@ -23,9 +23,9 @@
 }
 
 .flip-vertical {
-  transform: rotateY(180deg)
+  transform: rotateY(180deg);
 }
 
 .flip-horizontal {
-  transform: rotateX(180deg)
+  transform: rotateX(180deg);
 }

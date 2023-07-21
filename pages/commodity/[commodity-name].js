@@ -79,7 +79,7 @@ export default () => {
       {commodity === null && <><h2>Error</h2><p className='clear'>Commodity not found</p></>}
       {commodity &&
         <>
-          <h2>
+          <h2 className='heading--with-icon'>
             <i className='icon icarus-terminal-cargo' />
             {commodity.name}
           </h2>
@@ -130,7 +130,7 @@ export default () => {
                   <progress
                     max={Math.max(commodity.totalStock, commodity.totalDemand)}
                     value={commodity.totalDemand}
-                    style={{ maxWidth: '12rem' }}
+                    style={{ maxWidth: '12rem', height: '1.5rem' }}
                   />
                   <p style={{ margin: '0 0 .15rem 0' }}>
                     {commodity.totalDemand > 0 ? <>{commodity.totalDemand.toLocaleString()} T</> : '-'}
@@ -143,7 +143,7 @@ export default () => {
                   <progress
                     max={Math.max(commodity.totalStock, commodity.totalDemand)}
                     value={commodity.totalStock}
-                    style={{ maxWidth: '12rem' }}
+                    style={{ maxWidth: '12rem', height: '1.5rem' }}
                   />
                   <p style={{ margin: '0 0 .15rem 0' }}>
                     {commodity.totalStock > 0 ? <>{commodity.totalStock.toLocaleString()} T</> : '-'}

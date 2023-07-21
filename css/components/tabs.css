@@ -39,12 +39,13 @@
   content: '';
   height: 2.19rem;
   background: var(--color-primary);
-  z-index: -1;
+  z-index: 1;
 }
 
 .react-tabs__tab {
   display: inline-block;
   position: relative;
+  top: .05rem;
   text-transform: uppercase;
   font-family: "Jura", sans-serif;
   font-weight: bold;
@@ -107,4 +108,9 @@
 
 .tab-panel__header p {
   margin: .25rem 0;
+}
+
+.react-tabs__tab-panel {
+  position: relative;
+  z-index: 2;
 }

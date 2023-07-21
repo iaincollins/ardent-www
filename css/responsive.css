@@ -4,19 +4,24 @@
   h3,
   h4 {
     display: block;
-    white-space: nowrap;
-    overflow: hidden;
+    xwhite-space: nowrap;
+    xoverflow: hidden;
     text-overflow: ellipsis;
-    width: calc(100% - 1.25rem);
-    clip-path: polygon(0 0,calc(100% - 1.5rem) 0,100% 2rem,100% 100%,0 100%);
-    padding-left: .25rem;
-    padding-right: 1rem;
     left: 0;
   }
 
   h2 {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    clip-path: polygon(0 0,calc(100% - .8rem) 0,100% 1.6rem,100% 100%,0 100%);
+  }
+
+  h2.heading--with-icon {
+    padding-left: 1.8rem;
+  }
+  
+  h2.heading--with-icon .icon {
+    font-size: 1.25rem !important;
   }
 
   h3 {

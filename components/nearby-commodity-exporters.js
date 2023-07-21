@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Table from 'rc-table'
 import { timeBetweenTimestamps } from '../lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
+import StationIcon from './station-icon'
 import { API_BASE_URL } from '../lib/consts'
 
 const MAX_ROWS_TO_DISPLAY = 10
@@ -39,7 +40,9 @@ export default ({ commodity }) => {
               className: 'max-width-mobile',
               render: (v, r) =>
                 <>
+                  <StationIcon stationType={r.stationType} />
                   {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+                  {r.distanceToArrival !== null && <small> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                   <div className='is-visible-mobile'>
                     <span style={{ textTransform: 'none' }}>
                       <Link href={`/system/${r.systemName}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} Ly</span>

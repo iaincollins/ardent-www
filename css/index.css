@@ -112,7 +112,7 @@ body::-webkit-scrollbar-track {
   position: relative;
   margin: 0;
   padding: 0;
-  padding-left: 1.5rem;
+  padding-left: 1.2rem;
 }
 
 .collapsible__trigger:hover {
@@ -127,11 +127,45 @@ body::-webkit-scrollbar-track {
   border-bottom: 1px dotted var(--color-text-link);
 }
 
-.collapsible__trigger-icon  {
+.collapsible__trigger-icon {
   position: absolute !important;
-  top: .1rem !important;
+  top: .2rem !important;
   left: 0;
-  font-size: .9rem !important;
+  font-size: .8rem !important;
+  transition: transform .15s;
+}
+
+.collapsible__trigger--open .collapsible__trigger-icon  {
+  transform: rotate(90deg);
+}
+
+.rc-table-cell .collapsible__trigger {
+  margin-top: .05rem;
+  padding-top: .15rem;
+  padding-bottom: .15rem;
+  padding-left: 1.4rem;
+}
+
+.rc-table-cell .collapsible__trigger .collapsible__trigger-icon {
+  left: .2rem;
+}
+
+.rc-table-cell > .rc-table {
+  margin-bottom: .5rem;
+}
+
+.rc-table-cell .collapsible__trigger--open {
+  background: var(--color-primary);
+  color: var(--color-text-inverted);
+  border: none;
+}
+
+.rc-table-cell .collapsible__trigger .collapsible__trigger-icon  {
+  top: .3rem !important;
+}
+
+.rc-table-cell .collapsible__trigger.collapsible__trigger--open .collapsible__trigger-text {
+  border-bottom-color: transparent;
 }
 
 table.two-column-table > tbody > tr > td,
@@ -159,6 +193,7 @@ table.two-column-table > tbody > tr > td,
 
 .station-icon {
   position: relative;
+  display: inline-block;
   top: -.05rem;
   padding-right: .2rem;
   font-size: 1.25rem !important;
