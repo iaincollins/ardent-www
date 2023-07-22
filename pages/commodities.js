@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Table from 'rc-table'
-import Layout from '../components/layout'
-import { getCommodities } from '../lib/commodities'
+import Layout from 'components/layout'
+import { getCommodities } from 'lib/commodities'
 
 export default () => {
   const router = useRouter()

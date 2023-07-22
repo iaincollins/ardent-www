@@ -5,21 +5,21 @@ import Table from 'rc-table'
 import Collapsible from 'react-collapsible'
 import { CollapsibleTrigger } from '../../components/collapsible-trigger'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { timeBetweenTimestamps } from '../../lib/utils/dates'
-import { getCommodities } from '../../lib/commodities'
-import { formatSystemSector } from '../../lib/utils/system-sectors'
-import distance from '../../lib/utils/distance'
-import Layout from '../../components/layout'
-import LocalCommodityImporters from '../../components/local-commodity-importers'
-import LocalCommodityExporters from '../../components/local-commodity-exporters'
-import NearbyCommodityImporters from '../../components/nearby-commodity-importers'
-import NearbyCommodityExporters from '../../components/nearby-commodity-exporters'
-import StationIcon from '../../components/station-icon'
+import { timeBetweenTimestamps } from 'lib/utils/dates'
+import { getCommodities } from 'lib/commodities'
+import { formatSystemSector } from 'lib/utils/system-sectors'
+import distance from 'lib/utils/distance'
+import Layout from 'components/layout'
+import LocalCommodityImporters from 'components/local-commodity-importers'
+import LocalCommodityExporters from 'components/local-commodity-exporters'
+import NearbyCommodityImporters from 'components/nearby-commodity-importers'
+import NearbyCommodityExporters from 'components/nearby-commodity-exporters'
+import StationIcon from 'components/station-icon'
 import {
   API_BASE_URL,
   SOL_COORDINATES,
   COLONIA_COORDINATES
-} from '../../lib/consts'
+} from 'lib/consts'
 
 export default () => {
   const router = useRouter()

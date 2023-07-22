@@ -113,6 +113,7 @@ export default ({ commodity }) => {
             }
           ]}
           data={nearbyExporters}
+          rowKey='commodityId'
         />}
     </>
   )

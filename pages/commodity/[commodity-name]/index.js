@@ -1,20 +1,28 @@
+import path from 'path'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import Layout from '../../components/layout'
-import CommodityImportOrders from '../../components/commodity-import-orders'
-import CommodityExportOrders from '../../components/commodity-export-orders'
-// import CommodityReport from '../../components/commodity-report'
-import commoditiesInfo from '../../lib/commodities.json'
+import Layout from 'components/layout'
+import CommodityImportOrders from 'components/commodity-import-orders'
+import CommodityExportOrders from 'components/commodity-export-orders'
+// import CommodityReport from 'components/commodity-report'
+import commoditiesInfo from 'lib/commodities.json'
 
-import { API_BASE_URL } from '../../lib/consts'
+import { API_BASE_URL } from 'lib/consts'
 
 export default () => {
   const router = useRouter()
+  const [tabIndex, setTabIndex] = useState(0)
   const [commodity, setCommodity] = useState()
   const [exports, setExports] = useState()
   const [imports, setImports] = useState()
+
+  useEffect(() => {
+    const basePath = path.basename(router.pathname)
+    if (basePath === 'imports') setTabIndex(0)
+    if (basePath === 'exports') setTabIndex(1)
+  }, [router.pathname])
 
   useEffect(() => {
     (async () => {
@@ -99,7 +107,7 @@ export default () => {
                       <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>
                     </>
                     )
-                  : <span class='muted'>Insufficent data</span>}
+                  : <span className='muted'>Insufficent data</span>}
                 </td>
               </tr>
               <tr>
@@ -112,7 +120,7 @@ export default () => {
                       <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>
                     </>
                     )
-                  : <span class='muted'>Insufficent data</span>}
+                  : <span className='muted'>Insufficent data</span>}
                 </td>
               </tr>
               {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
@@ -156,7 +164,13 @@ export default () => {
             Galactic prices and total supply/demand updated daily
           </p> */}
           {imports &&
-            <Tabs>
+            <Tabs selectedIndex={tabIndex}
+              onSelect={
+                (index) => {
+                  const tabs = ['imports', 'exports']
+                  router.push(`/commodity/${router.query['commodity-name']}/${tabs[index]}`)
+                }
+              }>
               <TabList>
                 <Tab>Imports</Tab>
                 <Tab>Exports</Tab>

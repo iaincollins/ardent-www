@@ -186,6 +186,7 @@ function ExpandedRow ({ r }) {
           }
         ]}
         data={imports}
+        rowKey='commodityId'
       />
       <Collapsible
         trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
