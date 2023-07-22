@@ -1,5 +1,5 @@
 import Table from 'rc-table'
-import { timeBetweenTimestamps } from '../lib/utils/dates'
+import { timeBetweenTimestamps } from 'lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
 import StationIcon from './station-icon'
 

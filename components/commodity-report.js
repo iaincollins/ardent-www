@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import CommodityExportOrders from './commodity-export-orders'
 import CommodityImportOrders from './commodity-import-orders'
-import commoditiesInfo from '../lib/commodities.json'
-import { API_BASE_URL } from '../lib/consts'
+import commoditiesInfo from 'lib/commodities.json'
+import { API_BASE_URL } from 'lib/consts'
 
 export default ({ commodityName, reportName = 'core-systems-1000' }) => {
   const [exports, setExports] = useState()

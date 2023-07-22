@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Table from 'rc-table'
-import { timeBetweenTimestamps } from '../lib/utils/dates'
+import { timeBetweenTimestamps } from 'lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
 import StationIcon from './station-icon'
-import { API_BASE_URL } from '../lib/consts'
+import { API_BASE_URL } from 'lib/consts'
 
 const MAX_ROWS_TO_DISPLAY = 10
 

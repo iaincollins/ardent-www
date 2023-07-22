@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Package from '../package.json'
+import Package from 'package.json'
 
 import { API_BASE_URL } from '../lib/consts'
 

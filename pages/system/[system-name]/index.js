@@ -1,9 +1,10 @@
+import path from 'path'
 import { useState, useEffect, Fragment } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Table from 'rc-table'
 import Collapsible from 'react-collapsible'
-import { CollapsibleTrigger } from '../../components/collapsible-trigger'
+import { CollapsibleTrigger } from '../../../components/collapsible-trigger'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import { getCommodities } from 'lib/commodities'
@@ -32,6 +33,14 @@ export default () => {
   const [importOrders, setImportOrders] = useState()
   const [exportOrders, setExportOrders] = useState()
   const [lastUpdatedAt, setLastUpdatedAt] = useState()
+  const [tabIndex, setTabIndex] = useState(0)
+
+  useEffect(() => {
+    const basePath = path.basename(router.pathname)
+    if (basePath === 'imports') setTabIndex(0)
+    if (basePath === 'exports') setTabIndex(1)
+    if (basePath === 'nearby') setTabIndex(2)
+  }, [router.pathname])
 
   const onSystemsRowClick = (record, index, event) => {
     router.push(`/system/${record.systemName}`)
@@ -265,11 +274,22 @@ export default () => {
               </tr>
               <tr>
                 <th>Last update</th>
-                <td>{timeBetweenTimestamps(lastUpdatedAt)} ago</td>
+                <td>
+                  {(system !== undefined && importOrders !== undefined && exportOrders !== undefined)
+                    ? `${timeBetweenTimestamps(lastUpdatedAt)} ago`
+                    : <span className='muted'>...</span>
+                  }
+                </td>
               </tr>
             </tbody>
           </table>
-          <Tabs>
+          <Tabs selectedIndex={tabIndex}
+              onSelect={
+                (index) => {
+                  const tabs = ['imports', 'exports', 'nearby']
+                  router.push(`/system/${router.query['system-name']}/${tabs[index]}`)
+                }
+              }>
             <TabList>
               <Tab>
                 <span className='is-hidden-mobile'>Imports</span>
