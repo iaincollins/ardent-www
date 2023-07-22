@@ -84,6 +84,7 @@ export default () => {
               }
             ]}
             data={commodities}
+            rowKey='name'
             onRow={(record, index) => ({
               onClick: onRowClick.bind(null, record, index)
             })}

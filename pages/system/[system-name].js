@@ -512,6 +512,7 @@ export default () => {
                     }
                   ]}
                   data={nearbySystems}
+                  rowKey='systemAddress'
                   onRow={(record, index) => ({
                     onClick: onSystemsRowClick.bind(null, record, index)
                   })}
