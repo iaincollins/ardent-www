@@ -149,10 +149,6 @@ body::-webkit-scrollbar-track {
 .rc-table-cell .collapsible__trigger .collapsible__trigger-icon {
   left: .2rem;
 }
-/* 
-.rc-table-cell > .rc-table {
-  margin-bottom: .5rem;
-} */
 
 .rc-table-cell .collapsible__trigger--open {
   background: var(--color-primary);

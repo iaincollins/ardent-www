@@ -221,8 +221,8 @@ export default () => {
                             </div>
                             <div className='system__entity-information'>
                               {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                              {station.bodyName && station.distanceToArrival !== null && <small> // </small>}
-                              {station.bodyName && <small>Planet {station.bodyName.replace(`${station.systemName} `, '')}</small>}
+                              {station.bodyName && station.distanceToArrival !== null && <small>{' // '}</small>}
+                              {station.bodyName && <small>{station.bodyName}</small>}
                             </div>
                           </p>
                         </Fragment>
@@ -249,7 +249,7 @@ export default () => {
                             </div>
                             <div className='system__entity-information'>
                               {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                              {station.updatedAt && station.distanceToArrival !== null && <small> // </small>}
+                              {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
                               {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                             </div>
                           </p>
@@ -277,7 +277,7 @@ export default () => {
                             </div>
                             <div className='system__entity-information'>
                               {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                              {station.updatedAt && station.distanceToArrival !== null && <small> // </small>}
+                              {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
                               {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                             </div>
                           </p>

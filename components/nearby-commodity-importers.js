@@ -29,8 +29,7 @@ export default ({ commodity }) => {
       {!nearbyImporters && <div className='loading-bar' style={{ marginTop: 0 }} />}
       {nearbyImporters &&
         <Table
-          className='data-table--mini data-table--striped scrollable'
-          style={{ marginBottom: '.5rem' }}
+          className='data-table--mini data-table--striped data-table--border-left scrollable'
           columns={[
             {
               title: 'Location',

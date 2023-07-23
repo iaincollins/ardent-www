@@ -40,12 +40,13 @@
 .layout__content {
   overflow: auto;
   position: absolute;
-  top: 4.5rem;
+  top: 3.7rem;
   left: 0rem;
   right: 0rem;
   bottom: .5rem;
   padding-right: .25rem;
   padding-bottom: 1rem;
+  padding-top: .5rem;
   margin: 0 .5rem;
   mask-image: linear-gradient(
     to bottom,
