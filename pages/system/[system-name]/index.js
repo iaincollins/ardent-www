@@ -293,19 +293,20 @@ export default () => {
                 <td>
                   {(system !== undefined && importOrders !== undefined && exportOrders !== undefined)
                     ? `${timeBetweenTimestamps(lastUpdatedAt)} ago`
-                    : <span className='muted'>...</span>
-                  }
+                    : <span className='muted'>...</span>}
                 </td>
               </tr>
             </tbody>
           </table>
-          <Tabs selectedIndex={tabIndex}
-              onSelect={
+          <Tabs
+            selectedIndex={tabIndex}
+            onSelect={
                 (index) => {
                   const tabs = ['imports', 'exports', 'nearby']
                   router.push(`/system/${router.query['system-name']}/${tabs[index]}`)
                 }
-              }>
+              }
+          >
             <TabList>
               <Tab>
                 <span className='is-hidden-mobile'>Imports</span>

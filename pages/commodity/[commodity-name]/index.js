@@ -164,13 +164,15 @@ export default () => {
             Galactic prices and total supply/demand updated daily
           </p> */}
           {imports &&
-            <Tabs selectedIndex={tabIndex}
+            <Tabs
+              selectedIndex={tabIndex}
               onSelect={
                 (index) => {
                   const tabs = ['imports', 'exports']
                   router.push(`/commodity/${router.query['commodity-name']}/${tabs[index]}`)
                 }
-              }>
+              }
+            >
               <TabList>
                 <Tab>Imports</Tab>
                 <Tab>Exports</Tab>
