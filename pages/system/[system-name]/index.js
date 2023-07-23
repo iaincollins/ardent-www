@@ -189,9 +189,13 @@ export default () => {
                       {stationsInSystem.map(station =>
                         <Fragment key={`marketId_${station.marketId}`}>
                           <p style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                            <StationIcon stationType={station.stationType} />
-                            {station.stationName}
-                            {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                            <div className='system__entity-name'>
+                              <StationIcon stationType={station.stationType} />
+                              {station.stationName}
+                            </div>
+                            <div className='system__entity-information'>
+                              {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                            </div>
                           </p>
                         </Fragment>
                       )}
@@ -211,11 +215,15 @@ export default () => {
                       {settlementsInSystem.map(station =>
                         <Fragment key={`marketId_${station.marketId}`}>
                           <p style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                            <StationIcon stationType={station.stationType} />
-                            {station.stationName}
-                            {station.bodyName && <small> {station.bodyName.replace(`${station.systemName} `, '')}</small>}
-                            {station.bodyName && station.distanceToArrival !== null && <small>, </small>}
-                            {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                            <div className='system__entity-name'>
+                              <StationIcon stationType={station.stationType} />
+                              {station.stationName}
+                            </div>
+                            <div className='system__entity-information'>
+                              {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                              {station.bodyName && station.distanceToArrival !== null && <small> // </small>}
+                              {station.bodyName && <small>Planet {station.bodyName.replace(`${station.systemName} `, '')}</small>}
+                            </div>
                           </p>
                         </Fragment>
                       )}
@@ -235,11 +243,15 @@ export default () => {
                       {megashipsInSystem.map(station =>
                         <Fragment key={`marketId_${station.marketId}`}>
                           <p style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                            <StationIcon stationType={station.stationType} />
-                            {station.stationName}
-                            {station.updatedAt && <small> {timeBetweenTimestamps(station.updatedAt)} ago</small>}
-                            {station.updatedAt && station.distanceToArrival !== null && <small>, </small>}
-                            {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                            <div className='system__entity-name'>
+                              <StationIcon stationType={station.stationType} />
+                              {station.stationName}
+                            </div>
+                            <div className='system__entity-information'>
+                              {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                              {station.updatedAt && station.distanceToArrival !== null && <small> // </small>}
+                              {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
+                            </div>
                           </p>
                         </Fragment>
                       )}
@@ -259,11 +271,15 @@ export default () => {
                       {fleetCarriersInSystem.map(station =>
                         <Fragment key={`marketId_${station.marketId}`}>
                           <p style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                            <StationIcon stationType={station.stationType} />
-                            Fleet Carrier {station.stationName}
-                            {station.updatedAt && <small> {timeBetweenTimestamps(station.updatedAt)} ago</small>}
-                            {station.updatedAt && station.distanceToArrival !== null && <small>, </small>}
-                            {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                            <div className='system__entity-name'>
+                              <StationIcon stationType={station.stationType} />
+                              Fleet Carrier {station.stationName}
+                            </div>
+                            <div className='system__entity-information'>
+                              {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                              {station.updatedAt && station.distanceToArrival !== null && <small> // </small>}
+                              {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
+                            </div>
                           </p>
                         </Fragment>
                       )}

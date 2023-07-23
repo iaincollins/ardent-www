@@ -199,3 +199,24 @@ table.two-column-table > tbody > tr > td,
   font-size: 1.25rem !important;
   line-height: 1rem !important;
 }
+
+.system__entity-information {
+  position: relative;
+  top: -.25rem;
+  display: inline-block;
+  margin-left: 2.75rem;
+  padding-left: .25rem;
+  border-bottom: .1rem solid rgba(255,255,255,.25);
+}
+
+.system__entity-information::before {
+  display: block;
+  content: '';
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  left: -.5rem;
+  top: 0;
+  border-bottom: .1rem solid rgba(255,255,255,.25);
+  transform: rotate(45deg);
+}

@@ -44,7 +44,7 @@ export default ({ commodity }) => {
                   {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                   {r.distanceToArrival !== null && <small> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                   <div className='is-visible-mobile'>
-                    <span style={{ textTransform: 'none' }}>
+                    <span style={{ textTransform: 'none', opacity: 0.75, paddingLeft: '2rem' }}>
                       <Link href={`/system/${r.systemName}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} Ly</span>
                     </span>
                     <table className='data-table--mini data-table--compact  two-column-table'>
