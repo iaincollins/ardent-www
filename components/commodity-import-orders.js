@@ -19,7 +19,7 @@ async function getImportsForCommodityBySystem (systemName, commodityName) {
 export default ({ commodities }) => {
   return (
     <Table
-      className='data-table data-table--striped data-table--interactive'
+      className='data-table data-table--striped data-table--interactive data-table--animated'
       columns={[
         {
           title: 'Location',

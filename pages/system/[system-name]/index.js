@@ -10,6 +10,7 @@ import { timeBetweenTimestamps } from 'lib/utils/dates'
 import { getCommodities } from 'lib/commodities'
 import { formatSystemSector } from 'lib/utils/system-sectors'
 import distance from 'lib/utils/distance'
+import animateTableEffect from 'lib/animate-table-effect'
 import Layout from 'components/layout'
 import LocalCommodityImporters from 'components/local-commodity-importers'
 import LocalCommodityExporters from 'components/local-commodity-exporters'
@@ -34,6 +35,8 @@ export default () => {
   const [exportOrders, setExportOrders] = useState()
   const [lastUpdatedAt, setLastUpdatedAt] = useState()
   const [tabIndex, setTabIndex] = useState(0)
+
+  useEffect(animateTableEffect)
 
   useEffect(() => {
     const basePath = path.basename(router.pathname)
@@ -161,21 +164,23 @@ export default () => {
             <tbody>
               <tr>
                 <th>System address</th>
-                <td>{system.systemAddress}</td>
+                <td><span className='fx__animated-text' data-fx-order='1'>{system.systemAddress}</span></td>
               </tr>
               <tr>
                 <th>System location</th>
-                <td>{system.systemX}, {system.systemY}, {system.systemZ}</td>
+                <td><span className='fx__animated-text' data-fx-order='2'>{system.systemX}, {system.systemY}, {system.systemZ}</span></td>
               </tr>
               <tr>
                 <th>Ardent sector</th>
-                <td>{formatSystemSector(system.systemSector)}</td>
+                <td><span className='fx__animated-text' data-fx-order='3'>{formatSystemSector(system.systemSector)}</span></td>
               </tr>
               <tr>
                 <th>Trade zone</th>
                 <td>
-                  {system.tradeZone}
-                  {system.tradeZoneDistance !== undefined && <small style={{ textTransform: 'none' }}><br />{system.tradeZoneDistance}</small>}
+                  <span className='fx__animated-text' data-fx-order='4'>
+                    {system.tradeZone}
+                    {system.tradeZoneDistance !== undefined && <small style={{ textTransform: 'none' }}><br />{system.tradeZoneDistance}</small>}
+                  </span>
                 </td>
               </tr>
               <tr>
@@ -327,7 +332,7 @@ export default () => {
               {!importOrders && <div className='loading-bar loading-bar--tab' />}
               {importOrders &&
                 <Table
-                  className='data-table data-table--striped data-table--interactive'
+                  className='data-table data-table--striped data-table--interactive data-table--animated'
                   columns={[
                     {
                       title: 'Commodities imported',
@@ -426,7 +431,7 @@ export default () => {
               {!exportOrders && <div className='loading-bar loading-bar--tab' />}
               {exportOrders &&
                 <Table
-                  className='data-table data-table--striped data-table--interactive'
+                  className='data-table data-table--striped data-table--interactive data-table--animated'
                   columns={[
                     {
                       title: 'Commodities exported',
@@ -525,7 +530,7 @@ export default () => {
               {!nearbySystems && <div className='loading-bar loading-bar--tab' />}
               {nearbySystems &&
                 <Table
-                  className='data-table data-table--striped data-table--interactive'
+                  className='data-table data-table--striped data-table--interactive data-table--animated'
                   columns={[
                     {
                       title: 'Nearest systems',

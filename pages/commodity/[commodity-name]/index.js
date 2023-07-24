@@ -8,7 +8,7 @@ import CommodityImportOrders from 'components/commodity-import-orders'
 import CommodityExportOrders from 'components/commodity-export-orders'
 // import CommodityReport from 'components/commodity-report'
 import commoditiesInfo from 'lib/commodities.json'
-
+import animateTableEffect from 'lib/animate-table-effect'
 import { API_BASE_URL } from 'lib/consts'
 
 export default () => {
@@ -17,6 +17,8 @@ export default () => {
   const [commodity, setCommodity] = useState()
   const [exports, setExports] = useState()
   const [imports, setImports] = useState()
+
+  useEffect(animateTableEffect)
 
   useEffect(() => {
     const basePath = path.basename(router.pathname)
@@ -95,41 +97,49 @@ export default () => {
             <tbody>
               <tr>
                 <th>Category</th>
-                <td>{commodity.category}</td>
+                <td><span className='fx__animated-text' data-fx-order='1'>{commodity.category}</span></td>
               </tr>
               <tr>
                 <th>Import price</th>
-                <td>{typeof commodity.avgSellPrice === 'number'
-                  ? (
-                    <>
-                      {commodity.avgSellPrice.toLocaleString()} CR/T
-                      {' '}
-                      <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>
-                    </>
-                    )
-                  : <span className='muted'>Insufficent data</span>}
+                <td>
+                  <span className='fx__animated-text' data-fx-order='2'>
+                    {typeof commodity.avgSellPrice === 'number'
+                      ? (
+                        <>
+                          {commodity.avgSellPrice.toLocaleString()} CR/T
+                          {' '}
+                          <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>
+                        </>
+                        )
+                      : <span className='muted'>Insufficent data</span>}
+                  </span>
                 </td>
               </tr>
               <tr>
                 <th>Export price</th>
-                <td>{typeof commodity.avgBuyPrice === 'number'
-                  ? (
-                    <>
-                      {commodity.avgBuyPrice.toLocaleString()} CR/T
-                      {' '}
-                      <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>
-                    </>
-                    )
-                  : <span className='muted'>Insufficent data</span>}
+                <td>
+                  <span className='fx__animated-text' data-fx-order='3'>
+                    {typeof commodity.avgBuyPrice === 'number'
+                      ? (
+                        <>
+                          {commodity.avgBuyPrice.toLocaleString()} CR/T
+                          {' '}
+                          <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>
+                        </>
+                        )
+                      : <span className='muted'>Insufficent data</span>}
+                  </span>
                 </td>
               </tr>
               {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
                 <tr>
                   <th>Typical profit</th>
                   <td>
-                    {commodity.avgProfit.toLocaleString()} CR/T
-                    {' '}
-                    <small>({commodity.avgProfitMargin}% margin)</small>
+                    <span className='fx__animated-text' data-fx-order='4'>
+                      {commodity.avgProfit.toLocaleString()} CR/T
+                      {' '}
+                      <small>({commodity.avgProfitMargin}% margin)</small>
+                    </span>
                   </td>
                 </tr>}
               <tr>

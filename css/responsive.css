@@ -1,11 +1,13 @@
 
 @media only screen and (max-width: 768px) {
+  .layout__content {
+    top: 4.3rem;
+  }
+
   h2,
   h3,
   h4 {
     display: block;
-    xwhite-space: nowrap;
-    xoverflow: hidden;
     text-overflow: ellipsis;
     left: 0;
   }

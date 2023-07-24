@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import Table from 'rc-table'
 import Layout from 'components/layout'
 import { getCommodities } from 'lib/commodities'
+import animateTableEffect from 'lib/animate-table-effect'
 
 export default () => {
   const router = useRouter()
@@ -11,6 +12,8 @@ export default () => {
   const onRowClick = (record, index, event) => {
     router.push(`/commodity/${record.commodityName}`)
   }
+
+  useEffect(animateTableEffect)
 
   useEffect(() => {
     (async () => {
@@ -27,7 +30,7 @@ export default () => {
       {commodities &&
         <>
           <Table
-            className='data-table data-table--striped data-table--interactive'
+            className='data-table data-table--striped data-table--interactive data-table--animated'
             columns={[
               {
                 title: 'Commodity',

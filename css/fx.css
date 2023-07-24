@@ -68,3 +68,39 @@
   z-index: -5;
   pointer-events: none;
 }
+
+.fx__animated-text {
+  overflow-x: clip !important; /* avoids clipping text shadow on y axis */
+  padding-left: 2rem;
+  margin-left: -2rem;
+  white-space: nowrap !important;
+  display: inline-block;
+  width: 0;
+  text-shadow: none; /* Added to text when animation starts (avoids clipping) */
+  animation: fx__text-typing-animation 1.5s steps(100, end);
+  animation-fill-mode: forwards;
+}
+
+.fx__animated-text[data-fx-order="1"] { animation-delay: .1s !important; }
+.fx__animated-text[data-fx-order="2"] { animation-delay: .2s !important; }
+.fx__animated-text[data-fx-order="3"] { animation-delay: .3s !important; }
+.fx__animated-text[data-fx-order="4"] { animation-delay: .4s !important; }
+.fx__animated-text[data-fx-order="5"] { animation-delay: .5s !important; }
+.fx__animated-text[data-fx-order="6"] { animation-delay: .6s !important; }
+.fx__animated-text[data-fx-order="7"] { animation-delay: .7s !important; }
+.fx__animated-text[data-fx-order="8"] { animation-delay: .8s !important; }
+.fx__animated-text[data-fx-order="9"] { animation-delay: .9s !important; }
+
+@keyframes fx__text-typing-animation {
+  from { width: 0; text-shadow: var(--text-shadow); }
+  to { width: 100%; text-shadow: var(--text-shadow); }
+}
+
+.fx__fade-in {
+  animation: fx__fade-in-animation .5s ease-in-out;
+}
+
+@keyframes fx__fade-in-animation {
+  from { visibility: visible; opacity : 0; }
+  to { visibility: visible; opacity: 1; }
+}
