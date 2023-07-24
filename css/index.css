@@ -1,9 +1,9 @@
 @import url('variables.css');
 @import url('fx.css');
-@import url('elements/index.css');
-@import url('fx.css');
 @import url('helpers.css');
 @import url('layout.css');
+@import url('elements/index.css');
+
 @import url('components/header.css');
 @import url('components/breadcrumb.css');
 @import url('components/tabs.css');
@@ -11,7 +11,9 @@
 @import url('components/loading-bar.css');
 @import url('components/data-table.css');
 @import url('components/properties-table.css');
-@import url('responsive.css'); /* Load last */
+
+@import url('overrides/responsive.css');
+@import url("overrides/safari.css");
 
 @font-face {
   font-family: 'Jura';

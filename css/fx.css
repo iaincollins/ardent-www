@@ -51,7 +51,7 @@
   left: 0;
   bottom: 0;
   right: 0;
-  box-shadow: 0 0 4rem 4rem rgba(0,0,0,.3) inset;
+  box-shadow: 0 0 10rem 10rem rgba(0,0,0,.3) inset;
   z-index: 30;
   pointer-events: none;
 }
@@ -77,7 +77,7 @@
   display: inline-block;
   width: 0;
   text-shadow: none; /* Added to text when animation starts (avoids clipping) */
-  animation: fx__text-typing-animation 1.5s steps(100, end);
+  animation: fx__text-typing-animation .5s steps(100, end);
   animation-fill-mode: forwards;
 }
 

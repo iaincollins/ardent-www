@@ -145,27 +145,31 @@ export default () => {
               <tr>
                 <th>Total demand</th>
                 <td>
-                  <progress
-                    max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                    value={commodity.totalDemand}
-                    style={{ maxWidth: '12rem', height: '1.5rem' }}
-                  />
-                  <p style={{ margin: '0 0 .15rem 0' }}>
-                    {commodity.totalDemand > 0 ? <>{commodity.totalDemand.toLocaleString()} T</> : '-'}
-                  </p>
+                  <span className='fx__fade-in'>
+                    <progress
+                      max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                      value={commodity.totalDemand}
+                      style={{ maxWidth: '12rem', height: '1.5rem' }}
+                    />
+                    <p style={{ margin: '0 0 .15rem 0' }}>
+                      {commodity.totalDemand > 0 ? <>{commodity.totalDemand.toLocaleString()} T</> : '-'}
+                    </p>
+                  </span>
                 </td>
               </tr>
               <tr>
                 <th>Total supply</th>
                 <td>
-                  <progress
-                    max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                    value={commodity.totalStock}
-                    style={{ maxWidth: '12rem', height: '1.5rem' }}
-                  />
-                  <p style={{ margin: '0 0 .15rem 0' }}>
-                    {commodity.totalStock > 0 ? <>{commodity.totalStock.toLocaleString()} T</> : '-'}
-                  </p>
+                  <span className='fx__fade-in'>
+                    <progress
+                      max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                      value={commodity.totalStock}
+                      style={{ maxWidth: '12rem', height: '1.5rem' }}
+                    />
+                    <p style={{ margin: '0 0 .15rem 0' }}>
+                      {commodity.totalStock > 0 ? <>{commodity.totalStock.toLocaleString()} T</> : '-'}
+                    </p>
+                  </span>
                 </td>
               </tr>
             </tbody>

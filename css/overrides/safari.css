@@ -1,0 +1,29 @@
+/*
+  Safari (including 16.x on desktop) is buggy when it comes to rendering lots of
+  text shadows on a complex page and will flicker, and perform poorly. The only
+  viable workaround in a web app like this is to disable them entirely.
+
+  Chrome and Firefox are not impacted.
+*/
+html[data-browser="safari"] h1,
+html[data-browser="safari"] h2,
+html[data-browser="safari"] h3,
+html[data-browser="safari"] h4 {
+  text-shadow: none;
+}
+
+html[data-browser="safari"] p,
+html[data-browser="safari"] li,
+html[data-browser="safari"] span,
+html[data-browser="safari"] small,
+html[data-browser="safari"] big,
+html[data-browser="safari"] button,
+html[data-browser="safari"] th,
+html[data-browser="safari"] td,
+html[data-browser="safari"] label {
+  text-shadow: none;
+}
+
+html[data-browser="safari"] .breadcrumbs li {
+  text-shadow: none;
+}

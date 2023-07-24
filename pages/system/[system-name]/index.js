@@ -46,7 +46,7 @@ export default () => {
   }, [router.pathname])
 
   const onSystemsRowClick = (record, index, event) => {
-    router.push(`/system/${record.systemName}`)
+    router.push(`/system/${record.systemName}/imports`)
   }
 
   useEffect(() => {
@@ -193,7 +193,7 @@ export default () => {
                     >
                       {stationsInSystem.map(station =>
                         <Fragment key={`marketId_${station.marketId}`}>
-                          <p style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                          <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
                             <div className='system__entity-name'>
                               <StationIcon stationType={station.stationType} />
                               {station.stationName}
@@ -201,7 +201,7 @@ export default () => {
                             <div className='system__entity-information'>
                               {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
                             </div>
-                          </p>
+                          </div>
                         </Fragment>
                       )}
                     </Collapsible>}
@@ -219,7 +219,7 @@ export default () => {
                     >
                       {settlementsInSystem.map(station =>
                         <Fragment key={`marketId_${station.marketId}`}>
-                          <p style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                          <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
                             <div className='system__entity-name'>
                               <StationIcon stationType={station.stationType} />
                               {station.stationName}
@@ -229,7 +229,7 @@ export default () => {
                               {station.bodyName && station.distanceToArrival !== null && <small>{' // '}</small>}
                               {station.bodyName && <small>{station.bodyName}</small>}
                             </div>
-                          </p>
+                          </div>
                         </Fragment>
                       )}
                     </Collapsible>}
@@ -247,7 +247,7 @@ export default () => {
                     >
                       {megashipsInSystem.map(station =>
                         <Fragment key={`marketId_${station.marketId}`}>
-                          <p style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                          <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
                             <div className='system__entity-name'>
                               <StationIcon stationType={station.stationType} />
                               {station.stationName}
@@ -257,7 +257,7 @@ export default () => {
                               {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
                               {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                             </div>
-                          </p>
+                          </div>
                         </Fragment>
                       )}
                     </Collapsible>}
@@ -275,7 +275,7 @@ export default () => {
                     >
                       {fleetCarriersInSystem.map(station =>
                         <Fragment key={`marketId_${station.marketId}`}>
-                          <p style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                          <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
                             <div className='system__entity-name'>
                               <StationIcon stationType={station.stationType} />
                               Fleet Carrier {station.stationName}
@@ -285,7 +285,7 @@ export default () => {
                               {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
                               {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                             </div>
-                          </p>
+                          </div>
                         </Fragment>
                       )}
                     </Collapsible>}

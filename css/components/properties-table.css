@@ -1,6 +1,8 @@
 table.properties-table {
   border-spacing: 0;
   margin-bottom: 1rem;
+  max-width: 40rem;
+  clear: both;
 }
 
 table.properties-table > tbody > tr > th,
@@ -15,7 +17,7 @@ table.properties-table > tbody > tr > th {
   opacity: .8;
   text-align: right;
   padding: 0 1rem;
-  width: 10rem;
+  width: 11rem;
   font-size: 1.05rem;
 }
 

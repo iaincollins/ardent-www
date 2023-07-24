@@ -16,7 +16,7 @@
   padding-left: 2rem;
   padding-bottom: .25rem;
   line-height: 2rem;
-  font-weight: 600;
+  font-weight: bold;
   font-style: italic;
   padding-right: .5rem;
   float: none;
@@ -34,7 +34,6 @@
   font-size: 2.4rem;
   position: relative;
   top: .1rem;
-  font-weight: 900;
 }
 
 .header__logo h1::before,

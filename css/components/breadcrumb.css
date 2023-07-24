@@ -28,7 +28,7 @@
   float: left;
   background-color: var(--color-primary);
   color: var(--color-text-inverted);
-  text-shadow: 0 0 .7rem rgba(0,0,0,1);
+  text-shadow: 0 0 .7rem rgb(0,0,0);
   text-transform: uppercase;
   font-family: 'Jura';
   font-weight: bold;

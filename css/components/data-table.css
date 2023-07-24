@@ -1,5 +1,6 @@
 .data-table {
   z-index: 3;
+  animation: fx__fade-in-animation .5s;
 }
 
 .data-table th,
@@ -128,25 +129,23 @@ table.data-table--animated > tbody > tr:not(.rc-table-expanded-row),
 
 table.data-table--animated > tbody > tr:not(.rc-table-expanded-row).--visible,
 .data-table--animated > .rc-table-container > .rc-table-content > table > tbody > tr:not(.rc-table-expanded-row).--visible {
-  animation: row-flash-in-animation .5s;
+  animation: row-flash-in-animation .25s;
   animation-fill-mode: forwards;
   opacity: 0;
 }
 
 @keyframes row-flash-in-animation {
   0% {
-    opacity: 1;
-    color: var(--color-primary-dark);
+    opacity: 0;
+    filter: invert(1);
   }
-  15% {
-    color: var(--color-primary-darker);
-  }
-  20% {
-    filter: brightness(1.5);
-  }
-  25% {
+  30% {
     color: var(--color-primary);
-    filter: none;
+    background: var(--color-primary-darker);
+  }
+  60% {
+    background: none;
+    filter: invert(0);
   }
   100% { opacity: 1; }
 }
