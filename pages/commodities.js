@@ -104,6 +104,8 @@ export default () => {
             <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent API</a>
             <span className='muted'> | </span>
             <a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector</a>
+            <span className='muted'> | </span>
+            <a href='/downloads' rel='noreferrer' target='_blank'>Downloads</a>
           </p>
         </>}
     </Layout>
