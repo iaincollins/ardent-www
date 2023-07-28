@@ -13,8 +13,9 @@
   }
 
   h2 {
-    font-size: 1.5rem;
-    line-height: 1.5rem;
+    font-size: 1.75rem;
+    line-height: 1.75rem;
+    padding-right: 1rem;
     clip-path: polygon(0 0,calc(100% - .8rem) 0,100% 1.6rem,100% 100%,0 100%);
   }
 
@@ -27,8 +28,10 @@
   }
 
   h3 {
-    font-size: 1rem;
-    line-height: 1.5rem;
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+    padding-right: 1rem;
+    clip-path: polygon(0 0,calc(100% - .8rem) 0,100% 1.6rem,100% 100%,0 100%);
   }
 
   .header__logo h1,
@@ -85,14 +88,12 @@
     padding-right: 0;
     padding-left: .25rem;
   }
-}
 
-@media only screen and (min-width: 768px) {
-  .data-table--striped-not-mobile tbody tr:nth-child(odd) td {
-    background: rgba(255,255,255,.1) !important;
+  .breadcrumbs {
+    margin-top: .6rem;
   }
 
-  .is-visible-mobile {
-    display: none !important;
+  .breadcrumbs--placeholder {
+    height: 0rem;
   }
 }

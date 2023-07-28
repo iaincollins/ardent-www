@@ -61,7 +61,7 @@ h4 {
   margin-bottom: .75rem;
   margin-right: .5rem;
   padding-bottom: .1rem;
-  padding-left: .5rem;
+  padding-left: .25rem;
   padding-right: .5rem;
   z-index: 1;
   float: left;
@@ -87,13 +87,19 @@ h1:after {
 h2 {
   font-size: 2rem;
   line-height: 2rem;
-  padding-right: 1.25rem;
+  padding-right: 1.5rem;
   clip-path: polygon(0 0,calc(100% - 1.1rem) 0,100% 2.1rem,100% 100%,0 100%);
+  border-top-left-radius: .1rem;
+  border-bottom-left-radius: .1rem;
 }
 
 h3 {
   font-size: 1.7rem;
   line-height: 1.7rem;
+  padding-right: 1.25rem;
+  clip-path: polygon(0 0,calc(100% - 1.1rem) 0,100% 2.1rem,100% 100%,0 100%);
+  border-top-left-radius: .1rem;
+  border-bottom-left-radius: .1rem;
 }
 
 h2.heading--with-icon {

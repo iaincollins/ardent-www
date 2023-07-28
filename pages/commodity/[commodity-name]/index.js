@@ -82,13 +82,13 @@ export default () => {
 
   return (
     <Layout loading={commodity === undefined || imports === undefined}>
-      <ul className='breadcrumbs'>
+      <ul className='breadcrumbs fx__fade-in'>
         <li><Link href='/'>Home</Link></li>
         <li><Link href='/commodities'>Commodities</Link></li>
       </ul>
       {commodity === null && <><h2>Error</h2><p className='clear'>Commodity not found</p></>}
       {commodity &&
-        <>
+        <div className='fx__fade-in'>
           <h2 className='heading--with-icon'>
             <i className='icon icarus-terminal-cargo' />
             {commodity.name}
@@ -234,7 +234,7 @@ export default () => {
               </TabPanel>
             </div>
           </Tabs> */}
-        </>}
+        </div>}
     </Layout>
   )
 }

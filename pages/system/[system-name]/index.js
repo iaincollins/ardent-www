@@ -149,13 +149,13 @@ export default () => {
 
   return (
     <Layout loading={system === undefined}>
-      <ul className='breadcrumbs'>
+      <ul className='breadcrumbs fx__fade-in'>
         <li><Link href='/'>Home</Link></li>
         <li><Link href='/commodities'>Systems</Link></li>
       </ul>
       {system === null && <><h2>Error</h2><p className='clear'>System not found</p></>}
       {system &&
-        <>
+        <div className='fx__fade-in'>
           <h2 className='heading--with-icon'>
             <i className='icon icarus-terminal-system-orbits' />
             {system.systemName}
@@ -561,7 +561,7 @@ export default () => {
                 />}
             </TabPanel>
           </Tabs>
-        </>}
+        </div>}
     </Layout>
   )
 }

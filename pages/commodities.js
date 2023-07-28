@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import Table from 'rc-table'
 import Layout from 'components/layout'
 import { getCommodities } from 'lib/commodities'
@@ -23,12 +24,10 @@ export default () => {
 
   return (
     <Layout loading={commodities === undefined}>
-      <h2 style={{ marginTop: '1.2rem', marginBottom: '-.1rem', width: 'auto' }}>
-        Commodities
-        <span className='is-visible-mobile' style={{ marginRight: '.5rem' }} />
-      </h2>
       {commodities &&
-        <>
+        <div className='fx__fade-in'>
+          <div className='breadcrumbs--placeholder' />
+          <h2 style={{ marginBottom: '-.1rem' }}>Commodities</h2>
           <Table
             className='data-table data-table--striped data-table--interactive data-table--animated'
             columns={[
@@ -105,9 +104,9 @@ export default () => {
             <span className='muted'> | </span>
             <a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector</a>
             <span className='muted'> | </span>
-            <a href='/downloads' rel='noreferrer' target='_blank'>Downloads</a>
+            <Link href='/downloads'>Downloads</Link>
           </p>
-        </>}
+        </div>}
     </Layout>
   )
 }
