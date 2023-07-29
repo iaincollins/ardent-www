@@ -22,8 +22,8 @@ export default () => {
 
   useEffect(() => {
     const basePath = path.basename(router.pathname)
-    if (basePath === 'imports') setTabIndex(0)
-    if (basePath === 'exports') setTabIndex(1)
+    if (basePath === 'importers') setTabIndex(0)
+    if (basePath === 'exporters') setTabIndex(1)
   }, [router.pathname])
 
   useEffect(() => {
@@ -182,14 +182,14 @@ export default () => {
               selectedIndex={tabIndex}
               onSelect={
                 (index) => {
-                  const tabs = ['imports', 'exports']
+                  const tabs = ['importers', 'exporters']
                   router.push(`/commodity/${router.query['commodity-name']}/${tabs[index]}`)
                 }
               }
             >
               <TabList>
-                <Tab>Imports</Tab>
-                <Tab>Exports</Tab>
+                <Tab>Importers</Tab>
+                <Tab>Exporters</Tab>
               </TabList>
               <TabPanel>
                 {!imports && <div className='loading-bar loading-bar--tab' />}

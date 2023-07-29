@@ -26,7 +26,6 @@ export default () => {
     <Layout loading={commodities === undefined}>
       {commodities &&
         <div className='fx__fade-in'>
-          <div className='breadcrumbs--placeholder' />
           <h2 style={{ marginBottom: '-.1rem' }}>Commodities</h2>
           <Table
             className='data-table data-table--striped data-table--interactive data-table--animated'

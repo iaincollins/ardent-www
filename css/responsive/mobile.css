@@ -1,9 +1,5 @@
 
 @media only screen and (max-width: 768px) {
-  .layout__content {
-    top: 4.3rem;
-  }
-
   h2,
   h3,
   h4 {
@@ -65,12 +61,12 @@
   table.properties-table > tbody > tr > td {
     text-align: left;
     display: block;
-    padding: 0;
     width: 100%;
   }
 
   table.properties-table > tbody > tr > td {
-    padding-bottom: .5rem;
+    padding-top: 0;
+    padding-bottom: .25rem;
   }
 
   .react-tabs__tab {
@@ -87,13 +83,5 @@
   i.trade-bracket-icon.flip-vertical {
     padding-right: 0;
     padding-left: .25rem;
-  }
-
-  .breadcrumbs {
-    margin-top: .6rem;
-  }
-
-  .breadcrumbs--placeholder {
-    height: 0rem;
   }
 }

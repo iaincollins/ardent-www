@@ -1,22 +1,24 @@
 table.properties-table {
   border-spacing: 0;
   margin-bottom: 1rem;
-  max-width: 40rem;
+  width: 100%;
   clear: both;
+  position: relative;
+  top: -.5rem;
 }
 
 table.properties-table > tbody > tr > th,
 table.properties-table > tbody > tr > td {
   text-transform: uppercase;
   vertical-align: top;
-  border-bottom: .15rem solid transparent;
+  padding-top: .25rem;
+  padding-right: .5rem;
 }
 
 table.properties-table > tbody > tr > th {
   font-family: "Jura", sans-serif;
   opacity: .8;
   text-align: right;
-  padding: 0 1rem;
   width: 11rem;
   font-size: 1.05rem;
 }

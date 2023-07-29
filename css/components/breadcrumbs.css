@@ -3,7 +3,7 @@
 	padding: 0;
 	margin: auto;
   float: left;
-  margin-top: 1.2rem;
+  margin-top: .8rem;
   margin-bottom: .8rem;
   overflow: hidden;
   pointer-events: none;
@@ -49,7 +49,6 @@
 
 .breadcrumbs li:last-child {
   background-color: var(--color-primary-darker);
-  z-index: -2;
   padding-right: .75rem;
 }
 
@@ -80,8 +79,4 @@
   transform: rotate(45deg);
   background-color: var(--color-primary);
   box-shadow: .1rem -.1rem .5rem rgba(0,0,0,.3);
-}
-
-.breadcrumbs--placeholder {
-  height: .5rem;
 }

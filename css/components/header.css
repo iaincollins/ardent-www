@@ -86,10 +86,11 @@
   position: absolute;
   top: 0;
   right: 0;
-  padding: .5rem 2.25rem .25rem 0rem;
+  height: 3.3rem;
+  padding: .5rem 2.5rem .25rem 0rem;
   text-align: right;
-  font-size: .7rem;
-  line-height: .9rem;
+  font-size: .9rem;
+  line-height: 1rem;
   text-transform: uppercase;
   background: var(--color-primary);
   color: var(--color-text-inverted);
@@ -121,11 +122,14 @@
   text-decoration: none;
   border-bottom: 1px dotted  var(--color-text-inverted);
   font-weight: 600;
+  padding-top: .1rem;
+  position: relative;
+  display: inline-block;
 }
 
 .header__stats__label {
   display: inline-block;
-  width: 6rem;
+  width: 8rem;
   font-weight: 900;
   padding-left: .5rem;
   text-align: left;
@@ -133,6 +137,6 @@
 
 .header__stats__value {
   display: inline-block;
-  width: 4.25rem;
+  width: 5rem;
   font-weight: 900;
 }

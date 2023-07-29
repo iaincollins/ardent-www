@@ -7,7 +7,6 @@ import Collapsible from 'react-collapsible'
 import { CollapsibleTrigger } from '../../../components/collapsible-trigger'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
-import { getCommodities } from 'lib/commodities'
 import { formatSystemSector } from 'lib/utils/system-sectors'
 import distance from 'lib/utils/distance'
 import animateTableEffect from 'lib/animate-table-effect'
@@ -17,6 +16,9 @@ import LocalCommodityExporters from 'components/local-commodity-exporters'
 import NearbyCommodityImporters from 'components/nearby-commodity-importers'
 import NearbyCommodityExporters from 'components/nearby-commodity-exporters'
 import StationIcon from 'components/station-icon'
+import getSystemExports from 'lib/system-exports'
+import getSystemImports from 'lib/system-imports'
+
 import {
   API_BASE_URL,
   SOL_COORDINATES,
@@ -112,7 +114,7 @@ export default () => {
         })()
 
         ;(async () => {
-          const importOrders = await getImports(systemName)
+          const importOrders = await getSystemImports(systemName)
           setImportOrders(importOrders)
           importOrders.forEach(order => {
             if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
@@ -123,7 +125,7 @@ export default () => {
         })()
 
         ;(async () => {
-          const exportOrders = await getExports(systemName)
+          const exportOrders = await getSystemExports(systemName)
           setExportOrders(exportOrders)
           exportOrders.forEach(order => {
             if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
@@ -163,11 +165,11 @@ export default () => {
           <table className='properties-table'>
             <tbody>
               <tr>
-                <th>System address</th>
+                <th>Address</th>
                 <td><span className='fx__animated-text' data-fx-order='1'>{system.systemAddress}</span></td>
               </tr>
               <tr>
-                <th>System location</th>
+                <th>Location</th>
                 <td><span className='fx__animated-text' data-fx-order='2'>{system.systemX}, {system.systemY}, {system.systemZ}</span></td>
               </tr>
               <tr>
@@ -187,24 +189,26 @@ export default () => {
                 <th>Stations/Ports</th>
                 <td>
                   {stationsInSystem?.length > 0 &&
-                    <Collapsible
-                      trigger={<CollapsibleTrigger>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'station/port' : 'stations/ports'}</CollapsibleTrigger>}
-                      triggerWhenOpen={<CollapsibleTrigger open>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'station/port' : 'stations/ports'}</CollapsibleTrigger>}
-                    >
-                      {stationsInSystem.map(station =>
-                        <Fragment key={`marketId_${station.marketId}`}>
-                          <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                            <div className='system__entity-name'>
-                              <StationIcon stationType={station.stationType} />
-                              {station.stationName}
+                    <span className='fx__fade-in'>
+                      <Collapsible
+                        trigger={<CollapsibleTrigger>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'station/port' : 'stations/ports'}</CollapsibleTrigger>}
+                        triggerWhenOpen={<CollapsibleTrigger open>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'station/port' : 'stations/ports'}</CollapsibleTrigger>}
+                      >
+                        {stationsInSystem.map(station =>
+                          <Fragment key={`marketId_${station.marketId}`}>
+                            <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                              <div className='system__entity-name'>
+                                <StationIcon stationType={station.stationType} />
+                                {station.stationName}
+                              </div>
+                              <div className='system__entity-information'>
+                                {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                              </div>
                             </div>
-                            <div className='system__entity-information'>
-                              {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                            </div>
-                          </div>
-                        </Fragment>
-                      )}
-                    </Collapsible>}
+                          </Fragment>
+                        )}
+                      </Collapsible>
+                    </span>}
                   {stationsInSystem?.length === 0 && <span className='muted'>None</span>}
                   {stationsInSystem === undefined && '-'}
                 </td>
@@ -213,26 +217,28 @@ export default () => {
                 <th>Settlements</th>
                 <td>
                   {settlementsInSystem?.length > 0 &&
-                    <Collapsible
-                      trigger={<CollapsibleTrigger>{settlementsInSystem.length} {settlementsInSystem.length === 1 ? 'settlement' : 'settlements'}</CollapsibleTrigger>}
-                      triggerWhenOpen={<CollapsibleTrigger open>{settlementsInSystem.length} {settlementsInSystem.length === 1 ? 'settlement' : 'settlements'}</CollapsibleTrigger>}
-                    >
-                      {settlementsInSystem.map(station =>
-                        <Fragment key={`marketId_${station.marketId}`}>
-                          <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                            <div className='system__entity-name'>
-                              <StationIcon stationType={station.stationType} />
-                              {station.stationName}
+                    <span className='fx__fade-in'>
+                      <Collapsible
+                        trigger={<CollapsibleTrigger>{settlementsInSystem.length} {settlementsInSystem.length === 1 ? 'settlement' : 'settlements'}</CollapsibleTrigger>}
+                        triggerWhenOpen={<CollapsibleTrigger open>{settlementsInSystem.length} {settlementsInSystem.length === 1 ? 'settlement' : 'settlements'}</CollapsibleTrigger>}
+                      >
+                        {settlementsInSystem.map(station =>
+                          <Fragment key={`marketId_${station.marketId}`}>
+                            <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                              <div className='system__entity-name'>
+                                <StationIcon stationType={station.stationType} />
+                                {station.stationName}
+                              </div>
+                              <div className='system__entity-information'>
+                                {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                                {station.bodyName && station.distanceToArrival !== null && <small>{' // '}</small>}
+                                {station.bodyName && <small>{station.bodyName}</small>}
+                              </div>
                             </div>
-                            <div className='system__entity-information'>
-                              {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                              {station.bodyName && station.distanceToArrival !== null && <small>{' // '}</small>}
-                              {station.bodyName && <small>{station.bodyName}</small>}
-                            </div>
-                          </div>
-                        </Fragment>
-                      )}
-                    </Collapsible>}
+                          </Fragment>
+                        )}
+                      </Collapsible>
+                    </span>}
                   {settlementsInSystem?.length === 0 && <span className='muted'>None</span>}
                   {settlementsInSystem === undefined && '-'}
                 </td>
@@ -241,26 +247,28 @@ export default () => {
                 <th>Megaships</th>
                 <td>
                   {megashipsInSystem?.length > 0 &&
-                    <Collapsible
-                      trigger={<CollapsibleTrigger>{megashipsInSystem.length} {megashipsInSystem.length === 1 ? 'megaship' : 'megaships'}</CollapsibleTrigger>}
-                      triggerWhenOpen={<CollapsibleTrigger open>{megashipsInSystem.length} {megashipsInSystem.length === 1 ? 'megaship' : 'megaships'}</CollapsibleTrigger>}
-                    >
-                      {megashipsInSystem.map(station =>
-                        <Fragment key={`marketId_${station.marketId}`}>
-                          <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                            <div className='system__entity-name'>
-                              <StationIcon stationType={station.stationType} />
-                              {station.stationName}
+                    <span className='fx__fade-in'>
+                      <Collapsible
+                        trigger={<CollapsibleTrigger>{megashipsInSystem.length} {megashipsInSystem.length === 1 ? 'megaship' : 'megaships'}</CollapsibleTrigger>}
+                        triggerWhenOpen={<CollapsibleTrigger open>{megashipsInSystem.length} {megashipsInSystem.length === 1 ? 'megaship' : 'megaships'}</CollapsibleTrigger>}
+                      >
+                        {megashipsInSystem.map(station =>
+                          <Fragment key={`marketId_${station.marketId}`}>
+                            <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                              <div className='system__entity-name'>
+                                <StationIcon stationType={station.stationType} />
+                                {station.stationName}
+                              </div>
+                              <div className='system__entity-information'>
+                                {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                                {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
+                                {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
+                              </div>
                             </div>
-                            <div className='system__entity-information'>
-                              {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                              {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
-                              {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
-                            </div>
-                          </div>
-                        </Fragment>
-                      )}
-                    </Collapsible>}
+                          </Fragment>
+                        )}
+                      </Collapsible>
+                    </span>}
                   {megashipsInSystem?.length === 0 && <span className='muted'>None</span>}
                   {megashipsInSystem === undefined && '-'}
                 </td>
@@ -269,26 +277,28 @@ export default () => {
                 <th>Fleet Carriers</th>
                 <td>
                   {fleetCarriersInSystem?.length > 0 &&
-                    <Collapsible
-                      trigger={<CollapsibleTrigger>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'carrier' : 'carriers'}</CollapsibleTrigger>}
-                      triggerWhenOpen={<CollapsibleTrigger open>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'carrier' : 'carriers'}</CollapsibleTrigger>}
-                    >
-                      {fleetCarriersInSystem.map(station =>
-                        <Fragment key={`marketId_${station.marketId}`}>
-                          <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                            <div className='system__entity-name'>
-                              <StationIcon stationType={station.stationType} />
-                              Fleet Carrier {station.stationName}
+                    <span className='fx__fade-in'>
+                      <Collapsible
+                        trigger={<CollapsibleTrigger>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'carrier' : 'carriers'}</CollapsibleTrigger>}
+                        triggerWhenOpen={<CollapsibleTrigger open>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'carrier' : 'carriers'}</CollapsibleTrigger>}
+                      >
+                        {fleetCarriersInSystem.map(station =>
+                          <Fragment key={`marketId_${station.marketId}`}>
+                            <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                              <div className='system__entity-name'>
+                                <StationIcon stationType={station.stationType} />
+                                Fleet Carrier {station.stationName}
+                              </div>
+                              <div className='system__entity-information'>
+                                {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                                {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
+                                {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
+                              </div>
                             </div>
-                            <div className='system__entity-information'>
-                              {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                              {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
-                              {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
-                            </div>
-                          </div>
-                        </Fragment>
-                      )}
-                    </Collapsible>}
+                          </Fragment>
+                        )}
+                      </Collapsible>
+                    </span>}
                   {fleetCarriersInSystem?.length === 0 && <span className='muted'>None</span>}
                   {fleetCarriersInSystem === undefined && '-'}
                 </td>
@@ -297,7 +307,7 @@ export default () => {
                 <th>Last update</th>
                 <td>
                   {(system !== undefined && importOrders !== undefined && exportOrders !== undefined)
-                    ? `${timeBetweenTimestamps(lastUpdatedAt)} ago`
+                    ? `${timeBetweenTimestamps(lastUpdatedAt)}`
                     : <span className='muted'>...</span>}
                 </td>
               </tr>
@@ -360,7 +370,7 @@ export default () => {
                                 </tr>
                               </tbody>
                             </table>
-                            <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
+                            <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)}</small>
                           </div>
                         </>
                     },
@@ -371,7 +381,7 @@ export default () => {
                       align: 'right',
                       width: 150,
                       className: 'is-hidden-mobile',
-                      render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
+                      render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
                     },
                     {
                       title: 'Total demand',
@@ -459,7 +469,7 @@ export default () => {
                                 </tr>
                               </tbody>
                             </table>
-                            <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
+                            <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)}</small>
                           </div>
                         </>
                     },
@@ -470,7 +480,7 @@ export default () => {
                       align: 'right',
                       width: 150,
                       className: 'is-hidden-mobile',
-                      render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
+                      render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
                     },
                     {
                       title: 'Total stock',
@@ -581,100 +591,3 @@ async function getNearbySystems (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=25`)
   return await res.json()
 }
-
-async function getExports (systemName) {
-  const allCommodities = await getCommodities()
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/exports`)
-  const exportOrders = await res.json()
-  const exportOrdersGroupedByCommodity = {}
-  exportOrders.forEach(c => {
-    const symbol = c.commodityName.toLowerCase()
-
-    if (!exportOrdersGroupedByCommodity[symbol]) {
-      exportOrdersGroupedByCommodity[symbol] = {
-        key: symbol,
-        symbol,
-        name: (allCommodities.find(el => el.symbol.toLowerCase() === symbol))?.name ?? c.commodityName,
-        category: (allCommodities.find(el => el.symbol.toLowerCase() === symbol))?.category ?? '',
-        systemName: c.systemName,
-        totalStock: 0,
-        totalPrice: 0,
-        avgPrice: 0,
-        bestPrice: null,
-        galacticAvgPrice: (allCommodities.find(el => el.symbol.toLowerCase() === symbol))?.avgBuyPrice ?? 0,
-        updatedAt: null,
-        producer: c.statusFlags?.includes('Producer') ?? false,
-        exportOrders: []
-      }
-    }
-
-    exportOrdersGroupedByCommodity[symbol].exportOrders.push(c)
-    exportOrdersGroupedByCommodity[symbol].totalStock += c.stock
-    exportOrdersGroupedByCommodity[symbol].totalPrice += c.buyPrice * c.stock
-    exportOrdersGroupedByCommodity[symbol].avgPrice = Math.round(exportOrdersGroupedByCommodity[symbol].totalPrice / exportOrdersGroupedByCommodity[symbol].totalStock)
-    if (exportOrdersGroupedByCommodity[symbol].bestPrice === null ||
-        c.buyPrice < exportOrdersGroupedByCommodity[symbol].bestPrice) {
-      exportOrdersGroupedByCommodity[symbol].bestPrice = c.buyPrice
-    }
-    if (exportOrdersGroupedByCommodity[symbol].updatedAt === null ||
-        c.updatedAt > exportOrdersGroupedByCommodity[symbol].updatedAt) {
-      exportOrdersGroupedByCommodity[symbol].updatedAt = c.updatedAt
-    }
-  })
-
-  return Object.values(exportOrdersGroupedByCommodity)
-    .sort((a, b) => a.name.localeCompare(b.name))
-}
-
-async function getImports (systemName) {
-  const allCommodities = await getCommodities()
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/imports`)
-  const importOrders = await res.json()
-  const importOrdersGroupedByCommodity = {}
-  importOrders.forEach(c => {
-    const symbol = c.commodityName.toLowerCase()
-    const commodityMetadata = allCommodities.find(el => el.symbol.toLowerCase() === symbol)
-    if (!commodityMetadata) return
-    if (!c.sellPrice) return
-
-    if (!importOrdersGroupedByCommodity[symbol]) {
-      importOrdersGroupedByCommodity[symbol] = {
-        key: symbol,
-        symbol,
-        name: commodityMetadata?.name ?? c.commodityName,
-        category: commodityMetadata?.category ?? '',
-        systemName: c.systemName,
-        totalDemand: 0,
-        totalPrice: 0,
-        avgPrice: 0,
-        bestPrice: null,
-        galacticAvgPrice: commodityMetadata?.avgSellPrice ?? 0,
-        updatedAt: null,
-        consumer: c.statusFlags?.includes('Consumer') ?? false,
-        importOrders: []
-      }
-    }
-
-    importOrdersGroupedByCommodity[symbol].importOrders.push(c)
-    importOrdersGroupedByCommodity[symbol].totalDemand += c.demand
-    if (importOrdersGroupedByCommodity[symbol].totalDemand > 0) {
-      importOrdersGroupedByCommodity[symbol].totalPrice += c.sellPrice * c.demand
-      importOrdersGroupedByCommodity[symbol].avgPrice = Math.round(importOrdersGroupedByCommodity[symbol].totalPrice / importOrdersGroupedByCommodity[symbol].totalDemand)
-    } else if (!importOrdersGroupedByCommodity[symbol].avgPrice) {
-      importOrdersGroupedByCommodity[symbol].avgPrice = c.sellPrice
-    }
-    if (importOrdersGroupedByCommodity[symbol].bestPrice === null ||
-        c.sellPrice > importOrdersGroupedByCommodity[symbol].bestPrice) {
-      importOrdersGroupedByCommodity[symbol].bestPrice = c.sellPrice
-    }
-    if (importOrdersGroupedByCommodity[symbol].updatedAt === null ||
-        c.updatedAt > importOrdersGroupedByCommodity[symbol].updatedAt) {
-      importOrdersGroupedByCommodity[symbol].updatedAt = c.updatedAt
-    }
-  })
-
-  return Object.values(importOrdersGroupedByCommodity)
-    .sort((a, b) => a.name.localeCompare(b.name))
-}
-
-// function average (arr) { return arr.reduce((a, b) => a + b) / arr.length }

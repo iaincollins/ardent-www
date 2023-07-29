@@ -47,7 +47,7 @@ export default ({ commodities }) => {
                     </tr>
                   </tbody>
                 </table>
-                <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
+                <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)}</small>
               </div>
             </>
         },
@@ -58,7 +58,7 @@ export default ({ commodities }) => {
           align: 'right',
           width: 110,
           className: 'is-hidden-mobile',
-          render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
+          render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
         },
         {
           title: 'Demand',
@@ -149,7 +149,7 @@ function ExpandedRow ({ r }) {
                       </tr>
                     </tbody>
                   </table>
-                  <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)} ago</small>
+                  <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)}</small>
                 </div>
               </>
           },
@@ -160,7 +160,7 @@ function ExpandedRow ({ r }) {
             align: 'right',
             width: 130,
             className: 'is-hidden-mobile',
-            render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)} ago</span>
+            render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
           },
           {
             title: 'Demand',
