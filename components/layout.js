@@ -3,7 +3,7 @@ import Loader from './loader'
 import Head from 'next/head'
 
 export default ({
-  title = 'Ardent Industry – Trade & exploration data',
+  title = 'Ardent Industry – Trade & Exploration',
   loading = false,
   children
 }) =>

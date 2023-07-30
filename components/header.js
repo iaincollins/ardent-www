@@ -24,7 +24,7 @@ export default () => {
               <em>A</em>rdent <em>I</em>ndustry
             </h1>
             <p style={{ fontStyle: 'italic' }}>
-              Trade &amp; exploration data
+              Trade &amp; Exploration
             </p>
           </div>
         </Link>
