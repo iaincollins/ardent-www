@@ -13,6 +13,7 @@
     line-height: 1.75rem;
     padding-right: 1rem;
     clip-path: polygon(0 0,calc(100% - .8rem) 0,100% 1.6rem,100% 100%,0 100%);
+    margin-right: 0;
   }
 
   h2.heading--with-icon {

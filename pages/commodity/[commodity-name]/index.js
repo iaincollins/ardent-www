@@ -7,7 +7,7 @@ import Layout from 'components/layout'
 import CommodityImportOrders from 'components/commodity-import-orders'
 import CommodityExportOrders from 'components/commodity-export-orders'
 // import CommodityReport from 'components/commodity-report'
-import commoditiesInfo from 'lib/commodities.json'
+import { getAllCommodities } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
 import { API_BASE_URL } from 'lib/consts'
 
@@ -41,11 +41,12 @@ export default () => {
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
         c.maxProfit = c.maxSellPrice - c.minBuyPrice
         c.symbol = c.commodityName.toLowerCase()
-        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? 'Unknown'
-        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? 'Unknown'
+        c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
         delete c.commodityName
       }
-      if (!c) c = commoditiesInfo.find(el => el.symbol.toLowerCase() === commodityName.toLowerCase())
+      if (!c) c = getAllCommodities().find(el => el.symbol.toLowerCase() === commodityName.toLowerCase())
       if (c && !c.totalDemand) c.totalDemand = 0
       if (c && !c.totalStock) c.totalStock = 0
       setCommodity(c || null)
@@ -57,8 +58,9 @@ export default () => {
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
         c.maxProfit = c.maxSellPrice - c.minBuyPrice
         c.symbol = c.commodityName.toLowerCase()
-        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+        c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
         delete c.commodityId
         delete c.commodityName
       })
@@ -71,8 +73,9 @@ export default () => {
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
         c.maxProfit = c.maxSellPrice - c.minBuyPrice
         c.symbol = c.commodityName.toLowerCase()
-        c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-        c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+        c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
         delete c.commodityId
         delete c.commodityName
       })
@@ -97,7 +100,12 @@ export default () => {
             <tbody>
               <tr>
                 <th>Category</th>
-                <td><span className='fx__animated-text' data-fx-order='1'>{commodity.category}</span></td>
+                <td>
+                  <span className='fx__animated-text' data-fx-order='1'>
+                    {commodity.category}
+                    {commodity.rare && <span className='muted'> (Rare)</span>}
+                  </span>
+                </td>
               </tr>
               <tr>
                 <th>Import price</th>

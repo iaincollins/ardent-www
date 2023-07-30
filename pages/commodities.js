@@ -37,7 +37,11 @@ export default () => {
                 align: 'left',
                 render: (v, r) =>
                   <>
-                    <i className='icon icarus-terminal-cargo' />{v}<br /><small>{r.category}</small>
+                    <i className='icon icarus-terminal-cargo' />{v}<br />
+                    <small>
+                      {r.category}
+                      {r.market_id && <span className='muted'> (Rare)</span>}
+                    </small>
                     <div className='is-visible-mobile'>
                       <table className='data-table--mini data-table--compact two-column-table'>
                         <tbody style={{ textTransform: 'uppercase' }}>
