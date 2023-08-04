@@ -68,7 +68,7 @@ function AnimatedBackground () {
       animationFillMode: 'forwards'
     }}
     >
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.75 }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.5 }}>
         <Canvas>
           <ambientLight />
           <pointLight position={[10, 10, 10]} />
