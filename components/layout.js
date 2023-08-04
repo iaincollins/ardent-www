@@ -1,4 +1,3 @@
-import Header from './header'
 import Loader from './loader'
 import Head from 'next/head'
 
@@ -15,14 +14,6 @@ export default ({
       <meta name='author' content='Iain Collins' />
       <meta name='viewport' content='width=device-width' />
     </Head>
-    <div className='layout__frame'>
-      <div className='fx__background' />
-      <Loader visible={loading} />
-      <Header />
-      <div className='layout__content scrollable'>
-        {children}
-      </div>
-    </div>
-    <div className='fx__scanlines' />
-    <div className='fx__overlay' />
+    <Loader visible={loading} />
+    {children}
   </>
