@@ -45,11 +45,11 @@ function Sphere (props) {
     >
       <mesh>
         <sphereGeometry args={[2, 64, 64]} />
-        <meshStandardMaterial color='#eee' wireframe />
+        <meshStandardMaterial color='#666' wireframe />
       </mesh>
       <mesh>
         <sphereGeometry args={[2, 64, 64]} />
-        <meshStandardMaterial color='#666' />
+        <meshStandardMaterial color='#666' vertexColors flatShading />
       </mesh>
     </group>
   )
@@ -65,13 +65,13 @@ function AnimatedBackground () {
       bottom: 0,
       opacity: 0,
       animation: 'fx__fade-in-animation 1s 1s',
-      animationFillMode: 'forwards'
+      animationFillMode: 'forwards',
     }}
     >
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.5 }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: .25 }}>
         <Canvas>
           <ambientLight />
-          <pointLight position={[10, 10, 10]} />
+          <pointLight position={[-2, 1, 2]} color="#fff" intensity={50} />
           <Sphere />
         </Canvas>
       </div>
