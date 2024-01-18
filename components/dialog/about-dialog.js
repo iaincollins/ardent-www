@@ -23,20 +23,19 @@ export default ({ toggle }) => {
 
   return (
     <Dialog title='About' toggle={toggle}>
-      <p>
+      <h3 style={{ marginTop: 0 }}>
         ArdentOS v{Package.version}
+      </h3>
+      <p className='clear'>
         {version &&
-          <>
-            {', '}
-            <a style={{ textTransform: 'none' }} href={API_BASE_URL} rel='noreferrer' target='_blank'>
-              Ardent API v{version.version}
-            </a>
-          </>}
+          <a style={{ textTransform: 'none' }} href={API_BASE_URL} rel='noreferrer' target='_blank'>
+            Ardent API v{version.version}
+          </a>}
       </p>
-      <p className='muted'>
+      <p>
         Trade &amp; exploration data for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>
       </p>
-      <p className='muted'>
+      <p>
         Uses live data feed from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a> by  <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>
       </p>
       <p className='muted'>

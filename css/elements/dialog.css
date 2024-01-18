@@ -5,16 +5,14 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,.25);
+  background: rgba(0,0,0,.5);
   backdrop-filter: blur(.1rem);
-  Xtransition: 1.5s ease-in-out;
+  transition: 1.5s ease-in-out;
 }
 
 .dialog {
   position: fixed;
   z-index: 10001;
-  border: .2rem solid var(--color-primary);
-  background: black;
   top: 0;
   bottom: 0;
   left: 0;
@@ -22,27 +20,49 @@
   margin: auto;
   max-width: min(40rem, 80vw);
   max-height: min(20rem, 80vh);
-  box-shadow: 0 0 5rem black, 0 0 10rem black;
   padding: 0.5rem;
-  Xtransition: opacity .5s ease-in-out;
+  transition: opacity .5s ease-in-out;
+}
+
+.dialog:after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+  background: var(--color-primary);
+  clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem),0 0,.2rem  .2rem ,.2rem calc(100% - 2.00rem - 0.08rem),calc(2.00rem + 0.08rem) calc(100% - .2rem),calc(100% - .2rem) calc(100% - .2rem),calc(100% - .2rem) .2rem,.2rem .2rem);
+  inset: 0;
+}
+
+.dialog:before {
+  position: absolute;
+  content: "";
+  top: -.2rem;
+  bottom: -.2rem;
+  left: -.2rem;
+  right: -.2rem;
+  pointer-events: none;
+  background: black;  
+  clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem));
+  inset: 0;
 }
 
 .dialog__title {
   position: absolute;
   top: -2.8rem;
-  left: -.2rem;
+  left: 0;
   font-size: 1.6rem !important;
   line-height: 2rem !important;
 }
 
 .dialog__contents {
   position: absolute;
-  top: .3rem;
-  left: .3rem;
-  right: .3rem;
-  bottom: 3.3rem;
+  top: .4rem;
+  left: .4rem;
+  right: .4rem;
+  bottom: 3.4rem;
   overflow: scroll;
   padding-right: .4rem;
+  z-index: 10002;
 }
 
 .dialog__buttons {
@@ -54,4 +74,7 @@
   height: 3.2rem;
   text-align: right;
   overflow: hidden;
+  z-index: 10002;
+  padding-bottom: .2rem;
+  clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem));
 }

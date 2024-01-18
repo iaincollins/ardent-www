@@ -39,15 +39,18 @@
   .header__logo h1 {
     padding-top: .2rem;
     padding-bottom: .1em;
+    width: 8rem;
+    padding-left: 1rem;
   }
 
   .header__logo h1,
   .header__logo h1 em {
     top: 0;
-    font-size: 1.8rem !important;
+    font-size: 2rem !important;
+    line-height: 2rem;
     height: 2rem;
   }
-
+  
   .is-hidden-mobile {
     display: none !important;
     width: 0;

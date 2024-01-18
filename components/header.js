@@ -19,7 +19,10 @@ export default () => {
       <Link href='/' className='--no-hover' style={{ border: 'none' }}>
         <div className='header__logo'>
           <h1>
-            <em>A</em>rdent <em>I</em>ndustry
+            <em>A</em>rdent
+            <span className='is-hidden-mobile'>
+              {' '}<em>I</em>ndustry
+            </span>
           </h1>
           <p style={{ fontStyle: 'italic' }}>
             Trade &amp; Exploration
