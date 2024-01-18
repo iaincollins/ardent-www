@@ -78,14 +78,25 @@
 .header__navigation {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 0.5rem;
   padding: .25rem;
 }
 
+.header__navigation a {
+  border-bottom: none !important;
+}
+
+.header__navigation .button {
+  margin-left: 0;
+  padding-left: .8rem;
+  padding-right: .8rem;  
+}
+
 .header__stats {
+  display: none;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 0rem;
+  right: 0em;
   height: 3.3rem;
   padding: .5rem 2.5rem .25rem 0rem;
   text-align: right;

@@ -2,10 +2,13 @@
 
 This is the website for [ardent-industry.com](https://ardent-industry.com)
 
-It provides a web based interface to the Ardent API and Ardent Collector.
+Ardent Industry provides trade and exploration data for the game [Elite Dangerous](https://www.elitedangerous.com/).
 
-As of June 2023 the website and API are in beta.
+It uses a live data feed from the [Elite: Dangerous Data Network](https://eddn.edcd.io) by the [Elite: Dangerous Community Developers](https://edcd.github.io/).
 
+These three repositories combined make up the Ardent Industry service:
+
+* https://github.com/iaincollins/ardent-www
 * https://github.com/iaincollins/ardent-api
 * https://github.com/iaincollins/ardent-collector
 
@@ -24,7 +27,7 @@ tools.
 
 ## Legal
 
-Copyright Iain Collins, 2023.
+Copyright Iain Collins, 2024.
 
 This software has been released under the GNU Affero General Public License.
 

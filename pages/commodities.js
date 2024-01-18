@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import Table from 'rc-table'
 import Layout from 'components/layout'
 import { getCommodities } from 'lib/commodities'
@@ -94,21 +93,6 @@ export default () => {
               onClick: onRowClick.bind(null, record, index)
             })}
           />
-          <p className='muted' style={{ fontStyle: 'italic', textAlign: 'center', marginTop: '2rem' }}>
-            Trade &amp; exploration data for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>
-          </p>
-          <p className='muted' style={{ fontStyle: 'italic', textAlign: 'center' }}>
-            Real time data from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a> by  <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>
-          </p>
-          <p className='muted' style={{ fontStyle: 'italic', textAlign: 'center' }}>
-            <a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS</a>
-            <span className='muted'> | </span>
-            <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent API</a>
-            <span className='muted'> | </span>
-            <a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector</a>
-            <span className='muted'> | </span>
-            <Link href='/downloads'>Downloads</Link>
-          </p>
         </div>}
     </Layout>
   )

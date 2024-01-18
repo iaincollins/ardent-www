@@ -1,52 +1,81 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Package from 'package.json'
-
-import { API_BASE_URL } from '../lib/consts'
+import AboutDialog from 'components/dialog/about-dialog'
 
 export default () => {
-  const [stats, setStats] = useState()
+  const [fullScreenState, setFullScreenState] = useState(false)
+  const [aboutDialogVisible, setAboutDialogVisible] = useState(false)
 
   useEffect(() => {
-    (async () => {
-      const res = await fetch(`${API_BASE_URL}/v1/stats`)
-      const stats = await res.json()
-      setStats(stats)
-    })()
+    document.addEventListener('fullscreenchange', onFullScreenChangeHandler)
+    return () => document.removeEventListener('click', onFullScreenChangeHandler)
+    function onFullScreenChangeHandler (event) {
+      setFullScreenState(isFullScreen())
+    }
   }, [])
 
   return (
-    <>
-      <header>
-        <Link href='/' className='--no-hover' style={{ border: 'none' }}>
-          <div className='header__logo'>
-            <h1>
-              <em>A</em>rdent <em>I</em>ndustry
-            </h1>
-            <p style={{ fontStyle: 'italic' }}>
-              Trade &amp; Exploration
-            </p>
-          </div>
-        </Link>
-        <div className='header__navigation' style={{ display: 'none' }}>
-          <Link href='/commodities'>
-            <button className='button'><i className='icon icarus-terminal-cargo' /></button>
-          </Link>
-          <button className='button'><i className='icon icarus-terminal-system-orbits' /></button>
+    <header>
+      <Link href='/' className='--no-hover' style={{ border: 'none' }}>
+        <div className='header__logo'>
+          <h1>
+            <em>A</em>rdent <em>I</em>ndustry
+          </h1>
+          <p style={{ fontStyle: 'italic' }}>
+            Trade &amp; Exploration
+          </p>
         </div>
-        {stats &&
-          <div className='is-hidden-mobile'>
-            <div className='header__stats'>
-              <span className='header__stats__label'>Star systems </span>
-              <span className='header__stats__value'>{stats.systems.toLocaleString()}</span>
-              <br />
-              <span className='header__stats__label'>Updates today </span>
-              <span className='header__stats__value'>{stats.trade.updatedInLast24Hours.toLocaleString()}</span>
-              <br />
-              <a style={{ textTransform: 'none' }} href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS v{Package.version} [beta]</a>
-            </div>
-          </div>}
-      </header>
-    </>
+      </Link>
+      <div className='header__navigation' style={{ display: 'block' }}>
+        {/* <Link href='/commodities'>
+          <button className='button'><i className='icon icarus-terminal-cargo' /></button>
+        </Link>
+        <button className='button'><i className='icon icarus-terminal-system-orbits' /></button> */}
+        <button
+          className='button'
+          onClick={() => setAboutDialogVisible(!aboutDialogVisible)}
+        >
+          <i className='icon icarus-terminal-info' />
+        </button>
+        <button className='button' onClick={() => toggleFullScreen()}>
+          <i className={`icon ${fullScreenState === true ? 'icarus-terminal-exit' : 'icarus-terminal-fullscreen'}`} />
+        </button>
+      </div>
+      {aboutDialogVisible && <AboutDialog toggle={setAboutDialogVisible} />}
+    </header>
   )
+}
+
+function isFullScreen () {
+  if (typeof document === 'undefined') return false
+
+  if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
+    return false
+  } else {
+    return true
+  }
+}
+
+async function toggleFullScreen () {
+  if (isFullScreen()) {
+    if (document.cancelFullScreen) {
+      document.cancelFullScreen()
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen()
+    } else if (document.webkitCancelFullScreen) {
+      document.webkitCancelFullScreen()
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen()
+    }
+    return false
+  } else {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen()
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen()
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen()
+    }
+    return true
+  }
 }

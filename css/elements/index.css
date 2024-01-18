@@ -1,5 +1,6 @@
 @import url('progress.css');
 @import url('button.css');
+@import url('dialog.css');
 
 html {
   font-family: sans-serif;

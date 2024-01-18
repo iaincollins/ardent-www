@@ -1,0 +1,57 @@
+.dialog__background {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,.25);
+  backdrop-filter: blur(.1rem);
+  Xtransition: 1.5s ease-in-out;
+}
+
+.dialog {
+  position: fixed;
+  z-index: 10001;
+  border: .2rem solid var(--color-primary);
+  background: black;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  max-width: min(40rem, 80vw);
+  max-height: min(20rem, 80vh);
+  box-shadow: 0 0 5rem black, 0 0 10rem black;
+  padding: 0.5rem;
+  Xtransition: opacity .5s ease-in-out;
+}
+
+.dialog__title {
+  position: absolute;
+  top: -2.8rem;
+  left: -.2rem;
+  font-size: 1.6rem !important;
+  line-height: 2rem !important;
+}
+
+.dialog__contents {
+  position: absolute;
+  top: .3rem;
+  left: .3rem;
+  right: .3rem;
+  bottom: 3.3rem;
+  overflow: scroll;
+  padding-right: .4rem;
+}
+
+.dialog__buttons {
+  position: absolute;
+  display: block;
+  left: 0;
+  right: 0;
+  bottom: 0rem;
+  height: 3.2rem;
+  text-align: right;
+  overflow: hidden;
+}

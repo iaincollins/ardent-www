@@ -1,6 +1,6 @@
 export default function Loader ({ visible }) {
   return (
-    <div>
+    <>
       {/* <div className='loader__background' style={{ opacity: visible ? 1 : 0 }} /> */}
       <div className='loader__spinner' style={{ opacity: visible ? 1 : 0 }}>
         <div className='loader__row'>
@@ -36,7 +36,7 @@ export default function Loader ({ visible }) {
           <div className='loader__arrow loader__arrow--down loader__arrow--outer-9' />
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
