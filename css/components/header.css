@@ -78,8 +78,8 @@
 .header__navigation {
   position: absolute;
   top: 0;
-  right: 0.5rem;
-  padding: .25rem;
+  right: .4em;
+  padding: .6rem;
 }
 
 .header__navigation a {

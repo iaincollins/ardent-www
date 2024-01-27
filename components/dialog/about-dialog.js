@@ -23,60 +23,15 @@ export default ({ toggle }) => {
 
   return (
     <Dialog title='About' toggle={toggle}>
-      <h3 style={{ marginTop: 0 }}>
-        ArdentOS v{Package.version}
-      </h3>
-      <p className='clear'>
-        {version &&
-          <a style={{ textTransform: 'none' }} href={API_BASE_URL} rel='noreferrer' target='_blank'>
-            Ardent API v{version.version}
-          </a>}
+      <p>
+        Trade &amp; exploration data for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>.
       </p>
       <p>
-        Trade &amp; exploration data for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>
+        Uses data submitted to <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>, which is run by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>.
       </p>
-      <p>
-        Uses live data feed from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a> by  <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>
-      </p>
-      <p className='muted'>
-        <a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS</a>
-        <span className='muted'> | </span>
-        <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent API</a>
-        <span className='muted'> | </span>
-        <a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector</a>
-        <span className='muted'> | </span>
-        <a href='/downloads' rel='noreferrer' target='_blank'>Downloads</a>
-      </p>
-      {/* ? 'Locations:\n' +
-        `* Star systems: ${stats.systems.toLocaleString()}\n` +
-        `* Points of interest: ${stats.pointsOfInterest.toLocaleString()}\n` +
-        'Stations:\n' +
-        `* Stations: ${stats.stations.stations.toLocaleString()}\n` +
-        `* Fleet Carriers: ${stats.stations.carriers.toLocaleString()}\n` +
-        `* Station updates in last hour: ${stats.stations.updatedInLastHour.toLocaleString()}\n` +
-        `* Station updates in last 24 hours: ${stats.stations.updatedInLast24Hours.toLocaleString()}\n` +
-        `* Station updates in last 7 days: ${stats.stations.updatedInLast7Days.toLocaleString()}\n` +
-        `* Station updates in last 30 days: ${stats.stations.updatedInLast30Days.toLocaleString()}\n` +
-        'Trade:\n' +
-        `* Station Markets: ${stats.trade.stations.toLocaleString()}\n` +
-        `* Fleet Carrier Markets: ${stats.trade.carriers.toLocaleString()}\n` +
-        `* Trade systems: ${stats.trade.systems.toLocaleString()}\n` +
-        `* Trade orders: ${stats.trade.tradeOrders.toLocaleString()}\n` +
-        `* Trade updates in last hour: ${stats.trade.updatedInLastHour.toLocaleString()}\n` +
-        `* Trade updates in last 24 hours: ${stats.trade.updatedInLast24Hours.toLocaleString()}\n` +
-        `* Trade updates in last 7 days: ${stats.trade.updatedInLast7Days.toLocaleString()}\n` +
-        `* Trade updates in last 30 days: ${stats.trade.updatedInLast30Days.toLocaleString()}\n` +
-        `* Unique commodities: ${stats.trade.uniqueCommodities.toLocaleString()}\n` +
-        `Stats last updated: ${stats.timestamp}\nStats updated every 15 minutes.`
-        : 'Stats not generated yet') */}
-
-      <h3>Statistics</h3>
       {stats &&
         <>
-          <p className='clear'>
-            Statistics last updated on {stats.timestamp.replace('T', ' at ').replace(/:\d\d\.(\d+)Z/, ' UTC')}
-          </p>
-          <ul>
+          <ul className='clear'>
             <li>
               Trade Data
               <ul>
@@ -110,6 +65,56 @@ export default ({ toggle }) => {
           </ul>
         </>}
 
+      <h3>Version</h3>
+      <ul className='clear'>
+        <li>
+          ArdentOS version {Package.version}
+        </li>
+        <li className='clear'>
+          {version &&
+            <a style={{ textTransform: 'none' }} href={API_BASE_URL} rel='noreferrer' target='_blank'>
+              Ardent API version {version.version}
+            </a>}
+        </li>
+      </ul>
+
+      <h3>Downloads</h3>
+      <p className='clear'>
+        The software and data for Ardent Industry is open source.
+      </p>
+      <p>
+        <a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS</a>
+        <span className='muted'> | </span>
+        <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent API</a>
+        <span className='muted'> | </span>
+        <a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector</a>
+        <span className='muted'> | </span>
+        <a href='/downloads' rel='noreferrer' target='_blank'>Downloads</a>
+      </p>
+
+
+      {/* ? 'Locations:\n' +
+        `* Star systems: ${stats.systems.toLocaleString()}\n` +
+        `* Points of interest: ${stats.pointsOfInterest.toLocaleString()}\n` +
+        'Stations:\n' +
+        `* Stations: ${stats.stations.stations.toLocaleString()}\n` +
+        `* Fleet Carriers: ${stats.stations.carriers.toLocaleString()}\n` +
+        `* Station updates in last hour: ${stats.stations.updatedInLastHour.toLocaleString()}\n` +
+        `* Station updates in last 24 hours: ${stats.stations.updatedInLast24Hours.toLocaleString()}\n` +
+        `* Station updates in last 7 days: ${stats.stations.updatedInLast7Days.toLocaleString()}\n` +
+        `* Station updates in last 30 days: ${stats.stations.updatedInLast30Days.toLocaleString()}\n` +
+        'Trade:\n' +
+        `* Station Markets: ${stats.trade.stations.toLocaleString()}\n` +
+        `* Fleet Carrier Markets: ${stats.trade.carriers.toLocaleString()}\n` +
+        `* Trade systems: ${stats.trade.systems.toLocaleString()}\n` +
+        `* Trade orders: ${stats.trade.tradeOrders.toLocaleString()}\n` +
+        `* Trade updates in last hour: ${stats.trade.updatedInLastHour.toLocaleString()}\n` +
+        `* Trade updates in last 24 hours: ${stats.trade.updatedInLast24Hours.toLocaleString()}\n` +
+        `* Trade updates in last 7 days: ${stats.trade.updatedInLast7Days.toLocaleString()}\n` +
+        `* Trade updates in last 30 days: ${stats.trade.updatedInLast30Days.toLocaleString()}\n` +
+        `* Unique commodities: ${stats.trade.uniqueCommodities.toLocaleString()}\n` +
+        `Stats last updated: ${stats.timestamp}\nStats updated every 15 minutes.`
+        : 'Stats not generated yet') */}
       <h3>Legal</h3>
       <p className='clear'>
         Released under GNU Affero General Public License.

@@ -7,7 +7,6 @@
   bottom: 0;
   right: 0;
   background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 2;
   opacity: .5;
   background-size: 100% 2px, 3px 100%;
   pointer-events: none;
@@ -23,7 +22,7 @@
   bottom: 0;
   right: 0;
   background: linear-gradient(rgba(0,0,0,0) 50%, rgba(0, 0, 0, .03) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.04), rgba(0, 0, 255, 0.04));
-  z-index: 10010;
+  z-index: 1000;
   background-size: 100% 3px, 3px 100%;
   pointer-events: none;
 }
@@ -52,7 +51,7 @@
   bottom: 0;
   right: 0;
   box-shadow: 0 0 10rem 10rem rgba(0,0,0,.3) inset;
-  z-index: 30;
+  z-index: 30000;
   pointer-events: none;
 }
 

@@ -1,6 +1,6 @@
 .dialog__background {
   position: fixed;
-  z-index: 10000;
+  z-index: 1000;
   top: 0;
   bottom: 0;
   left: 0;
@@ -12,7 +12,7 @@
 
 .dialog {
   position: fixed;
-  z-index: 10001;
+  z-index: 1001;
   top: 0;
   bottom: 0;
   left: 0;
@@ -54,15 +54,15 @@
   line-height: 2rem !important;
 }
 
-.dialog__contents {
+.dialog__content {
   position: absolute;
   top: .4rem;
   left: .4rem;
   right: .4rem;
-  bottom: 3.4rem;
+  bottom: 3.1rem;
   overflow: scroll;
   padding-right: .4rem;
-  z-index: 10002;
+  z-index: 1002;
 }
 
 .dialog__buttons {
@@ -71,10 +71,10 @@
   left: 0;
   right: 0;
   bottom: 0rem;
-  height: 3.2rem;
+  height: 3.1rem;
   text-align: right;
   overflow: hidden;
-  z-index: 10002;
+  z-index: 1002;
   padding-bottom: .2rem;
   clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem));
 }
