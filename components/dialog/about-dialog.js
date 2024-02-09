@@ -24,60 +24,50 @@ export default ({ toggle }) => {
   return (
     <Dialog title='About' toggle={toggle}>
       <p>
-        Trade &amp; exploration data for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>.
-      </p>
-      <p>
-        Uses data submitted to <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>, which is run by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>.
+        ArdentOS v{Package.version}
+        {' '}
+        {version &&
+          <a style={{ textTransform: 'none' }} href={API_BASE_URL} rel='noreferrer' target='_blank' className='muted'>
+            [ API v{version.version} ]
+          </a>}
+        {' '}
+       for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>.
       </p>
       {stats &&
         <>
+        <p>
+          Processed {stats.updatedInLast24Hours.toLocaleString()} updates in the last 24 hours.
+        </p>
           <ul className='clear'>
             <li>
-              Trade Data
-              <ul>
-                <li>
-                  Trade Orders: {stats.trade.tradeOrders.toLocaleString()}
-                </li>
-                <li>
-                  Markets: {(stats.trade.stations + stats.trade.carriers).toLocaleString()}
-                </li>
-                <li>
-                  Trade Systems: {stats.trade.systems.toLocaleString()}
-                </li>
-              </ul>
-            </li>
-            <li>Location Data
-              <ul>
-                <li>
-                  Star systems: {stats.systems.toLocaleString()}
-                </li>
-                <li>
-                  Stations &amp; Settlements: {stats.stations.stations.toLocaleString()}
-                </li>
-                <li>
-                  Fleet Carriers: {stats.stations.carriers.toLocaleString()}
-                </li>
-                <li>
-                  Points of Interest: {stats.pointsOfInterest.toLocaleString()}
-                </li>
-              </ul>
-            </li>
+                Trade Orders: {stats.trade.tradeOrders.toLocaleString()}
+              </li>
+              <li>
+                Trade Orders: {stats.trade.tradeOrders.toLocaleString()}
+              </li>
+              <li>
+                Markets: {(stats.trade.stations + stats.trade.carriers).toLocaleString()}
+              </li>
+              <li>
+                Trade Systems: {stats.trade.systems.toLocaleString()}
+              </li>
+              <li>
+                Star systems: {stats.systems.toLocaleString()}
+              </li>
+              <li>
+                Stations &amp; Settlements: {stats.stations.stations.toLocaleString()}
+              </li>
+              <li>
+                Fleet Carriers: {stats.stations.carriers.toLocaleString()}
+              </li>
+              <li>
+                Points of Interest: {stats.pointsOfInterest.toLocaleString()}
+              </li>
           </ul>
         </>}
-
-      <h3>Version</h3>
-      <ul className='clear'>
-        <li>
-          ArdentOS version {Package.version}
-        </li>
-        <li className='clear'>
-          {version &&
-            <a style={{ textTransform: 'none' }} href={API_BASE_URL} rel='noreferrer' target='_blank'>
-              Ardent API version {version.version}
-            </a>}
-        </li>
-      </ul>
-
+      <p>
+        Uses data submitted to <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>, which is run by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>.
+      </p>
       <h3>Downloads</h3>
       <p className='clear'>
         The software and data for Ardent Industry is open source.

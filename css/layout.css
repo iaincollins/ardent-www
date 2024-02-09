@@ -55,7 +55,7 @@
     black calc(100% - 1.5rem),
     transparent
   ), linear-gradient(black, black);
-  mask-size: calc(100% - 1rem) 100%, 1rem 100%;
+  mask-size: 100% 100%, 1rem 100%;
   mask-position: 0 0, 100% 0;
   mask-repeat: no-repeat, no-repeat;
 }

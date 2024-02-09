@@ -34,17 +34,6 @@ i[class*=" icarus-terminal-"] {
 
 body,
 .scrollable {
-  scrollbar-width: none;
-}
-
-body::-webkit-scrollbar,
-.scrollable::-webkit-scrollbar {
-  width: 0px;
-}
-
-body,
-.scrollable {
-  scrollbar-width: none;
   overflow-x: hidden !important;
 }
 
