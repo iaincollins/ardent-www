@@ -1,6 +1,7 @@
 name: Deploy Ardent Website to Production
 
 # ABOUT
+#
 # This deployment script assumes the following are configured in GitHub actions:
 #
 #  SSH_PRIVATE_KEY [secret]
@@ -11,6 +12,12 @@ name: Deploy Ardent Website to Production
 # Note:
 # * DEPLOY_DIR should be an absolute path.
 # * SERVICE_NAME should match the name of the repository in GitHub.
+#
+# This deployment script differs slightly from the other ardent deployment
+# scripts. Updating the service in place would cause Next.js runtime errors
+# during the build step. To avoid that, instead of simply updating the project
+# and restarting it, it creates a copy of the current deployment, updates that
+# copy and then swaps directories and restarts the service.
 #
 # SETUP
 #

@@ -40,33 +40,30 @@ export default ({ toggle }) => {
         </p>
           <ul className='clear'>
             <li>
-                Trade Orders: {stats.trade.tradeOrders.toLocaleString()}
-              </li>
-              <li>
-                Trade Orders: {stats.trade.tradeOrders.toLocaleString()}
-              </li>
-              <li>
-                Markets: {(stats.trade.stations + stats.trade.carriers).toLocaleString()}
-              </li>
-              <li>
-                Trade Systems: {stats.trade.systems.toLocaleString()}
-              </li>
-              <li>
                 Star systems: {stats.systems.toLocaleString()}
               </li>
               <li>
-                Stations &amp; Settlements: {stats.stations.stations.toLocaleString()}
+                Stations, ports &amp; settlements: {stats.stations.stations.toLocaleString()}
               </li>
               <li>
                 Fleet Carriers: {stats.stations.carriers.toLocaleString()}
               </li>
               <li>
-                Points of Interest: {stats.pointsOfInterest.toLocaleString()}
+                Trade orders: {stats.trade.tradeOrders.toLocaleString()}
+              </li>
+              <li>
+                Trade markets: {(stats.trade.stations + stats.trade.carriers).toLocaleString()}
+              </li>
+              <li>
+                Trade systems: {stats.trade.systems.toLocaleString()}
+              </li>
+              <li>
+                Points of interest: {stats.pointsOfInterest.toLocaleString()}
               </li>
           </ul>
         </>}
       <p>
-        Uses data submitted to <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>, which is run by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>.
+        Data from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>, which is run by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>.
       </p>
       <h3>Downloads</h3>
       <p className='clear'>
@@ -79,7 +76,7 @@ export default ({ toggle }) => {
         <span className='muted'> | </span>
         <a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector</a>
         <span className='muted'> | </span>
-        <a href='/downloads' rel='noreferrer' target='_blank'>Downloads</a>
+        <a href='/downloads' rel='noreferrer' target='_blank'>Data Downloads</a>
       </p>
 
 
