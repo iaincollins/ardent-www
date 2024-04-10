@@ -43,7 +43,7 @@ export default ({ toggle }) => {
                 Star systems: {stats.systems.toLocaleString()}
               </li>
               <li>
-                Stations, ports &amp; settlements: {stats.stations.stations.toLocaleString()}
+                Stations &amp; settlements: {stats.stations.stations.toLocaleString()}
               </li>
               <li>
                 Fleet Carriers: {stats.stations.carriers.toLocaleString()}
@@ -67,7 +67,7 @@ export default ({ toggle }) => {
       </p>
       <h3>Downloads</h3>
       <p className='clear'>
-        The software and data for Ardent Industry is open source.
+        Both the source for the software and the raw data for Ardent Industry are available for download.
       </p>
       <p>
         <a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS</a>
@@ -76,7 +76,7 @@ export default ({ toggle }) => {
         <span className='muted'> | </span>
         <a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector</a>
         <span className='muted'> | </span>
-        <a href='/downloads' rel='noreferrer' target='_blank'>Data Downloads</a>
+        <a href='/downloads' rel='noreferrer' target='_blank'>Download Data</a>
       </p>
 
 
