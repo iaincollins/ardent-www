@@ -151,9 +151,11 @@ export default () => {
 
   return (
     <Layout loading={system === undefined}>
-      <ul className='breadcrumbs fx__fade-in'>
+        <ul className='breadcrumbs fx__fade-in' onClick={(e) => {
+          if (e.target.tagName == 'LI') e.target.children[0].click()
+        }}>
         <li><Link href='/'>Home</Link></li>
-        <li><Link href='/commodities'>Systems</Link></li>
+        <li><Link href='/'>Systems</Link></li>
       </ul>
       {system === null && <><h2>Error</h2><p className='clear'>System not found</p></>}
       {system &&

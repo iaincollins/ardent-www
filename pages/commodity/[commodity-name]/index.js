@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import TabOptions from 'components/tab-options'
+import CommodityFilterTabOptions from 'components/tab-options/commodity-filter'
 import Layout from 'components/layout'
 import CommodityImportOrders from 'components/commodity-import-orders'
 import CommodityExportOrders from 'components/commodity-export-orders'
@@ -85,7 +85,9 @@ export default () => {
 
   return (
     <Layout loading={commodity === undefined || imports === undefined}>
-      <ul className='breadcrumbs fx__fade-in'>
+      <ul className='breadcrumbs fx__fade-in' onClick={(e) => {
+          if (e.target.tagName == 'LI') e.target.children[0].click()
+        }}>
         <li><Link href='/'>Home</Link></li>
         <li><Link href='/commodities'>Commodities</Link></li>
       </ul>
@@ -198,9 +200,7 @@ export default () => {
               <TabList>
                 <Tab>Importers</Tab>
                 <Tab>Exporters</Tab>
-                <TabOptions>
-                  Some tab options
-                </TabOptions>
+                <CommodityFilterTabOptions/>
               </TabList>
               <TabPanel>
                 {!imports && <div className='loading-bar loading-bar--tab' />}

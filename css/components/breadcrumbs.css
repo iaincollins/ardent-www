@@ -32,6 +32,7 @@
   text-transform: uppercase;
   font-family: 'Jura';
   font-weight: bold;
+  pointer-events: all;
 }
 
 .breadcrumbs li a {
