@@ -35,6 +35,7 @@ i[class*=" icarus-terminal-"] {
 body,
 .scrollable {
   overflow-x: hidden !important;
+  font-synthesis: style;
 }
 
 @-moz-document url-prefix() {

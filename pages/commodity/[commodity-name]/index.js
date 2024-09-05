@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import TabOptions from 'components/tab-options'
 import Layout from 'components/layout'
 import CommodityImportOrders from 'components/commodity-import-orders'
 import CommodityExportOrders from 'components/commodity-export-orders'
-// import CommodityReport from 'components/commodity-report'
 import { getAllCommodities } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
 import { API_BASE_URL } from 'lib/consts'
@@ -198,6 +198,9 @@ export default () => {
               <TabList>
                 <Tab>Importers</Tab>
                 <Tab>Exporters</Tab>
+                <TabOptions>
+                  Some tab options
+                </TabOptions>
               </TabList>
               <TabPanel>
                 {!imports && <div className='loading-bar loading-bar--tab' />}
@@ -208,40 +211,6 @@ export default () => {
                 {exports && <CommodityExportOrders commodities={exports} />}
               </TabPanel>
             </Tabs>}
-          {/*
-          <Tabs>
-            <TabList>
-              <Tab>Live<span className='is-hidden-mobile'> Data</span></Tab>
-              <Tab>Core<span className='is-hidden-mobile'> Systems</span></Tab>
-              <Tab>Colonia<span className='is-hidden-mobile'> Region</span></Tab>
-            </TabList>
-            <div className='tab-panel__container'>
-              <TabPanel>
-                <div className='tab-panel__header'>
-                  <p>
-                    Best prices for <strong>{commodity.name}</strong> anywhere in the galaxy
-                  </p>
-                </div>
-              </TabPanel>
-              <TabPanel>
-                <div className='tab-panel__header'>
-                  <p>
-                    Best bulk trading prices for <strong>{commodity.name}</strong> in
-                    systems near the Core Worlds (aka "The Bubble")
-                  </p>
-                </div>
-                <CommodityReport commodityName={commodity.name} reportName='core-systems-1000' />
-              </TabPanel>
-              <TabPanel>
-                <div className='tab-panel__header'>
-                  <p>
-                    Best bulk trading prices for <strong>{commodity.name}</strong> in systems near Colonia
-                  </p>
-                </div>
-                <CommodityReport commodityName={commodity.name} reportName='colonia-systems-1000' />
-              </TabPanel>
-            </div>
-          </Tabs> */}
         </div>}
     </Layout>
   )
