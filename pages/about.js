@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import Head from 'next/head'
 import Layout from 'components/layout'
-import { API_BASE_URL } from 'lib/consts'
-
 import Package from 'package.json'
-import Dialog from 'components/dialog'
-
+import { API_BASE_URL } from 'lib/consts'
 
 export default () => {
   const [stats, setStats] = useState()
@@ -26,6 +23,9 @@ export default () => {
 
   return (
     <Layout>
+      <Head>
+        <link rel='canonical' href='https://ardent-industry.com/about' />
+      </Head>
       <div className='fx__fade-in'>
         <h1 className='heading--with-icon'>
           About

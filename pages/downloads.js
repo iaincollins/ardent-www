@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 import Layout from 'components/layout'
 import { API_BASE_URL } from 'lib/consts'
 
@@ -14,6 +15,9 @@ export default () => {
   }, [])
   return (
     <Layout>
+      <Head>
+        <link rel='canonical' href='https://ardent-industry.com/downloads' />
+      </Head>
       <div className='fx__fade-in'>
         <h2 className='heading--with-icon'>
           <i className='icon icarus-terminal-download' />

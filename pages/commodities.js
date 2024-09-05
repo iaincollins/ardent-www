@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 import Table from 'rc-table'
 import Layout from 'components/layout'
 import { getCommodities } from 'lib/commodities'
@@ -23,6 +24,9 @@ export default () => {
 
   return (
     <Layout loading={commodities === undefined}>
+      <Head>
+        <link rel='canonical' href='https://ardent-industry.com/commodities' />
+      </Head>
       {commodities &&
         <div className='fx__fade-in'>
           <h2 style={{ marginBottom: '-.1rem' }}>Commodities</h2>
