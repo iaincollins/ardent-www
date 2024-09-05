@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import Layout from 'components/layout'
+import { API_BASE_URL } from 'lib/consts'
+
 import Package from 'package.json'
 import Dialog from 'components/dialog'
 
-import { API_BASE_URL } from 'lib/consts'
 
-export default ({ toggle }) => {
+export default () => {
   const [stats, setStats] = useState()
   const [version, setVersion] = useState()
 
@@ -21,17 +24,31 @@ export default ({ toggle }) => {
     })()
   }, [])
 
+
+  const [backupData, setBackupData] = useState()
+
+  useEffect(() => {
+    (async () => {
+      //const res = await fetch(`${API_BASE_URL}/v1/backup`)
+      //setBackupData(await res.json())
+    })()
+  }, [])
   return (
-    <Dialog title='About' toggle={toggle}>
-      <p>
+    <Layout>
+      <div className='fx__fade-in'>
+        <h1 className='heading--with-icon'>
+          About
+        </h1>
+        <p className='clear'>
+          Ardent Industry is companion software for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>.
+        </p>
+        <p>
         ArdentOS v{Package.version}
         {' '}
         {version &&
           <a style={{ textTransform: 'none' }} href={API_BASE_URL} rel='noreferrer' target='_blank' className='muted'>
             [ API v{version.version} ]
           </a>}
-        {' '}
-        for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>.
       </p>
       {stats &&
         <>
@@ -69,15 +86,12 @@ export default ({ toggle }) => {
       <p className='clear'>
         Both the source for the software and the raw data for Ardent Industry are available for download.
       </p>
-      <p>
-        <a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS</a>
-        <span className='muted'> | </span>
-        <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent API</a>
-        <span className='muted'> | </span>
-        <a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector</a>
-        <span className='muted'> | </span>
-        <a href='/downloads' rel='noreferrer' target='_blank'>Download Data</a>
-      </p>
+      <ul>
+        <li><a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS</a></li>        
+        <li><a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent API</a></li>
+        <li><a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector</a></li>
+        <li><a href='/downloads' rel='noreferrer' target='_blank'>Download Data</a></li>
+      </ul>
       <h3>Legal</h3>
       <p className='clear'>
         Released under GNU Affero General Public License.
@@ -87,6 +101,7 @@ export default ({ toggle }) => {
         not endorsed by nor reflects the views or opinions of Frontier Developments and
         no employee of Frontier Developments was involved in the making of it.
       </p>
-    </Dialog>
+      </div>
+    </Layout>
   )
 }
