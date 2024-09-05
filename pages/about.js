@@ -24,15 +24,6 @@ export default () => {
     })()
   }, [])
 
-
-  const [backupData, setBackupData] = useState()
-
-  useEffect(() => {
-    (async () => {
-      //const res = await fetch(`${API_BASE_URL}/v1/backup`)
-      //setBackupData(await res.json())
-    })()
-  }, [])
   return (
     <Layout>
       <div className='fx__fade-in'>
