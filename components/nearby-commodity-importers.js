@@ -46,6 +46,16 @@ export default ({ commodity }) => {
     })()
   }, [commodity.commodityName, commodity.systemName])
 
+  useEffect(() => {
+    const eventHandler = async () => {
+      setNearbyImporters(
+        (await getNearbyImportersOfCommodity(commodity.systemName, commodity.symbol)).slice(0, MAX_ROWS_TO_DISPLAY)
+      )
+    }
+    window.addEventListener('CommodityFilterChangeEvent', eventHandler)
+    return () => window.removeEventListener(`CommodityFilterChangeEvent`, eventHandler)
+  }, [])
+
   return (
     <>
       {!nearbyImporters && <div className='loading-bar' style={{ marginTop: 0 }} />}

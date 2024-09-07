@@ -9,7 +9,7 @@ import CommodityImportOrders from 'components/commodity-import-orders'
 import CommodityExportOrders from 'components/commodity-export-orders'
 import { getAllCommodities } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
-import { 
+import {
   API_BASE_URL,
   COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
   COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
@@ -20,6 +20,7 @@ export default () => {
   const router = useRouter()
   const [tabIndex, setTabIndex] = useState(0)
   const [commodity, setCommodity] = useState()
+  const [updating, setUpdating] = useState(false)
   const [exports, setExports] = useState()
   const [imports, setImports] = useState()
 
@@ -31,47 +32,49 @@ export default () => {
     if (basePath === 'exporters') setTabIndex(1)
   }, [router.pathname])
 
-  async function getImportsAndExports() {
-    const commodityName = router.query?.['commodity-name']
+  async function getImportsAndExports(arg) {
+    const commodityName = window.location?.pathname?.replace(/.*\//, '')
     if (!commodityName) return
+    setUpdating(true)
 
-      setExports(undefined)
-      setImports(undefined)
+    const imports = await getImports(commodityName)
+    imports.forEach(c => {
+      c.key = c.commodityId
+      c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+      c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+      c.maxProfit = c.maxSellPrice - c.minBuyPrice
+      c.symbol = c.commodityName.toLowerCase()
+      c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+      c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+      c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
+      delete c.commodityId
+      delete c.commodityName
+    })
+    setImports(imports)
 
-      const imports = await getImports(commodityName)
-      imports.forEach(c => {
-        c.key = c.commodityId
-        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-        c.maxProfit = c.maxSellPrice - c.minBuyPrice
-        c.symbol = c.commodityName.toLowerCase()
-        c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-        c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
-        delete c.commodityId
-        delete c.commodityName
-      })
-      setImports(imports)
+    const exports = await getExports(commodityName)
+    exports.forEach(c => {
+      c.key = c.commodityId
+      c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+      c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+      c.maxProfit = c.maxSellPrice - c.minBuyPrice
+      c.symbol = c.commodityName.toLowerCase()
+      c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
+      c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+      c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
+      delete c.commodityId
+      delete c.commodityName
+    })
+    setExports(exports)
 
-      const exports = await getExports(commodityName)
-      exports.forEach(c => {
-        c.key = c.commodityId
-        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-        c.maxProfit = c.maxSellPrice - c.minBuyPrice
-        c.symbol = c.commodityName.toLowerCase()
-        c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-        c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
-        delete c.commodityId
-        delete c.commodityName
-      })
-      setExports(exports)
+    setUpdating(false)
   }
 
   useEffect(() => {
-    (async() => {
+    (async () => {
       setCommodity(undefined)
+      setExports(undefined)
+      setImports(undefined)
 
       const commodityName = router.query?.['commodity-name']
       if (!commodityName) return
@@ -96,11 +99,16 @@ export default () => {
     })()
   }, [router.query['commodity-name']])
 
+  useEffect(() => {
+    window.addEventListener('CommodityFilterChangeEvent', getImportsAndExports)
+    return () => window.removeEventListener(`CommodityFilterChangeEvent`, getImportsAndExports)
+  }, [])
+
   return (
-    <Layout loading={commodity === undefined || imports === undefined}>
+    <Layout loading={commodity === undefined || imports === undefined || updating}>
       <ul className='breadcrumbs fx__fade-in' onClick={(e) => {
-          if (e.target.tagName == 'LI') e.target.children[0].click()
-        }}>
+        if (e.target.tagName == 'LI') e.target.children[0].click()
+      }}>
         <li><Link href='/'>Home</Link></li>
         <li><Link href='/commodities'>Commodities</Link></li>
       </ul>
@@ -133,7 +141,7 @@ export default () => {
                           {' '}
                           <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>
                         </>
-                        )
+                      )
                       : <span className='muted'>Insufficent data</span>}
                   </span>
                 </td>
@@ -149,7 +157,7 @@ export default () => {
                           {' '}
                           <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>
                         </>
-                        )
+                      )
                       : <span className='muted'>Insufficent data</span>}
                   </span>
                 </td>
@@ -214,7 +222,7 @@ export default () => {
                 <Tab>Importers</Tab>
                 <Tab>Exporters</Tab>
               </TabList>
-              <CommodityTabOptions onChange={() => getImportsAndExports()}/>
+              <CommodityTabOptions />
               <TabPanel>
                 {!imports && <div className='loading-bar loading-bar--tab' />}
                 {imports && <CommodityImportOrders commodities={imports} />}
@@ -229,12 +237,12 @@ export default () => {
   )
 }
 
-async function getCommodity (commodityName) {
+async function getCommodity(commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getExports (commodityName) {
+async function getExports(commodityName) {
   let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/exports`
   let options = []
 
@@ -255,7 +263,7 @@ async function getExports (commodityName) {
   return await res.json()
 }
 
-async function getImports (commodityName) {
+async function getImports(commodityName) {
   let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/imports`
   let options = []
 
