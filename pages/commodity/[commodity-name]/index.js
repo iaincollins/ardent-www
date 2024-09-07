@@ -235,7 +235,23 @@ async function getCommodity (commodityName) {
 }
 
 async function getExports (commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/commodity/name/${commodityName}/exports`)
+  let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/exports`
+  let options = []
+
+  const lastUpdatedFilterValue = window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
+  const minVolumeFilterValue = window.localStorage?.getItem('minVolumeFilter') ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+  const fleetCarrierFilterValue = window.localStorage?.getItem('fleetCarrierFilter') ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
+
+  options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
+  options.push(`minVolume=${minVolumeFilterValue}`)
+  if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
+  if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
+
+  if (options.length > 0) {
+    url += `?${options.join('&')}`
+  }
+
+  const res = await fetch(url)
   return await res.json()
 }
 

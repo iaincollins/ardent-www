@@ -62,8 +62,8 @@ export default ({ onChange }) => {
           }}>
             <option value='1'>No minimum</option>
             <option value='100'>100 T</option>
-            <option value='1000'>1000 T</option>
-            <option value='10000'>10000 T</option>
+            <option value='1000'>1,000 T</option>
+            <option value='10000'>10,000 T</option>
           </select>
         </label>
       </form>
