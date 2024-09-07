@@ -33,7 +33,7 @@ export default () => {
   }, [router.pathname])
 
   async function getImportsAndExports(arg) {
-    const commodityName = window.location?.pathname?.replace(/.*\//, '')
+    const commodityName = router.query?.['commodity-name'] ?? window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
     if (!commodityName) return
     setUpdating(true)
 
