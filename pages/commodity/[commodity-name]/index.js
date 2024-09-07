@@ -3,13 +3,18 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import CommodityFilterTabOptions from 'components/tab-options/commodity-filter'
+import CommodityTabOptions from 'components/tab-options/commodities'
 import Layout from 'components/layout'
 import CommodityImportOrders from 'components/commodity-import-orders'
 import CommodityExportOrders from 'components/commodity-export-orders'
 import { getAllCommodities } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
-import { API_BASE_URL } from 'lib/consts'
+import { 
+  API_BASE_URL,
+  COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
+  COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
+  COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+} from 'lib/consts'
 
 export default () => {
   const router = useRouter()
@@ -26,30 +31,12 @@ export default () => {
     if (basePath === 'exporters') setTabIndex(1)
   }, [router.pathname])
 
-  useEffect(() => {
-    (async () => {
-      setCommodity(undefined)
+  async function getImportsAndExports() {
+    const commodityName = router.query?.['commodity-name']
+    if (!commodityName) return
+
       setExports(undefined)
       setImports(undefined)
-
-      const commodityName = router.query?.['commodity-name']
-      if (!commodityName) return
-
-      let c = await getCommodity(commodityName)
-      if (c) {
-        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-        c.maxProfit = c.maxSellPrice - c.minBuyPrice
-        c.symbol = c.commodityName.toLowerCase()
-        c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? 'Unknown'
-        c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
-        delete c.commodityName
-      }
-      if (!c) c = getAllCommodities().find(el => el.symbol.toLowerCase() === commodityName.toLowerCase())
-      if (c && !c.totalDemand) c.totalDemand = 0
-      if (c && !c.totalStock) c.totalStock = 0
-      setCommodity(c || null)
 
       const imports = await getImports(commodityName)
       imports.forEach(c => {
@@ -80,6 +67,32 @@ export default () => {
         delete c.commodityName
       })
       setExports(exports)
+  }
+
+  useEffect(() => {
+    (async() => {
+      setCommodity(undefined)
+
+      const commodityName = router.query?.['commodity-name']
+      if (!commodityName) return
+
+      let c = await getCommodity(commodityName)
+      if (c) {
+        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+        c.maxProfit = c.maxSellPrice - c.minBuyPrice
+        c.symbol = c.commodityName.toLowerCase()
+        c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? 'Unknown'
+        c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
+        delete c.commodityName
+      }
+      if (!c) c = getAllCommodities().find(el => el.symbol.toLowerCase() === commodityName.toLowerCase())
+      if (c && !c.totalDemand) c.totalDemand = 0
+      if (c && !c.totalStock) c.totalStock = 0
+      setCommodity(c || null)
+
+      getImportsAndExports()
     })()
   }, [router.query['commodity-name']])
 
@@ -200,8 +213,8 @@ export default () => {
               <TabList>
                 <Tab>Importers</Tab>
                 <Tab>Exporters</Tab>
-                <CommodityFilterTabOptions/>
               </TabList>
+              <CommodityTabOptions onChange={() => getImportsAndExports()}/>
               <TabPanel>
                 {!imports && <div className='loading-bar loading-bar--tab' />}
                 {imports && <CommodityImportOrders commodities={imports} />}
@@ -227,6 +240,23 @@ async function getExports (commodityName) {
 }
 
 async function getImports (commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/commodity/name/${commodityName}/imports`)
+  let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/imports`
+  let options = []
+
+  const lastUpdatedFilterValue = window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
+  const minVolumeFilterValue = window.localStorage?.getItem('minVolumeFilter') ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+  const fleetCarrierFilterValue = window.localStorage?.getItem('fleetCarrierFilter') ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
+
+  options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
+  options.push(`minVolume=${minVolumeFilterValue}`)
+  if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
+  if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
+
+  if (options.length > 0) {
+    url += `?${options.join('&')}`
+  }
+
+  const res = await fetch(url)
   return await res.json()
 }
+

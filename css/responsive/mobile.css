@@ -88,4 +88,10 @@
     padding-right: 0;
     padding-left: .25rem;
   }
+
+
+  .tab-optionss form label {
+    display: block;
+    margin-top: .5rem;
+  }
 }
