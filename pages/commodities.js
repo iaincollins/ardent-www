@@ -9,6 +9,7 @@ import animateTableEffect from 'lib/animate-table-effect'
 export default () => {
   const router = useRouter()
   const [commodities, setCommodities] = useState()
+  const [categories, setCategories] = useState()
 
   const onRowClick = (record, index, event) => {
     router.push(`/commodity/${record.commodityName}`)
@@ -18,7 +19,10 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      setCommodities(await getCommodities())
+      const commodities = await getCommodities()
+      const categories = [ ...new Set(commodities.map((c) => c.category).sort()) ]
+      setCommodities(commodities)
+      setCategories(categories)
     })()
   }, [])
 
@@ -27,9 +31,16 @@ export default () => {
       <Head>
         <link rel='canonical' href='https://ardent-industry.com/commodities' />
       </Head>
-      {commodities &&
+      {commodities && categories && 
         <div className='fx__fade-in'>
-          <h2 style={{ marginBottom: '-.1rem' }}>Commodities</h2>
+          <h2>Trade Commodities</h2>
+          <p class='clear' style={{ fontSize: '1.1rem'}}>
+            Find the best trade prices for any commodity in the galaxy.
+          </p>
+
+          {categories.map(category =>
+          <>
+              <h3 style={{ marginBottom: '-.1rem' }}>{category}</h3>
           <Table
             className='data-table data-table--striped data-table--interactive data-table--animated'
             columns={[
@@ -91,12 +102,14 @@ export default () => {
                   </div>
               }
             ]}
-            data={commodities}
+            data={commodities.filter(c => c.category == category)}
             rowKey='name'
             onRow={(record, index) => ({
               onClick: onRowClick.bind(null, record, index)
             })}
           />
+              </>              
+          )}
         </div>}
     </Layout>
   )
