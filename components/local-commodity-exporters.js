@@ -12,7 +12,7 @@ export default ({ commodityOrders }) => {
           className='data-table--mini data-table--striped scrollable'
           columns={[
             {
-              title: 'Location',
+              title: 'Exporters in system',
               dataIndex: 'stationName',
               key: 'stationName',
               align: 'left',

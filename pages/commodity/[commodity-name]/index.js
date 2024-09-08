@@ -36,7 +36,9 @@ export default () => {
     const commodityName = router.query?.['commodity-name'] ?? window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
     if (!commodityName) return
     setUpdating(true)
-
+    setImports(undefined)
+    setExports(undefined)
+    
     const imports = await getImports(commodityName)
     imports.forEach(c => {
       c.key = c.commodityId
@@ -50,6 +52,7 @@ export default () => {
       delete c.commodityId
       delete c.commodityName
     })
+    
     setImports(imports)
 
     const exports = await getExports(commodityName)
@@ -73,8 +76,6 @@ export default () => {
   useEffect(() => {
     (async () => {
       setCommodity(undefined)
-      setExports(undefined)
-      setImports(undefined)
 
       const commodityName = router.query?.['commodity-name']
       if (!commodityName) return

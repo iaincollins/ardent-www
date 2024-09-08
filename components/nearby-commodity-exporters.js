@@ -64,7 +64,7 @@ export default ({ commodity }) => {
           className='data-table--mini data-table--striped data-table--border-left scrollable'
           columns={[
             {
-              title: 'Location',
+              title: 'Exporters nearby',
               dataIndex: 'stationName',
               key: 'stationName',
               align: 'left',

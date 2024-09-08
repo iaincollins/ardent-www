@@ -127,7 +127,7 @@ function ExpandedRow ({ r }) {
         className='data-table--mini data-table--striped scrollable'
         columns={[
           {
-            title: 'Location',
+            title: 'Importers in system',
             dataIndex: 'stationName',
             key: 'stationName',
             align: 'left',
