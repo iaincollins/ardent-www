@@ -215,6 +215,15 @@ export default () => {
           {/* <p className='clear muted' style={{ padding: '0 0 1rem .25rem' }}>
             Galactic prices and total supply/demand updated daily
           </p> */}
+          {commodity.rare && <>
+            <p style={{textAlign: 'center'}}>
+              <i className='icon icarus-terminal-info' />
+              Rare commodities are only sold in exclusive markets and available in stictly limited quantities.
+            </p>
+            <p style={{textAlign: 'center', marginBottom: '2rem'}}>
+              They can be sold almost anywhere with their value rising the further away they are traded, up to 200 ly.
+            </p>
+          </>}
           {imports &&
             <Tabs
               selectedIndex={tabIndex}
