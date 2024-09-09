@@ -2,6 +2,7 @@ import path from 'path'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Head from 'next/head'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import CommodityTabOptions from 'components/tab-options/commodities'
 import Layout from 'components/layout'
@@ -24,6 +25,8 @@ export default () => {
   const [exports, setExports] = useState()
   const [imports, setImports] = useState()
 
+  const tabs = ['importers', 'exporters']
+
   useEffect(animateTableEffect)
 
   useEffect(() => {
@@ -38,7 +41,7 @@ export default () => {
     setUpdating(true)
     setImports(undefined)
     setExports(undefined)
-    
+
     const imports = await getImports(commodityName)
     imports.forEach(c => {
       c.key = c.commodityId
@@ -107,6 +110,9 @@ export default () => {
 
   return (
     <Layout loading={commodity === undefined || imports === undefined || updating}>
+      <Head>
+        <link rel='canonical' href={`https://ardent-industry.com/system/${commodity?.symbol}/${tabs[tabIndex]}`} />
+      </Head>
       <ul className='breadcrumbs fx__fade-in' onClick={(e) => {
         if (e.target.tagName == 'LI') e.target.children[0].click()
       }}>
@@ -214,7 +220,6 @@ export default () => {
               selectedIndex={tabIndex}
               onSelect={
                 (index) => {
-                  const tabs = ['importers', 'exporters']
                   router.push(`/commodity/${router.query['commodity-name']}/${tabs[index]}`)
                 }
               }

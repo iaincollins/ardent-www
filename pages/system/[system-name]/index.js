@@ -2,6 +2,7 @@ import path from 'path'
 import { useState, useEffect, Fragment } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Head from 'next/head'
 import Table from 'rc-table'
 import Collapsible from 'react-collapsible'
 import { CollapsibleTrigger } from '../../../components/collapsible-trigger'
@@ -38,6 +39,8 @@ export default () => {
   const [exportOrders, setExportOrders] = useState()
   const [lastUpdatedAt, setLastUpdatedAt] = useState()
   const [tabIndex, setTabIndex] = useState(0)
+  
+  const tabs = ['imports', 'exports', 'nearby']
 
   useEffect(animateTableEffect)
 
@@ -152,7 +155,10 @@ export default () => {
 
   return (
     <Layout loading={system === undefined}>
-        <ul className='breadcrumbs fx__fade-in' onClick={(e) => {
+      <Head>
+        <link rel='canonical' href={`https://ardent-industry.com/system/${system?.systemName}/${tabs[tabIndex]}`} />
+      </Head>
+      <ul className='breadcrumbs fx__fade-in' onClick={(e) => {
           if (e.target.tagName == 'LI') e.target.children[0].click()
         }}>
         <li><Link href='/'>Home</Link></li>
@@ -320,7 +326,6 @@ export default () => {
             selectedIndex={tabIndex}
             onSelect={
                 (index) => {
-                  const tabs = ['imports', 'exports', 'nearby']
                   router.push(`/system/${router.query['system-name']}/${tabs[index]}`)
                 }
               }
