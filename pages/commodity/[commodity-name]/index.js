@@ -109,7 +109,7 @@ export default () => {
   }, [])
 
   return (
-    <Layout loading={commodity === undefined || imports === undefined || updating}>
+    <Layout loading={commodity === undefined || imports === undefined || updating} loadingText={'Loading trade data…'}>
       <Head>
         <link rel='canonical' href={`https://ardent-industry.com/system/${commodity?.symbol}/${tabs[tabIndex]}`} />
       </Head>

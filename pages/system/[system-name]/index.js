@@ -154,7 +154,7 @@ export default () => {
   }, [router.query['system-name']])
 
   return (
-    <Layout loading={system === undefined}>
+    <Layout loading={system === undefined} loadingText='Loading system data…'>
       <Head>
         <link rel='canonical' href={`https://ardent-industry.com/system/${system?.systemName}/${tabs[tabIndex]}`} />
       </Head>

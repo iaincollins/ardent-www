@@ -4,6 +4,7 @@ import Head from 'next/head'
 export default ({
   title = 'Ardent Industry – Trade & Exploration',
   loading = false,
+  loadingText,
   children
 }) =>
   <>
@@ -14,6 +15,6 @@ export default ({
       <meta name='author' content='Iain Collins' />
       <meta name='viewport' content='width=device-width' />
     </Head>
-    <Loader visible={loading} />
+    <Loader visible={loading} text={loadingText} />
     {children}
   </>
