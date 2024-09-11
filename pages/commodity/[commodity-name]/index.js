@@ -216,13 +216,9 @@ export default () => {
             Galactic prices and total supply/demand updated daily
           </p> */} 
           {commodity.rare && <>
-            <p style={{textAlign: 'center'}}>
-              <i className='icon icarus-terminal-info' />
-              Rare commodities can only be purchased at exclusive markets and in very limited quantities, but they can be sold almost anywhere.
-            </p>
-            <p style={{textAlign: 'center', marginBottom: '2rem'}}>
-              Their value rises the further they are traded, 
-              peaking in value when sold at locations 200 ly from the exporter.
+            <p style={{textAlign: 'center', position: 'relative', top: '-.5rem'}}>
+              <i className='icon icarus-terminal-info' style={{marginRight: '.25rem'}}/>
+              Rare goods are only available in limited quantities from exclusive locations but can be sold almost anywhere.
             </p>
           </>}
           {imports &&
