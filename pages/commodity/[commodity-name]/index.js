@@ -109,7 +109,7 @@ export default () => {
   }, [])
 
   return (
-    <Layout loading={commodity === undefined || imports === undefined || updating} loadingText={'Loading trade data…'}>
+    <Layout loading={!commodity} loadingText={'Loading trade data…'}>
       <Head>
         <link rel='canonical' href={`https://ardent-industry.com/system/${commodity?.symbol}/${tabs[tabIndex]}`} />
       </Head>
@@ -221,7 +221,7 @@ export default () => {
               Rare goods are only available in limited quantities from exclusive locations but can be sold almost anywhere.
             </p>
           </>}
-          {imports &&
+          {
             <Tabs
               selectedIndex={tabIndex}
               onSelect={
