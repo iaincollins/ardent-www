@@ -51,16 +51,21 @@ export default () => {
                     align: 'left',
                     render: (v, r) =>
                       <>
-                        <i className='icon icarus-terminal-cargo' />{v}<br />
+                        <i className='icon icarus-terminal-cargo' />
+                          {v}{r.market_id && <>{' '}<span className='muted'>(Rare)</span></>}<br />
                         <small>
                           {r.category}
-                          {r.market_id && <span className='muted'> (Rare)</span>}
                         </small>
                         <div className='is-visible-mobile'>
                           <table className='data-table--mini data-table--compact two-column-table'>
                             <tbody style={{ textTransform: 'uppercase' }}>
                               <tr>
-                                <td><span className='data-table__label'>Avg Import CR/T</span>{r.avgSellPrice > 0 ? <>{r.avgSellPrice.toLocaleString()} CR</> : '-'}</td>
+                                <td><span className='data-table__label'>Avg Import CR/T</span>
+                                  {!r.market_id
+                                    ? <>{r.avgSellPrice > 0 ? <>{r.avgSellPrice.toLocaleString()} CR</> : '-'}</>
+                                    : <span className='muted'>-</span>
+                                  }
+                                  </td>
                                 <td><span className='data-table__label'>Avg Profit CR/T</span>{r.avgProfit > 0 ? <>{r.avgProfit.toLocaleString()} CR</> : '-'}</td>
                               </tr>
                               <tr>
@@ -78,7 +83,12 @@ export default () => {
                     key: 'avgSellPrice',
                     align: 'right',
                     className: 'is-hidden-mobile',
-                    render: (v) => v > 0 ? <>{v.toLocaleString()} CR</> : '-'
+                    render: (v, r) => (v > 0) ? <>
+                      {!r.market_id
+                        ? <>{v.toLocaleString()} CR</>
+                        : <span className='muted'>-</span>
+                      }
+                    </> : '-'
                   },
                   {
                     title: 'Avg export CR/T',

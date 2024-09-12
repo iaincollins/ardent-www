@@ -130,7 +130,6 @@ export default () => {
                 <td>
                   <span className='fx__animated-text' data-fx-order='1'>
                     {commodity.category}
-                    {commodity.rare && <span className='muted'> (Rare)</span>}
                   </span>
                 </td>
               </tr>
@@ -140,9 +139,9 @@ export default () => {
                   <span className='fx__animated-text' data-fx-order='2'>
                     {commodity.rare
                       ? <>
-                        {((commodity.avgSellPrice + 16000) / 2).toLocaleString()} CR
+                        {((commodity.avgSellPrice + 16000) / 2).toLocaleString()} CR/T
                         {' '}
-                        <small>({commodity.avgSellPrice.toLocaleString()} - {(commodity.avgSellPrice + 16000).toLocaleString()} CR)</small>
+                        <small>({commodity.minSellPrice.toLocaleString()} - {(commodity.minSellPrice + 16000).toLocaleString()} CR)</small>
                         </>
                       : <>
                         {typeof commodity.avgSellPrice === 'number'
@@ -187,48 +186,61 @@ export default () => {
                     </span>
                   </td>
                 </tr>}
-              <tr>
-                <th>Total demand</th>
-                <td>
-                  <span className='fx__fade-in'>
-                    <progress
-                      max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                      value={commodity.totalDemand}
-                      style={{ maxWidth: '12rem', height: '1.5rem' }}
-                    />
-                    <p style={{ margin: '0 0 .15rem 0' }}>
-                      {commodity.totalDemand > 0 ? <>{commodity.totalDemand.toLocaleString()} T</> : '-'}
-                    </p>
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <th>Total supply</th>
-                <td>
-                  <span className='fx__fade-in'>
-                    <progress
-                      max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                      value={commodity.totalStock}
-                      style={{ maxWidth: '12rem', height: '1.5rem' }}
-                    />
-                    <p style={{ margin: '0 0 .15rem 0' }}>
-                      <small />{commodity.totalStock > 0 ? <>{commodity.totalStock.toLocaleString()} T</> : '-'}
-                    </p>
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          {/* <p className='clear muted' style={{ padding: '0 0 1rem .25rem' }}>
+              {!commodity.rare &&
+                <>
+                  <tr>
+                    <th>Total demand</th>
+                    <td>
+                      <span className='fx__fade-in'>
+                        <progress
+                          max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                          value={commodity.totalDemand}
+                          style={{ maxWidth: '12rem', height: '1.5rem' }}
+                        />
+                        <p style={{ margin: '0 0 .15rem 0' }}>
+                          {commodity.totalDemand > 0 ? <>{commodity.totalDemand.toLocaleString()} T</> : '-'}
+                        </p>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Total supply</th>
+                    <td>
+                      <span className='fx__fade-in'>
+                        <progress
+                          max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                          value={commodity.totalStock}
+                          style={{ maxWidth: '12rem', height: '1.5rem' }}
+                        />
+                        <p style={{ margin: '0 0 .15rem 0' }}>
+                          <small />{commodity.totalStock > 0 ? <>{commodity.totalStock.toLocaleString()} T</> : '-'}
+                        </p>
+                      </span>
+                    </td>
+                  </tr>
+                </>
+              }
+                        {/* <p className='clear muted' style={{ padding: '0 0 1rem .25rem' }}>
             Galactic prices and total supply/demand updated daily
           </p> */}
           {commodity.rare &&
-            <>
-              <p style={{ textAlign: 'center', position: 'relative', top: '-.5rem' }}>
-                <i className='icon icarus-terminal-info' style={{ marginRight: '.25rem' }} />
-                Rare goods are only available in limited quantities from exclusive locations but can be sold almost anywhere.
-              </p>
-            </>}
+            <tr>
+              <th>
+                <i className='icon icarus-terminal-info' style={{ marginRight: '.25rem' }} />                
+                RARE GOODS
+              </th>
+              <td>
+                <p style={{margin: 0, textTransform: 'none'}}>
+                  Rare goods are only available in limited quantities from exclusive locations but can be sold almost anywhere.
+                </p>
+                <p style={{marginBottom: 0, textTransform: 'none'}}>
+                  They increase in value the further they are traded from the source, reaching maximum value when traded 
+                  around 150-200 ly away.
+                </p>
+              </td>
+            </tr>}
+            </tbody>
+          </table>
           <Tabs
             selectedIndex={tabIndex}
             onSelect={
