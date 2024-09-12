@@ -1,4 +1,4 @@
-export default function Loader ({ visible, text}) {
+export default function Loader ({ visible, text }) {
   return (
     <>
       <div className='loader__background' style={{ opacity: visible ? 1 : 0 }} />

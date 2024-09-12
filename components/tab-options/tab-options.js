@@ -1,4 +1,4 @@
-export default function TabOptions() {
+export default function TabOptions () {
   return (
     <div className='tab-tab_options'>
       <form>

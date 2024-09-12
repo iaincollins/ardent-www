@@ -6,7 +6,7 @@ import StationIcon from './station-icon'
 export default ({ commodityOrders }) => {
   return (
     <>
-      {!commodityOrders && <div className='loading-bar' style={{ marginTop: '.75rem' }} />}
+      {!commodityOrders && <div className='loading-bar loading-bar--table-row' />}
       {commodityOrders &&
         <Table
           className='data-table--mini data-table--striped scrollable'

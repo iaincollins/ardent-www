@@ -39,7 +39,7 @@ export default () => {
   const [exportOrders, setExportOrders] = useState()
   const [lastUpdatedAt, setLastUpdatedAt] = useState()
   const [tabIndex, setTabIndex] = useState(0)
-  
+
   const tabs = ['imports', 'exports', 'nearby']
 
   useEffect(animateTableEffect)
@@ -158,9 +158,11 @@ export default () => {
       <Head>
         <link rel='canonical' href={`https://ardent-industry.com/system/${system?.systemName}/${tabs[tabIndex]}`} />
       </Head>
-      <ul className='breadcrumbs fx__fade-in' onClick={(e) => {
-          if (e.target.tagName == 'LI') e.target.children[0].click()
-        }}>
+      <ul
+        className='breadcrumbs fx__fade-in' onClick={(e) => {
+          if (e.target.tagName === 'LI') e.target.children[0].click()
+        }}
+      >
         <li><Link href='/'>Home</Link></li>
         <li><Link href='/'>Systems</Link></li>
       </ul>
@@ -346,7 +348,7 @@ export default () => {
                 <span className='is-visible-mobile'>Near</span>
               </Tab>
             </TabList>
-            {tabIndex !== 2 && <CommodityTabOptions/>}
+            {tabIndex !== 2 && <CommodityTabOptions />}
             <TabPanel>
               {!importOrders && <div className='loading-bar loading-bar--tab' />}
               {importOrders &&

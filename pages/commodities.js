@@ -102,7 +102,7 @@ export default () => {
                       </div>
                   }
                 ]}
-                data={commodities.filter(c => c.category == category)}
+                data={commodities.filter(c => c.category === category)}
                 rowKey='name'
                 onRow={(record, index) => ({
                   onClick: onRowClick.bind(null, record, index)

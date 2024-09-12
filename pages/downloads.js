@@ -42,7 +42,7 @@ export default () => {
           {backupData &&
             <small>
               <br />{backupData?.databases?.filter(db => db.name === 'systems.db')?.[0]?.tables?.systems?.toLocaleString()} systems
-              <span style={{opacity: .5}}>{' | '}</span>
+              <span style={{ opacity: 0.5 }}>{' | '}</span>
               Size: {(backupData?.databases?.filter(db => db.name === 'systems.db')?.[0]?.size / 1000000000).toLocaleString(undefined, { maximumFractionDigits: 0 })} GB
             </small>}
         </p>
@@ -57,7 +57,7 @@ export default () => {
           {backupData &&
             <small>
               <br />{backupData?.databases?.filter(db => db.name === 'trade.db')?.[0]?.tables?.commodities?.toLocaleString()} commodities
-              <span style={{opacity: .5}}>{' | '}</span>
+              <span style={{ opacity: 0.5 }}>{' | '}</span>
               Size: {(backupData?.databases?.filter(db => db.name === 'trade.db')?.[0]?.size / 1000000000).toLocaleString(undefined, { maximumFractionDigits: 0 })} GB
             </small>}
         </p>
@@ -72,7 +72,7 @@ export default () => {
           {backupData &&
             <small>
               <br />{backupData?.databases?.filter(db => db.name === 'stations.db')?.[0]?.tables?.stations?.toLocaleString()} stations
-              <span style={{opacity: .5}}>{' | '}</span>
+              <span style={{ opacity: 0.5 }}>{' | '}</span>
               Size: {(backupData?.databases?.filter(db => db.name === 'stations.db')?.[0]?.size / 1000000).toLocaleString(undefined, { maximumFractionDigits: 0 })} MB
             </small>}
         </p>
@@ -87,7 +87,7 @@ export default () => {
           {backupData &&
             <small>
               <br />{backupData?.databases?.filter(db => db.name === 'locations.db')?.[0]?.tables?.locations?.toLocaleString()} locations
-              <span style={{opacity: .5}}>{' | '}</span>
+              <span style={{ opacity: 0.5 }}>{' | '}</span>
               Size: {(backupData?.databases?.filter(db => db.name === 'locations.db')?.[0]?.size / 1000).toLocaleString(undefined, { maximumFractionDigits: 0 })} KB
             </small>}
         </p>

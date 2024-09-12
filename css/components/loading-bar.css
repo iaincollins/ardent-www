@@ -22,6 +22,11 @@
   margin: 0;
 }
 
+.loading-bar--table-row {
+  margin: 0 .25rem .25rem .25rem;
+  width: calc(100% - .5rem);
+}
+
 @keyframes loadingBarAnimation {
   0% {
     transform:  translateX(0) scaleX(0);

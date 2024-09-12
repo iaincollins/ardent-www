@@ -113,7 +113,7 @@ function ExpandedRow ({ r }) {
         <p style={{ whiteSpace: 'normal', marginTop: '.5rem' }}>
           Demand for <strong>{r.name}</strong> in <Link href={`/system/${r.systemName}`}>{r.systemName}</Link> ...
         </p>
-        <div className='loading-bar' style={{ marginTop: '.75rem' }} />
+        <div className='loading-bar loading-bar--table-row' />
       </>
     )
   }

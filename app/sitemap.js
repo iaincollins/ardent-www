@@ -1,6 +1,6 @@
 import { getCommodities } from 'lib/commodities'
 
-export default async function sitemap() {
+export default async function sitemap () {
   const commodities = await getCommodities()
   const sitemap = [
     {
@@ -29,7 +29,7 @@ export default async function sitemap() {
     }
   ]
 
-  commodities.map(commodity => {
+  commodities.forEach(commodity => {
     sitemap.push({
       url: `https://ardent-industry.com/commodity/${commodity.commodityName}`,
       lastModified: new Date(),

@@ -4,19 +4,18 @@ import Table from 'rc-table'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
 import StationIcon from './station-icon'
-import { 
+import {
   API_BASE_URL,
   COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
   COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
   COMMODITY_FILTER_MIN_VOLUME_DEFAULT
 } from 'lib/consts'
 
-
 const MAX_ROWS_TO_DISPLAY = 10
 
 async function getNearbyExportersOfCommodity (systemName, commodityName) {
   let url = `${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}/nearby/exports`
-  let options = []
+  const options = []
 
   const lastUpdatedFilterValue = window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
   const minVolumeFilterValue = window.localStorage?.getItem('minVolumeFilter') ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT
@@ -53,7 +52,7 @@ export default ({ commodity }) => {
       )
     }
     window.addEventListener('CommodityFilterChangeEvent', eventHandler)
-    return () => window.removeEventListener(`CommodityFilterChangeEvent`, eventHandler)
+    return () => window.removeEventListener('CommodityFilterChangeEvent', eventHandler)
   }, [])
 
   return (
