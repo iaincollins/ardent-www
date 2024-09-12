@@ -1,16 +1,20 @@
 import Loader from './loader'
 import Head from 'next/head'
 
+const DEFAULT_TITLE = 'Ardent Industry – Trade & Exploration'
+const DEFAULT_DESCRIPTION = 'Ardent Industry provides trade and exploration data for the game Elite Dangerous'
+
 export default ({
-  title = 'Ardent Industry – Trade & Exploration',
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
   loading = false,
   loadingText,
   children
 }) =>
   <>
     <Head>
-      <title>{title}</title>
-      <meta name='description' content='Ardent Industry provides trade and exploration data for the game Elite Dangerous' />
+      <title>{title ?? DEFAULT_TITLE}</title>
+      <meta name='description' content={description ?? DEFAULT_DESCRIPTION} />
       <meta name='keywords' content='Ardent Industry, Elite Dangerous, Elite: Dangerous, market, trade, commodities, pricing, prices, systems, exploration, API, SQL' />
       <meta name='author' content='Iain Collins' />
       <meta name='viewport' content='width=device-width' />

@@ -154,7 +154,12 @@ export default () => {
   }, [router.query['system-name']])
 
   return (
-    <Layout loading={system === undefined} loadingText='Loading system data'>
+    <Layout
+      loading={system === undefined}
+      loadingText='Loading system data'
+      title={system ? `${system.systemName} system in Elite Dangerous` : null}
+      description={system ? `Trade data for ${system.systemName} in Elite Dangerous` : null}
+    >
       <Head>
         <link rel='canonical' href={`https://ardent-industry.com/system/${system?.systemName}/${tabs[tabIndex]}`} />
       </Head>
@@ -166,7 +171,7 @@ export default () => {
         <li><Link href='/'>Home</Link></li>
         <li><Link href='/'>Systems</Link></li>
       </ul>
-      {system === null && <><h2>Error</h2><p className='clear'>System not found</p></>}
+      {system === null && <><h1>Error: Not found</h1><p className='text-large clear'>System not found.</p></>}
       {system &&
         <div className='fx__fade-in'>
           <h2 className='heading--with-icon'>

@@ -10,6 +10,10 @@
   opacity: 0;
 }
 
+.text-large {
+  font-size: 1.2rem;
+}
+
 .text-positive {
   color: var(--color-positive);
 }

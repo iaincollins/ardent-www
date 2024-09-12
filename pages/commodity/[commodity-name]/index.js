@@ -104,7 +104,12 @@ export default () => {
   }, [])
 
   return (
-    <Layout loading={!commodity} loadingText='Loading trade data'>
+    <Layout 
+        loading={commodity === undefined}
+        loadingText='Loading trade data'
+        title={commodity ? `${commodity.name} in Elite Dangerous` : null}
+        description={commodity ? `Where to buy and sell ${commodity.name} in Elite Dangerous` : null}
+      >
       <Head>
         <link rel='canonical' href={`https://ardent-industry.com/system/${commodity?.symbol}/${tabs[tabIndex]}`} />
       </Head>
@@ -116,7 +121,7 @@ export default () => {
         <li><Link href='/'>Home</Link></li>
         <li><Link href='/commodities'>Commodities</Link></li>
       </ul>
-      {commodity === null && <><h2>Error</h2><p className='clear'>Commodity not found</p></>}
+      {commodity === null && <><h1>Error: Not found</h1><p className='text-large clear'>Commodity not found.</p></>}
       {commodity &&
         <div className='fx__fade-in'>
           <h2 className='heading--with-icon'>
@@ -233,7 +238,7 @@ export default () => {
                 <p style={{margin: 0, textTransform: 'none'}}>
                   Rare goods are only available in limited quantities from exclusive locations but can be sold almost anywhere.
                 </p>
-                <p style={{marginBottom: 0, textTransform: 'none'}}>
+                <p style={{margin: '.5rem 0 0 0', textTransform: 'none'}}>
                   They increase in value the further they are traded from the source, reaching maximum value when traded 
                   around 150-200 ly away.
                 </p>

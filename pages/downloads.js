@@ -14,7 +14,10 @@ export default () => {
     })()
   }, [])
   return (
-    <Layout>
+    <Layout
+      title='About Ardent Industry for Elite Dangerous'
+      description='Download bulk exports of the Elite Dangerous trade and system data from Ardent Industry.'
+    >
       <Head>
         <link rel='canonical' href='https://ardent-industry.com/downloads' />
       </Head>

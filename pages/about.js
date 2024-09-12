@@ -22,7 +22,10 @@ export default () => {
   }, [])
 
   return (
-    <Layout>
+    <Layout 
+      title='About Ardent Industry for Elite Dangerous'
+      description='Ardent Industry is companion software for the game Elite Dangerous.'
+    >
       <Head>
         <link rel='canonical' href='https://ardent-industry.com/about' />
       </Head>
