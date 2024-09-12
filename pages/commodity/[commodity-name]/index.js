@@ -140,15 +140,25 @@ export default () => {
                 <th>Import price</th>
                 <td>
                   <span className='fx__animated-text' data-fx-order='2'>
-                    {typeof commodity.avgSellPrice === 'number'
-                      ? (
-                        <>
-                          {commodity.avgSellPrice.toLocaleString()} CR/T
-                          {' '}
-                          <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>
-                        </>
-                      )
-                      : <span className='muted'>Insufficent data</span>}
+                    {commodity.rare 
+                    ? <>
+                        {((commodity.avgSellPrice + 16000) / 2).toLocaleString()} CR
+                        {' '}
+                        <small>({commodity.avgSellPrice.toLocaleString()} - {(commodity.avgSellPrice + 16000).toLocaleString()} CR)</small>
+                      </>
+                    : <>
+                      {typeof commodity.avgSellPrice === 'number'
+                        ? (
+                          <>
+                            {commodity.avgSellPrice.toLocaleString()} CR/T
+                            {' '}
+                            {commodity.minSellPrice != commodity.maxSellPrice &&
+                              <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>
+                            }
+                          </>
+                        )
+                        : <span className='muted'>Insufficent data</span>}
+                    </>}
                   </span>
                 </td>
               </tr>
@@ -161,21 +171,27 @@ export default () => {
                         <>
                           {commodity.avgBuyPrice.toLocaleString()} CR/T
                           {' '}
-                          <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>
+                          {commodity.minBuyPrice != commodity.maxBuyPrice &&
+                            <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>
+                          }
                         </>
                       )
                       : <span className='muted'>Insufficent data</span>}
                   </span>
                 </td>
               </tr>
-              {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
+              {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' && !commodity.rare && 
                 <tr>
                   <th>Typical profit</th>
                   <td>
                     <span className='fx__animated-text' data-fx-order='4'>
-                      {commodity.avgProfit.toLocaleString()} CR/T
-                      {' '}
-                      <small>({commodity.avgProfitMargin}% margin)</small>
+                      {commodity.avgProfit == 0
+                        ?  <span className='muted'>Insufficent data</span>
+                        : <>
+                          {commodity.avgProfit.toLocaleString()} CR/T
+                          {' '}
+                          <small>({commodity.avgProfitMargin}% margin)</small>
+                        </>}
                     </span>
                   </td>
                 </tr>}
@@ -204,7 +220,7 @@ export default () => {
                       style={{ maxWidth: '12rem', height: '1.5rem' }}
                     />
                     <p style={{ margin: '0 0 .15rem 0' }}>
-                      {commodity.totalStock > 0 ? <>{commodity.totalStock.toLocaleString()} T</> : '-'}
+                      <small></small>{commodity.totalStock > 0 ? <>{commodity.totalStock.toLocaleString()} T</> : '-'}
                     </p>
                   </span>
                 </td>
