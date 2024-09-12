@@ -36,7 +36,7 @@ export default function Loader ({ visible, text}) {
           <div className='loader__arrow loader__arrow--down loader__arrow--outer-9' />
         </div>
       </div>
-      {text && <div className='loader__text' style={{ opacity: visible ? 1 : 0 }}>{text}</div>}
+      {text && <div className='loader__text' style={{ opacity: visible ? 1 : 0 }}>{text}…</div>}
     </>
   )
 }

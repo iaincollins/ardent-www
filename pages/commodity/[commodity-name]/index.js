@@ -54,8 +54,7 @@ export default () => {
       c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
       delete c.commodityId
       delete c.commodityName
-    })
-    
+    })  
     setImports(imports)
 
     const exports = await getExports(commodityName)
@@ -109,7 +108,7 @@ export default () => {
   }, [])
 
   return (
-    <Layout loading={!commodity} loadingText={'Loading trade data…'}>
+    <Layout loading={!commodity} loadingText={'Loading trade data'}>
       <Head>
         <link rel='canonical' href={`https://ardent-industry.com/system/${commodity?.symbol}/${tabs[tabIndex]}`} />
       </Head>

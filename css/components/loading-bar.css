@@ -19,10 +19,7 @@
 
 .loading-bar--tab {
   position: relative;
-  margin-left: .2rem;
-  height: 1.8rem;
-  top: -.3rem;
-  width: calc(100% - .4rem);
+  margin: 0;
 }
 
 @keyframes loadingBarAnimation {

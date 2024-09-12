@@ -27,7 +27,7 @@ export default () => {
   }, [])
 
   return (
-    <Layout loading={commodities === undefined} loadingText='Loading commodities…'>
+    <Layout loading={commodities === undefined} loadingText='Loading commodities'>
       <Head>
         <link rel='canonical' href='https://ardent-industry.com/commodities' />
       </Head>
