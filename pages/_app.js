@@ -1,5 +1,4 @@
 import React, { useRef } from 'react'
-import { Color, BoxGeometry, CylinderGeometry, BufferAttribute, Vector3, Clock, MathUtils } from 'three'
 import App from 'next/app'
 import Head from 'next/head'
 import Header from 'components/header'
@@ -35,37 +34,55 @@ export default class MyApp extends App {
 }
 
 function Sphere (props) {
-  const ref = useRef()
-  useFrame((state, delta) => {
-    ;(ref.current.rotation.y -= (delta / 32 * 1))
-    ;(ref.current.rotation.z -= (delta / 32 / 2))
-  })
-
+  const ref1 = useRef(),
+        ref2 = useRef(),
+        ref3 = useRef()
+  useFrame((state, delta) => (ref1.current.rotation.y -= (delta / 32)))
+  useFrame((state, delta) => (ref2.current.rotation.x -= (delta / 16)))
+  useFrame((state, delta) => (ref3.current.rotation.z += (delta / 64)))
   return (
-    <group
-      {...props}
-      ref={ref}
-      position={[3, 0, 0]}
-      scale={2}
-      rotation={[-10,0,0]}
-    >
-      <mesh>
-        <sphereGeometry args={[2, 64, 64]} />
-        <meshStandardMaterial color='#666' wireframe />
-      </mesh>
-      <mesh>
-        <sphereGeometry args={[2, 64, 64]} />
-        <meshStandardMaterial color='#666' vertexColors flatShading />
-      </mesh>
-      <mesh>
-        <sphereGeometry args={[2.8, 64, 64]} />
-        <meshStandardMaterial color='#999' wireframe />
-      </mesh>
-      <mesh>
-        <sphereGeometry args={[3, 16, 16]} />
-        <meshStandardMaterial color='#ccc' wireframe />
-      </mesh>
-    </group>
+    <>
+      <group
+        {...props}
+        ref={ref1}
+        position={[3, 0, 0]}
+        scale={2}
+        rotation={[-10,0,0]}
+      >
+        <mesh>
+          <sphereGeometry args={[2, 64, 64]} />
+          <meshStandardMaterial color='#666' wireframe />
+        </mesh>
+        <mesh>
+          <sphereGeometry args={[2, 64, 64]} />
+          <meshStandardMaterial color='#666' vertexColors flatShading />
+        </mesh>
+      </group>
+      <group
+        {...props}
+        ref={ref2}
+        position={[3, 0, 0]}
+        scale={2}
+        rotation={[-10,0,0]}
+      >
+        <mesh>
+          <sphereGeometry args={[2.8, 32, 32]} />
+          <meshStandardMaterial color='#999' wireframe />
+        </mesh>
+      </group>
+      <group
+        {...props}
+        ref={ref3}
+        position={[3, 0, 0]}
+        scale={2}
+        rotation={[-10,0,0]}
+      >
+        <mesh>
+          <sphereGeometry args={[3, 16, 16]} />
+          <meshStandardMaterial color='#ccc' wireframe />
+        </mesh>
+      </group>
+  </>
   )
 }
 

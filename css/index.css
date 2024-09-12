@@ -32,6 +32,10 @@ i[class*=" icarus-terminal-"] {
   margin: 0 .1rem;
 }
 
+html {
+  filter: sepia(0.1) contrast(1.25);
+}
+
 body,
 .scrollable {
   overflow-x: hidden !important;
