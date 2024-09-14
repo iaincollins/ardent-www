@@ -18,10 +18,21 @@ class MyDocument extends Document {
         <Head>
           <meta name='theme-color' content='#000' />
           <style dangerouslySetInnerHTML={{
-            __html: 'html { background: black; }'
+            __html: 'html{background:#000;}'
           }}
           />
           <script dangerouslySetInnerHTML={{ __html: onContextMenu }} />
+          <noscript>
+            <style dangerouslySetInnerHTML={{
+              __html: `
+table.data-table--animated > tbody > tr:not(.rc-table-expanded-row),
+.data-table--animated > .rc-table-container > .rc-table-content > table > tbody > tr:not(.rc-table-expanded-row) {
+  opacity: 1 !important;
+}
+            `.trim()
+            }}
+            />
+          </noscript>
         </Head>
         <body>
           <div dangerouslySetInnerHTML={{
@@ -40,7 +51,7 @@ class MyDocument extends Document {
  if (isSafari) document.documentElement.setAttribute("data-browser", "safari")
  if (isFirefox) document.documentElement.setAttribute("data-browser", "firefox")
 </script>
-          `
+          `.trim()
           }}
           />
           <Main />

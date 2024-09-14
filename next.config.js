@@ -1,4 +1,12 @@
 module.exports = {
+  async rewrites () {
+    return [
+      {
+        source: '/',
+        destination: '/commodities'
+      }
+    ]
+  },
   async redirects () {
     return [
       {

@@ -34,9 +34,9 @@ export default class MyApp extends App {
 }
 
 function Sphere (props) {
-  const ref1 = useRef(),
-        ref2 = useRef(),
-        ref3 = useRef()
+  const ref1 = useRef()
+  const ref2 = useRef()
+  const ref3 = useRef()
   useFrame((state, delta) => (ref1.current.rotation.y -= (delta / 32)))
   useFrame((state, delta) => (ref2.current.rotation.x -= (delta / 16)))
   useFrame((state, delta) => (ref3.current.rotation.z += (delta / 64)))
@@ -47,7 +47,7 @@ function Sphere (props) {
         ref={ref1}
         position={[3, 0, 0]}
         scale={2}
-        rotation={[-10,0,0]}
+        rotation={[-10, 0, 0]}
       >
         <mesh>
           <sphereGeometry args={[2, 64, 64]} />
@@ -63,7 +63,7 @@ function Sphere (props) {
         ref={ref2}
         position={[3, 0, 0]}
         scale={2}
-        rotation={[-10,0,0]}
+        rotation={[-10, 0, 0]}
       >
         <mesh>
           <sphereGeometry args={[2.8, 32, 32]} />
@@ -75,14 +75,14 @@ function Sphere (props) {
         ref={ref3}
         position={[3, 0, 0]}
         scale={2}
-        rotation={[-10,0,0]}
+        rotation={[-10, 0, 0]}
       >
         <mesh>
           <sphereGeometry args={[3, 16, 16]} />
           <meshStandardMaterial color='#ccc' wireframe />
         </mesh>
       </group>
-  </>
+    </>
   )
 }
 

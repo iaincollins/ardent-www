@@ -6,10 +6,17 @@ import Layout from 'components/layout'
 import { getCommodities } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
 
-export default () => {
+export async function getServerSideProps () {
+  const rawCommoditiesData = (await import('../../ardent-data/cache/commodities.json')).commodities
+  const commodities = await getCommodities(rawCommoditiesData)
+  const categories = [...new Set(commodities.map((c) => c.category).sort())]
+  return { props: { commodities, categories } }
+}
+
+export default function Page (props) {
   const router = useRouter()
-  const [commodities, setCommodities] = useState()
-  const [categories, setCategories] = useState()
+  const [commodities, setCommodities] = useState(props.commodities)
+  const [categories, setCategories] = useState(props.categories)
 
   const onRowClick = (record, index, event) => {
     router.push(`/commodity/${record.commodityName}`)
@@ -19,10 +26,12 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      const commodities = await getCommodities()
-      const categories = [...new Set(commodities.map((c) => c.category).sort())]
-      setCommodities(commodities)
-      setCategories(categories)
+      if (!commodities || !categories) {
+        const commodities = await getCommodities()
+        const categories = [...new Set(commodities.map((c) => c.category).sort())]
+        setCommodities(commodities)
+        setCategories(categories)
+      }
     })()
   }, [])
 
@@ -52,7 +61,7 @@ export default () => {
                     render: (v, r) =>
                       <>
                         <i className='icon icarus-terminal-cargo' />
-                          {v}{r.market_id && <>{' '}<span className='muted'>(Rare)</span></>}<br />
+                        {v}{r.market_id && <>{' '}<span className='muted'>(Rare)</span></>}<br />
                         <small>
                           {r.category}
                         </small>
@@ -63,9 +72,8 @@ export default () => {
                                 <td><span className='data-table__label'>Avg Import CR/T</span>
                                   {!r.market_id
                                     ? <>{r.avgSellPrice > 0 ? <>{r.avgSellPrice.toLocaleString()} CR</> : '-'}</>
-                                    : <span className='muted'>-</span>
-                                  }
-                                  </td>
+                                    : <span className='muted'>-</span>}
+                                </td>
                                 <td><span className='data-table__label'>Avg Profit CR/T</span>{r.avgProfit > 0 ? <>{r.avgProfit.toLocaleString()} CR</> : '-'}</td>
                               </tr>
                               <tr>
@@ -83,12 +91,13 @@ export default () => {
                     key: 'avgSellPrice',
                     align: 'right',
                     className: 'is-hidden-mobile',
-                    render: (v, r) => (v > 0) ? <>
-                      {!r.market_id
-                        ? <>{v.toLocaleString()} CR</>
-                        : <span className='muted'>-</span>
-                      }
-                    </> : '-'
+                    render: (v, r) => (v > 0)
+                      ? <>
+                        {!r.market_id
+                          ? <>{v.toLocaleString()} CR</>
+                          : <span className='muted'>-</span>}
+                      </>
+                      : '-'
                   },
                   {
                     title: 'Avg export CR/T',

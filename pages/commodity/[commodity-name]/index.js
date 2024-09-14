@@ -104,12 +104,12 @@ export default () => {
   }, [])
 
   return (
-    <Layout 
-        loading={commodity === undefined}
-        loadingText='Loading trade data'
-        title={commodity ? `${commodity.name} in Elite Dangerous` : null}
-        description={commodity ? `Where to buy and sell ${commodity.name} in Elite Dangerous` : null}
-      >
+    <Layout
+      loading={commodity === undefined}
+      loadingText='Loading trade data'
+      title={commodity ? `${commodity.name} in Elite Dangerous` : null}
+      description={commodity ? `Where to buy and sell ${commodity.name} in Elite Dangerous` : null}
+    >
       <Head>
         <link rel='canonical' href={`https://ardent-industry.com/system/${commodity?.symbol}/${tabs[tabIndex]}`} />
       </Head>
@@ -146,7 +146,8 @@ export default () => {
                       ? <>
                         {((commodity.avgSellPrice + 16000) / 2).toLocaleString()} CR/T
                         {' '}
-                        <small>({commodity.minSellPrice.toLocaleString()} - {(commodity.minSellPrice + 16000).toLocaleString()} CR)</small>
+                        {typeof commodity.avgSellPrice === 'number' &&
+                          <small>({commodity.minSellPrice.toLocaleString()} - {(commodity.minSellPrice + 16000).toLocaleString()} CR)</small>}
                         </>
                       : <>
                         {typeof commodity.avgSellPrice === 'number'
@@ -187,7 +188,7 @@ export default () => {
                           {commodity.avgProfit.toLocaleString()} CR/T
                           {' '}
                           <small>({commodity.avgProfitMargin}% margin)</small>
-                        </>}
+                          </>}
                     </span>
                   </td>
                 </tr>}
@@ -223,27 +224,26 @@ export default () => {
                       </span>
                     </td>
                   </tr>
-                </>
-              }
-                        {/* <p className='clear muted' style={{ padding: '0 0 1rem .25rem' }}>
+                </>}
+              {/* <p className='clear muted' style={{ padding: '0 0 1rem .25rem' }}>
             Galactic prices and total supply/demand updated daily
           </p> */}
-          {commodity.rare &&
-            <tr>
-              <th>
-                <i className='icon icarus-terminal-info' style={{ marginRight: '.25rem' }} />                
-                RARE GOODS
-              </th>
-              <td>
-                <p style={{margin: 0, textTransform: 'none'}}>
-                  Rare goods are only available in limited quantities from exclusive locations but can be sold almost anywhere.
-                </p>
-                <p style={{margin: '.5rem 0 0 0', textTransform: 'none'}}>
-                  They increase in value the further they are traded from the source, reaching maximum value when traded 
-                  around 150-200 ly away.
-                </p>
-              </td>
-            </tr>}
+              {commodity.rare &&
+                <tr>
+                  <th>
+                    <i className='icon icarus-terminal-info' style={{ marginRight: '.25rem' }} />
+                    RARE GOODS
+                  </th>
+                  <td>
+                    <p style={{ margin: 0, textTransform: 'none' }}>
+                      Rare goods are only available in limited quantities from exclusive locations but can be sold almost anywhere.
+                    </p>
+                    <p style={{ margin: '.5rem 0 0 0', textTransform: 'none' }}>
+                      They increase in value the further they are traded from the source, reaching maximum value when traded
+                      around 150-200 ly away.
+                    </p>
+                  </td>
+                </tr>}
             </tbody>
           </table>
           <Tabs
