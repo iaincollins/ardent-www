@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter, useLocation } from 'next/router'
 import Head from 'next/head'
+import Link from 'next/link'
 import Table from 'rc-table'
 import Layout from 'components/layout'
 import { getCommodities } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
 
-export async function getServerSideProps () {
-  const rawCommoditiesData = (await import('../../ardent-data/cache/commodities.json')).commodities
+export async function getServerSideProps ({query}) {
+  const rawCommoditiesData = (await import('../../../../ardent-data/cache/commodities.json')).commodities
   const commodities = await getCommodities(rawCommoditiesData)
-  const categories = [...new Set(commodities.map((c) => c.category).sort())]
+  const categories = [...new Set(
+    query?.['commodity-category']
+    ? [query?.['commodity-category'].toLowerCase()]
+      : commodities.map((c) => c.category.toLowerCase()).sort()
+  )]
   return { props: { commodities, categories } }
 }
 
@@ -26,27 +31,40 @@ export default function Page (props) {
 
   useEffect(() => {
     (async () => {
-      if (!commodities || !categories) {
-        const commodities = await getCommodities()
-        const categories = [...new Set(commodities.map((c) => c.category).sort())]
-        setCommodities(commodities)
-        setCategories(categories)
-      }
+      const commodities_ = commodities ?? await getCommodities()
+      const categories_ = [...new Set(
+        router.query?.['commodity-category']
+          ? [router.query?.['commodity-category'].toLowerCase()]
+          : commodities_.map((c) => c.category.toLowerCase()).sort()
+      )]
+      setCommodities(commodities_)
+      setCategories(categories_)
     })()
-  }, [])
+  }, [router.asPath])
 
   return (
     <Layout loading={commodities === undefined} loadingText='Loading commodities'>
       <Head>
         <link rel='canonical' href='https://ardent-industry.com/commodities' />
       </Head>
+      {categories?.length === 1 &&
+        <ul
+          className='breadcrumbs fx__fade-in' onClick={(e) => {
+            if (e.target.tagName === 'LI') e.target.children[0].click()
+          }}
+        >
+          <li><Link href='/'>Home</Link></li>
+          <li><Link href='/commodities'>Commodities</Link></li>
+        </ul>
+      }
       {commodities && categories &&
         <div className='fx__fade-in'>
-          <h2>Trade Commodities</h2>
-          <p className='clear' style={{ fontSize: '1.1rem' }}>
-            Find the best trade prices for any commodity in the galaxy.
-          </p>
-
+          {categories?.length > 1 && <>
+            <h2>Trade Commodities</h2>
+            <p className='clear' style={{ fontSize: '1.1rem' }}>
+              Find the best trade prices for any commodity in the galaxy.
+            </p>
+          </>}
           {categories.map(category =>
             <div key={`category_${category}`}>
               <h3 style={{ marginBottom: '-.1rem' }}>{category}</h3>
@@ -121,7 +139,7 @@ export default function Page (props) {
                       </div>
                   }
                 ]}
-                data={commodities.filter(c => c.category === category)}
+                data={commodities.filter(c => c.category.toLowerCase() === category.toLowerCase())}
                 rowKey='name'
                 onRow={(record, index) => ({
                   onClick: onRowClick.bind(null, record, index)

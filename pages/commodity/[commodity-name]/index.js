@@ -120,6 +120,7 @@ export default () => {
       >
         <li><Link href='/'>Home</Link></li>
         <li><Link href='/commodities'>Commodities</Link></li>
+        <li><Link href={`/commodities/${commodity?.category.toLowerCase()}`}>{commodity?.category}</Link></li>
       </ul>
       {commodity === null && <><h1>Error: Not found</h1><p className='text-large clear'>Commodity not found.</p></>}
       {commodity &&
@@ -134,7 +135,7 @@ export default () => {
                 <th>Category</th>
                 <td>
                   <span className='fx__animated-text' data-fx-order='1'>
-                    {commodity.category}
+                    <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>
                   </span>
                 </td>
               </tr>
