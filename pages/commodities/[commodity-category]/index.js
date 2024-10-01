@@ -76,25 +76,11 @@ export default function Page(props) {
               {commodityCategories[categories[0]].description}
             </p>
           }
-          {categories?.length === 1 && commodityCategories[categories[0]]?.producedBy?.length === 1 &&
+          {categories?.length === 1 && commodityCategories[categories[0]]?.whereToFind &&
             <p className='clear text-center'>
-              {categories[0]} are produced by {commodityCategories[categories[0]].producedBy[0].toLowerCase()} economies.
+              {commodityCategories[categories[0]]?.whereToFind}
             </p>
           }
-          {categories?.length === 1 && commodityCategories[categories[0]]?.producedBy?.length > 1 &&
-            <p className='clear text-center'>
-              {categories[0]} can be found for sale in {commodityCategories[categories[0]].producedBy.slice(0, -1).join(', ').toLowerCase()}
-              {' and '}
-              {commodityCategories[categories[0]].producedBy[(commodityCategories[categories[0]].producedBy.length - 1)].toLowerCase()} economies
-              {categories?.length === 1 && commodityCategories[categories[0]]?.mineable === true && <>, they can also be mined from asteroid belts and planetary rings</>}
-              .
-            </p>
-          }
-          {/* {categories?.length > 1 && <ul>
-              {categories.map(category => <li>
-                {category}
-              </li>)}
-            </ul>} */}
           {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
             <div key={`category_${category}`}>
               <h3 style={{ marginBottom: '-.1rem' }}>{category}</h3>

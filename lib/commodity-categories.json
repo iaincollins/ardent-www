@@ -1,61 +1,74 @@
 {
   "Chemicals": {
     "description": "Chemicals are a class of natural and synthetic compounds with industrial, agricultural, and scientific applications.",
-    "producedBy": [ "Refinery", "Agricultural", "High Tech" ]
+    "producedBy": [ "Refinery", "Agricultural", "High Tech" ],
+    "whereToFind": "Chemicals can be sourced from refinery, agricultural and high tech systems."
   },
   "Consumer Items": {
     "description": "Consumer Items are those materials and items specifically created for human comfort and basic survival.",
-    "producedBy": [ "Industrial", "High Tech" ]
+    "producedBy": [ "Industrial", "High Tech" ],
+    "whereToFind": "Consumer Items can be found for sale in industrial and high tech systems."
   },
   "Foods": {
     "description": "Foods are organic products harvested from flora and fauna for human consumption.",
-    "producedBy": [ "Agricultural", "Industrial", "High Tech" ]
+    "producedBy": [ "Agricultural", "Industrial", "High Tech" ],
+    "whereToFind": "Food is produced primarily by agricultural systems, but some specific items are produced in industrial and high tech systems."
   },
   "Industrial Materials": {
     "description": "Industrial Materials are refined products used in the manufacture of machinery, ships, and structures.",
-    "producedBy": [ "Refinery" ]
+    "producedBy": [ "Refinery" ],
+    "whereToFind": "Industrial Materials are produced in refinery systems."
   },
   "Legal Drugs": {
-    "description": "Legal Drugs are substances that alter the mind and body, and can be legally traded at most markets.",
-    "producedBy": [ "Agricultural", "Industrial" ]
+    "description": "Drugs are substances that alter the mind and body, and can be legally traded at most markets.",
+    "producedBy": [ "Agricultural", "Industrial" ],
+    "whereToFind": "Drugs can be found for sale in a wide range of agricultural and industrial systems. Not all drugs are legal in all locations."
   },
   "Machinery": {
     "description": "Machinery is used wide variety of important functions, from producing clean water to providing power to regulating heat output.",
-    "producedBy": [ "Industrial" ]
+    "producedBy": [ "Industrial" ],
+    "whereToFind": "Machinery can be purchased from industrial systems."
   },
   "Medicines": {
-    "description": "Medicines are substances and compounds used to treat illnesses in humans and enhance overall health.",
-    "producedBy": [ "Industrial", "High Tech" ]
+    "description": "Medicines are substances and compounds used to treat illnesses and improve health.",
+    "producedBy": [ "Industrial", "High Tech" ],
+    "whereToFind": "Most medicines can be found in high tech systems, basic medicines are produced in industrial systems."
   },
   "Metals": {
     "description": "Metals are malleable and ductile substances that are important to the manufacture of everything from electronics to ship hulls.",
     "producedBy": [ "Extration", "Refinery" ],
-    "mineable": true
+    "whereToFind": "Metals can be purchased in extration and refinery systems, or mined from suitable asteroids belts or planetary rings."
   },
   "Minerals": {
     "description": "Minerals are chemical compounds that are mined from naturally-occurring deposits and can be refined into other substances.",
     "producedBy": [  "Refinery", "Extration" ],
-    "mineable": true
+    "whereToFind": "Some minerals can be purchased in extration and refinery systems, some can only be mined from suitable asteroids."
   },
   "Salvage": {
-    "description": "Salvage items are generally obtained from wreckage, abandoned structures, or alien structures."
+    "description": "Salvage includes items that can be turned into Search and Rescue contacts in stations, as well as illegal goods and stolen cargo.",
+    "whereToFind": "Salvage items can be obtained from wreckage, abandoned structures, or be of alien origin."
   },
   "Slavery": {
-    "description": "Slavery is illegal in most systems other than anarchies. Imperial Slavery, a regulated form of indentured servitude, is legal in the Empire and heavily integrated into its culture."
+    "description": "Slavery is illegal in most inhabited systems.",
+    "whereToFind": "Imperial Slavery, a regulated form of indentured servitude, is legal in Empire controlled systems."
   },
   "Technology": {
-    "description": "Technology commodities include tools, components, and materials, often with highly-specialised applications.",
-    "producedBy": [ "High Tech", "Industrial" ]
+    "description": "Technology commodities include tools, components and equipment, often with highly-specialised applications.",
+    "producedBy": [ "High Tech", "Industrial" ],
+    "whereToFind": "Technology goods can be purchased primarily from high tech systems, some components can be sourced from industrial systems."
   },
   "Textiles": {
     "description": "Textiles are materials made of interlacing fibres and are are primarily used in the manufacture of clothing and furnishings.",
-    "producedBy": [ "Agricultural", "Industrial" ]
+    "producedBy": [ "Agricultural", "Industrial" ],
+    "whereToFind": "Natural materials can be sourced from agricultural systems, while sythentic materials are produced in industrial systems."
   },
   "Waste": {
-    "description": "Waste is generated through the production and consumption of materials and commodities."
+    "description": "Waste is generated through the production and consumption of materials and commodities.",
+    "whereToFind": "Waste is commonly produced by a wide range of systems."
   },
   "Weapons": {
     "description": "Weapons are tools designed and utilised for combat and defensive purposes, they are strictly regulated in most systems.",
-    "producedBy": [ "High Tech" ]
+    "producedBy": [ "High Tech" ],
+    "whereToFind": "Weapons can be found for sale in high tech systems, but they can be illegal to trade."
   }
 }
