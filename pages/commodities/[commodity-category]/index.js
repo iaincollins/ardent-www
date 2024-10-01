@@ -6,6 +6,7 @@ import Table from 'rc-table'
 import Layout from 'components/layout'
 import { getCommodities } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
+import commodityCategories from 'lib/commodity-categories.json'
 
 export async function getServerSideProps({ query }) {
   const rawCommoditiesData = (await import('../../../../ardent-data/cache/commodities.json')).commodities
@@ -66,8 +67,27 @@ export default function Page(props) {
       {commodities && categories &&
         <div className='fx__fade-in'>
           {categories?.length > 1 &&
-            <p className='clear text-center' style={{ fontSize: '1.1rem' }}>
+            <p className='clear text-center'>
               The best trade prices for commodities anywhere in the galaxy.
+            </p>
+          }
+          {categories?.length === 1 && commodityCategories[categories[0]]?.description &&
+            <p className='clear text-center'>
+              {commodityCategories[categories[0]].description}
+            </p>
+          }
+          {categories?.length === 1 && commodityCategories[categories[0]]?.producedBy?.length === 1 &&
+            <p className='clear text-center'>
+              {categories[0]} are produced by {commodityCategories[categories[0]].producedBy[0].toLowerCase()} economies.
+            </p>
+          }
+          {categories?.length === 1 && commodityCategories[categories[0]]?.producedBy?.length > 1 &&
+            <p className='clear text-center'>
+              {categories[0]} can be found for sale in {commodityCategories[categories[0]].producedBy.slice(0, -1).join(', ').toLowerCase()}
+              {' and '}
+              {commodityCategories[categories[0]].producedBy[(commodityCategories[categories[0]].producedBy.length - 1)].toLowerCase()} economies
+              {categories?.length === 1 && commodityCategories[categories[0]]?.mineable === true && <>, they can also be mined from asteroid belts and planetary rings</>}
+              .
             </p>
           }
           {/* {categories?.length > 1 && <ul>

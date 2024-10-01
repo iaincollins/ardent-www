@@ -77,6 +77,12 @@ export default ({ toggle }) => {
         Released under GNU Affero General Public License.
       </p>
       <p>
+        Includes <a href='https://github.com/EDCD/FDevIDs' rel='noreferrer' target='_blank'>metadata curated by EDCD</a>.
+      </p>
+      <p>
+        Includes descriptions based on content from <a href='https://elite-dangerous.fandom.com' rel='noreferrer' target='_blank'>elite-dangerous.fandom.com</a> licensed under <a href='https://www.fandom.com/licensing' rel='noreferrer' target='_blank'>CC BY-SA</a>.
+      </p>
+      <p>
         Elite Dangerous is copyright Frontier Developments plc. This software is
         not endorsed by nor reflects the views or opinions of Frontier Developments and
         no employee of Frontier Developments was involved in the making of it.

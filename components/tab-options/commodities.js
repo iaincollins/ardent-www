@@ -33,7 +33,7 @@ export default () => {
             }}
           >
             <option value='1'>Today</option>
-            <option value='7'>In last week</option>
+            <option value='7'>Last week</option>
             <option value='30'>In last month</option>
             <option value='90'>In last 3 months</option>
             <option value='1000'>Any time</option>

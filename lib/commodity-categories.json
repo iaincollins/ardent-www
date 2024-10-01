@@ -1,0 +1,61 @@
+{
+  "Chemicals": {
+    "description": "Chemicals are a class of natural and synthetic compounds with industrial, agricultural, and scientific applications.",
+    "producedBy": [ "Refinery", "Agricultural", "High Tech" ]
+  },
+  "Consumer Items": {
+    "description": "Consumer Items are those materials and items specifically created for human comfort and basic survival.",
+    "producedBy": [ "Industrial", "High Tech" ]
+  },
+  "Foods": {
+    "description": "Foods are organic products harvested from flora and fauna for human consumption.",
+    "producedBy": [ "Agricultural", "Industrial", "High Tech" ]
+  },
+  "Industrial Materials": {
+    "description": "Industrial Materials are refined products used in the manufacture of machinery, ships, and structures.",
+    "producedBy": [ "Refinery" ]
+  },
+  "Legal Drugs": {
+    "description": "Legal Drugs are substances that alter the mind and body, and can be legally traded at most markets.",
+    "producedBy": [ "Agricultural", "Industrial" ]
+  },
+  "Machinery": {
+    "description": "Machinery is used wide variety of important functions, from producing clean water to providing power to regulating heat output.",
+    "producedBy": [ "Industrial" ]
+  },
+  "Medicines": {
+    "description": "Medicines are substances and compounds used to treat illnesses in humans and enhance overall health.",
+    "producedBy": [ "Industrial", "High Tech" ]
+  },
+  "Metals": {
+    "description": "Metals are malleable and ductile substances that are important to the manufacture of everything from electronics to ship hulls.",
+    "producedBy": [ "Extration", "Refinery" ],
+    "mineable": true
+  },
+  "Minerals": {
+    "description": "Minerals are chemical compounds that are mined from naturally-occurring deposits and can be refined into other substances.",
+    "producedBy": [  "Refinery", "Extration" ],
+    "mineable": true
+  },
+  "Salvage": {
+    "description": "Salvage items are generally obtained from wreckage, abandoned structures, or alien structures."
+  },
+  "Slavery": {
+    "description": "Slavery is illegal in most systems other than anarchies. Imperial Slavery, a regulated form of indentured servitude, is legal in the Empire and heavily integrated into its culture."
+  },
+  "Technology": {
+    "description": "Technology commodities include tools, components, and materials, often with highly-specialised applications.",
+    "producedBy": [ "High Tech", "Industrial" ]
+  },
+  "Textiles": {
+    "description": "Textiles are materials made of interlacing fibres and are are primarily used in the manufacture of clothing and furnishings.",
+    "producedBy": [ "Agricultural", "Industrial" ]
+  },
+  "Waste": {
+    "description": "Waste is generated through the production and consumption of materials and commodities."
+  },
+  "Weapons": {
+    "description": "Weapons are tools designed and utilised for combat and defensive purposes, they are strictly regulated in most systems.",
+    "producedBy": [ "High Tech" ]
+  }
+}
