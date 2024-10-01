@@ -3,16 +3,26 @@ import Link from 'next/link'
 import Head from 'next/head'
 import Layout from 'components/layout'
 import { API_BASE_URL } from 'lib/consts'
+import byteSize from 'byte-size'
 
+const databaseDescription = {
+  'systems.db': 'Name and location of all star systems in the known galaxy',
+  'trade.db':  'Buy and sell commodity orders',
+  'stations.db': 'Name and location of stations, outposts, ports, settlements, megaships and fleet carriers',
+  'locations.db': 'Unusual locations and points of interest'
+}
 export default () => {
-  const [backupData, setBackupData] = useState()
+  const [databases, setDatabases] = useState()
 
   useEffect(() => {
     (async () => {
       const res = await fetch(`${API_BASE_URL}/v1/backup`)
-      setBackupData(await res.json())
+      const databases = (await res.json()).databases
+      databases.forEach(database => database.description = databaseDescription?.[database.name])
+      setDatabases(databases.reverse())
     })()
   }, [])
+
   return (
     <Layout
       title='About Ardent Industry for Elite Dangerous'
@@ -22,78 +32,54 @@ export default () => {
         <link rel='canonical' href='https://ardent-industry.com/downloads' />
       </Head>
       <div className='fx__fade-in'>
-        <h2 className='heading--with-icon'>
-          <i className='icon icarus-terminal-download' />
-          Data Downloads
-        </h2>
-        <p className='clear'>
-          Bulk exports of data from Ardent Industry as SQLite databases.
+
+        <h1 className='heading--with-icon'>
+          <i className='icarus-terminal-download' />
+          Downloads
+        </h1>
+        <p className=' clear'>
+          The source code and data for Ardent Industry can be downloaded.
         </p>
         <p>
-          Sources used to seed the data include EDDB, ESDM, Spansh and EDDN.
+          Full database downloads are updated daily, between 07:00-08:00 UTC.
         </p>
         <p>
-          Last updated {backupData?.completed?.replace(/\.(.*)/, '')?.replace('T', ' @ ')?.replace(/$/, ' UTC') ?? '...'}
-        </p>
-        <h3>systems.db</h3>
-        <p className='clear'>
-          <em>Name and location of all solar systems in the galaxy known to Ardent.</em>
-        </p>
-        <p className='clear'>
-          <i className='icon icarus-terminal-download' />
-          <Link href='https://downloads.ardent-industry.com/systems.db'><strong>Download systems.db</strong></Link>
-          {backupData &&
-            <small>
-              <br />{backupData?.databases?.filter(db => db.name === 'systems.db')?.[0]?.tables?.systems?.toLocaleString()} systems
-              <span style={{ opacity: 0.5 }}>{' | '}</span>
-              Size: {(backupData?.databases?.filter(db => db.name === 'systems.db')?.[0]?.size / 1000000000).toLocaleString(undefined, { maximumFractionDigits: 0 })} GB
-            </small>}
+          For live data <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>use the REST API</a>.
         </p>
 
-        <h3>trade.db</h3>
+        <h2>Source Code</h2>
+        <ul className='clear'>
+          <li><a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>Ardent Website Source Code</a></li>
+          <li><a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent API Source Code</a></li>
+          <li><a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector Source Code</a></li>
+        </ul>
+
+        <h2>Databases</h2>
         <p className='clear'>
-          <em>A list of all buy and sell commodity orders being tracked by Ardent.</em>
+          Data downloads are in SQLite Database File Format and are updated daily.
         </p>
-        <p className='clear'>
-          <i className='icon icarus-terminal-download' />
-          <Link href='https://downloads.ardent-industry.com/trade.db'><strong>Download trade.db</strong></Link>
-          {backupData &&
-            <small>
-              <br />{backupData?.databases?.filter(db => db.name === 'trade.db')?.[0]?.tables?.commodities?.toLocaleString()} commodities
-              <span style={{ opacity: 0.5 }}>{' | '}</span>
-              Size: {(backupData?.databases?.filter(db => db.name === 'trade.db')?.[0]?.size / 1000000000).toLocaleString(undefined, { maximumFractionDigits: 0 })} GB
-            </small>}
+        <p className='muted'>
+          Sources used to originally seed the databases include EDDB, ESDM, Spansh and EDDN.
         </p>
 
-        <h3>stations.db</h3>
-        <p className='clear'>
-          <em>All stations, ports, outposts, settlements, megaships and fleet carriers known to Ardent.</em>
-        </p>
-        <p className='clear'>
-          <i className='icon icarus-terminal-download' />
-          <Link href='https://downloads.ardent-industry.com/stations.db'><strong>Download stations.db</strong></Link>
-          {backupData &&
-            <small>
-              <br />{backupData?.databases?.filter(db => db.name === 'stations.db')?.[0]?.tables?.stations?.toLocaleString()} stations
-              <span style={{ opacity: 0.5 }}>{' | '}</span>
-              Size: {(backupData?.databases?.filter(db => db.name === 'stations.db')?.[0]?.size / 1000000).toLocaleString(undefined, { maximumFractionDigits: 0 })} MB
-            </small>}
-        </p>
-
-        <h3>locations.db</h3>
-        <p className='clear'>
-          <em>Points of interest Ardent has received telemetry for.</em>
-        </p>
-        <p className='clear'>
-          <i className='icon icarus-terminal-download' />
-          <Link href='https://downloads.ardent-industry.com/locations.db'><strong>Download locations.db</strong></Link>
-          {backupData &&
-            <small>
-              <br />{backupData?.databases?.filter(db => db.name === 'locations.db')?.[0]?.tables?.locations?.toLocaleString()} locations
-              <span style={{ opacity: 0.5 }}>{' | '}</span>
-              Size: {(backupData?.databases?.filter(db => db.name === 'locations.db')?.[0]?.size / 1000).toLocaleString(undefined, { maximumFractionDigits: 0 })} KB
-            </small>}
-        </p>
+        {databases && databases.map(database => <>
+          <h3>{database.name}</h3>
+          <p className='clear'>
+            <em>{database.description}</em>
+          </p>
+          <ul className='clear'>
+            {Object.entries(database.tables).map(([k,v]) => <li>{v.toLocaleString()} {k.toUpperCase()}</li>)}
+          </ul>
+          <p style={{margin: '1.5rem 0'}}>
+            <Link href={database?.download?.url ?? ''} className='button' style={{padding: '.75rem 1.25rem'}}>
+              <i className='icarus-terminal-download' style={{fontSize: '1.25rem'}}/>
+              {' '}
+              <strong>Download {database.name}.gz</strong>
+              {' '}
+              {database?.download?.size && <span className='muted'>({byteSize(database.download.size).value} {byteSize(database.download.size).unit})</span>}
+            </Link>
+          </p>
+        </>)}
       </div>
     </Layout>
   )

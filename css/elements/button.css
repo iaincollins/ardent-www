@@ -21,12 +21,15 @@
   clip-path: polygon(0 0,calc(100% - 1.00rem) 0,100% 1.00rem,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem));
 }
 
+a.button {
+  border-bottom-color: transparent !important;
+}
+
 .button::before {
   content: "";
   position: absolute;
   inset: 0;
   clip-path: polygon(0 0,calc(100% - 1.00rem) 0,100% 1.00rem,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem));
-  background: rgba(0,0,0,.7);
   z-index: -2;
   backdrop-filter: blur(.5rem);
 }

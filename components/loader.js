@@ -1,4 +1,4 @@
-export default function Loader ({ visible, text }) {
+export default function Loader ({ visible = true, text }) {
   return (
     <>
       <div className='loader__background' style={{ opacity: visible ? 1 : 0 }} />
@@ -39,8 +39,4 @@ export default function Loader ({ visible, text }) {
       {text && <div className='loader__text' style={{ opacity: visible ? 1 : 0 }}>{text}…</div>}
     </>
   )
-}
-
-Loader.defaultProps = {
-  visible: true
 }

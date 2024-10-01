@@ -79,20 +79,24 @@ export default () => {
         const systemCoordinates = [system.systemX, system.systemY, system.systemZ]
         if (distance(systemCoordinates, SOL_COORDINATES) <= 200) {
           system.tradeZone = 'Core Systems'
-          if (system.systemName !== 'Sol') {
-            system.tradeZoneDistance = `${distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol`
+          if (system.systemName === 'Sol') {
+            system.tradeZoneLocation = `Systems within 200 Ly of Sol are known as the Core Systems`
+          } else {
+            system.tradeZoneLocation = <>{system.systemName} is the Core Systems<br/>{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
           }
         } else if (distance(systemCoordinates, SOL_COORDINATES) <= 400) {
-          system.tradeZone = 'Core Systems, Periphery'
-          system.tradeZoneDistance = `${distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol`
+          system.tradeZone = 'Periphery'
+          system.tradeZoneLocation = <>{system.systemName} is on the periphery of the Core Worlds<br />{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
         } else if (distance(systemCoordinates, COLONIA_COORDINATES) <= 100) {
           system.tradeZone = 'Colonia Region'
-          if (system.systemName !== 'Colonia') {
-            system.tradeZoneDistance = `${distance(systemCoordinates, COLONIA_COORDINATES)} Ly from Colonia`
+          if (system.systemName === 'Colonia') {
+            system.tradeZoneLocation = `The Colonia Region is ${distance(systemCoordinates, SOL_COORDINATES)} Ly from the Core Systems`
+          } else {
+            system.tradeZoneLocation = <>{system.systemName} is in the Colonia Region<br />{distance(systemCoordinates, COLONIA_COORDINATES)} Ly from Colonia</>
           }
         } else {
           system.tradeZone = 'Deep Space'
-          system.tradeZoneDistance = (
+          system.tradeZoneLocation = (
             <>
               {`${distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol`}
               <br />
@@ -170,6 +174,7 @@ export default () => {
       >
         <li><Link href='/'>Home</Link></li>
         <li><Link href='/'>Systems</Link></li>
+        {system?.tradeZone && <li><Link href='/'>{system.tradeZone}</Link></li>}
       </ul>
       {system === null && <><h1>Error: Not found</h1><p className='text-large clear'>System not found.</p></>}
       {system &&
@@ -197,7 +202,7 @@ export default () => {
                 <td>
                   <span className='fx__animated-text' data-fx-order='4'>
                     {system.tradeZone}
-                    {system.tradeZoneDistance !== undefined && <small style={{ textTransform: 'none' }}><br />{system.tradeZoneDistance}</small>}
+                    {system.tradeZoneLocation !== undefined && <small style={{ textTransform: 'none' }}><br />{system.tradeZoneLocation}</small>}
                   </span>
                 </td>
               </tr>
@@ -246,9 +251,10 @@ export default () => {
                                 {station.stationName}
                               </div>
                               <div className='system__entity-information'>
-                                {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                                {station.bodyName && station.distanceToArrival !== null && <small>{' // '}</small>}
-                                {station.bodyName && <small>{station.bodyName}</small>}
+                                {station.bodyName && <small><i className='icon icarus-terminal-planet' style={{position: 'relative', top: '-.1rem'}}/>{station.bodyName}</small>}
+                                {station.bodyName && station.distanceToArrival !== null && <small>{' ('}</small>}
+                                {station.distanceToArrival !== null && <small>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                                {station.bodyName && station.distanceToArrival !== null && <small>{')'}</small>}
                               </div>
                             </div>
                           </Fragment>

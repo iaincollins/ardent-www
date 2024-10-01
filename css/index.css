@@ -84,6 +84,11 @@ body::-webkit-scrollbar-track {
   background-image: linear-gradient(90deg, transparent 41.67%, var(--color-window-scrollbar-track) 41.67%, var(--color-window-scrollbar-track) 50%, transparent 50%, transparent 91.67%, var(--color-window-scrollbar-track) 91.67%, var(--color-window-scrollbar-track) 100%);
 }
 
+ul li {
+  margin-top: .25rem;
+  margin-bottom: .25rem;
+}
+
 .Collapsible {
   white-space: normal;
 }

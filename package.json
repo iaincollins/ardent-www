@@ -21,6 +21,7 @@
   "homepage": "https://github.com/iaincollins/ardent-spike#readme",
   "dependencies": {
     "@react-three/fiber": "^8.13.6",
+    "byte-size": "^9.0.0",
     "next": "^14.2.13",
     "rc-table": "^7.32.1",
     "react": "^18.2.0",

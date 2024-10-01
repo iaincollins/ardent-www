@@ -43,7 +43,7 @@ export default ({ toggle }) => {
               Star systems: {stats.systems.toLocaleString()}
             </li>
             <li>
-              Stations/settlements: {stats.stations.stations.toLocaleString()}
+              Stations: {stats.stations.stations.toLocaleString()}<span className='muted'>*</span>
             </li>
             <li>
               Fleet carriers: {stats.stations.carriers.toLocaleString()}
@@ -63,20 +63,14 @@ export default ({ toggle }) => {
           </ul>
         </>}
       <p>
+        <span className='muted'>* Includes stations, outposts, ports, settlements and megaships</span>
+      </p>
+      <p>
         Data from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>, which is run by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>.
       </p>
       <h3>Downloads</h3>
       <p className='clear'>
-        Both the source for the software and the raw data for Ardent Industry are available for download.
-      </p>
-      <p>
-        <a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>ArdentOS</a>
-        <span className='muted'> | </span>
-        <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent API</a>
-        <span className='muted'> | </span>
-        <a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector</a>
-        <span className='muted'> | </span>
-        <a href='/downloads' rel='noreferrer' target='_blank'>Download Data</a>
+        Source code and data <a href='/downloads' rel='noreferrer'>are available for download</a>.
       </p>
       <h3>Legal</h3>
       <p className='clear'>
