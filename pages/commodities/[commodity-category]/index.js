@@ -7,18 +7,22 @@ import Layout from 'components/layout'
 import { getCommodities } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
 
-export async function getServerSideProps ({query}) {
+export async function getServerSideProps({ query }) {
   const rawCommoditiesData = (await import('../../../../ardent-data/cache/commodities.json')).commodities
   const commodities = await getCommodities(rawCommoditiesData)
-  const categories = [...new Set(
-    query?.['commodity-category']
-    ? [query?.['commodity-category'].toLowerCase()]
-      : commodities.map((c) => c.category.toLowerCase()).sort()
-  )]
+
+  const filterByCategory = (query?.['commodity-category'])
+    ? commodities.filter((c) => c.category.toLowerCase() === query?.['commodity-category'].toLowerCase())?.[0]?.category ?? false
+    : false
+
+  const categories = filterByCategory
+    ? [filterByCategory]
+    : [...new Set(commodities.map((c) => c.category).sort())]
+
   return { props: { commodities, categories } }
 }
 
-export default function Page (props) {
+export default function Page(props) {
   const router = useRouter()
   const [commodities, setCommodities] = useState(props.commodities)
   const [categories, setCategories] = useState(props.categories)
@@ -32,11 +36,15 @@ export default function Page (props) {
   useEffect(() => {
     (async () => {
       const commodities_ = commodities ?? await getCommodities()
-      const categories_ = [...new Set(
-        router.query?.['commodity-category']
-          ? [router.query?.['commodity-category'].toLowerCase()]
-          : commodities_.map((c) => c.category.toLowerCase()).sort()
-      )]
+
+      const filterByCategory = (router.query?.['commodity-category'])
+        ? commodities_.filter((c) => c.category.toLowerCase() === router.query?.['commodity-category'].toLowerCase())?.[0]?.category ?? false
+        : false
+
+      const categories_ = filterByCategory
+        ? [filterByCategory]
+        : [...new Set(commodities_.map((c) => c.category).sort())]
+
       setCommodities(commodities_)
       setCategories(categories_)
     })()
@@ -47,25 +55,27 @@ export default function Page (props) {
       <Head>
         <link rel='canonical' href='https://ardent-industry.com/commodities' />
       </Head>
-      {categories?.length === 1 &&
-        <ul
-          className='breadcrumbs fx__fade-in' onClick={(e) => {
-            if (e.target.tagName === 'LI') e.target.children[0].click()
-          }}
-        >
-          <li><Link href='/'>Home</Link></li>
-          <li><Link href='/commodities'>Commodities</Link></li>
-        </ul>
-      }
+      <ul
+        className='breadcrumbs fx__fade-in' onClick={(e) => {
+          if (e.target.tagName === 'LI') e.target.children[0].click()
+        }}
+      >
+        <li><Link href='/'>Home</Link></li>
+        <li><Link href='/commodities'>Commodities</Link></li>
+      </ul>
       {commodities && categories &&
         <div className='fx__fade-in'>
-          {categories?.length > 1 && <>
-            <h2>Trade Commodities</h2>
-            <p className='clear' style={{ fontSize: '1.1rem' }}>
-              Find the best trade prices for any commodity in the galaxy.
+          {categories?.length > 1 &&
+            <p className='clear text-center' style={{ fontSize: '1.1rem' }}>
+              The best trade prices for commodities anywhere in the galaxy.
             </p>
-          </>}
-          {categories.map(category =>
+          }
+          {/* {categories?.length > 1 && <ul>
+              {categories.map(category => <li>
+                {category}
+              </li>)}
+            </ul>} */}
+          {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
             <div key={`category_${category}`}>
               <h3 style={{ marginBottom: '-.1rem' }}>{category}</h3>
               <Table

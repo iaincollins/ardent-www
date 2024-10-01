@@ -131,14 +131,14 @@ export default () => {
           </h2>
           <table className='properties-table'>
             <tbody>
-              <tr>
+              {/* <tr>
                 <th>Category</th>
                 <td>
                   <span className='fx__animated-text' data-fx-order='1'>
                     <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>
                   </span>
                 </td>
-              </tr>
+              </tr> */}
               <tr>
                 <th>Import price</th>
                 <td>

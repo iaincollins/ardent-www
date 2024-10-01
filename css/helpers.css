@@ -26,6 +26,10 @@
   color: var(--color-negative);
 }
 
+.text-center {
+  text-align: center;
+}
+
 .flip-vertical {
   transform: rotateY(180deg);
 }
