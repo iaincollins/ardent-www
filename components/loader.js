@@ -1,8 +1,9 @@
-export default function Loader ({ visible = true, text }) {
+export default function Loader ({ visible = true, text = 'test'}) {
+  if (visible !== true) return null
   return (
     <>
-      <div className='loader__background' style={{ opacity: visible ? 1 : 0 }} />
-      <div className='loader__spinner' style={{ opacity: visible ? 1 : 0 }}>
+      <div className='loader__background'/>
+      <div className='loader__spinner'>
         <div className='loader__row'>
           <div className='loader__arrow loader__arrow--outer-18' />
           <div className='loader__arrow loader__arrow--down lloader__arrow--outer-17' />
@@ -36,7 +37,7 @@ export default function Loader ({ visible = true, text }) {
           <div className='loader__arrow loader__arrow--down loader__arrow--outer-9' />
         </div>
       </div>
-      {text && <div className='loader__text' style={{ opacity: visible ? 1 : 0 }}>{text}…</div>}
+      {text && <div className='loader__text'>{text}</div>}
     </>
   )
 }

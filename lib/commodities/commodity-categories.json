@@ -5,7 +5,7 @@
     "whereToFind": "Chemicals can be sourced from refinery, agricultural and high tech systems."
   },
   "Consumer Items": {
-    "description": "Consumer Items are those materials and items specifically created for human comfort and basic survival.",
+    "description": "Consumer Items are goods created for human comfort and basic survival.",
     "producedBy": [ "Industrial", "High Tech" ],
     "whereToFind": "Consumer Items can be found for sale in industrial and high tech systems."
   },

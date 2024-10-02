@@ -6,7 +6,7 @@ import Table from 'rc-table'
 import Layout from 'components/layout'
 import { getCommodities } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
-import commodityCategories from 'lib/commodity-categories.json'
+import commodityCategories from 'lib/commodities/commodity-categories.json'
 
 export async function getServerSideProps({ query }) {
   const rawCommoditiesData = (await import('../../../../ardent-data/cache/commodities.json')).commodities
