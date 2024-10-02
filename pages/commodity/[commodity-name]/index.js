@@ -34,7 +34,7 @@ export default () => {
     if (basePath === 'exporters') setTabIndex(1)
   }, [router.pathname])
 
-  async function getImportsAndExports (arg) {
+  async function getImportsAndExports() {
     const commodityName = router.query?.['commodity-name'] ?? window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
     if (!commodityName) return
     setImports(undefined)
@@ -89,6 +89,10 @@ export default () => {
       if (!c) c = getAllCommodities().find(el => el.symbol.toLowerCase() === commodityName.toLowerCase())
       if (c && !c.totalDemand) c.totalDemand = 0
       if (c && !c.totalStock) c.totalStock = 0
+      if (c?.rare && c?.rareMarketId) {
+        c.rareMarket = await getCommodityFromMarket(c.rareMarketId, c.symbol)
+        console.log(c.rareMarket)
+      }
       setCommodity(c || null)
 
       getImportsAndExports()
@@ -128,14 +132,6 @@ export default () => {
           </h2>
           <table className='properties-table'>
             <tbody>
-              {/* <tr>
-                <th>Category</th>
-                <td>
-                  <span className='fx__animated-text' data-fx-order='1'>
-                    <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>
-                  </span>
-                </td>
-              </tr> */}
               <tr>
                 <th>Import price</th>
                 <td>
@@ -146,7 +142,7 @@ export default () => {
                         {' '}
                         {commodity.minSellPrice !== commodity.maxSellPrice &&
                           <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>}
-                        </>
+                      </>
                       : <span className='muted'>Insufficent data</span>}
                   </span>
                 </td>
@@ -161,12 +157,12 @@ export default () => {
                         {' '}
                         {commodity.minBuyPrice !== commodity.maxBuyPrice &&
                           <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>}
-                        </>
+                      </>
                       : <span className='muted'>Insufficent data</span>}
                   </span>
                 </td>
               </tr>
-              {commodity?.rare && 
+              {commodity?.rare && <>
                 <tr>
                   <th>Export limit</th>
                   <td>
@@ -175,8 +171,18 @@ export default () => {
                     </span>
                   </td>
                 </tr>
-              }
-              {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' && 
+                {commodity?.rareMarket?.stationName && commodity?.rareMarket?.systemName &&
+                  <tr>
+                    <th>Exported by</th>
+                    <td>
+                      <span className='fx__animated-text' data-fx-order='4'>
+                        <Link href={`/system/${commodity?.rareMarket?.systemName}/`}>{commodity?.rareMarket?.stationName}, {commodity?.rareMarket?.systemName}</Link>
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </>}
+              {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
                 <tr>
                   <th>Typical profit</th>
                   <td>
@@ -187,7 +193,7 @@ export default () => {
                           {commodity.avgProfit.toLocaleString()} CR/T
                           {' '}
                           <small>({commodity.avgProfitMargin}% margin)</small>
-                          </>}
+                        </>}
                     </span>
                   </td>
                 </tr>}
@@ -224,9 +230,6 @@ export default () => {
                     </td>
                   </tr>
                 </>}
-              {/* <p className='clear muted' style={{ padding: '0 0 1rem .25rem' }}>
-            Galactic prices and total supply/demand updated daily
-          </p> */}
               {commodity.rare &&
                 <tr>
                   <th>
@@ -238,8 +241,8 @@ export default () => {
                       Rare goods are usually only available in limited quantities from exclusive locations but can be sold almost anywhere.
                     </p>
                     <p style={{ margin: '.5rem 0 0 0', textTransform: 'none' }}>
-                      They usually fetch a higher price the further away they are sold, reaching maximum value
-                      around 150-200 ly away.
+                      They fetch a higher price in stations that are further away from the system that produced them, typically fetching the
+                      the highest possible value around 150-200 ly away.
                     </p>
                   </td>
                 </tr>}
@@ -248,10 +251,10 @@ export default () => {
           <Tabs
             selectedIndex={tabIndex}
             onSelect={
-                (index) => {
-                  router.push(`/commodity/${router.query['commodity-name']}/${tabs[index]}`)
-                }
+              (index) => {
+                router.push(`/commodity/${router.query['commodity-name']}/${tabs[index]}`)
               }
+            }
           >
             <TabList>
               <Tab>Importers</Tab>
@@ -272,12 +275,12 @@ export default () => {
   )
 }
 
-async function getCommodity (commodityName) {
+async function getCommodity(commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getExports (commodityName) {
+async function getExports(commodityName) {
   let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/exports`
   const options = []
 
@@ -298,7 +301,7 @@ async function getExports (commodityName) {
   return await res.json()
 }
 
-async function getImports (commodityName) {
+async function getImports(commodityName) {
   let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/imports`
   const options = []
 
@@ -317,4 +320,9 @@ async function getImports (commodityName) {
 
   const res = await fetch(url)
   return await res.json()
+}
+
+async function getCommodityFromMarket(marketId, commodityName) {
+  const res = await fetch(`${API_BASE_URL}/v1/market/${marketId}/commodity/name/${commodityName}`)
+  return (res.status === 200) ? await res.json() : null
 }
