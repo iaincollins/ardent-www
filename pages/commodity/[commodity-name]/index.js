@@ -49,7 +49,6 @@ export default () => {
       c.symbol = c.commodityName.toLowerCase()
       c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
       c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-      c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
       delete c.commodityId
       delete c.commodityName
     })
@@ -64,7 +63,6 @@ export default () => {
       c.symbol = c.commodityName.toLowerCase()
       c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
       c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-      c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
       delete c.commodityId
       delete c.commodityName
     })
@@ -86,7 +84,6 @@ export default () => {
         c.symbol = c.commodityName.toLowerCase()
         c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? 'Unknown'
         c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        c.rare = ((getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.market_id)
         delete c.commodityName
       }
       if (!c) c = getAllCommodities().find(el => el.symbol.toLowerCase() === commodityName.toLowerCase())
@@ -143,23 +140,14 @@ export default () => {
                 <th>Import price</th>
                 <td>
                   <span className='fx__animated-text' data-fx-order='2'>
-                    {commodity.rare
+                    {typeof commodity.avgSellPrice === 'number'
                       ? <>
-                        {((commodity.avgSellPrice + 16000) / 2).toLocaleString()} CR/T
+                        {commodity.avgSellPrice.toLocaleString()} CR/T
                         {' '}
-                        {typeof commodity.avgSellPrice === 'number' &&
-                          <small>({commodity.minSellPrice.toLocaleString()} - {(commodity.minSellPrice + 16000).toLocaleString()} CR)</small>}
+                        {commodity.minSellPrice !== commodity.maxSellPrice &&
+                          <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>}
                         </>
-                      : <>
-                        {typeof commodity.avgSellPrice === 'number'
-                          ? <>
-                            {commodity.avgSellPrice.toLocaleString()} CR/T
-                            {' '}
-                            {commodity.minSellPrice !== commodity.maxSellPrice &&
-                              <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>}
-                            </>
-                          : <span className='muted'>Insufficent data</span>}
-                        </>}
+                      : <span className='muted'>Insufficent data</span>}
                   </span>
                 </td>
               </tr>
@@ -178,7 +166,17 @@ export default () => {
                   </span>
                 </td>
               </tr>
-              {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' && !commodity.rare &&
+              {commodity?.rare && 
+                <tr>
+                  <th>Export limit</th>
+                  <td>
+                    <span className='fx__animated-text' data-fx-order='3'>
+                      {commodity?.rareMaxCount ?? <span className='muted'>-</span>}
+                    </span>
+                  </td>
+                </tr>
+              }
+              {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' && 
                 <tr>
                   <th>Typical profit</th>
                   <td>
@@ -237,10 +235,10 @@ export default () => {
                   </th>
                   <td>
                     <p style={{ margin: 0, textTransform: 'none' }}>
-                      Rare goods are only available in limited quantities from exclusive locations but can be sold almost anywhere.
+                      Rare goods are usually only available in limited quantities from exclusive locations but can be sold almost anywhere.
                     </p>
                     <p style={{ margin: '.5rem 0 0 0', textTransform: 'none' }}>
-                      They increase in value the further they are traded from the source, reaching maximum value when traded
+                      They usually fetch a higher price the further away they are sold, reaching maximum value
                       around 150-200 ly away.
                     </p>
                   </td>

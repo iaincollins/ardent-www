@@ -104,9 +104,7 @@ export default function Page(props) {
                             <tbody style={{ textTransform: 'uppercase' }}>
                               <tr>
                                 <td><span className='data-table__label'>Avg Import CR/T</span>
-                                  {!r.market_id
-                                    ? <>{r.avgSellPrice > 0 ? <>{r.avgSellPrice.toLocaleString()} CR</> : '-'}</>
-                                    : <span className='muted'>-</span>}
+                                  {r.avgSellPrice > 0 ? <>{r.avgSellPrice.toLocaleString()} CR</> : '-'}
                                 </td>
                                 <td><span className='data-table__label'>Avg Profit CR/T</span>{r.avgProfit > 0 ? <>{r.avgProfit.toLocaleString()} CR</> : '-'}</td>
                               </tr>
@@ -126,11 +124,7 @@ export default function Page(props) {
                     align: 'right',
                     className: 'is-hidden-mobile',
                     render: (v, r) => (v > 0)
-                      ? <>
-                        {!r.market_id
-                          ? <>{v.toLocaleString()} CR</>
-                          : <span className='muted'>-</span>}
-                      </>
+                      ? <>{v.toLocaleString()} CR</>
                       : '-'
                   },
                   {
