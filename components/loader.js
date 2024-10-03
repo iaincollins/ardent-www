@@ -37,7 +37,7 @@ export default function Loader ({ visible = true, text = 'test'}) {
           <div className='loader__arrow loader__arrow--down loader__arrow--outer-9' />
         </div>
       </div>
-      {text && <div className='loader__text'>{text}</div>}
+      {/*text && <div className='loader__text'>{text}</div>*/}
     </>
   )
 }

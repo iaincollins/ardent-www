@@ -183,7 +183,7 @@ export default () => {
                 <tr>
                   <th>Typical profit</th>
                   <td>
-                    <span className='fx__animated-text' data-fx-order='4'>
+                    <span className='fx__animated-text' data-fx-order='5'>
                       {commodity.avgProfit === 0
                         ? <span className='muted'>Insufficent data</span>
                         : <>
