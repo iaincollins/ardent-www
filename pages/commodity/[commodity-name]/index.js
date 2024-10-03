@@ -89,10 +89,7 @@ export default () => {
       if (!c) c = getAllCommodities().find(el => el.symbol.toLowerCase() === commodityName.toLowerCase())
       if (c && !c.totalDemand) c.totalDemand = 0
       if (c && !c.totalStock) c.totalStock = 0
-      if (c?.rare && c?.rareMarketId) {
-        c.rareMarket = await getCommodityFromMarket(c.rareMarketId, c.symbol)
-        console.log(c.rareMarket)
-      }
+      if (c?.rareMarketId) c.rareMarket = await getCommodityFromMarket(c.rareMarketId, c.symbol)
       setCommodity(c || null)
 
       getImportsAndExports()
@@ -121,7 +118,7 @@ export default () => {
       >
         <li><Link href='/'>Home</Link></li>
         <li><Link href='/commodities'>Commodities</Link></li>
-        <li><Link href={`/commodities/${commodity?.category.toLowerCase()}`}>{commodity?.category}</Link></li>
+        {commodity?.category && <li><Link href={`/commodities/${commodity?.category.toLowerCase()}`}>{commodity?.category}</Link></li>}
       </ul>
       {commodity === null && <><h1>Error: Not found</h1><p className='text-large clear'>Commodity not found.</p></>}
       {commodity &&
