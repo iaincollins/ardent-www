@@ -10,6 +10,8 @@ import CommodityImportOrders from 'components/commodity-import-orders'
 import CommodityExportOrders from 'components/commodity-export-orders'
 import { getAllCommodities } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
+import commodityDescriptions from 'lib/commodities/commodity-descriptions.json'
+
 import {
   API_BASE_URL,
   COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
@@ -23,6 +25,7 @@ export default () => {
   const [commodity, setCommodity] = useState()
   const [exports, setExports] = useState()
   const [imports, setImports] = useState()
+  const [rareMarket, setRareMarket] = useState()
 
   const tabs = ['importers', 'exporters']
 
@@ -72,7 +75,8 @@ export default () => {
   useEffect(() => {
     (async () => {
       setCommodity(undefined)
-
+      setRareMarket(undefined)
+    
       const commodityName = router.query?.['commodity-name']
       if (!commodityName) return
 
@@ -89,8 +93,8 @@ export default () => {
       if (!c) c = getAllCommodities().find(el => el.symbol.toLowerCase() === commodityName.toLowerCase())
       if (c && !c.totalDemand) c.totalDemand = 0
       if (c && !c.totalStock) c.totalStock = 0
-      if (c?.rareMarketId) c.rareMarket = await getCommodityFromMarket(c.rareMarketId, c.symbol)
       setCommodity(c || null)
+      if (c?.rareMarketId) setRareMarket(await getCommodityFromMarket(c.rareMarketId, c.symbol))
 
       getImportsAndExports()
     })()
@@ -168,12 +172,12 @@ export default () => {
                     </span>
                   </td>
                 </tr>
-                {commodity?.rareMarket?.stationName && commodity?.rareMarket?.systemName &&
+                {rareMarket?.stationName && rareMarket?.systemName &&
                   <tr>
                     <th>Exported by</th>
                     <td>
                       <span className='fx__animated-text' data-fx-order='4'>
-                        <Link href={`/system/${commodity?.rareMarket?.systemName}/`}>{commodity?.rareMarket?.stationName}, {commodity?.rareMarket?.systemName}</Link>
+                        <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
                       </span>
                     </td>
                   </tr>
@@ -227,18 +231,28 @@ export default () => {
                     </td>
                   </tr>
                 </>}
+                {commodityDescriptions[commodity.name] &&
+                  <tr>
+                    <th>
+                      Description
+                    </th>
+                    <td>
+                      <p style={{ margin: 0, textTransform: 'none' }}>
+                        {commodityDescriptions[commodity.name]}
+                      </p>
+                    </td>
+                  </tr>}
               {commodity.rare &&
-                <tr>
-                  <th>
-                    <i className='icon icarus-terminal-info' style={{ marginRight: '.25rem' }} />
-                    RARE GOODS
+                <tr className='muted'>
+                  <th style={{ fontSize: '.8rem' }}>
+                    <i className='icon icarus-terminal-info' style={{ position: 'relative',  top: '-.1rem', marginRight: '.25rem' }} />
+                    RARE
                   </th>
                   <td>
-                    <p style={{ margin: 0, textTransform: 'none' }}>
-                      Rare goods are usually only available in limited quantities from exclusive locations but can be sold almost anywhere.
-                    </p>
-                    <p style={{ margin: '.5rem 0 0 0', textTransform: 'none' }}>
-                      They fetch a higher price in stations that are further away from the system that produced them, typically fetching the
+                    <p style={{ margin: 0, textTransform: 'none', fontSize: '.8rem' }}>
+                      Rare items are usually only available in limited quantities from exclusive locations but can be sold almost anywhere.
+
+                      They fetch a higher price in stations that are further from the system that produced them, typically fetching the
                       the highest possible value around 150-200 ly away.
                     </p>
                   </td>
