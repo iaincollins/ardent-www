@@ -8,9 +8,9 @@ import CommodityTabOptions from 'components/tab-options/commodities'
 import Layout from 'components/layout'
 import CommodityImportOrders from 'components/commodity-import-orders'
 import CommodityExportOrders from 'components/commodity-export-orders'
-import { getAllCommodities } from 'lib/commodities'
+import listOfCommodities from 'lib/commodities/commodities.json'
 import animateTableEffect from 'lib/animate-table-effect'
-import commodityDescriptions from 'lib/commodities/commodity-descriptions.json'
+import commmoditiesWithDescriptions from 'lib/commodities/commodities.json'
 
 import {
   API_BASE_URL,
@@ -50,8 +50,8 @@ export default () => {
       c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
       c.maxProfit = c.maxSellPrice - c.minBuyPrice
       c.symbol = c.commodityName.toLowerCase()
-      c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-      c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+      c.category = listOfCommodities[c.symbol]?.category ?? ''
+      c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
       delete c.commodityId
       delete c.commodityName
     })
@@ -64,8 +64,8 @@ export default () => {
       c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
       c.maxProfit = c.maxSellPrice - c.minBuyPrice
       c.symbol = c.commodityName.toLowerCase()
-      c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
-      c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+      c.category = listOfCommodities[c.symbol]?.category ?? ''
+      c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
       delete c.commodityId
       delete c.commodityName
     })
@@ -86,11 +86,11 @@ export default () => {
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
         c.maxProfit = c.maxSellPrice - c.minBuyPrice
         c.symbol = c.commodityName.toLowerCase()
-        c.category = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? 'Unknown'
-        c.name = (getAllCommodities().find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
+        c.category = listOfCommodities[c.symbol]?.category ?? 'Insufficent data'
+        c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
         delete c.commodityName
       }
-      if (!c) c = getAllCommodities().find(el => el.symbol.toLowerCase() === commodityName.toLowerCase())
+      if (!c) c = listOfCommodities[commodityName.toLowerCase()]
       if (c && !c.totalDemand) c.totalDemand = 0
       if (c && !c.totalStock) c.totalStock = 0
       setCommodity(c || null)
@@ -144,7 +144,7 @@ export default () => {
                         {commodity.minSellPrice !== commodity.maxSellPrice &&
                           <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>}
                       </>
-                      : <span className='muted'>Insufficent data</span>}
+                      : <InsufficentData/>}
                   </span>
                 </td>
               </tr>
@@ -159,16 +159,16 @@ export default () => {
                         {commodity.minBuyPrice !== commodity.maxBuyPrice &&
                           <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>}
                       </>
-                      : <span className='muted'>Insufficent data</span>}
+                      : <InsufficentData/>}
                   </span>
                 </td>
               </tr>
-              {commodity?.rare && <>
+              {commodity?.rare && commodity?.rareMaxCount && <>
                 <tr>
                   <th>Export limit</th>
                   <td>
                     <span className='fx__animated-text' data-fx-order='3'>
-                      {commodity?.rareMaxCount ?? <span className='muted'>-</span>}
+                      {commodity.rareMaxCount}
                     </span>
                   </td>
                 </tr>
@@ -189,7 +189,7 @@ export default () => {
                   <td>
                     <span className='fx__animated-text' data-fx-order='5'>
                       {commodity.avgProfit === 0
-                        ? <span className='muted'>Insufficent data</span>
+                        ? <InsufficentData/>
                         : <>
                           {commodity.avgProfit.toLocaleString()} CR/T
                           {' '}
@@ -204,13 +204,15 @@ export default () => {
                     <th>Total demand</th>
                     <td>
                       <span className='fx__fade-in'>
+                      { commodity.totalDemand > 0 &&
                         <progress
                           max={Math.max(commodity.totalStock, commodity.totalDemand)}
                           value={commodity.totalDemand}
-                          style={{ maxWidth: '12rem', height: '1.5rem' }}
+                          style={{ maxWidth: '12rem', height: '1.25rem' }}
                         />
+                      }
                         <p style={{ margin: '0 0 .15rem 0' }}>
-                          {commodity.totalDemand > 0 ? <>{commodity.totalDemand.toLocaleString()} T</> : '-'}
+                          {commodity.totalDemand > 0 ? <small>{commodity.totalDemand.toLocaleString()} T</small> : <InsufficentData/>}
                         </p>
                       </span>
                     </td>
@@ -219,26 +221,28 @@ export default () => {
                     <th>Total supply</th>
                     <td>
                       <span className='fx__fade-in'>
-                        <progress
-                          max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                          value={commodity.totalStock}
-                          style={{ maxWidth: '12rem', height: '1.5rem' }}
-                        />
+                        { commodity.totalStock > 0 &&
+                          <progress
+                            max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                            value={commodity.totalStock}
+                            style={{ maxWidth: '12rem', height: '1.25rem' }}
+                          />
+                        }
                         <p style={{ margin: '0 0 .15rem 0' }}>
-                          <small />{commodity.totalStock > 0 ? <>{commodity.totalStock.toLocaleString()} T</> : '-'}
+                          {commodity.totalStock > 0 ? <small>{commodity.totalStock.toLocaleString()} T</small> : <InsufficentData/>}
                         </p>
                       </span>
                     </td>
                   </tr>
                 </>}
-                {commodityDescriptions[commodity.name] &&
+                {commmoditiesWithDescriptions[commodity.symbol]?.description &&
                   <tr>
                     <th>
                       Description
                     </th>
                     <td>
                       <p style={{ margin: 0, textTransform: 'none' }}>
-                        {commodityDescriptions[commodity.name]}
+                        {commmoditiesWithDescriptions[commodity.symbol]?.description}
                       </p>
                     </td>
                   </tr>}
@@ -337,3 +341,5 @@ async function getCommodityFromMarket(marketId, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/market/${marketId}/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
+
+const InsufficentData = () => <span style={{ opacity: .4 }}>Insufficent data</span>
