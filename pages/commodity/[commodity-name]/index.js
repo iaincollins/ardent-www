@@ -44,32 +44,40 @@ export default () => {
     setExports(undefined)
 
     const imports = await getImports(commodityName)
-    imports.forEach(c => {
-      c.key = c.commodityId
-      c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-      c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-      c.maxProfit = c.maxSellPrice - c.minBuyPrice
-      c.symbol = c.commodityName.toLowerCase()
-      c.category = listOfCommodities[c.symbol]?.category ?? ''
-      c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-      delete c.commodityId
-      delete c.commodityName
-    })
-    setImports(imports)
+    if (Array.isArray(imports)) {
+      imports.forEach(c => {
+        c.key = c.commodityId
+        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+        c.maxProfit = c.maxSellPrice - c.minBuyPrice
+        c.symbol = c.commodityName.toLowerCase()
+        c.category = listOfCommodities[c.symbol]?.category ?? ''
+        c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+        delete c.commodityId
+        delete c.commodityName
+      })
+      setImports(imports)
+    } else {
+      setImports([])
+    }
 
     const exports = await getExports(commodityName)
-    exports.forEach(c => {
-      c.key = c.commodityId
-      c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-      c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-      c.maxProfit = c.maxSellPrice - c.minBuyPrice
-      c.symbol = c.commodityName.toLowerCase()
-      c.category = listOfCommodities[c.symbol]?.category ?? ''
-      c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-      delete c.commodityId
-      delete c.commodityName
-    })
-    setExports(exports)
+    if (Array.isArray(exports)) {
+      exports.forEach(c => {
+        c.key = c.commodityId
+        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+        c.maxProfit = c.maxSellPrice - c.minBuyPrice
+        c.symbol = c.commodityName.toLowerCase()
+        c.category = listOfCommodities[c.symbol]?.category ?? ''
+        c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+        delete c.commodityId
+        delete c.commodityName
+      })
+      setExports(exports)
+    } else {
+      setExports([])
+    }
   }
 
   useEffect(() => {
@@ -302,12 +310,16 @@ async function getExports(commodityName) {
   const lastUpdatedFilterValue = window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
   const minVolumeFilterValue = window.localStorage?.getItem('minVolumeFilter') ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT
   const fleetCarrierFilterValue = window.localStorage?.getItem('fleetCarrierFilter') ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
+  const locationFilterValue = window.localStorage?.getItem('locationFilter') ?? null
+  const distanceFilterValue = window.localStorage?.getItem('distanceFilter') ?? null
 
   options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
   options.push(`minVolume=${minVolumeFilterValue}`)
   if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
   if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
-
+  if (locationFilterValue !== null)  options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
+  if (distanceFilterValue !== null)  options.push(`maxDistance=${distanceFilterValue}`)
+  
   if (options.length > 0) {
     url += `?${options.join('&')}`
   }
@@ -323,11 +335,15 @@ async function getImports(commodityName) {
   const lastUpdatedFilterValue = window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
   const minVolumeFilterValue = window.localStorage?.getItem('minVolumeFilter') ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT
   const fleetCarrierFilterValue = window.localStorage?.getItem('fleetCarrierFilter') ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
+  const locationFilterValue = window.localStorage?.getItem('locationFilter') ?? null
+  const distanceFilterValue = window.localStorage?.getItem('distanceFilter') ?? null
 
   options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
   options.push(`minVolume=${minVolumeFilterValue}`)
   if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
   if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
+  if (locationFilterValue !== null)  options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
+  if (distanceFilterValue !== null)  options.push(`maxDistance=${distanceFilterValue}`)
 
   if (options.length > 0) {
     url += `?${options.join('&')}`

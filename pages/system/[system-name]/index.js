@@ -16,7 +16,6 @@ import LocalCommodityImporters from 'components/local-commodity-importers'
 import LocalCommodityExporters from 'components/local-commodity-exporters'
 import NearbyCommodityImporters from 'components/nearby-commodity-importers'
 import NearbyCommodityExporters from 'components/nearby-commodity-exporters'
-import CommodityTabOptions from 'components/tab-options/commodities'
 import StationIcon from 'components/station-icon'
 import getSystemExports from 'lib/system-exports'
 import getSystemImports from 'lib/system-imports'
@@ -359,7 +358,7 @@ export default () => {
                 <span className='is-visible-mobile'>Near</span>
               </Tab>
             </TabList>
-            {tabIndex !== 2 && <CommodityTabOptions />}
+            {/* {tabIndex !== 2 && <CommodityTabOptions />} */}
             <TabPanel>
               {!importOrders && <div className='loading-bar loading-bar--tab' />}
               {importOrders &&

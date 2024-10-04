@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import {
+  API_BASE_URL,
   COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
   COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
   COMMODITY_FILTER_MIN_VOLUME_DEFAULT,
   COMMODITY_FILTER_LOCATION_DEFAULT,
-  COMMODITY_FILTER_DISTANCE_DEFAULT
+  COMMODITY_FILTER_DISTANCE_DEFAULT,
+  COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
 } from 'lib/consts'
 
 const ZERO_WIDTH_SPACE = '​' // Looking forward to regretting *this* later
@@ -29,7 +31,7 @@ export default () => {
 
   return (
     <div className='tab-options'>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={(e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent')); document.activeElement.blur() }}>
         <label>
           <span className='tab-options__label-text'>Updated</span>
           <select name='last-updated' value={lastUpdatedFilter}
@@ -102,6 +104,8 @@ export default () => {
                   }
                 }
               }
+              document.getElementById('locations-list').innerHTML = ''
+              window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent'))
             }}
             onClick={(e) => {
               e.target.setAttribute('previous-value', e.target.value.replace(/\u200B/g, '').trim())
@@ -109,15 +113,14 @@ export default () => {
               document.getElementById('locations-list').innerHTML = `
                 ${DEFAULT_LOCATION_OPTIONS.map(location => `<option>${location}</option>`)}
               `
+              e.target.removeAttribute('readonly')
             }}
-            onChange={(e) => {
+            onChange={async (e) => {
               let blurOnEnd = false
               let locationValue = e.target.value.replace(/\u200B/g, '').trimStart()
-              document.getElementById('locations-list').innerHTML = `
-                ${DEFAULT_LOCATION_OPTIONS.map(location => `<option>${location}</option>`)}
-              `
 
               if (locationValue.trim() == '' || locationValue.trim() == COMMODITY_FILTER_LOCATION_DEFAULT) {
+                e.target.setAttribute('readonly', false)
                 locationValue = ''
                 window.localStorage.removeItem('distanceFilter')
                 setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
@@ -132,6 +135,17 @@ export default () => {
                 window.localStorage.setItem('distanceFilter', 100)
                 setDistanceFilter(100)
                 blurOnEnd = true
+              } else {
+                if (distanceFilter == COMMODITY_FILTER_DISTANCE_DEFAULT) {
+                  setDistanceFilter(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
+                  window.localStorage.setItem('distanceFilter', COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
+                }
+                const nearbySystems = await findSystemsByName(locationValue.trim())
+                console.log('nearbySystems', locationValue, nearbySystems)
+                document.getElementById('locations-list').innerHTML = `
+                  ${DEFAULT_LOCATION_OPTIONS.map(location => `<option>${location}</option>`)}
+                  ${nearbySystems.slice(0, 10).map(system => `<option>${system.systemName}</option>`)}
+                `
               }
 
               if (locationValue.trim() == '' || locationValue.trim() === COMMODITY_FILTER_LOCATION_DEFAULT) {
@@ -146,6 +160,7 @@ export default () => {
               // (otherwise is bugs out and sticks around in Chrome, even after
               // the target input has lost focus) 
               if (blurOnEnd) setTimeout(() => e.target.blur(), 100)
+
             }}
           />
           <datalist id='locations-list'>
@@ -156,13 +171,14 @@ export default () => {
         <label>
           <span className='tab-options__label-text'>Distance</span>
           <select id='distance' name='distance'
-            disabled={locationFilter == COMMODITY_FILTER_LOCATION_DEFAULT}
+            disabled={locationFilter == COMMODITY_FILTER_LOCATION_DEFAULT || locationFilter == ZERO_WIDTH_SPACE}
             value={distanceFilter}
             onChange={(e) => {
               setDistanceFilter(e.target.value)
                 ; (e.target.value === COMMODITY_FILTER_DISTANCE_DEFAULT)
                   ? window.localStorage.removeItem('distanceFilter')
                   : window.localStorage.setItem('distanceFilter', e.target.value)
+              window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent'))
             }}
           >
             <option value={COMMODITY_FILTER_DISTANCE_DEFAULT}>Any distance</option>
@@ -179,4 +195,10 @@ export default () => {
       </form>
     </div>
   )
+}
+
+async function findSystemsByName(systemName) {
+  if (systemName.length < 3) return []
+  const res = await fetch(`${API_BASE_URL}/v1/search/system/name/${systemName}/`)
+  return await res.json()
 }

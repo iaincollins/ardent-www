@@ -30,7 +30,7 @@ export default ({ commodities }) => {
           className: 'max-width-mobile',
           render: (v, r) =>
             <>
-              <i className='icon icarus-terminal-star' />{v}<br />
+              <i className='icon icarus-terminal-star' />{v}{r?.distance ? <small className='is-visible-mobile'> {r.distance} ly</small>: ''}<br/>
               <small>
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 {(r?.distanceToArrival ?? null) !== null && <small> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
@@ -51,6 +51,16 @@ export default ({ commodities }) => {
                 <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)}</small>
               </div>
             </>
+        },
+        {
+          title: 'Distance',
+          dataIndex: 'distance',
+          key: 'distance',
+          align: 'right',
+          width: 110,
+          className: 'is-hidden-mobile',
+          render: (v) => <span style={{ opacity: 0.5 }}>{v} ly</span>,
+          hidden: !window.localStorage?.getItem('distanceFilter')
         },
         {
           title: 'Updated',
