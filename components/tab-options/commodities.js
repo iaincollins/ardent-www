@@ -141,7 +141,6 @@ export default () => {
                   window.localStorage.setItem('distanceFilter', COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
                 }
                 const nearbySystems = await findSystemsByName(locationValue.trim())
-                console.log('nearbySystems', locationValue, nearbySystems)
                 document.getElementById('locations-list').innerHTML = `
                   ${DEFAULT_LOCATION_OPTIONS.map(location => `<option>${location}</option>`)}
                   ${nearbySystems.slice(0, 10).map(system => `<option>${system.systemName}</option>`)}

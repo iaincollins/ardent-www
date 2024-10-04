@@ -35,6 +35,7 @@ export default () => {
     const basePath = path.basename(router.pathname)
     if (basePath === 'importers') setTabIndex(0)
     if (basePath === 'exporters') setTabIndex(1)
+    updateUrlWithFilterOptions(router)
   }, [router.pathname])
 
   async function getImportsAndExports() {
@@ -42,6 +43,8 @@ export default () => {
     if (!commodityName) return
     setImports(undefined)
     setExports(undefined)
+
+    updateUrlWithFilterOptions(router)
 
     const imports = await getImports(commodityName)
     if (Array.isArray(imports)) {
@@ -84,7 +87,7 @@ export default () => {
     (async () => {
       setCommodity(undefined)
       setRareMarket(undefined)
-    
+
       const commodityName = router.query?.['commodity-name']
       if (!commodityName) return
 
@@ -103,6 +106,8 @@ export default () => {
       if (c && !c.totalStock) c.totalStock = 0
       setCommodity(c || null)
       if (c?.rareMarketId) setRareMarket(await getCommodityFromMarket(c.rareMarketId, c.symbol))
+
+      loadFilterOptionsFromUrl(router)
 
       getImportsAndExports()
     })()
@@ -152,7 +157,7 @@ export default () => {
                         {commodity.minSellPrice !== commodity.maxSellPrice &&
                           <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>}
                       </>
-                      : <InsufficentData/>}
+                      : <InsufficentData />}
                   </span>
                 </td>
               </tr>
@@ -167,7 +172,7 @@ export default () => {
                         {commodity.minBuyPrice !== commodity.maxBuyPrice &&
                           <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>}
                       </>
-                      : <InsufficentData/>}
+                      : <InsufficentData />}
                   </span>
                 </td>
               </tr>
@@ -197,7 +202,7 @@ export default () => {
                   <td>
                     <span className='fx__animated-text' data-fx-order='5'>
                       {commodity.avgProfit === 0
-                        ? <InsufficentData/>
+                        ? <InsufficentData />
                         : <>
                           {commodity.avgProfit.toLocaleString()} CR/T
                           {' '}
@@ -212,15 +217,15 @@ export default () => {
                     <th>Total demand</th>
                     <td>
                       <span className='fx__fade-in'>
-                      { commodity.totalDemand > 0 &&
-                        <progress
-                          max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                          value={commodity.totalDemand}
-                          style={{ maxWidth: '12rem', height: '1.25rem' }}
-                        />
-                      }
+                        {commodity.totalDemand > 0 &&
+                          <progress
+                            max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                            value={commodity.totalDemand}
+                            style={{ maxWidth: '12rem', height: '1.25rem' }}
+                          />
+                        }
                         <p style={{ margin: '0 0 .15rem 0', lineHeight: '0.8rem' }}>
-                          {commodity.totalDemand > 0 ? <small>{commodity.totalDemand.toLocaleString()} T</small> : <InsufficentData/>}
+                          {commodity.totalDemand > 0 ? <small>{commodity.totalDemand.toLocaleString()} T</small> : <InsufficentData />}
                         </p>
                       </span>
                     </td>
@@ -229,7 +234,7 @@ export default () => {
                     <th>Total supply</th>
                     <td>
                       <span className='fx__fade-in'>
-                        { commodity.totalStock > 0 &&
+                        {commodity.totalStock > 0 &&
                           <progress
                             max={Math.max(commodity.totalStock, commodity.totalDemand)}
                             value={commodity.totalStock}
@@ -237,27 +242,27 @@ export default () => {
                           />
                         }
                         <p style={{ margin: '0 0 .15rem 0', lineHeight: '0.8rem' }}>
-                          {commodity.totalStock > 0 ? <small>{commodity.totalStock.toLocaleString()} T</small> : <InsufficentData/>}
+                          {commodity.totalStock > 0 ? <small>{commodity.totalStock.toLocaleString()} T</small> : <InsufficentData />}
                         </p>
                       </span>
                     </td>
                   </tr>
                 </>}
-                {commmoditiesWithDescriptions[commodity.symbol]?.description &&
-                  <tr>
-                    <th>
-                      Description
-                    </th>
-                    <td>
-                      <p style={{ margin: 0, textTransform: 'none' }}>
-                        {commmoditiesWithDescriptions[commodity.symbol]?.description}
-                      </p>
-                    </td>
-                  </tr>}
+              {commmoditiesWithDescriptions[commodity.symbol]?.description &&
+                <tr>
+                  <th>
+                    Description
+                  </th>
+                  <td>
+                    <p style={{ margin: 0, textTransform: 'none' }}>
+                      {commmoditiesWithDescriptions[commodity.symbol]?.description}
+                    </p>
+                  </td>
+                </tr>}
               {commodity.rare &&
                 <tr className='muted'>
                   <th style={{ fontSize: '.8rem' }}>
-                    <i className='icon icarus-terminal-info' style={{ position: 'relative',  top: '-.1rem', marginRight: '.25rem' }} />
+                    <i className='icon icarus-terminal-info' style={{ position: 'relative', top: '-.1rem', marginRight: '.25rem' }} />
                     RARE
                   </th>
                   <td>
@@ -317,9 +322,9 @@ async function getExports(commodityName) {
   options.push(`minVolume=${minVolumeFilterValue}`)
   if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
   if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
-  if (locationFilterValue !== null)  options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
-  if (distanceFilterValue !== null)  options.push(`maxDistance=${distanceFilterValue}`)
-  
+  if (locationFilterValue !== null) options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
+  if (distanceFilterValue !== null) options.push(`maxDistance=${distanceFilterValue}`)
+
   if (options.length > 0) {
     url += `?${options.join('&')}`
   }
@@ -342,8 +347,8 @@ async function getImports(commodityName) {
   options.push(`minVolume=${minVolumeFilterValue}`)
   if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
   if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
-  if (locationFilterValue !== null)  options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
-  if (distanceFilterValue !== null)  options.push(`maxDistance=${distanceFilterValue}`)
+  if (locationFilterValue !== null) options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
+  if (distanceFilterValue !== null) options.push(`maxDistance=${distanceFilterValue}`)
 
   if (options.length > 0) {
     url += `?${options.join('&')}`
@@ -359,3 +364,40 @@ async function getCommodityFromMarket(marketId, commodityName) {
 }
 
 const InsufficentData = () => <span style={{ opacity: .4 }}>Insufficent data</span>
+
+function loadFilterOptionsFromUrl(router) {
+  if (router?.query?.maxDaysAgo) window.localStorage?.setItem('lastUpdatedFilter', router.query.maxDaysAgo)
+  if (router?.query?.fleetCarriers) window.localStorage?.setItem('fleetCarrierFilter', router.query.fleetCarriers)
+  if (router?.query?.minVolume) window.localStorage?.setItem('minVolumeFilter', router.query.minVolume)
+  if (router?.query?.systemName) window.localStorage?.setItem('locationFilter', router.query.systemName)
+  if (router?.query?.maxDistance) window.localStorage?.setItem('distanceFilter', router.query.maxDistance)
+}
+
+function updateUrlWithFilterOptions(router) {
+  const commodityName = window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
+
+  let activeTab = 'importers'
+  if (window?.location?.pathname?.endsWith('exporters')) activeTab = 'exporters'
+
+  let url = `/commodity/${commodityName}/${activeTab}`
+  const options = []
+
+  const lastUpdatedFilterValue = window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
+  const minVolumeFilterValue = window.localStorage?.getItem('minVolumeFilter') ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+  const fleetCarrierFilterValue = window.localStorage?.getItem('fleetCarrierFilter') ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
+  const locationFilterValue = window.localStorage?.getItem('locationFilter') ?? null
+  const distanceFilterValue = window.localStorage?.getItem('distanceFilter') ?? null
+
+  options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
+  options.push(`minVolume=${minVolumeFilterValue}`)
+  if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
+  if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
+  if (locationFilterValue !== null) options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
+  if (distanceFilterValue !== null) options.push(`maxDistance=${distanceFilterValue}`)
+
+  if (options.length > 0) {
+    url += `?${options.join('&')}`
+  }
+
+  return router.push(url)
+}

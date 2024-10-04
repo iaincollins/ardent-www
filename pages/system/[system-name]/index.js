@@ -81,7 +81,7 @@ export default () => {
           if (system.systemName === 'Sol') {
             system.tradeZoneLocation = `Systems within 200 Ly of Sol are known as the Core Systems`
           } else {
-            system.tradeZoneLocation = <>{system.systemName} is the Core Systems<br/>{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
+            system.tradeZoneLocation = <>{system.systemName} is the Core Systems<br />{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
           }
         } else if (distance(systemCoordinates, SOL_COORDINATES) <= 400) {
           system.tradeZone = 'Periphery'
@@ -107,51 +107,51 @@ export default () => {
       setSystem(system)
 
       if (system) {
-        ;(async () => {
+        ; (async () => {
           const stations = await getStationsInSystem(systemName)
           setStationsInSystem(stations.filter(
             station => station.stationType !== 'Fleet Carrier' &&
-                       station.stationType !== 'Odyssey Settlement' &&
-                       station.stationType !== 'Megaship' &&
-                       station.stationType !== null
+              station.stationType !== 'Odyssey Settlement' &&
+              station.stationType !== 'Megaship' &&
+              station.stationType !== null
           ))
           setSettlementsInSystem(stations.filter(station => station.stationType === 'Odyssey Settlement' || station.stationType === null))
           setFleetCarriersInSystem(stations.filter(station => station.stationType === 'Fleet Carrier'))
           setMegashipsInSystem(stations.filter(station => station.stationType === 'Megaship'))
         })()
 
-        ;(async () => {
-          const importOrders = await getSystemImports(systemName)
-          setImportOrders(importOrders)
-          importOrders.forEach(order => {
-            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-              mostRecentUpdatedAt = order.updatedAt
-            }
-          })
-          setLastUpdatedAt(mostRecentUpdatedAt)
-        })()
+          ; (async () => {
+            const importOrders = await getSystemImports(systemName)
+            setImportOrders(importOrders)
+            importOrders.forEach(order => {
+              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+                mostRecentUpdatedAt = order.updatedAt
+              }
+            })
+            setLastUpdatedAt(mostRecentUpdatedAt)
+          })()
 
-        ;(async () => {
-          const exportOrders = await getSystemExports(systemName)
-          setExportOrders(exportOrders)
-          exportOrders.forEach(order => {
-            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-              mostRecentUpdatedAt = order.updatedAt
-            }
-          })
-          setLastUpdatedAt(mostRecentUpdatedAt)
-        })()
+          ; (async () => {
+            const exportOrders = await getSystemExports(systemName)
+            setExportOrders(exportOrders)
+            exportOrders.forEach(order => {
+              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+                mostRecentUpdatedAt = order.updatedAt
+              }
+            })
+            setLastUpdatedAt(mostRecentUpdatedAt)
+          })()
 
-        ;(async () => {
-          const nearbySystems = await getNearbySystems(systemName)
-          nearbySystems.forEach(s => {
-            s.distance = distance(
-              [system.systemX, system.systemY, system.systemZ],
-              [s.systemX, s.systemY, s.systemZ]
-            )
-          })
-          setNearbySystems(nearbySystems.filter((s, i) => i < 100))
-        })()
+          ; (async () => {
+            const nearbySystems = await getNearbySystems(systemName)
+            nearbySystems.forEach(s => {
+              s.distance = distance(
+                [system.systemX, system.systemY, system.systemZ],
+                [s.systemX, s.systemY, s.systemZ]
+              )
+            })
+            setNearbySystems(nearbySystems.filter((s, i) => i < 100))
+          })()
       }
     })()
   }, [router.query['system-name']])
@@ -250,7 +250,7 @@ export default () => {
                                 {station.stationName}
                               </div>
                               <div className='system__entity-information'>
-                                {station.bodyName && <small><i className='icon icarus-terminal-planet' style={{position: 'relative', top: '-.1rem'}}/>{station.bodyName}</small>}
+                                {station.bodyName && <small><i className='icon icarus-terminal-planet' style={{ position: 'relative', top: '-.1rem' }} />{station.bodyName}</small>}
                                 {station.bodyName && station.distanceToArrival !== null && <small>{' ('}</small>}
                                 {station.distanceToArrival !== null && <small>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
                                 {station.bodyName && station.distanceToArrival !== null && <small>{')'}</small>}
@@ -337,10 +337,10 @@ export default () => {
           <Tabs
             selectedIndex={tabIndex}
             onSelect={
-                (index) => {
-                  router.push(`/system/${router.query['system-name']}/${tabs[index]}`)
-                }
+              (index) => {
+                router.push(`/system/${router.query['system-name']}/${tabs[index]}`)
               }
+            }
           >
             <TabList>
               <Tab>
@@ -435,7 +435,7 @@ export default () => {
                     expandedRowRender: r =>
                       <>
                         <p style={{ marginTop: '.5rem' }}>
-                          Demand for <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> in <strong>{r.systemName}</strong>
+                          Demand for <Link href={`/commodity/${r.symbol}/importers?systemName=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name} in {r.systemName}</Link>
                         </p>
                         <LocalCommodityImporters
                           commodityName={r.name}
@@ -534,7 +534,7 @@ export default () => {
                     expandedRowRender: r =>
                       <>
                         <p style={{ marginTop: '.5rem' }}>
-                          Stock of <Link href={`/commodity/${r.symbol}`}>{r.name}</Link> in <strong>{r.systemName}</strong>
+                          Stock of <Link href={`/commodity/${r.symbol}/exporters?systemName=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name} in {r.systemName}</Link>
                         </p>
                         <LocalCommodityExporters
                           commodityName={r.name}
@@ -597,18 +597,18 @@ export default () => {
   )
 }
 
-async function getSystem (systemName) {
+async function getSystem(systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getStationsInSystem (systemName) {
+async function getStationsInSystem(systemName) {
   // @TODO No API endpoint for stations yet, so using 'markets' endpoint
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/stations`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getNearbySystems (systemName) {
+async function getNearbySystems(systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=25`)
   return await res.json()
 }
