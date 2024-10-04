@@ -89,9 +89,14 @@
     padding-left: .25rem;
   }
 
-
+  .tab-options__label-text {
+    display: inline-block;
+    width: 5rem;
+    text-align: right;
+    padding-right: .25em;
+  }
   .tab-options form label {
     display: block;
-    margin-top: .5rem;
+    margin-right: 0;
   }
 }

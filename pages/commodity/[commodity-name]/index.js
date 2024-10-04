@@ -211,7 +211,7 @@ export default () => {
                           style={{ maxWidth: '12rem', height: '1.25rem' }}
                         />
                       }
-                        <p style={{ margin: '0 0 .15rem 0' }}>
+                        <p style={{ margin: '0 0 .15rem 0', lineHeight: '0.8rem' }}>
                           {commodity.totalDemand > 0 ? <small>{commodity.totalDemand.toLocaleString()} T</small> : <InsufficentData/>}
                         </p>
                       </span>
@@ -228,7 +228,7 @@ export default () => {
                             style={{ maxWidth: '12rem', height: '1.25rem' }}
                           />
                         }
-                        <p style={{ margin: '0 0 .15rem 0' }}>
+                        <p style={{ margin: '0 0 .15rem 0', lineHeight: '0.8rem' }}>
                           {commodity.totalStock > 0 ? <small>{commodity.totalStock.toLocaleString()} T</small> : <InsufficentData/>}
                         </p>
                       </span>
