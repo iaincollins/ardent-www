@@ -1,12 +1,13 @@
 {
   "name": "ardent-www",
-  "version": "0.55.1",
+  "version": "0.55.2",
   "description": "Ardent Industry",
   "main": "index.js",
   "scripts": {
     "start": "npx next start -p 3000",
     "build": "npx next build",
     "dev": "npx next dev -p 3000",
+    "dev:api": "cross-env API_BASE_URL=http://localhost:3001/api npx next dev -p 3000",
     "lint": "npx standard --fix"
   },
   "repository": {
@@ -22,6 +23,7 @@
   "dependencies": {
     "@react-three/fiber": "^8.13.6",
     "byte-size": "^9.0.0",
+    "cross-env": "^7.0.3",
     "next": "^14.2.13",
     "rc-table": "^7.32.1",
     "react": "^18.2.0",
