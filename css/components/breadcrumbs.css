@@ -19,15 +19,16 @@
   margin-left: -.59rem;
   z-index: -3;
   transform: rotate(45deg);
-  background-color: var(--color-primary-darker);
+  background-color: var(--color-primary);
+  color: var(--color-text-inverted);
 }
 
 .breadcrumbs li {
 	padding: .25rem 0 .25rem 1.5rem;
 	position: relative;
-  display: inline-block;
-  background-color: var(--color-primary);
-  color: var(--color-text-inverted);
+ display: inline-block;
+
+  background-color: var(--color-primary-darker);
   text-shadow: 0 0 .7rem rgb(0,0,0);
   text-transform: uppercase;
   font-family: 'Jura';
@@ -37,7 +38,7 @@
 }
 
 .breadcrumbs li a {
-  color: var(--color-text-inverted);
+  color: var(--color-text);
   text-decoration: none;
   pointer-events: all;
   border: none !important;
@@ -63,12 +64,13 @@
 }
 
 .breadcrumbs li:last-child {
-  background-color: var(--color-primary-darker);
+  background-color: var(--color-primary);
+  color: var(--color-text-inverted);
   padding-right: .75rem;
 }
 
 .breadcrumbs li:last-child a {
-  color: var(--color-text);
+  color: var(--color-text-inverted);
   opacity: .8;
 }
 
@@ -80,18 +82,20 @@
 	height: 1.75rem;
 	width: .75rem;
   left: 0;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-darker);
 }
 
 .breadcrumbs li:not(:first-child)::before {
   position: absolute;
 	content: '';
 	display: inline-block;
-  top: .24rem;
-	height: 1.2rem;
-	width: 1.2rem;
-  left: .15rem;
+  top: .15rem;
+	height: 1rem;
+	width: 1rem;
+  left: .1rem;
   transform: rotate(45deg);
-  background-color: var(--color-primary);
-  box-shadow: .1rem -.1rem .5rem rgba(0,0,0,.3);
+  zoom: 1.25;
+  background-color: var(--color-primary-darker);
+  border-top: .1rem solid rgba(0,0,0,.5);
+  border-right: .1rem solid rgba(0,0,0,.5);
 }
