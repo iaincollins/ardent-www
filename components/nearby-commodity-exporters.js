@@ -91,7 +91,7 @@ export default ({ commodity }) => {
                         </tr>
                       </tbody>
                     </table>
-                    <small style={{ textTransform: 'none', opacity: 0.5 }}>Updated {timeBetweenTimestamps(r.updatedAt)}</small>
+                    <small style={{ textTransform: 'none', opacity: 0.5 }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
                   </div>
                 </>
             },

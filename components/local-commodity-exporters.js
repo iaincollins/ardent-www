@@ -35,7 +35,7 @@ export default ({ commodityOrders }) => {
                         </tr>
                       </tbody>
                     </table>
-                    <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)}</small>
+                    <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
                   </div>
                 </>
             },

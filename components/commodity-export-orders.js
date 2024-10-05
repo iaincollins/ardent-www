@@ -30,10 +30,12 @@ export default ({ commodities }) => {
           className: 'max-width-mobile',
           render: (v, r) =>
             <>
-              <i className='icon icarus-terminal-star' />{v}{r?.distance ? <small className='is-visible-mobile text-no-transform'> {r.distance} ly</small>: ''}<br/>
-              <small>
-                {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+              <StationIcon stationType={r.stationType} />
+              {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+              {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+              <small className='is-visible-mobile' style={{ display: 'block', paddingTop: '0.25rem'}}>
+                {r.systemName}
+                {r?.distance ? <span className='text-no-transform'>, {r.distance} ly</span>: ''}
               </small>
               <div className='is-visible-mobile'>
                 <table className='data-table--mini data-table--compact two-column-table'>
@@ -48,9 +50,17 @@ export default ({ commodities }) => {
                     </tr>
                   </tbody>
                 </table>
-                <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)}</small>
+                <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
               </div>
             </>
+        },
+        {
+          title: 'System',
+          dataIndex: 'systemName',
+          key: 'systemName',
+          align: 'right',
+          className: 'is-hidden-mobile',
+          render: (v) =>  <span style={{ opacity: 0.5 }}>{v}</span>
         },
         {
           title: 'Distance',
@@ -160,7 +170,7 @@ function ExpandedRow ({ r }) {
                       </tr>
                     </tbody>
                   </table>
-                  <small style={{ textTransform: 'none' }}>Updated {timeBetweenTimestamps(r.updatedAt)}</small>
+                  <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
                 </div>
               </>
           },
