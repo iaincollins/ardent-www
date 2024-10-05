@@ -435,7 +435,7 @@ export default () => {
                     expandedRowRender: r =>
                       <>
                         <p style={{ marginTop: '.5rem' }}>
-                          Demand for <Link href={`/commodity/${r.symbol}/importers?systemName=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name} in {r.systemName}</Link>
+                          Demand for <Link href={`/commodity/${r.symbol}/importers?systemName=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name}</Link> in {r.systemName}
                         </p>
                         <LocalCommodityImporters
                           commodityName={r.name}
@@ -534,7 +534,7 @@ export default () => {
                     expandedRowRender: r =>
                       <>
                         <p style={{ marginTop: '.5rem' }}>
-                          Stock of <Link href={`/commodity/${r.symbol}/exporters?systemName=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name} in {r.systemName}</Link>
+                          Stock of <Link href={`/commodity/${r.symbol}/exporters?systemName=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name}</Link> in {r.systemName}
                         </p>
                         <LocalCommodityExporters
                           commodityName={r.name}
