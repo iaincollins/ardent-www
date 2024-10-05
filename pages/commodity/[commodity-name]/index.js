@@ -35,7 +35,11 @@ export default () => {
     const basePath = path.basename(router.pathname)
     if (basePath === 'importers') setTabIndex(0)
     if (basePath === 'exporters') setTabIndex(1)
-    updateUrlWithFilterOptions(router)
+
+    // This check ensures that updateUrlWithFilterOptions() is not called
+    // when the page loads (only on subsequent changes), so that it doesn't
+    // conflict and overwrite the behaviour of loadFilterOptionsFromUrl()
+    if (router?.query?.['commodity-name']) updateUrlWithFilterOptions(router)
   }, [router.pathname])
 
   async function getImportsAndExports() {
