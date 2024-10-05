@@ -35,7 +35,7 @@ export default ({ commodities }) => {
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
               <small className='is-visible-mobile' style={{ display: 'block', paddingTop: '0.25rem'}}>
                 {r.systemName}
-                {r?.distance ? <span className='text-no-transform'>, {r.distance} ly</span>: ''}
+                {r?.distance ? <span className='text-no-transform'>, {r.distance.toLocaleString()} ly</span>: ''}
               </small>
               <div className='is-visible-mobile'>
                 <table className='data-table--mini data-table--compact two-column-table'>
@@ -69,8 +69,8 @@ export default ({ commodities }) => {
           align: 'right',
           width: 110,
           className: 'is-hidden-mobile',
-          render: (v) => <span style={{ opacity: 0.5 }}>{v} ly</span>,
-          hidden: !window.localStorage?.getItem('distanceFilter')
+          render: (v) => <span style={{ opacity: 0.5 }}>{v.toLocaleString()} ly</span>,
+          hidden: !window.localStorage?.getItem('locationFilter')
         },
         {
           title: 'Updated',
