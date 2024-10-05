@@ -180,26 +180,6 @@ export default () => {
                   </span>
                 </td>
               </tr>
-              {commodity?.rare && commodity?.rareMaxCount && <>
-                <tr>
-                  <th>Export limit</th>
-                  <td>
-                    <span className='fx__animated-text' data-fx-order='3'>
-                      {commodity.rareMaxCount}
-                    </span>
-                  </td>
-                </tr>
-                {rareMarket?.stationName && rareMarket?.systemName &&
-                  <tr>
-                    <th>Exported by</th>
-                    <td>
-                      <span className='fx__animated-text' data-fx-order='4'>
-                        <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
-                      </span>
-                    </td>
-                  </tr>
-                }
-              </>}
               {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
                 <tr>
                   <th>Typical profit</th>
@@ -215,6 +195,26 @@ export default () => {
                     </span>
                   </td>
                 </tr>}
+              {commodity?.rare && commodity?.rareMaxCount && <>
+                <tr>
+                  <th>Export limit</th>
+                  <td>
+                    <span className='fx__animated-text' data-fx-order='3'>
+                      {commodity.rareMaxCount}
+                    </span>
+                  </td>
+                </tr>
+                {rareMarket?.stationName && rareMarket?.systemName &&
+                  <tr>
+                    <th>Exported by</th>
+                    <td>
+                      <span className='fx__animated-text text-no-transform' data-fx-order='4'>
+                        <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </>}
               {!commodity.rare &&
                 <>
                   <tr>

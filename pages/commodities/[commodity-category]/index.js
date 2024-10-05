@@ -96,9 +96,10 @@ export default function Page(props) {
                     render: (v, r) =>
                       <>
                         <i className='icon icarus-terminal-cargo' />
-                        {v}{r.market_id && <>{' '}<span className='muted'>(Rare)</span></>}<br />
+                        {v}<br />
                         <small>
                           {r.category}
+                          {r.market_id && <>, RARE</>}
                         </small>
                         <div className='is-visible-mobile'>
                           <table className='data-table--mini data-table--compact two-column-table'>

@@ -19,6 +19,7 @@ import NearbyCommodityExporters from 'components/nearby-commodity-exporters'
 import StationIcon from 'components/station-icon'
 import getSystemExports from 'lib/system-exports'
 import getSystemImports from 'lib/system-imports'
+import commmoditiesWithDescriptions from 'lib/commodities/commodities.json'
 
 import {
   API_BASE_URL,
@@ -38,6 +39,7 @@ export default () => {
   const [exportOrders, setExportOrders] = useState()
   const [lastUpdatedAt, setLastUpdatedAt] = useState()
   const [tabIndex, setTabIndex] = useState(0)
+  const [rareGoods, setRareGoods] = useState([])
 
   const tabs = ['imports', 'exports', 'nearby']
 
@@ -118,27 +120,55 @@ export default () => {
           setSettlementsInSystem(stations.filter(station => station.stationType === 'Odyssey Settlement' || station.stationType === null))
           setFleetCarriersInSystem(stations.filter(station => station.stationType === 'Fleet Carrier'))
           setMegashipsInSystem(stations.filter(station => station.stationType === 'Megaship'))
+
+          const marketIds = stations.map(s => s.marketId)
+          const rareItems = []
+          for (const [commoditySymbol, commodity] of Object.entries(commmoditiesWithDescriptions)) {
+            if (marketIds.includes(parseInt(commodity.market_id)) && commodity.rare) {
+              rareItems.push({
+                stationName: stations.filter(s => s.marketId === parseInt(commodity.market_id))[0].stationName,
+                ...commodity
+            })
+            }
+          }
+          setRareGoods(rareItems)
         })()
 
           ; (async () => {
-            const importOrders = await getSystemImports(systemName)
-            setImportOrders(importOrders)
-            importOrders.forEach(order => {
+            let importOrders = await getSystemImports(systemName)
+            importOrders.forEach((order, i) => {
               if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
                 mostRecentUpdatedAt = order.updatedAt
               }
+              // Enrich order data with commodity metadata
+              if (commmoditiesWithDescriptions[order.symbol]) {
+                importOrders[i] = {
+                  ...commmoditiesWithDescriptions[order.symbol],
+                  ...order
+                }
+              }
             })
+            importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items list
+            setImportOrders(importOrders)
             setLastUpdatedAt(mostRecentUpdatedAt)
           })()
 
           ; (async () => {
-            const exportOrders = await getSystemExports(systemName)
-            setExportOrders(exportOrders)
-            exportOrders.forEach(order => {
+            let exportOrders = await getSystemExports(systemName)
+            exportOrders.forEach((order, i) => {
               if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
                 mostRecentUpdatedAt = order.updatedAt
               }
+              // Enrich order data with commodity metadata
+              if (commmoditiesWithDescriptions[order.symbol]) {
+                exportOrders[i] = {
+                  ...commmoditiesWithDescriptions[order.symbol],
+                  ...order
+                }
+              }
             })
+            exportOrders = exportOrders.filter(order => !order.rare) // Filter 'Rare' items list
+            setExportOrders(exportOrders)
             setLastUpdatedAt(mostRecentUpdatedAt)
           })()
 
@@ -332,6 +362,16 @@ export default () => {
                     : <span className='muted'>...</span>}
                 </td>
               </tr>
+              {rareGoods.length > 0 && <tr>
+                <th>Rare export</th>
+                <td>
+                  {rareGoods.map(rare => <span className='text-no-transform'>
+                    {rare.stationName}, {system.systemName} is the exlusive exporter of <Link href={`/commodity/${rare.symbol}`}>{rare.name}</Link>.
+                    {' '}
+                    {rare?.description}
+                  </span>)}
+                </td>
+              </tr>}
             </tbody>
           </table>
           <Tabs
@@ -475,6 +515,7 @@ export default () => {
                           <i className='icon icarus-terminal-cargo' />{v}<br />
                           <small>{r.exportOrders.length === 1 ? '1 exporter ' : `${r.exportOrders.length} exporters`}</small>
                           {r?.producer === true && <small> | Producer</small>}
+                          {r?.rare === true && <small> | Rare</small>}
                           <div className='is-visible-mobile'>
                             <table className='data-table--mini two-column-table data-table--compact'>
                               <tbody style={{ textTransform: 'uppercase' }}>
