@@ -21,7 +21,7 @@ export default ({ commodityOrders }) => {
                 <>
                   <StationIcon stationType={r.stationType} />
                   {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                  {r.distanceToArrival !== null && <small> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                  {r.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                   <div className='is-visible-mobile'>
                     <table className='data-table--mini data-table--compact two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>

@@ -222,7 +222,7 @@ export default () => {
                                 {station.stationName}
                               </div>
                               <div className='system__entity-information'>
-                                {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                                {station.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
                               </div>
                             </div>
                           </Fragment>
@@ -252,7 +252,7 @@ export default () => {
                               <div className='system__entity-information'>
                                 {station.bodyName && <small><i className='icon icarus-terminal-planet' style={{ position: 'relative', top: '-.1rem' }} />{station.bodyName}</small>}
                                 {station.bodyName && station.distanceToArrival !== null && <small>{' ('}</small>}
-                                {station.distanceToArrival !== null && <small>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                                {station.distanceToArrival !== null && <small className='text-no-transform'>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
                                 {station.bodyName && station.distanceToArrival !== null && <small>{')'}</small>}
                               </div>
                             </div>
@@ -281,7 +281,7 @@ export default () => {
                                 {station.stationName}
                               </div>
                               <div className='system__entity-information'>
-                                {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                                {station.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
                                 {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
                                 {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
                               </div>
@@ -311,7 +311,7 @@ export default () => {
                                 Fleet Carrier {station.stationName}
                               </div>
                               <div className='system__entity-information'>
-                                {station.distanceToArrival !== null && <small> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                                {station.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
                                 {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
                                 {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
                               </div>

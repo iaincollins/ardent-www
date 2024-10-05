@@ -30,10 +30,10 @@ export default ({ commodities }) => {
           className: 'max-width-mobile',
           render: (v, r) =>
             <>
-              <i className='icon icarus-terminal-star' />{v}{r?.distance ? <small className='is-visible-mobile'> {r.distance} ly</small>: ''}<br/>
+              <i className='icon icarus-terminal-star' />{v}{r?.distance ? <small className='is-visible-mobile text-no-transform'> {r.distance} ly</small>: ''}<br/>
               <small>
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                {(r?.distanceToArrival ?? null) !== null && <small> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
               </small>
               <div className='is-visible-mobile'>
                 <table className='data-table--mini data-table--compact two-column-table'>
@@ -146,7 +146,7 @@ function ExpandedRow ({ r }) {
               <>
                 <StationIcon stationType={r.stationType} />
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                {(r?.distanceToArrival ?? null) !== null && <small> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                 <div className='is-visible-mobile'>
                   <table className='data-table--mini data-table--compact two-column-table'>
                     <tbody style={{ textTransform: 'uppercase' }}>
