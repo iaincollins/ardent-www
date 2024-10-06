@@ -8,7 +8,8 @@ import {
   API_BASE_URL,
   COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
   COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
-  COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+  COMMODITY_FILTER_MIN_VOLUME_DEFAULT,
+  UNLIMTED_DEMAND_TEXT
 } from 'lib/consts'
 
 const MAX_ROWS_TO_DISPLAY = 10
@@ -84,8 +85,8 @@ export default ({ commodity }) => {
                         <tr>
                           <td>
                             <span className='data-table__label'>Demand</span>
-                            <TradeBracketIcon bracket={r.demandBracket} />
-                            {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>No demand</small>}
+                            {r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
+                            {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
                           </td>
                           <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                         </tr>
@@ -130,8 +131,8 @@ export default ({ commodity }) => {
               className: 'is-hidden-mobile',
               render: (v, r) =>
                 <>
-                  {v > 0 ? `${v.toLocaleString()} T` : <small>No demand</small>}
-                  <TradeBracketIcon bracket={r.demandBracket} />
+                  {v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
+                  {r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
                 </>
             },
             {

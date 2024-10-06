@@ -10,7 +10,7 @@ import { API_BASE_URL } from 'lib/consts'
 import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
 
-async function getExportsForCommodityBySystem (systemName, commodityName) {
+async function getExportsForCommodityBySystem(systemName, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/exports`)
   const exports = await res.json()
   if (!exports || exports.error) return [] // Handle system not found
@@ -30,12 +30,12 @@ export default ({ commodities }) => {
           className: 'max-width-mobile',
           render: (v, r) =>
             <>
-              <StationIcon stationType={r.stationType} />
+              <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
               {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
-              <small className='is-visible-mobile' style={{ display: 'block', paddingTop: '0.25rem'}}>
+              <small className='is-visible-mobile' style={{ display: 'block', paddingTop: '0.25rem' }}>
                 {r.systemName}
-                {r?.distance ? <span className='text-no-transform'>, {r.distance.toLocaleString()} ly</span>: ''}
+                {r?.distance ? <span className='text-no-transform'>, {r.distance.toLocaleString()} ly</span> : ''}
               </small>
               <div className='is-visible-mobile'>
                 <table className='data-table--mini data-table--compact two-column-table'>
@@ -60,7 +60,7 @@ export default ({ commodities }) => {
           key: 'systemName',
           align: 'right',
           className: 'is-hidden-mobile',
-          render: (v) =>  <span style={{ opacity: 0.5 }}>{v}</span>
+          render: (v) => <span style={{ opacity: 0.5 }}>{v}</span>
         },
         {
           title: 'Distance',
@@ -113,7 +113,7 @@ export default ({ commodities }) => {
   )
 }
 
-function ExpandedRow ({ r }) {
+function ExpandedRow({ r }) {
   if (!r) return
 
   const [exports, setExports] = useState()

@@ -6,11 +6,11 @@ import { CollapsibleTrigger } from './collapsible-trigger'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
 import StationIcon from './station-icon'
-import { API_BASE_URL } from 'lib/consts'
+import { API_BASE_URL, UNLIMTED_DEMAND_TEXT } from 'lib/consts'
 import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
 
-async function getImportsForCommodityBySystem (systemName, commodityName) {
+async function getImportsForCommodityBySystem(systemName, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/imports`)
   const imports = await res.json()
   if (!imports || imports.error) return [] // Handle system not found
@@ -30,12 +30,12 @@ export default ({ commodities }) => {
           className: 'max-width-mobile',
           render: (v, r) =>
             <>
-              <StationIcon stationType={r.stationType} />
+              <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
               {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
-              <small className='is-visible-mobile' style={{ display: 'block', paddingTop: '0.25rem'}}>
+              <small className='is-visible-mobile' style={{ display: 'block', paddingTop: '0.25rem' }}>
                 {r.systemName}
-                {r?.distance ? <span className='text-no-transform'>, {r.distance.toLocaleString()} ly</span>: ''}
+                {r?.distance ? <span className='text-no-transform'>, {r.distance.toLocaleString()} ly</span> : ''}
               </small>
               <div className='is-visible-mobile'>
                 <table className='data-table--mini data-table--compact two-column-table'>
@@ -43,8 +43,8 @@ export default ({ commodities }) => {
                     <tr>
                       <td>
                         <span className='data-table__label'>Demand</span>
-                        <TradeBracketIcon bracket={r.demandBracket} />
-                        {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>No demand</small>}
+                        {r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
+                        {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
                       </td>
                       <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                     </tr>
@@ -60,7 +60,7 @@ export default ({ commodities }) => {
           key: 'systemName',
           align: 'right',
           className: 'is-hidden-mobile',
-          render: (v) =>  <span style={{ opacity: 0.5 }}>{v}</span>
+          render: (v) => <span style={{ opacity: 0.5 }}>{v}</span>
         },
         {
           title: 'Distance',
@@ -90,8 +90,8 @@ export default ({ commodities }) => {
           className: 'is-hidden-mobile',
           render: (v, r) =>
             <>
-              {v > 0 ? `${v.toLocaleString()} T` : <small>No demand</small>}
-              <TradeBracketIcon bracket={r.demandBracket} />
+              {v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
+              {r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
             </>
         },
         {
@@ -113,7 +113,7 @@ export default ({ commodities }) => {
   )
 }
 
-function ExpandedRow ({ r }) {
+function ExpandedRow({ r }) {
   if (!r) return
 
   const [imports, setImports] = useState()
@@ -163,8 +163,8 @@ function ExpandedRow ({ r }) {
                       <tr>
                         <td>
                           <span className='data-table__label'>Demand</span>
-                          <TradeBracketIcon bracket={r.demandBracket} />
-                          {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>No demand</small>}
+                          {r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
+                          {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
                         </td>
                         <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                       </tr>
@@ -192,8 +192,8 @@ function ExpandedRow ({ r }) {
             className: 'is-hidden-mobile',
             render: (v, r) =>
               <>
-                {v > 0 ? `${v.toLocaleString()} T` : <small>No demand</small>}
-                <TradeBracketIcon bracket={r.demandBracket} />
+                {v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
+                {r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
               </>
           },
           {

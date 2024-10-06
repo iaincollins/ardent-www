@@ -2,6 +2,7 @@ import Table from 'rc-table'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
 import StationIcon from './station-icon'
+import { UNLIMTED_DEMAND_TEXT } from 'lib/consts'
 
 export default ({ commodityOrders }) => {
   return (
@@ -28,8 +29,8 @@ export default ({ commodityOrders }) => {
                         <tr>
                           <td>
                             <span className='data-table__label'>Demand</span>
-                            <TradeBracketIcon bracket={r.demandBracket} />
-                            {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>No demand</small>}
+                            {r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
+                            {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
                           </td>
                           <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                         </tr>
@@ -57,8 +58,8 @@ export default ({ commodityOrders }) => {
               className: 'is-hidden-mobile',
               render: (v, r) =>
                 <>
-                  {v > 0 ? `${v.toLocaleString()} T` : <small>No demand</small>}
-                  <TradeBracketIcon bracket={r.demandBracket} />
+                  {v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
+                  {r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
                 </>
             },
             {
