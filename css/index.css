@@ -11,6 +11,7 @@
 @import url('components/loading-bar.css');
 @import url('components/data-table.css');
 @import url('components/properties-table.css');
+@import url('components/news-ticker.css');
 
 @import url('responsive/mobile.css');
 @import url('responsive/desktop.css');
@@ -43,6 +44,7 @@ body,
 }
 
 @-moz-document url-prefix() {
+
   /* For Firefox */
   body,
   .scrollable {
@@ -137,7 +139,7 @@ ul li {
   transition: transform .15s;
 }
 
-.collapsible__trigger--open .collapsible__trigger-icon  {
+.collapsible__trigger--open .collapsible__trigger-icon {
   transform: rotate(90deg);
 }
 
@@ -158,7 +160,7 @@ ul li {
   border: none;
 }
 
-.rc-table-cell .collapsible__trigger .collapsible__trigger-icon  {
+.rc-table-cell .collapsible__trigger .collapsible__trigger-icon {
   top: .3rem !important;
 }
 
@@ -166,8 +168,8 @@ ul li {
   border-bottom-color: transparent;
 }
 
-table.two-column-table > tbody > tr > td,
-.two-column-table > .rc-table-container > .rc-table-content > table > tbody > tr > td {
+table.two-column-table>tbody>tr>td,
+.two-column-table>.rc-table-container>.rc-table-content>table>tbody>tr>td {
   width: 50%;
 }
 

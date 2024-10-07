@@ -181,7 +181,7 @@ export default () => {
             }}
           >
             <option value={COMMODITY_FILTER_DISTANCE_DEFAULT}>Any distance</option>
-            <option value='0'>In system</option>
+            <option value='1'>In system</option>
             <option value='25'>&lt; 25 ly</option>
             <option value='50'>&lt; 50 ly</option>
             <option value='100'>&lt; 100 ly</option>

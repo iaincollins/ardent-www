@@ -20,7 +20,6 @@ export default () => {
       const databases = (await res.json()).databases
       databases.forEach(database => database.description = databaseDescription?.[database.name])
       setDatabases(databases.reverse())
-      console.log(databases)
     })()
   }, [])
 
