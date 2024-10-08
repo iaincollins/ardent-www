@@ -18,6 +18,8 @@ import {
   COMMODITY_FILTER_MIN_VOLUME_DEFAULT
 } from 'lib/consts'
 
+// FIXME Only terrible code here, sorry 🗑️🔥
+
 export default () => {
   const router = useRouter()
   const [tabIndex, setTabIndex] = useState(0)
@@ -385,15 +387,7 @@ const InsufficentData = () => <span style={{ opacity: 0.4 }}>Insufficent data</s
 
 function loadFilterOptionsFromUrl (router) {
   if (router?.query?.maxDaysAgo) window.localStorage?.setItem('lastUpdatedFilter', router.query.maxDaysAgo)
-  if (router?.query?.fleetCarriers) {
-    if (router.query.fleetCarriers === 'true') {
-      window.localStorage?.setItem('fleetCarrierFilter', 'only')
-    } else {
-      window.localStorage?.setItem('fleetCarrierFilter', 'excluded')
-    }
-  } else {
-    window.localStorage?.removeItem('fleetCarrierFilter')
-  }
+  if (router?.query?.fleetCarriers) window.localStorage?.setItem('fleetCarrierFilter', router.query.fleetCarriers)
   if (router?.query?.minVolume) window.localStorage?.setItem('minVolumeFilter', router.query.minVolume)
   if (router?.query?.systemName) window.localStorage?.setItem('locationFilter', router.query.systemName)
   if (router?.query?.maxDistance) window.localStorage?.setItem('distanceFilter', router.query.maxDistance)
@@ -416,8 +410,7 @@ function updateUrlWithFilterOptions (router) {
 
   options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
   options.push(`minVolume=${minVolumeFilterValue}`)
-  if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
-  if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
+  options.push(`fleetCarriers=${fleetCarrierFilterValue}`)
   if (locationFilterValue !== null) options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
   if (distanceFilterValue !== null) options.push(`maxDistance=${distanceFilterValue}`)
 

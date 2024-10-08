@@ -6,6 +6,7 @@ import commodities from 'lib/commodities/commodities'
 import {
   API_BASE_URL,
   COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
+  COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
   COMMODITY_FILTER_MIN_VOLUME_DEFAULT
 } from 'lib/consts'
 
@@ -78,7 +79,7 @@ export default () => {
         <span className='news-ticker__ticker'>
           {newsTicker.map(item =>
             <span key={`ticker_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'>
-              <Link href={`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&systemName=${item.systemName}&maxDistance=1`}>
+              <Link href={`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&systemName=${item.systemName}&maxDistance=1`}>
                 {item.stationName}, {item.systemName}
                 <br />
                 {item.demandBracket === 3 && <>Buying</>}

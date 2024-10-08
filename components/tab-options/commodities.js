@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useRouter } from 'next/router'
 import {
   API_BASE_URL,
   COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
@@ -13,7 +14,10 @@ const ZERO_WIDTH_SPACE = '​' // Looking forward to regretting *this* later
 
 const DEFAULT_LOCATION_OPTIONS = ['Any location', 'Core Systems', 'Colonia Region']
 
+// FIXME This code is *especially* an absolute garbage fire 🗑️🔥
+
 export default ({ disabled = true }) => {
+  const router = useRouter()
   const componentMounted = useRef(false)
   const [lastUpdatedFilter, setLastUpdatedFilter] = useState(window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
   const [fleetCarrierFilter, setFleetCarrierFilter] = useState(window.localStorage?.getItem('fleetCarrierFilter') ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
@@ -29,6 +33,17 @@ export default ({ disabled = true }) => {
     }
   }, [lastUpdatedFilter, fleetCarrierFilter, minVolumeFilter, locationFilter, distanceFilter])
 
+  useEffect(() => {
+    if (router.query?.maxDaysAgo && router.query.maxDaysAgo !== lastUpdatedFilter) setLastUpdatedFilter(router.query.maxDaysAgo)
+    if (router.query?.fleetCarrier && router.query.fleetCarrier !== fleetCarrierFilter) setFleetCarrierFilter(router.query.fleetCarrier)
+    if (router.query?.minVolume && router.query.minVolume !== minVolumeFilter) setMinVolumeFilter(router.query.minVolume)
+    if (router.query?.systemName && router.query.systemName !== locationFilter) {
+      setLocationFilter(router.query.systemName.trim())
+      document.getElementById('location').value = router.query.systemName.trim()
+    }
+    if (router.query?.maxDistance && router.query.maxDaysAgo !== distanceFilter) setDistanceFilter(router.query.maxDistance)
+  }, [router.query])
+
   return (
     <div className='tab-options'>
       <form onSubmit={(e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent')); document.activeElement.blur() }}>
@@ -39,9 +54,7 @@ export default ({ disabled = true }) => {
             disabled={disabled}
             onChange={(e) => {
               setLastUpdatedFilter(e.target.value)
-              ; (e.target.value === COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
-                ? window.localStorage.removeItem('lastUpdatedFilter')
-                : window.localStorage.setItem('lastUpdatedFilter', e.target.value)
+              window.localStorage.setItem('lastUpdatedFilter', parseInt(e.target.value))
             }}
           >
             <option value='1'>Today</option>
@@ -59,9 +72,7 @@ export default ({ disabled = true }) => {
             disabled={disabled}
             onChange={(e) => {
               setFleetCarrierFilter(e.target.value)
-              ; (e.target.value === COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
-                ? window.localStorage.removeItem('fleetCarrierFilter')
-                : window.localStorage.setItem('fleetCarrierFilter', e.target.value)
+              window.localStorage.setItem('fleetCarrierFilter', e.target.value)
             }}
           >
             <option value='included'>Included</option>
@@ -77,9 +88,7 @@ export default ({ disabled = true }) => {
             disabled={disabled}
             onChange={(e) => {
               setMinVolumeFilter(e.target.value)
-              ; (e.target.value === COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
-                ? window.localStorage.removeItem('minVolumeFilter')
-                : window.localStorage.setItem('minVolumeFilter', e.target.value)
+              window.localStorage.setItem('minVolumeFilter', parseInt(e.target.value))
             }}
           >
             <option value='1'>Any amount</option>
@@ -92,7 +101,7 @@ export default ({ disabled = true }) => {
         <label>
           <span className='tab-options__label-text'>Near</span>
           <input
-            id='locations' name='locations' type='text' list='locations-list'
+            id='location' name='location' type='text' list='location-list'
             disabled={disabled}
             data-previous-value=''
             placeholder={COMMODITY_FILTER_LOCATION_DEFAULT}
@@ -126,14 +135,14 @@ export default ({ disabled = true }) => {
                     window.localStorage.setItem('distanceFilter', 100)
                     setDistanceFilter(100)
                   } else {
+                    e.target.value = value // trimmed value
                     if (distanceFilter === COMMODITY_FILTER_DISTANCE_DEFAULT) {
                       setDistanceFilter(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
                       window.localStorage.setItem('distanceFilter', COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
                     }
-                    document.getElementById('locations-list').innerHTML = ''
-                    window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent'))
+                    document.getElementById('location-list').innerHTML = ''
+                    // window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent'))
                   }
-                  e.target.value = value // trimmed value
                   setLocationFilter(newLocationValue)
                   window.localStorage.setItem('locationFilter', newLocationValue)
                 }
@@ -143,7 +152,7 @@ export default ({ disabled = true }) => {
               const value = e.target.value.replace(/\u200B/g, '').trim()
               if (value !== '') e.target.setAttribute('previous-value', value)
               e.target.value = ZERO_WIDTH_SPACE
-              document.getElementById('locations-list').innerHTML = `
+              document.getElementById('location-list').innerHTML = `
                 ${DEFAULT_LOCATION_OPTIONS.map(location => `<option>${location}</option>`)}
               `
             }}
@@ -155,14 +164,14 @@ export default ({ disabled = true }) => {
                 e.target.blur()
               } else {
                 const nearbySystems = await findSystemsByName(value)
-                document.getElementById('locations-list').innerHTML = `
+                document.getElementById('location-list').innerHTML = `
                   ${DEFAULT_LOCATION_OPTIONS.map(location => `<option>${location}</option>`)}
                   ${nearbySystems.slice(0, 10).map(system => `<option>${system.systemName}</option>`)}
                 `
               }
             }}
           />
-          <datalist id='locations-list'>
+          <datalist id='location-list'>
             <option>Core Systems</option>
             <option>Colonia Region</option>
           </datalist>
@@ -177,8 +186,8 @@ export default ({ disabled = true }) => {
               setDistanceFilter(e.target.value)
               ; (e.target.value === COMMODITY_FILTER_DISTANCE_DEFAULT)
                 ? window.localStorage.removeItem('distanceFilter')
-                : window.localStorage.setItem('distanceFilter', e.target.value)
-              window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent'))
+                : window.localStorage.setItem('distanceFilter', parseInt(e.target.value))
+              // window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent'))
             }}
           >
             <option value={COMMODITY_FILTER_DISTANCE_DEFAULT}>Any distance</option>
@@ -194,15 +203,16 @@ export default ({ disabled = true }) => {
         </label>
       </form>
       {(
-        (lastUpdatedFilter !== COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT) ||
-        (fleetCarrierFilter !== COMMODITY_FILTER_FLEET_CARRIER_DEFAULT) ||
-        (minVolumeFilter !== COMMODITY_FILTER_MIN_VOLUME_DEFAULT) ||
-        (locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT) ||
-        (distanceFilter !== COMMODITY_FILTER_DISTANCE_DEFAULT)
+        lastUpdatedFilter != COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT ||
+        fleetCarrierFilter != COMMODITY_FILTER_FLEET_CARRIER_DEFAULT ||
+        minVolumeFilter != COMMODITY_FILTER_MIN_VOLUME_DEFAULT ||
+        locationFilter != COMMODITY_FILTER_LOCATION_DEFAULT ||
+        distanceFilter != COMMODITY_FILTER_DISTANCE_DEFAULT
       )
         ? (
           <button
             style={{ borderRadius: '.1rem', border: 'none', background: 'rgba(0,0,0,.75)', color: 'white', position: 'absolute', top: '.5rem', right: '.5rem', fontSize: '1rem', padding: '.25rem .5rem' }} onClick={() => {
+              document.getElementById('location').value = ''
               setLastUpdatedFilter(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
               setFleetCarrierFilter(COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
               setMinVolumeFilter(COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
