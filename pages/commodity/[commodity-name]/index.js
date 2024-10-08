@@ -36,15 +36,10 @@ export default () => {
     const basePath = path.basename(router.pathname)
     if (basePath === 'importers') setTabIndex(0)
     if (basePath === 'exporters') setTabIndex(1)
-
-    // This check ensures that updateUrlWithFilterOptions() is not called
-    // when the page loads (only on subsequent changes), so that it doesn't
-    // conflict and overwrite the behaviour of loadFilterOptionsFromUrl()
-    if (router?.query?.['commodity-name']) updateUrlWithFilterOptions(router)
   }, [router.pathname])
 
   async function getImportsAndExports () {
-    const commodityName = router.query?.['commodity-name'] ?? window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
+    const commodityName = router?.query?.['commodity-name']
     if (!commodityName) return
     setImports(undefined)
     setExports(undefined)
@@ -89,7 +84,7 @@ export default () => {
       setCommodity(undefined)
       setRareMarket(undefined)
 
-      const commodityName = router.query?.['commodity-name']
+      const commodityName = router?.query?.['commodity-name'] 
       if (!commodityName) return
 
       let c = await getCommodity(commodityName)
@@ -107,26 +102,16 @@ export default () => {
       if (c && !c.totalStock) c.totalStock = 0
       setCommodity(c || null)
       if (c?.rareMarketId) setRareMarket(await getCommodityFromMarket(c.rareMarketId, c.symbol))
-
-      loadFilterOptionsFromUrl(router)
-
+      
       getImportsAndExports()
     })()
   }, [router.query['commodity-name']])
 
   useEffect(() => {
-    const commodityFilterChangeEvent = () => {
-      updateUrlWithFilterOptions(router)
-      getImportsAndExports()
-    }
+    const commodityFilterChangeEvent = () => getImportsAndExports()
     window.addEventListener('CommodityFilterChangeEvent', commodityFilterChangeEvent)
     return () => window.removeEventListener('CommodityFilterChangeEvent', commodityFilterChangeEvent)
   }, [])
-
-  useEffect(() => {
-    loadFilterOptionsFromUrl(router)
-    getImportsAndExports()
-  }, [router.query])
 
   return (
     <Layout
@@ -385,38 +370,3 @@ async function getCommodityFromMarket (marketId, commodityName) {
 
 const InsufficentData = () => <span style={{ opacity: 0.4 }}>Insufficent data</span>
 
-function loadFilterOptionsFromUrl (router) {
-  if (router?.query?.maxDaysAgo) window.localStorage?.setItem('lastUpdatedFilter', router.query.maxDaysAgo)
-  if (router?.query?.fleetCarriers) window.localStorage?.setItem('fleetCarrierFilter', router.query.fleetCarriers)
-  if (router?.query?.minVolume) window.localStorage?.setItem('minVolumeFilter', router.query.minVolume)
-  if (router?.query?.systemName) window.localStorage?.setItem('locationFilter', router.query.systemName)
-  if (router?.query?.maxDistance) window.localStorage?.setItem('distanceFilter', router.query.maxDistance)
-}
-
-function updateUrlWithFilterOptions (router) {
-  const commodityName = window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
-
-  let activeTab = 'importers'
-  if (window?.location?.pathname?.endsWith('exporters')) activeTab = 'exporters'
-
-  let url = `/commodity/${commodityName}/${activeTab}`
-  const options = []
-
-  const lastUpdatedFilterValue = window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
-  const minVolumeFilterValue = window.localStorage?.getItem('minVolumeFilter') ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT
-  const fleetCarrierFilterValue = window.localStorage?.getItem('fleetCarrierFilter') ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
-  const locationFilterValue = window.localStorage?.getItem('locationFilter') ?? null
-  const distanceFilterValue = window.localStorage?.getItem('distanceFilter') ?? null
-
-  options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
-  options.push(`minVolume=${minVolumeFilterValue}`)
-  options.push(`fleetCarriers=${fleetCarrierFilterValue}`)
-  if (locationFilterValue !== null) options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
-  if (distanceFilterValue !== null) options.push(`maxDistance=${distanceFilterValue}`)
-
-  if (options.length > 0) {
-    url += `?${options.join('&')}`
-  }
-
-  return router.push(url)
-}

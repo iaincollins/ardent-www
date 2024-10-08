@@ -28,6 +28,7 @@ export default ({ disabled = true }) => {
   useEffect(() => {
     if (componentMounted.current === true) {
       window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent'))
+      updateUrlWithFilterOptions(router)
     } else {
       componentMounted.current = true
     }
@@ -42,6 +43,12 @@ export default ({ disabled = true }) => {
       document.getElementById('location').value = router.query.systemName.trim()
     }
     if (router.query?.maxDistance && router.query.maxDaysAgo !== distanceFilter) setDistanceFilter(router.query.maxDistance)
+
+    if (router?.query?.maxDaysAgo) window.localStorage?.setItem('lastUpdatedFilter', router.query.maxDaysAgo)
+    if (router?.query?.fleetCarriers) window.localStorage?.setItem('fleetCarrierFilter', router.query.fleetCarriers)
+    if (router?.query?.minVolume) window.localStorage?.setItem('minVolumeFilter', router.query.minVolume)
+    if (router?.query?.systemName) window.localStorage?.setItem('locationFilter', router.query.systemName.trim())
+    if (router?.query?.maxDistance) window.localStorage?.setItem('distanceFilter', router.query.maxDistance)
   }, [router.query])
 
   return (
@@ -241,4 +248,32 @@ async function findSystemsByName (systemName) {
   if (systemName.length < 3) return []
   const res = await fetch(`${API_BASE_URL}/v1/search/system/name/${systemName}/`)
   return await res.json()
+}
+
+function updateUrlWithFilterOptions (router) {
+  const commodityName = window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
+
+  let activeTab = 'importers'
+  if (window?.location?.pathname?.endsWith('exporters')) activeTab = 'exporters'
+
+  let url = `/commodity/${commodityName}/${activeTab}`
+  const options = []
+
+  const lastUpdatedFilterValue = window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
+  const minVolumeFilterValue = window.localStorage?.getItem('minVolumeFilter') ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+  const fleetCarrierFilterValue = window.localStorage?.getItem('fleetCarrierFilter') ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
+  const locationFilterValue = window.localStorage?.getItem('locationFilter') ?? null
+  const distanceFilterValue = window.localStorage?.getItem('distanceFilter') ?? null
+
+  options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
+  options.push(`minVolume=${minVolumeFilterValue}`)
+  options.push(`fleetCarriers=${fleetCarrierFilterValue}`)
+  if (locationFilterValue !== null) options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
+  if (distanceFilterValue !== null) options.push(`maxDistance=${distanceFilterValue}`)
+
+  if (options.length > 0) {
+    url += `?${options.join('&')}`
+  }
+
+  return router.push(url)
 }
