@@ -241,7 +241,7 @@ export default () => {
                                 value={commodity.totalDemand}
                                 style={{ maxWidth: '12rem', height: '1.25rem' }}
                               />
-                              <p style={{ margin: '0 0 .15rem 0', lineHeight: '0.8rem' }}><small>{commodity.totalDemand.toLocaleString()} T</small></p>
+                              <p style={{ margin: '0 0 .15rem 0', lineHeight: '1.25rem', fontSize: '0.9rem' }}>{commodity.totalDemand.toLocaleString()} T</p>
                             </>
                             )
                           : <InsufficentData />}
@@ -260,7 +260,7 @@ export default () => {
                                 value={commodity.totalStock}
                                 style={{ maxWidth: '12rem', height: '1.25rem' }}
                               />
-                              <p style={{ margin: '0 0 .15rem 0', lineHeight: '0.8rem' }}><small>{commodity.totalStock.toLocaleString()} T</small></p>
+                              <p style={{ margin: '0 0 .15rem 0', lineHeight: '1.25rem', fontSize: '0.9rem' }}>{commodity.totalStock.toLocaleString()} T</p>
                             </>
                             )
                           : <InsufficentData />}
