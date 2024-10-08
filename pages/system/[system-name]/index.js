@@ -473,6 +473,7 @@ export default () => {
                     }
                   ]}
                   data={importOrders}
+                  rowKey={(r) => `system_imports_${r.systemAddress}_${r.symbol}`}
                   expandable={{
                     expandRowByClick: true,
                     expandedRowRender: r =>
@@ -573,6 +574,7 @@ export default () => {
                     }
                   ]}
                   data={exportOrders}
+                  rowKey={(r) => `system_exports_${r.systemAddress}_${r.symbol}`}
                   expandable={{
                     expandRowByClick: true,
                     expandedRowRender: r =>

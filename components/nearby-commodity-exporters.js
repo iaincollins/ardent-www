@@ -146,7 +146,7 @@ export default ({ commodity }) => {
             }
           ]}
           data={nearbyExporters}
-          rowKey='commodityId'
+          rowKey={(r) => `nearby_commodity_exporters_${r.commodityId}`}
         />}
     </>
   )

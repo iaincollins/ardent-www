@@ -57,7 +57,6 @@ export default () => {
         c.symbol = c.commodityName.toLowerCase()
         c.category = listOfCommodities[c.symbol]?.category ?? ''
         c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-        delete c.commodityId
         delete c.commodityName
       })
       setImports(imports)
@@ -75,7 +74,6 @@ export default () => {
         c.symbol = c.commodityName.toLowerCase()
         c.category = listOfCommodities[c.symbol]?.category ?? ''
         c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-        delete c.commodityId
         delete c.commodityName
       })
       setExports(exports)

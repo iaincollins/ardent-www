@@ -68,7 +68,7 @@ export default ({ commodityOrders }) => {
             }
           ]}
           data={commodityOrders}
-          rowKey='commodityId'
+          rowKey={(r) => `local_commodity_exporters_${r.commodityId}`}
         />}
     </>
   )

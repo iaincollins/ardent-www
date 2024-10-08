@@ -26,7 +26,6 @@ export default ({ commodityName, reportName = 'core-systems-1000' }) => {
         c.symbol = c.commodityName.toLowerCase()
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        delete c.commodityId
         delete c.commodityName
       })
       setExports((commodityReport?.bestExporters ?? []))
@@ -39,7 +38,6 @@ export default ({ commodityName, reportName = 'core-systems-1000' }) => {
         c.symbol = c.commodityName.toLowerCase()
         c.category = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.category ?? ''
         c.name = (commoditiesInfo.find(el => el.symbol.toLowerCase() === c.symbol))?.name ?? c.commodityName
-        delete c.commodityId
         delete c.commodityName
       })
       setImports((commodityReport?.bestImporters ?? []))

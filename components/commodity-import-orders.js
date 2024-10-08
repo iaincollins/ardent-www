@@ -104,6 +104,7 @@ export default ({ commodities }) => {
         }
       ]}
       data={commodities}
+      rowKey={(r) => `commodity_import_orders_${r.commodityId}`}
       expandable={{
         expandRowByClick: true,
         expandedRowRender: (r) => <ExpandedRow r={r} />
@@ -206,7 +207,7 @@ function ExpandedRow ({ r }) {
           }
         ]}
         data={imports}
-        rowKey='commodityId'
+        rowKey={(r) => `commodity_import_orders_expanded_${r.commodityId}`}
       />
       <Collapsible
         trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
