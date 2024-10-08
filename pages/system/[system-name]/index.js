@@ -623,6 +623,7 @@ export default () => {
                       dataIndex: 'distance',
                       key: 'distance',
                       align: 'right',
+                      className: 'no-wrap',
                       render: (v) => v < 1
                         ? '< 1 Ly'
                         : <>{Math.floor(v).toLocaleString()} Ly</>

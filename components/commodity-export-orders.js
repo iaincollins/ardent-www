@@ -35,7 +35,7 @@ export default ({ commodities }) => {
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
               <div className='is-visible-mobile'>
                 <span style={{ textTransform: 'none', opacity: 0.75, paddingLeft: '2rem' }}>
-                  {r.systemName} <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} Ly</span>
+                  {r.systemName} <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance} Ly</> :''}</span>
                 </span>
                 <table className='data-table--mini data-table--compact two-column-table'>
                   <tbody style={{ textTransform: 'uppercase' }}>
@@ -67,8 +67,8 @@ export default ({ commodities }) => {
           key: 'distance',
           align: 'right',
           width: 110,
-          className: 'is-hidden-mobile',
-          render: (v) => <span style={{ opacity: 0.5 }}>{v.toLocaleString()} ly</span>,
+          className: 'is-hidden-mobile no-wrap',
+          render: (v) => <span style={{ opacity: 0.5 }}>{v ? <>{v.toLocaleString()} ly</> : '?'}</span>,
           hidden: !window.localStorage?.getItem('locationFilter')
         },
         {

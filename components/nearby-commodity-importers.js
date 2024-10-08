@@ -110,7 +110,7 @@ export default ({ commodity }) => {
               key: 'distance',
               align: 'right',
               width: 100,
-              className: 'is-hidden-mobile',
+              className: 'is-hidden-mobile no-wrap',
               render: (v) => <span style={{ opacity: 0.75 }}>{v} Ly</span>
             },
             {
