@@ -162,8 +162,8 @@ function ExpandedRow ({ r }) {
                       <tr>
                         <td>
                           <span className='data-table__label'>Demand</span>
-                          {r.demandBracket !== 0 && r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
-                          {v > 0 ? `${v.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
+                          <TradeBracketIcon bracket={r.demandBracket} />
+                          {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
                         </td>
                         <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                       </tr>

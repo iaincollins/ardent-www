@@ -30,7 +30,7 @@ export default ({ commodityOrders }) => {
                           <td>
                             <span className='data-table__label'>Demand</span>
                             <TradeBracketIcon bracket={r.demandBracket} />
-                            {v > 0 ? `${v.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
+                            {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
                           </td>
                           <td className='text-right'><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                         </tr>
