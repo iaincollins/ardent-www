@@ -43,7 +43,7 @@ export default () => {
     updateTicker()
     const timeoutId = setInterval(() => {
       updateTicker()
-    }, 1000 * 60 * 2)
+    }, 1000 * 200 - 30)
     return () => clearInterval(timeoutId)
   }, [])
 
