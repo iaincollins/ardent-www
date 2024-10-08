@@ -274,7 +274,7 @@ export default () => {
                     Description
                   </th>
                   <td>
-                    <p style={{ margin: 0, textTransform: 'none', textAlign: 'justify', textJustify: 'auto' }}>
+                    <p style={{ margin: 0, textTransform: 'none' }}>
                       {listOfCommodities[commodity.symbol]?.description}
                     </p>
                   </td>
@@ -285,7 +285,7 @@ export default () => {
                     <i className='icon icarus-terminal-info' style={{ position: 'relative', top: '-.1rem', marginRight: '.25rem' }} />
                     RARE
                   </th>
-                  <td style={{ textAlign: 'justify', textJustify: 'auto' }}>
+                  <td>
                     <p style={{ margin: 0, textTransform: 'none', fontSize: '.8rem' }}>
                       Rare items are usually only available in limited quantities from exclusive locations but can be sold almost anywhere.
 

@@ -141,7 +141,6 @@ export default ({ disabled = true }) => {
                       window.localStorage.setItem('distanceFilter', COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
                     }
                     document.getElementById('location-list').innerHTML = ''
-                    // window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent'))
                   }
                   setLocationFilter(newLocationValue)
                   window.localStorage.setItem('locationFilter', newLocationValue)
@@ -158,7 +157,13 @@ export default ({ disabled = true }) => {
             }}
             onChange={async (e) => {
               const value = e.target.value.replace(/\u200B/g, '').trim()
-              if ((value === COMMODITY_FILTER_LOCATION_DEFAULT) ||
+              // We add a ZERO_WIDTH_SPACE to the end of the auto-complete option,
+              // if there is a string that is more than 0 chars and ends in a ZERO_WIDTH_SPACE
+              // then treat it as if the user is done with entering text in the input
+              if (e.target.value.length > 1 && e.target.value.endsWith(ZERO_WIDTH_SPACE)) {
+                e.target.value = value
+                e.target.blur()
+              } else if ((value === COMMODITY_FILTER_LOCATION_DEFAULT) ||
                 (value === 'Core Systems') ||
                 (value === 'Colonia Region')) {
                 e.target.blur()
@@ -166,7 +171,7 @@ export default ({ disabled = true }) => {
                 const nearbySystems = await findSystemsByName(value)
                 document.getElementById('location-list').innerHTML = `
                   ${DEFAULT_LOCATION_OPTIONS.map(location => `<option>${location}</option>`)}
-                  ${nearbySystems.slice(0, 10).map(system => `<option>${system.systemName}</option>`)}
+                  ${nearbySystems.slice(0, 10).map(system => `<option>${system.systemName}${ZERO_WIDTH_SPACE}</option>`)}
                 `
               }
             }}
@@ -187,7 +192,6 @@ export default ({ disabled = true }) => {
               ; (e.target.value === COMMODITY_FILTER_DISTANCE_DEFAULT)
                 ? window.localStorage.removeItem('distanceFilter')
                 : window.localStorage.setItem('distanceFilter', parseInt(e.target.value))
-              // window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent'))
             }}
           >
             <option value={COMMODITY_FILTER_DISTANCE_DEFAULT}>Any distance</option>

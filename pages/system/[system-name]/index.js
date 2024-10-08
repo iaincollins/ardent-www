@@ -368,7 +368,7 @@ export default () => {
               {rareGoods.length > 0 &&
                 <tr>
                   <th>Rare export</th>
-                  <td style={{ textAlign: 'justify', textJustify: 'auto' }}>
+                  <td>
                     {rareGoods.map(rare =>
                       <span key={`rare_good_${rare.symbol}`} className='text-no-transform'>
                         {rare.stationName}, {system.systemName} is the exlusive exporter of <Link href={`/commodity/${rare.symbol}`}>{rare.name}</Link>.
