@@ -117,6 +117,7 @@ ul li {
   margin: 0;
   padding: 0;
   padding-left: 1.2rem;
+  display: inline;
 }
 
 .collapsible__trigger:hover {
@@ -148,6 +149,7 @@ ul li {
   padding-top: .15rem;
   padding-bottom: .5rem;
   padding-left: 1.4rem;
+  display: block;
 }
 
 .rc-table-cell .collapsible__trigger .collapsible__trigger-icon {

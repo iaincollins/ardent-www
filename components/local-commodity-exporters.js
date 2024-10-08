@@ -31,7 +31,7 @@ export default ({ commodityOrders }) => {
                             <TradeBracketIcon bracket={r.stockBracket} />
                             {r.stock.toLocaleString()} T
                           </td>
-                          <td><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                          <td className='text-right'><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
                         </tr>
                       </tbody>
                     </table>
@@ -45,7 +45,7 @@ export default ({ commodityOrders }) => {
               key: 'updatedAt',
               align: 'right',
               width: 130,
-              className: 'is-hidden-mobile',
+              className: 'is-hidden-mobile no-wrap',
               render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
             },
             {

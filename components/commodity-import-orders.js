@@ -10,7 +10,7 @@ import { API_BASE_URL, UNLIMTED_DEMAND_TEXT, NO_DEMAND_TEXT } from 'lib/consts'
 import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
 
-async function getImportsForCommodityBySystem(systemName, commodityName) {
+async function getImportsForCommodityBySystem (systemName, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/imports`)
   const imports = await res.json()
   if (!imports || imports.error) return [] // Handle system not found
@@ -33,11 +33,10 @@ export default ({ commodities }) => {
               <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
               {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
-              <small className='is-visible-mobile' style={{ display: 'block', paddingTop: '0.25rem' }}>
-                {r.systemName}
-                {r?.distance ? <span className='text-no-transform'>, {r.distance.toLocaleString()} ly</span> : ''}
-              </small>
               <div className='is-visible-mobile'>
+                <span style={{ textTransform: 'none', opacity: 0.75, paddingLeft: '2rem' }}>
+                  {r.systemName} <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} Ly</span>
+                </span>
                 <table className='data-table--mini data-table--compact two-column-table'>
                   <tbody style={{ textTransform: 'uppercase' }}>
                     <tr>
@@ -78,7 +77,7 @@ export default ({ commodities }) => {
           key: 'updatedAt',
           align: 'right',
           width: 110,
-          className: 'is-hidden-mobile',
+          className: 'is-hidden-mobile no-wrap',
           render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
         },
         {
@@ -113,7 +112,7 @@ export default ({ commodities }) => {
   )
 }
 
-function ExpandedRow({ r }) {
+function ExpandedRow ({ r }) {
   if (!r) return
 
   const [imports, setImports] = useState()
@@ -157,7 +156,7 @@ function ExpandedRow({ r }) {
                 <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
-                <div className='is-visible-mobile' >
+                <div className='is-visible-mobile'>
                   <table className='data-table--mini data-table--compact two-column-table'>
                     <tbody style={{ textTransform: 'uppercase' }}>
                       <tr>
@@ -166,8 +165,7 @@ function ExpandedRow({ r }) {
                           {r.demandBracket !== 0 && r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
                           {r.demandBracket === 0
                             ? <small>{NO_DEMAND_TEXT}</small>
-                            : v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>
-                          }
+                            : v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
                         </td>
                         <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                       </tr>
@@ -183,7 +181,7 @@ function ExpandedRow({ r }) {
             key: 'updatedAt',
             align: 'right',
             width: 130,
-            className: 'is-hidden-mobile',
+            className: 'is-hidden-mobile no-wrap',
             render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
           },
           {
@@ -197,8 +195,7 @@ function ExpandedRow({ r }) {
               <>
                 {r.demandBracket === 0
                   ? <small>{NO_DEMAND_TEXT}</small>
-                  : v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>
-                }
+                  : v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
                 {r.demandBracket !== 0 && r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
               </>
           },

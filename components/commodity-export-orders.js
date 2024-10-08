@@ -10,7 +10,7 @@ import { API_BASE_URL } from 'lib/consts'
 import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
 
-async function getExportsForCommodityBySystem(systemName, commodityName) {
+async function getExportsForCommodityBySystem (systemName, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/exports`)
   const exports = await res.json()
   if (!exports || exports.error) return [] // Handle system not found
@@ -33,11 +33,10 @@ export default ({ commodities }) => {
               <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
               {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
-              <small className='is-visible-mobile' style={{ display: 'block', paddingTop: '0.25rem' }}>
-                {r.systemName}
-                {r?.distance ? <span className='text-no-transform'>, {r.distance.toLocaleString()} ly</span> : ''}
-              </small>
               <div className='is-visible-mobile'>
+                <span style={{ textTransform: 'none', opacity: 0.75, paddingLeft: '2rem' }}>
+                  {r.systemName} <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} Ly</span>
+                </span>
                 <table className='data-table--mini data-table--compact two-column-table'>
                   <tbody style={{ textTransform: 'uppercase' }}>
                     <tr>
@@ -78,7 +77,7 @@ export default ({ commodities }) => {
           key: 'updatedAt',
           align: 'right',
           width: 110,
-          className: 'is-hidden-mobile',
+          className: 'is-hidden-mobile no-wrap',
           render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
         },
         {
@@ -113,7 +112,7 @@ export default ({ commodities }) => {
   )
 }
 
-function ExpandedRow({ r }) {
+function ExpandedRow ({ r }) {
   if (!r) return
 
   const [exports, setExports] = useState()
@@ -180,7 +179,7 @@ function ExpandedRow({ r }) {
             key: 'updatedAt',
             align: 'right',
             width: 130,
-            className: 'is-hidden-mobile',
+            className: 'is-hidden-mobile no-wrap',
             render: (v) => <>{timeBetweenTimestamps(v)}</>
           },
           {

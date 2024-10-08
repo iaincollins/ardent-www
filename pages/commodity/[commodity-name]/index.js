@@ -10,7 +10,6 @@ import CommodityImportOrders from 'components/commodity-import-orders'
 import CommodityExportOrders from 'components/commodity-export-orders'
 import listOfCommodities from 'lib/commodities/commodities.json'
 import animateTableEffect from 'lib/animate-table-effect'
-import commmoditiesWithDescriptions from 'lib/commodities/commodities.json'
 
 import {
   API_BASE_URL,
@@ -42,13 +41,11 @@ export default () => {
     if (router?.query?.['commodity-name']) updateUrlWithFilterOptions(router)
   }, [router.pathname])
 
-  async function getImportsAndExports() {
+  async function getImportsAndExports () {
     const commodityName = router.query?.['commodity-name'] ?? window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
     if (!commodityName) return
     setImports(undefined)
     setExports(undefined)
-
-    updateUrlWithFilterOptions(router)
 
     const imports = await getImports(commodityName)
     if (Array.isArray(imports)) {
@@ -118,9 +115,18 @@ export default () => {
   }, [router.query['commodity-name']])
 
   useEffect(() => {
-    window.addEventListener('CommodityFilterChangeEvent', getImportsAndExports)
-    return () => window.removeEventListener('CommodityFilterChangeEvent', getImportsAndExports)
+    const commodityFilterChangeEvent = () => {
+      updateUrlWithFilterOptions(router)
+      getImportsAndExports()
+    }
+    window.addEventListener('CommodityFilterChangeEvent', commodityFilterChangeEvent)
+    return () => window.removeEventListener('CommodityFilterChangeEvent', commodityFilterChangeEvent)
   }, [])
+
+  useEffect(() => {
+    loadFilterOptionsFromUrl(router)
+    getImportsAndExports()
+  }, [router.query])
 
   return (
     <Layout
@@ -155,12 +161,14 @@ export default () => {
                 <td>
                   <span className='fx__animated-text' data-fx-order='2'>
                     {typeof commodity.avgSellPrice === 'number'
-                      ? <>
-                        {commodity.avgSellPrice.toLocaleString()} CR/T
-                        {' '}
-                        {commodity.minSellPrice !== commodity.maxSellPrice &&
-                          <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>}
-                      </>
+                      ? (
+                        <>
+                          {commodity.avgSellPrice.toLocaleString()} CR/T
+                          {' '}
+                          {commodity.minSellPrice !== commodity.maxSellPrice &&
+                            <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>}
+                        </>
+                        )
                       : <InsufficentData />}
                   </span>
                 </td>
@@ -170,12 +178,14 @@ export default () => {
                 <td>
                   <span className='fx__animated-text' data-fx-order='3'>
                     {typeof commodity.avgBuyPrice === 'number'
-                      ? <>
-                        {commodity.avgBuyPrice.toLocaleString()} CR/T
-                        {' '}
-                        {commodity.minBuyPrice !== commodity.maxBuyPrice &&
-                          <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>}
-                      </>
+                      ? (
+                        <>
+                          {commodity.avgBuyPrice.toLocaleString()} CR/T
+                          {' '}
+                          {commodity.minBuyPrice !== commodity.maxBuyPrice &&
+                            <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>}
+                        </>
+                        )
                       : <InsufficentData />}
                   </span>
                 </td>
@@ -187,34 +197,36 @@ export default () => {
                     <span className='fx__animated-text' data-fx-order='5'>
                       {commodity.avgProfit === 0
                         ? <InsufficentData />
-                        : <>
-                          {commodity.avgProfit.toLocaleString()} CR/T
-                          {' '}
-                          <small>({commodity.avgProfitMargin}% margin)</small>
-                        </>}
+                        : (
+                          <>
+                            {commodity.avgProfit.toLocaleString()} CR/T
+                            {' '}
+                            <small>({commodity.avgProfitMargin}% margin)</small>
+                          </>
+                          )}
                     </span>
                   </td>
                 </tr>}
-              {commodity?.rare && commodity?.rareMaxCount && <>
-                <tr>
-                  <th>Export limit</th>
-                  <td>
-                    <span className='fx__animated-text' data-fx-order='3'>
-                      {commodity.rareMaxCount}
-                    </span>
-                  </td>
-                </tr>
-                {rareMarket?.stationName && rareMarket?.systemName &&
+              {commodity?.rare && commodity?.rareMaxCount &&
+                <>
                   <tr>
-                    <th>Exported by</th>
+                    <th>Export limit</th>
                     <td>
-                      <span className='fx__animated-text text-no-transform' data-fx-order='4'>
-                        <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
+                      <span className='fx__animated-text' data-fx-order='3'>
+                        {commodity.rareMaxCount}
                       </span>
                     </td>
                   </tr>
-                }
-              </>}
+                  {rareMarket?.stationName && rareMarket?.systemName &&
+                    <tr>
+                      <th>Exported by</th>
+                      <td>
+                        <span className='fx__animated-text text-no-transform' data-fx-order='4'>
+                          <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
+                        </span>
+                      </td>
+                    </tr>}
+                </>}
               {!commodity.rare &&
                 <>
                   <tr>
@@ -226,8 +238,7 @@ export default () => {
                             max={Math.max(commodity.totalStock, commodity.totalDemand)}
                             value={commodity.totalDemand}
                             style={{ maxWidth: '12rem', height: '1.25rem' }}
-                          />
-                        }
+                          />}
                         <p style={{ margin: '0 0 .15rem 0', lineHeight: '0.8rem' }}>
                           {commodity.totalDemand > 0 ? <small>{commodity.totalDemand.toLocaleString()} T</small> : <InsufficentData />}
                         </p>
@@ -243,8 +254,7 @@ export default () => {
                             max={Math.max(commodity.totalStock, commodity.totalDemand)}
                             value={commodity.totalStock}
                             style={{ maxWidth: '12rem', height: '1.25rem' }}
-                          />
-                        }
+                          />}
                         <p style={{ margin: '0 0 .15rem 0', lineHeight: '0.8rem' }}>
                           {commodity.totalStock > 0 ? <small>{commodity.totalStock.toLocaleString()} T</small> : <InsufficentData />}
                         </p>
@@ -252,14 +262,14 @@ export default () => {
                     </td>
                   </tr>
                 </>}
-              {commmoditiesWithDescriptions[commodity.symbol]?.description &&
+              {listOfCommodities[commodity.symbol]?.description &&
                 <tr>
                   <th>
                     Description
                   </th>
                   <td>
-                    <p style={{ margin: 0, textTransform: 'none' }}>
-                      {commmoditiesWithDescriptions[commodity.symbol]?.description}
+                    <p style={{ margin: 0, textTransform: 'none', textAlign: 'justify', textJustify: 'auto' }}>
+                      {listOfCommodities[commodity.symbol]?.description}
                     </p>
                   </td>
                 </tr>}
@@ -269,7 +279,7 @@ export default () => {
                     <i className='icon icarus-terminal-info' style={{ position: 'relative', top: '-.1rem', marginRight: '.25rem' }} />
                     RARE
                   </th>
-                  <td>
+                  <td style={{ textAlign: 'justify', textJustify: 'auto' }}>
                     <p style={{ margin: 0, textTransform: 'none', fontSize: '.8rem' }}>
                       Rare items are usually only available in limited quantities from exclusive locations but can be sold almost anywhere.
 
@@ -307,12 +317,12 @@ export default () => {
   )
 }
 
-async function getCommodity(commodityName) {
+async function getCommodity (commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getExports(commodityName) {
+async function getExports (commodityName) {
   let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/exports`
   const options = []
 
@@ -337,7 +347,7 @@ async function getExports(commodityName) {
   return await res.json()
 }
 
-async function getImports(commodityName) {
+async function getImports (commodityName) {
   let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/imports`
   const options = []
 
@@ -362,22 +372,30 @@ async function getImports(commodityName) {
   return await res.json()
 }
 
-async function getCommodityFromMarket(marketId, commodityName) {
+async function getCommodityFromMarket (marketId, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/market/${marketId}/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-const InsufficentData = () => <span style={{ opacity: .4 }}>Insufficent data</span>
+const InsufficentData = () => <span style={{ opacity: 0.4 }}>Insufficent data</span>
 
-function loadFilterOptionsFromUrl(router) {
+function loadFilterOptionsFromUrl (router) {
   if (router?.query?.maxDaysAgo) window.localStorage?.setItem('lastUpdatedFilter', router.query.maxDaysAgo)
-  if (router?.query?.fleetCarriers) window.localStorage?.setItem('fleetCarrierFilter', router.query.fleetCarriers)
+  if (router?.query?.fleetCarriers) {
+    if (router.query.fleetCarriers === 'true') {
+      window.localStorage?.setItem('fleetCarrierFilter', 'only')
+    } else {
+      window.localStorage?.setItem('fleetCarrierFilter', 'excluded')
+    }
+  } else {
+    window.localStorage?.removeItem('fleetCarrierFilter')
+  }
   if (router?.query?.minVolume) window.localStorage?.setItem('minVolumeFilter', router.query.minVolume)
   if (router?.query?.systemName) window.localStorage?.setItem('locationFilter', router.query.systemName)
   if (router?.query?.maxDistance) window.localStorage?.setItem('distanceFilter', router.query.maxDistance)
 }
 
-function updateUrlWithFilterOptions(router) {
+function updateUrlWithFilterOptions (router) {
   const commodityName = window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
 
   let activeTab = 'importers'

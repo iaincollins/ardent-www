@@ -5,10 +5,10 @@ import { timeBetweenTimestamps } from 'lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
 import StationIcon from './station-icon'
 import {
-  API_BASE_URL,
-  COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
-  COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
-  COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+  API_BASE_URL
+  // COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
+  // COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
+  // COMMODITY_FILTER_MIN_VOLUME_DEFAULT
 } from 'lib/consts'
 
 const MAX_ROWS_TO_DISPLAY = 10
@@ -87,7 +87,7 @@ export default ({ commodity }) => {
                             <TradeBracketIcon bracket={r.stockBracket} />
                             {r.stock.toLocaleString()} T
                           </td>
-                          <td><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                          <td className='text-right'><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
                         </tr>
                       </tbody>
                     </table>
@@ -118,7 +118,7 @@ export default ({ commodity }) => {
               key: 'updatedAt',
               align: 'right',
               width: 100,
-              className: 'is-hidden-mobile',
+              className: 'is-hidden-mobile no-wrap',
               render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
             },
             {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useRouter, useLocation } from 'next/router'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
 import Table from 'rc-table'
@@ -8,7 +8,7 @@ import { getCommodities } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps ({ query }) {
   const rawCommoditiesData = (await import('../../../../ardent-data/cache/commodities.json')).commodities
   const commodities = await getCommodities(rawCommoditiesData)
 
@@ -23,7 +23,7 @@ export async function getServerSideProps({ query }) {
   return { props: { commodities, categories } }
 }
 
-export default function Page(props) {
+export default function Page (props) {
   const router = useRouter()
   const [commodities, setCommodities] = useState(props.commodities)
   const [categories, setCategories] = useState(props.categories)
@@ -69,22 +69,19 @@ export default function Page(props) {
           {categories?.length > 1 &&
             <p className='clear text-center'>
               The best trade prices for commodities anywhere in the galaxy.
-            </p>
-          }
+            </p>}
           {categories?.length === 1 && commodityCategories[categories[0]]?.description &&
             <p className='clear text-center'>
               {commodityCategories[categories[0]].description}
-            </p>
-          }
+            </p>}
           {categories?.length === 1 && commodityCategories[categories[0]]?.whereToFind &&
             <p className='clear text-center'>
               {commodityCategories[categories[0]]?.whereToFind}
-            </p>
-          }
+            </p>}
           {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
             <div key={`category_${category}`}>
               {categories?.length === 1 && <h3 style={{ marginBottom: '-.1rem' }}>{category}</h3>}
-              {categories?.length > 1 && <h3 style={{ marginBottom: '-.1rem' }} onClick={() =>router.push(`/commodities/${category.toLowerCase()}`)}>{category}</h3>}
+              {categories?.length > 1 && <h3 style={{ marginBottom: '-.1rem' }} onClick={() => router.push(`/commodities/${category.toLowerCase()}`)}>{category}</h3>}
               <Table
                 className='data-table data-table--striped data-table--interactive data-table--animated'
                 columns={[

@@ -18,7 +18,7 @@ export default () => {
     (async () => {
       const res = await fetch(`${API_BASE_URL}/v1/backup`)
       const databases = (await res.json()).databases
-      databases.forEach(database => database.description = databaseDescription?.[database.name])
+      databases.forEach(database => { database.description = databaseDescription?.[database.name] })
       setDatabases(databases.reverse())
     })()
   }, [])
@@ -64,25 +64,26 @@ export default () => {
         <p>
           To query live data you can use the <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>REST API</a>.
         </p>
-        {databases && databases.map(database => <>
-          <h3>{database.name}</h3>
-          <p className='clear'>
-            <em>{database.description}</em>
-          </p>
-          <ul className='clear'>
-            {Object.entries(database.tables).map(([k, v]) => <li style={{ textTransform: 'capitalize' }}>{v.toLocaleString()} {k}</li>)}
-            {database?.size && <li>Requires {byteSize(database.size).value} {byteSize(database.size).unit} of diskspace</li>}
-          </ul>
-          <p style={{ margin: '1.5rem 0' }}>
-            <Link href={database?.download?.url ?? ''} className='button' style={{ padding: '.75rem 1.25rem' }}>
-              <i className='icarus-terminal-download' style={{ position: 'relative', top: '-.125rem', fontSize: '1.25rem' }} />
-              {' '}
-              <strong>Download {database.name}.gz</strong>
-              {' '}
-              {database?.download?.size && <span className='muted'>({byteSize(database.download.size).value} {byteSize(database.download.size).unit})</span>}
-            </Link>
-          </p>
-        </>)}
+        {databases && databases.map(database =>
+          <div key={database.name}>
+            <h3>{database.name}</h3>
+            <p className='clear'>
+              <em>{database.description}</em>
+            </p>
+            <ul className='clear'>
+              {Object.entries(database.tables).map(([k, v]) => <li key={`${database.name}_${k}`} style={{ textTransform: 'capitalize' }}>{v.toLocaleString()} {k}</li>)}
+              {database?.size && <li>Requires {byteSize(database.size).value} {byteSize(database.size).unit} of diskspace</li>}
+            </ul>
+            <p style={{ margin: '1.5rem 0' }}>
+              <Link href={database?.download?.url ?? ''} className='button' style={{ padding: '.75rem 1.25rem' }}>
+                <i className='icarus-terminal-download' style={{ position: 'relative', top: '-.125rem', fontSize: '1.25rem' }} />
+                {' '}
+                <strong>Download {database.name}.gz</strong>
+                {' '}
+                {database?.download?.size && <span className='muted'>({byteSize(database.download.size).value} {byteSize(database.download.size).unit})</span>}
+              </Link>
+            </p>
+          </div>)}
       </div>
     </Layout>
   )

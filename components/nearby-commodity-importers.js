@@ -6,9 +6,9 @@ import TradeBracketIcon from './trade-bracket'
 import StationIcon from './station-icon'
 import {
   API_BASE_URL,
-  COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
-  COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
-  COMMODITY_FILTER_MIN_VOLUME_DEFAULT,
+  // COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
+  // COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
+  // COMMODITY_FILTER_MIN_VOLUME_DEFAULT,
   UNLIMTED_DEMAND_TEXT
 } from 'lib/consts'
 
@@ -88,7 +88,7 @@ export default ({ commodity }) => {
                             {r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
                             {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
                           </td>
-                          <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
+                          <td className='text-right'><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                         </tr>
                       </tbody>
                     </table>
@@ -119,7 +119,7 @@ export default ({ commodity }) => {
               key: 'updatedAt',
               align: 'right',
               width: 100,
-              className: 'is-hidden-mobile',
+              className: 'is-hidden-mobile no-wrap',
               render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
             },
             {

@@ -3,7 +3,11 @@ import Link from 'next/link'
 import AboutDialog from 'components/dialog/about-dialog'
 import { getCommodities } from 'lib/commodities'
 import commodities from 'lib/commodities/commodities'
-import { API_BASE_URL, UNLIMTED_DEMAND_TEXT } from 'lib/consts'
+import {
+  API_BASE_URL,
+  COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
+  COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+} from 'lib/consts'
 
 export default () => {
   const [fullScreenState, setFullScreenState] = useState(false)
@@ -13,7 +17,7 @@ export default () => {
   useEffect(() => {
     document.addEventListener('fullscreenchange', onFullScreenChangeHandler)
     return () => document.removeEventListener('click', onFullScreenChangeHandler)
-    function onFullScreenChangeHandler(event) {
+    function onFullScreenChangeHandler (event) {
       setFullScreenState(isFullScreen())
     }
   }, [])
@@ -32,7 +36,6 @@ export default () => {
           ...item
         })
       }
-
     })
     setNewsTicker(newTickerItems)
   }
@@ -41,7 +44,7 @@ export default () => {
     const timeoutId = setInterval(() => {
       updateTicker()
     }, 1000 * 60 * 2)
-    return () => clearInterval(timeoutId);
+    return () => clearInterval(timeoutId)
   }, [])
 
   return (
@@ -75,7 +78,7 @@ export default () => {
         <span className='news-ticker__ticker'>
           {newsTicker.map(item =>
             <span key={`ticker_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'>
-              <Link href={`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=30&minVolume=1&systemName=${item.systemName}&maxDistance=1`}>
+              <Link href={`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&systemName=${item.systemName}&maxDistance=1`}>
                 {item.stationName}, {item.systemName}
                 <br />
                 {item.demandBracket === 3 && <>Buying</>}
@@ -91,14 +94,16 @@ export default () => {
                 {item.demandBracket === 3 && <span className='muted'>AVG {item.avgSellPrice.toLocaleString()} CR</span>}
                 {item.stockBracket === 3 && <span className='muted'>AVG {item.avgBuyPrice.toLocaleString()} CR</span>}
                 <br />
-                {item.demandBracket === 3 && <>
-                  {item.sellPrice > item.avgSellPrice && <small className='commodity__price text-positive '>+ {(item.sellPrice - item.avgSellPrice).toLocaleString()} CR</small>}
-                  {item.sellPrice < item.avgSellPrice && <small className='commodity__price text-negative'>- {(item.avgSellPrice - item.sellPrice).toLocaleString()} CR</small>}
-                </>}
-                {item.stockBracket === 3 && <>
-                  {item.buyPrice > item.avgBuyPrice && <small className='commodity__price text-negative'>- {(item.buyPrice - item.avgBuyPrice).toLocaleString()} CR</small>}
-                  {item.buyPrice < item.avgBuyPrice && <small className='commodity__price text-positive'>+ {(item.avgBuyPrice - item.buyPrice).toLocaleString()} CR</small>}
-                </>}
+                {item.demandBracket === 3 &&
+                  <>
+                    {item.sellPrice > item.avgSellPrice && <small className='commodity__price text-positive '>+ {(item.sellPrice - item.avgSellPrice).toLocaleString()} CR</small>}
+                    {item.sellPrice < item.avgSellPrice && <small className='commodity__price text-negative'>- {(item.avgSellPrice - item.sellPrice).toLocaleString()} CR</small>}
+                  </>}
+                {item.stockBracket === 3 &&
+                  <>
+                    {item.buyPrice > item.avgBuyPrice && <small className='commodity__price text-negative'>- {(item.buyPrice - item.avgBuyPrice).toLocaleString()} CR</small>}
+                    {item.buyPrice < item.avgBuyPrice && <small className='commodity__price text-positive'>+ {(item.avgBuyPrice - item.buyPrice).toLocaleString()} CR</small>}
+                  </>}
               </span>
             </span>
           )}
@@ -109,7 +114,7 @@ export default () => {
   )
 }
 
-function isFullScreen() {
+function isFullScreen () {
   if (typeof document === 'undefined') return false
 
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
@@ -119,7 +124,7 @@ function isFullScreen() {
   }
 }
 
-async function toggleFullScreen() {
+async function toggleFullScreen () {
   if (isFullScreen()) {
     if (document.cancelFullScreen) {
       document.cancelFullScreen()

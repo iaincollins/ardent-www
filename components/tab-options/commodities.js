@@ -27,19 +27,20 @@ export default () => {
     } else {
       componentMounted.current = true
     }
-  }, [lastUpdatedFilter, fleetCarrierFilter, minVolumeFilter])
+  }, [lastUpdatedFilter, fleetCarrierFilter, minVolumeFilter, locationFilter, distanceFilter])
 
   return (
     <div className='tab-options'>
       <form onSubmit={(e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent')); document.activeElement.blur() }}>
         <label>
           <span className='tab-options__label-text'>Updated</span>
-          <select name='last-updated' value={lastUpdatedFilter}
+          <select
+            name='last-updated' value={lastUpdatedFilter}
             onChange={(e) => {
               setLastUpdatedFilter(e.target.value)
-                ; (e.target.value === COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
-                  ? window.localStorage.removeItem('lastUpdatedFilter')
-                  : window.localStorage.setItem('lastUpdatedFilter', e.target.value)
+              ; (e.target.value === COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
+                ? window.localStorage.removeItem('lastUpdatedFilter')
+                : window.localStorage.setItem('lastUpdatedFilter', e.target.value)
             }}
           >
             <option value='1'>Today</option>
@@ -52,12 +53,13 @@ export default () => {
 
         <label>
           <span className='tab-options__label-text'>Carriers</span>
-          <select name='fleet-carriers' value={fleetCarrierFilter}
+          <select
+            name='fleet-carriers' value={fleetCarrierFilter}
             onChange={(e) => {
               setFleetCarrierFilter(e.target.value)
-                ; (e.target.value === COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
-                  ? window.localStorage.removeItem('fleetCarrierFilter')
-                  : window.localStorage.setItem('fleetCarrierFilter', e.target.value)
+              ; (e.target.value === COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
+                ? window.localStorage.removeItem('fleetCarrierFilter')
+                : window.localStorage.setItem('fleetCarrierFilter', e.target.value)
             }}
           >
             <option value='included'>Included</option>
@@ -68,12 +70,13 @@ export default () => {
 
         <label>
           <span className='tab-options__label-text'>Quantity</span>
-          <select name='commodity-quantity' value={minVolumeFilter}
+          <select
+            name='commodity-quantity' value={minVolumeFilter}
             onChange={(e) => {
               setMinVolumeFilter(e.target.value)
-                ; (e.target.value === COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
-                  ? window.localStorage.removeItem('minVolumeFilter')
-                  : window.localStorage.setItem('minVolumeFilter', e.target.value)
+              ; (e.target.value === COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
+                ? window.localStorage.removeItem('minVolumeFilter')
+                : window.localStorage.setItem('minVolumeFilter', e.target.value)
             }}
           >
             <option value='1'>Any amount</option>
@@ -85,7 +88,8 @@ export default () => {
 
         <label>
           <span className='tab-options__label-text'>Near</span>
-          <input id='locations' name='locations' type="text" list="locations-list"
+          <input
+            id='locations' name='locations' type='text' list='locations-list'
             data-previous-value=''
             placeholder={COMMODITY_FILTER_LOCATION_DEFAULT}
             autoComplete='off'
@@ -93,11 +97,11 @@ export default () => {
             size={15}
             onBlur={(e) => {
               const previousValue = e.target.getAttribute('previous-value')
-              if (e.target.value == ZERO_WIDTH_SPACE) {
+              if (e.target.value === ZERO_WIDTH_SPACE) {
                 if (previousValue && previousValue !== '') {
                   e.target.value = previousValue
                   setLocationFilter(previousValue)
-                  if (previousValue == COMMODITY_FILTER_LOCATION_DEFAULT) {
+                  if (previousValue === COMMODITY_FILTER_LOCATION_DEFAULT) {
                     window.localStorage.removeItem('locationFilter')
                   } else {
                     window.localStorage.setItem('locationFilter', previousValue)
@@ -119,24 +123,24 @@ export default () => {
               let blurOnEnd = false
               let locationValue = e.target.value.replace(/\u200B/g, '').trimStart()
 
-              if (locationValue.trim() == '' || locationValue.trim() == COMMODITY_FILTER_LOCATION_DEFAULT) {
+              if (locationValue.trim() === '' || locationValue.trim() === COMMODITY_FILTER_LOCATION_DEFAULT) {
                 e.target.setAttribute('readonly', false)
                 locationValue = ''
                 window.localStorage.removeItem('distanceFilter')
                 setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
                 blurOnEnd = true
-              } else if (locationValue.trim() == 'Core Systems') {
+              } else if (locationValue.trim() === 'Core Systems') {
                 locationValue = 'Sol'
                 window.localStorage.setItem('distanceFilter', 500)
                 setDistanceFilter(500)
                 blurOnEnd = true
-              } else if (locationValue.trim() == 'Colonia Region') {
+              } else if (locationValue.trim() === 'Colonia Region') {
                 locationValue = 'Colonia'
                 window.localStorage.setItem('distanceFilter', 100)
                 setDistanceFilter(100)
                 blurOnEnd = true
               } else {
-                if (distanceFilter == COMMODITY_FILTER_DISTANCE_DEFAULT) {
+                if (distanceFilter === COMMODITY_FILTER_DISTANCE_DEFAULT) {
                   setDistanceFilter(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
                   window.localStorage.setItem('distanceFilter', COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
                 }
@@ -147,7 +151,7 @@ export default () => {
                 `
               }
 
-              if (locationValue.trim() == '' || locationValue.trim() === COMMODITY_FILTER_LOCATION_DEFAULT) {
+              if (locationValue.trim() === '' || locationValue.trim() === COMMODITY_FILTER_LOCATION_DEFAULT) {
                 setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
                 window.localStorage.removeItem('locationFilter')
               } else {
@@ -157,9 +161,8 @@ export default () => {
 
               // Use setTimeout here allows us to hide the <datalist> popup
               // (otherwise is bugs out and sticks around in Chrome, even after
-              // the target input has lost focus) 
+              // the target input has lost focus)
               if (blurOnEnd) setTimeout(() => e.target.blur(), 100)
-
             }}
           />
           <datalist id='locations-list'>
@@ -169,14 +172,15 @@ export default () => {
         </label>
         <label>
           <span className='tab-options__label-text'>Distance</span>
-          <select id='distance' name='distance'
-            disabled={locationFilter == COMMODITY_FILTER_LOCATION_DEFAULT || locationFilter == ZERO_WIDTH_SPACE}
+          <select
+            id='distance' name='distance'
+            disabled={locationFilter === COMMODITY_FILTER_LOCATION_DEFAULT || locationFilter === ZERO_WIDTH_SPACE}
             value={distanceFilter}
             onChange={(e) => {
               setDistanceFilter(e.target.value)
-                ; (e.target.value === COMMODITY_FILTER_DISTANCE_DEFAULT)
-                  ? window.localStorage.removeItem('distanceFilter')
-                  : window.localStorage.setItem('distanceFilter', e.target.value)
+              ; (e.target.value === COMMODITY_FILTER_DISTANCE_DEFAULT)
+                ? window.localStorage.removeItem('distanceFilter')
+                : window.localStorage.setItem('distanceFilter', e.target.value)
               window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent'))
             }}
           >
@@ -191,12 +195,29 @@ export default () => {
             <option value='10000'>&lt; 10,000 ly</option>
           </select>
         </label>
+
       </form>
+      <button
+        style={{ border: 'none', background: 'transparent', position: 'absolute', top: '.5rem', right: '.5rem', fontSize: '1.25rem' }} onClick={() => {
+          setLastUpdatedFilter(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
+          setFleetCarrierFilter(COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
+          setMinVolumeFilter(COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
+          setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
+          setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
+          window.localStorage.removeItem('lastUpdatedFilter')
+          window.localStorage.removeItem('fleetCarrierFilter')
+          window.localStorage.removeItem('minVolumeFilter')
+          window.localStorage.removeItem('locationFilter')
+          window.localStorage.removeItem('distanceFilter')
+        }}
+      >
+        <i className='icarus-terminal-sync icon' title='Reset' />
+      </button>
     </div>
   )
 }
 
-async function findSystemsByName(systemName) {
+async function findSystemsByName (systemName) {
   if (systemName.length < 3) return []
   const res = await fetch(`${API_BASE_URL}/v1/search/system/name/${systemName}/`)
   return await res.json()

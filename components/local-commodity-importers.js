@@ -32,10 +32,9 @@ export default ({ commodityOrders }) => {
                             {r.demandBracket !== 0 && r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
                             {r.demandBracket === 0
                               ? <small>{NO_DEMAND_TEXT}</small>
-                              : v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>
-                            }
+                              : v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
                           </td>
-                          <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
+                          <td className='text-right'><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                         </tr>
                       </tbody>
                     </table>
@@ -49,7 +48,7 @@ export default ({ commodityOrders }) => {
               key: 'updatedAt',
               align: 'right',
               width: 130,
-              className: 'is-hidden-mobile',
+              className: 'is-hidden-mobile no-wrap',
               render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
             },
             {
@@ -63,8 +62,7 @@ export default ({ commodityOrders }) => {
                 <>
                   {r.demandBracket === 0
                     ? <small>{NO_DEMAND_TEXT}</small>
-                    : v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>
-                  }
+                    : v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
                   {r.demandBracket !== 0 && r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
                 </>
             },

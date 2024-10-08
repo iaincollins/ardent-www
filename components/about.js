@@ -13,11 +13,11 @@ export default () => {
       const stats = await res.json()
       setStats(stats)
     })()
-      ; (async () => {
-        const res = await fetch(`${API_BASE_URL}/v1/version`)
-        const version = await res.json()
-        setVersion(version)
-      })()
+    ; (async () => {
+      const res = await fetch(`${API_BASE_URL}/v1/version`)
+      const version = await res.json()
+      setVersion(version)
+    })()
   }, [])
 
   return (

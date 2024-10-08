@@ -82,7 +82,7 @@ export default () => {
         if (distance(systemCoordinates, SOL_COORDINATES) <= 200) {
           system.tradeZone = 'Core Systems'
           if (system.systemName === 'Sol') {
-            system.tradeZoneLocation = `Systems within 200 Ly of Sol are known as the Core Systems`
+            system.tradeZoneLocation = 'Systems within 200 Ly of Sol are known as the Core Systems'
           } else {
             system.tradeZoneLocation = <>{system.systemName} is the Core Systems<br />{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
           }
@@ -124,65 +124,65 @@ export default () => {
 
           const marketIds = stations.map(s => s.marketId)
           const rareItems = []
-          for (const [commoditySymbol, commodity] of Object.entries(commmoditiesWithDescriptions)) {
+          for (const [, commodity] of Object.entries(commmoditiesWithDescriptions)) {
             if (marketIds.includes(parseInt(commodity.market_id)) && commodity.rare) {
               rareItems.push({
                 stationName: stations.filter(s => s.marketId === parseInt(commodity.market_id))[0].stationName,
                 ...commodity
-            })
+              })
             }
           }
           setRareGoods(rareItems)
         })()
 
-          ; (async () => {
-            let importOrders = await getSystemImports(systemName)
-            importOrders.forEach((order, i) => {
-              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-                mostRecentUpdatedAt = order.updatedAt
+        ; (async () => {
+          let importOrders = await getSystemImports(systemName)
+          importOrders.forEach((order, i) => {
+            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+              mostRecentUpdatedAt = order.updatedAt
+            }
+            // Enrich order data with commodity metadata
+            if (commmoditiesWithDescriptions[order.symbol]) {
+              importOrders[i] = {
+                ...commmoditiesWithDescriptions[order.symbol],
+                ...order
               }
-              // Enrich order data with commodity metadata
-              if (commmoditiesWithDescriptions[order.symbol]) {
-                importOrders[i] = {
-                  ...commmoditiesWithDescriptions[order.symbol],
-                  ...order
-                }
-              }
-            })
-            importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items list
-            setImportOrders(importOrders)
-            setLastUpdatedAt(mostRecentUpdatedAt)
-          })()
+            }
+          })
+          importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items list
+          setImportOrders(importOrders)
+          setLastUpdatedAt(mostRecentUpdatedAt)
+        })()
 
-          ; (async () => {
-            let exportOrders = await getSystemExports(systemName)
-            exportOrders.forEach((order, i) => {
-              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-                mostRecentUpdatedAt = order.updatedAt
+        ; (async () => {
+          let exportOrders = await getSystemExports(systemName)
+          exportOrders.forEach((order, i) => {
+            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+              mostRecentUpdatedAt = order.updatedAt
+            }
+            // Enrich order data with commodity metadata
+            if (commmoditiesWithDescriptions[order.symbol]) {
+              exportOrders[i] = {
+                ...commmoditiesWithDescriptions[order.symbol],
+                ...order
               }
-              // Enrich order data with commodity metadata
-              if (commmoditiesWithDescriptions[order.symbol]) {
-                exportOrders[i] = {
-                  ...commmoditiesWithDescriptions[order.symbol],
-                  ...order
-                }
-              }
-            })
-            exportOrders = exportOrders.filter(order => !order.rare) // Filter 'Rare' items list
-            setExportOrders(exportOrders)
-            setLastUpdatedAt(mostRecentUpdatedAt)
-          })()
+            }
+          })
+          exportOrders = exportOrders.filter(order => !order.rare) // Filter 'Rare' items list
+          setExportOrders(exportOrders)
+          setLastUpdatedAt(mostRecentUpdatedAt)
+        })()
 
-          ; (async () => {
-            const nearbySystems = await getNearbySystems(systemName)
-            nearbySystems.forEach(s => {
-              s.distance = distance(
-                [system.systemX, system.systemY, system.systemZ],
-                [s.systemX, s.systemY, s.systemZ]
-              )
-            })
-            setNearbySystems(nearbySystems.filter((s, i) => i < 100))
-          })()
+        ; (async () => {
+          const nearbySystems = await getNearbySystems(systemName)
+          nearbySystems.forEach(s => {
+            s.distance = distance(
+              [system.systemX, system.systemY, system.systemZ],
+              [s.systemX, s.systemY, s.systemZ]
+            )
+          })
+          setNearbySystems(nearbySystems.filter((s, i) => i < 100))
+        })()
       }
     })()
   }, [router.query['system-name']])
@@ -284,7 +284,7 @@ export default () => {
                                 {station.bodyName && <small><i className='icon icarus-terminal-planet' style={{ position: 'relative', top: '-.1rem' }} />{station.bodyName}</small>}
                                 {station.bodyName && station.distanceToArrival !== null && <small>{' ('}</small>}
                                 {station.distanceToArrival !== null && <small className='text-no-transform'>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                                {station.bodyName && station.distanceToArrival !== null && <small>{')'}</small>}
+                                {station.bodyName && station.distanceToArrival !== null && <small>)</small>}
                               </div>
                             </div>
                           </Fragment>
@@ -338,7 +338,7 @@ export default () => {
                           <Fragment key={`marketId_${station.marketId}`}>
                             <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
                               <div className='system__entity-name'>
-                                <StationIcon stationType={'Fleet Carrier'} />
+                                <StationIcon stationType='Fleet Carrier' />
                                 Fleet Carrier {station.stationName}
                               </div>
                               <div className='system__entity-information'>
@@ -363,16 +363,18 @@ export default () => {
                     : <span className='muted'>...</span>}
                 </td>
               </tr>
-              {rareGoods.length > 0 && <tr>
-                <th>Rare export</th>
-                <td>
-                  {rareGoods.map(rare => <span className='text-no-transform'>
-                    {rare.stationName}, {system.systemName} is the exlusive exporter of <Link href={`/commodity/${rare.symbol}`}>{rare.name}</Link>.
-                    {' '}
-                    {rare?.description}
-                  </span>)}
-                </td>
-              </tr>}
+              {rareGoods.length > 0 &&
+                <tr>
+                  <th>Rare export</th>
+                  <td style={{ textAlign: 'justify', textJustify: 'auto' }}>
+                    {rareGoods.map(rare =>
+                      <span key={`rare_good_${rare.symbol}`} className='text-no-transform'>
+                        {rare.stationName}, {system.systemName} is the exlusive exporter of <Link href={`/commodity/${rare.symbol}`}>{rare.name}</Link>.
+                        {' '}
+                        {rare?.description}
+                      </span>)}
+                  </td>
+                </tr>}
             </tbody>
           </table>
           <Tabs
@@ -401,7 +403,7 @@ export default () => {
             </TabList>
             {/* {tabIndex !== 2 && <CommodityTabOptions />} */}
             <TabPanel>
-              {!importOrders && <div className='loading-bar loading-bar--tab' />}
+              {!importOrders && <div style={{ marginTop: '2rem' }} className='loading-bar loading-bar--tab' />}
               {importOrders &&
                 <Table
                   className='data-table data-table--striped data-table--interactive data-table--animated'
@@ -422,7 +424,7 @@ export default () => {
                               <tbody style={{ textTransform: 'uppercase' }}>
                                 <tr>
                                   <td><span className='data-table__label'>Total demand</span>{r.totalDemand > 0 ? `${r.totalDemand.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}</td>
-                                  <td>
+                                  <td className='text-right'>
                                     <span className='data-table__label'>Price</span>
                                     {r.avgPrice.toLocaleString()} CR
                                     <br />
@@ -442,7 +444,7 @@ export default () => {
                       key: 'updatedAt',
                       align: 'right',
                       width: 150,
-                      className: 'is-hidden-mobile',
+                      className: 'is-hidden-mobile no-wrap',
                       render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
                     },
                     {
@@ -500,7 +502,7 @@ export default () => {
                 />}
             </TabPanel>
             <TabPanel>
-              {!exportOrders && <div className='loading-bar loading-bar--tab' />}
+              {!exportOrders && <div style={{ marginTop: '2rem' }} className='loading-bar loading-bar--tab' />}
               {exportOrders &&
                 <Table
                   className='data-table data-table--striped data-table--interactive data-table--animated'
@@ -522,7 +524,7 @@ export default () => {
                               <tbody style={{ textTransform: 'uppercase' }}>
                                 <tr>
                                   <td><span className='data-table__label'>Total stock</span>{r.totalStock.toLocaleString()} T</td>
-                                  <td>
+                                  <td className='text-right'>
                                     <span className='data-table__label'>Price</span>
                                     {r.avgPrice.toLocaleString()} CR
                                     <br />
@@ -542,7 +544,7 @@ export default () => {
                       key: 'updatedAt',
                       align: 'right',
                       width: 150,
-                      className: 'is-hidden-mobile',
+                      className: 'is-hidden-mobile no-wrap',
                       render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
                     },
                     {
@@ -639,18 +641,18 @@ export default () => {
   )
 }
 
-async function getSystem(systemName) {
+async function getSystem (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getStationsInSystem(systemName) {
+async function getStationsInSystem (systemName) {
   // @TODO No API endpoint for stations yet, so using 'markets' endpoint
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/stations`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getNearbySystems(systemName) {
+async function getNearbySystems (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=25`)
   return await res.json()
 }
