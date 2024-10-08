@@ -9,7 +9,7 @@ import {
   // COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
   // COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
   // COMMODITY_FILTER_MIN_VOLUME_DEFAULT,
-  UNLIMTED_DEMAND_TEXT
+  NO_DEMAND_TEXT
 } from 'lib/consts'
 
 const MAX_ROWS_TO_DISPLAY = 10
@@ -85,8 +85,8 @@ export default ({ commodity }) => {
                         <tr>
                           <td>
                             <span className='data-table__label'>Demand</span>
-                            {r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
-                            {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
+                            <TradeBracketIcon bracket={r.demandBracket} />
+                            {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
                           </td>
                           <td className='text-right'><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                         </tr>
@@ -105,13 +105,13 @@ export default ({ commodity }) => {
               render: (v) => <span style={{ opacity: 0.75 }}><Link href={`/system/${v}`}>{v}</Link></span>
             },
             {
-              title: 'Dist',
+              title: 'Dist.',
               dataIndex: 'distance',
               key: 'distance',
               align: 'right',
               width: 100,
               className: 'is-hidden-mobile no-wrap',
-              render: (v) => <span style={{ opacity: 0.75 }}>{v} Ly</span>
+              render: (v) => <span style={{ opacity: 0.75 }}>{v.toLocaleString()} Ly</span>
             },
             {
               title: 'Updated',
@@ -131,8 +131,8 @@ export default ({ commodity }) => {
               className: 'is-hidden-mobile no-wrap',
               render: (v, r) =>
                 <>
-                  {v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
-                  {r.demand > 0 && <TradeBracketIcon bracket={r.demandBracket} />}
+                  {v > 0 ? `${v.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
+                  <TradeBracketIcon bracket={r.demandBracket} />
                 </>
             },
             {

@@ -105,13 +105,13 @@ export default ({ commodity }) => {
               render: (v) => <span style={{ opacity: 0.75 }}><Link href={`/system/${v}`}>{v}</Link></span>
             },
             {
-              title: 'Dist',
+              title: 'Dist.',
               dataIndex: 'distance',
               key: 'distance',
               align: 'right',
               width: 100,
               className: 'is-hidden-mobile no-wrap',
-              render: (v) => <span style={{ opacity: 0.75 }}>{v} Ly</span>
+              render: (v) => <span style={{ opacity: 0.75 }}>{v.toLocaleString()} Ly</span>
             },
             {
               title: 'Updated',
