@@ -721,7 +721,7 @@
     "symbol": "Cryolite",
     "category": "Minerals",
     "name": "Cryolite",
-    "description": "Used in a range of applications, including: Insecticides, pesticides fireworks [sic] and as a solvent for Aluminium oxide."
+    "description": "Used in a range of applications, including: Insecticides, pesticides, fireworks and as a solvent for Aluminium oxide."
   },
   "crystallinespheres": {
     "id": "128672432",
@@ -731,7 +731,7 @@
     "name": "Crystalline Spheres",
     "limit": 12,
     "rare": true,
-    "description": "Transparent spheres crafted from the finest crystal and containing a clear liquid full of snow that swirls when shaken"
+    "description": "Transparent spheres crafted from the finest crystal and containing a clear liquid full of snow that swirls when shaken."
   },
   "damagedescapepod": {
     "id": "128672811",
