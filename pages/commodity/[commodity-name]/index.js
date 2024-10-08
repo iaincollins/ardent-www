@@ -306,7 +306,7 @@ export default () => {
               <Tab>Importers</Tab>
               <Tab>Exporters</Tab>
             </TabList>
-            <CommodityTabOptions />
+            <CommodityTabOptions disabled={!!((!imports || !exports))} />
             <TabPanel>
               {!imports && <div className='loading-bar loading-bar--tab' />}
               {imports && <CommodityImportOrders commodities={imports} />}

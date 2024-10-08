@@ -13,7 +13,7 @@ const ZERO_WIDTH_SPACE = '​' // Looking forward to regretting *this* later
 
 const DEFAULT_LOCATION_OPTIONS = ['Any location', 'Core Systems', 'Colonia Region']
 
-export default () => {
+export default ({ disabled = true }) => {
   const componentMounted = useRef(false)
   const [lastUpdatedFilter, setLastUpdatedFilter] = useState(window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
   const [fleetCarrierFilter, setFleetCarrierFilter] = useState(window.localStorage?.getItem('fleetCarrierFilter') ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
@@ -36,6 +36,7 @@ export default () => {
           <span className='tab-options__label-text'>Updated</span>
           <select
             name='last-updated' value={lastUpdatedFilter}
+            disabled={disabled}
             onChange={(e) => {
               setLastUpdatedFilter(e.target.value)
               ; (e.target.value === COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
@@ -55,6 +56,7 @@ export default () => {
           <span className='tab-options__label-text'>Carriers</span>
           <select
             name='fleet-carriers' value={fleetCarrierFilter}
+            disabled={disabled}
             onChange={(e) => {
               setFleetCarrierFilter(e.target.value)
               ; (e.target.value === COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
@@ -72,6 +74,7 @@ export default () => {
           <span className='tab-options__label-text'>Quantity</span>
           <select
             name='commodity-quantity' value={minVolumeFilter}
+            disabled={disabled}
             onChange={(e) => {
               setMinVolumeFilter(e.target.value)
               ; (e.target.value === COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
@@ -90,79 +93,73 @@ export default () => {
           <span className='tab-options__label-text'>Near</span>
           <input
             id='locations' name='locations' type='text' list='locations-list'
+            disabled={disabled}
             data-previous-value=''
             placeholder={COMMODITY_FILTER_LOCATION_DEFAULT}
             autoComplete='off'
-            value={locationFilter}
+            defaultValue={locationFilter}
+            previous-value={locationFilter}
             size={15}
-            onBlur={(e) => {
-              const previousValue = e.target.getAttribute('previous-value')
+            onBlur={async (e) => {
+              const value = e.target.value.replace(/\u200B/g, '').trim()
               if (e.target.value === ZERO_WIDTH_SPACE) {
-                if (previousValue && previousValue !== '') {
-                  e.target.value = previousValue
-                  setLocationFilter(previousValue)
-                  if (previousValue === COMMODITY_FILTER_LOCATION_DEFAULT) {
-                    window.localStorage.removeItem('locationFilter')
+                const previousValue = e.target.getAttribute('previous-value')
+                e.target.value = previousValue
+              } else {
+                const locationValue = value
+                if (locationValue === '' || locationValue === COMMODITY_FILTER_LOCATION_DEFAULT) {
+                  e.target.value = ''
+                  window.localStorage.removeItem('distanceFilter')
+                  setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
+                  setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
+                  window.localStorage.removeItem('locationFilter')
+                } else {
+                  let newLocationValue = locationValue
+                  if (locationValue === 'Core Systems') {
+                    newLocationValue = 'Sol'
+                    e.target.value = newLocationValue
+                    window.localStorage.setItem('distanceFilter', 500)
+                    setDistanceFilter(500)
+                  } else if (locationValue === 'Colonia Region') {
+                    newLocationValue = 'Colonia'
+                    e.target.value = newLocationValue
+                    window.localStorage.setItem('distanceFilter', 100)
+                    setDistanceFilter(100)
                   } else {
-                    window.localStorage.setItem('locationFilter', previousValue)
+                    if (distanceFilter === COMMODITY_FILTER_DISTANCE_DEFAULT) {
+                      setDistanceFilter(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
+                      window.localStorage.setItem('distanceFilter', COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
+                    }
+                    document.getElementById('locations-list').innerHTML = ''
+                    window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent'))
                   }
+                  e.target.value = value // trimmed value
+                  setLocationFilter(newLocationValue)
+                  window.localStorage.setItem('locationFilter', newLocationValue)
                 }
               }
-              document.getElementById('locations-list').innerHTML = ''
-              window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent'))
             }}
             onClick={(e) => {
-              e.target.setAttribute('previous-value', e.target.value.replace(/\u200B/g, '').trim())
-              setLocationFilter(ZERO_WIDTH_SPACE) // \u200B ZERO WIDTH SPACE (input value needs *something* in it to make a <datalist> work how I wanted to work)
+              const value = e.target.value.replace(/\u200B/g, '').trim()
+              if (value !== '') e.target.setAttribute('previous-value', value)
+              e.target.value = ZERO_WIDTH_SPACE
               document.getElementById('locations-list').innerHTML = `
                 ${DEFAULT_LOCATION_OPTIONS.map(location => `<option>${location}</option>`)}
               `
-              e.target.removeAttribute('readonly')
             }}
             onChange={async (e) => {
-              let blurOnEnd = false
-              let locationValue = e.target.value.replace(/\u200B/g, '').trimStart()
-
-              if (locationValue.trim() === '' || locationValue.trim() === COMMODITY_FILTER_LOCATION_DEFAULT) {
-                e.target.setAttribute('readonly', false)
-                locationValue = ''
-                window.localStorage.removeItem('distanceFilter')
-                setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
-                blurOnEnd = true
-              } else if (locationValue.trim() === 'Core Systems') {
-                locationValue = 'Sol'
-                window.localStorage.setItem('distanceFilter', 500)
-                setDistanceFilter(500)
-                blurOnEnd = true
-              } else if (locationValue.trim() === 'Colonia Region') {
-                locationValue = 'Colonia'
-                window.localStorage.setItem('distanceFilter', 100)
-                setDistanceFilter(100)
-                blurOnEnd = true
+              const value = e.target.value.replace(/\u200B/g, '').trim()
+              if ((value === COMMODITY_FILTER_LOCATION_DEFAULT) ||
+                (value === 'Core Systems') ||
+                (value === 'Colonia Region')) {
+                e.target.blur()
               } else {
-                if (distanceFilter === COMMODITY_FILTER_DISTANCE_DEFAULT) {
-                  setDistanceFilter(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
-                  window.localStorage.setItem('distanceFilter', COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
-                }
-                const nearbySystems = await findSystemsByName(locationValue.trim())
+                const nearbySystems = await findSystemsByName(value)
                 document.getElementById('locations-list').innerHTML = `
                   ${DEFAULT_LOCATION_OPTIONS.map(location => `<option>${location}</option>`)}
                   ${nearbySystems.slice(0, 10).map(system => `<option>${system.systemName}</option>`)}
                 `
               }
-
-              if (locationValue.trim() === '' || locationValue.trim() === COMMODITY_FILTER_LOCATION_DEFAULT) {
-                setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-                window.localStorage.removeItem('locationFilter')
-              } else {
-                setLocationFilter(locationValue)
-                window.localStorage.setItem('locationFilter', locationValue.trimEnd())
-              }
-
-              // Use setTimeout here allows us to hide the <datalist> popup
-              // (otherwise is bugs out and sticks around in Chrome, even after
-              // the target input has lost focus)
-              if (blurOnEnd) setTimeout(() => e.target.blur(), 100)
             }}
           />
           <datalist id='locations-list'>
@@ -174,7 +171,7 @@ export default () => {
           <span className='tab-options__label-text'>Distance</span>
           <select
             id='distance' name='distance'
-            disabled={locationFilter === COMMODITY_FILTER_LOCATION_DEFAULT || locationFilter === ZERO_WIDTH_SPACE}
+            disabled={disabled || locationFilter === COMMODITY_FILTER_LOCATION_DEFAULT || locationFilter === ZERO_WIDTH_SPACE}
             value={distanceFilter}
             onChange={(e) => {
               setDistanceFilter(e.target.value)
@@ -195,24 +192,33 @@ export default () => {
             <option value='10000'>&lt; 10,000 ly</option>
           </select>
         </label>
-
       </form>
-      <button
-        style={{ border: 'none', background: 'transparent', position: 'absolute', top: '.5rem', right: '.5rem', fontSize: '1.25rem' }} onClick={() => {
-          setLastUpdatedFilter(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
-          setFleetCarrierFilter(COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
-          setMinVolumeFilter(COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
-          setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-          setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
-          window.localStorage.removeItem('lastUpdatedFilter')
-          window.localStorage.removeItem('fleetCarrierFilter')
-          window.localStorage.removeItem('minVolumeFilter')
-          window.localStorage.removeItem('locationFilter')
-          window.localStorage.removeItem('distanceFilter')
-        }}
-      >
-        <i className='icarus-terminal-sync icon' title='Reset' />
-      </button>
+      {(
+        (lastUpdatedFilter !== COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT) ||
+        (fleetCarrierFilter !== COMMODITY_FILTER_FLEET_CARRIER_DEFAULT) ||
+        (minVolumeFilter !== COMMODITY_FILTER_MIN_VOLUME_DEFAULT) ||
+        (locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT) ||
+        (distanceFilter !== COMMODITY_FILTER_DISTANCE_DEFAULT)
+      )
+        ? (
+          <button
+            style={{ borderRadius: '.1rem', border: 'none', background: 'rgba(0,0,0,.75)', color: 'white', position: 'absolute', top: '.5rem', right: '.5rem', fontSize: '1rem', padding: '.25rem .5rem' }} onClick={() => {
+              setLastUpdatedFilter(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
+              setFleetCarrierFilter(COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
+              setMinVolumeFilter(COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
+              setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
+              setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
+              window.localStorage.removeItem('lastUpdatedFilter')
+              window.localStorage.removeItem('fleetCarrierFilter')
+              window.localStorage.removeItem('minVolumeFilter')
+              window.localStorage.removeItem('locationFilter')
+              window.localStorage.removeItem('distanceFilter')
+            }}
+          >
+            Reset
+          </button>
+          )
+        : ''}
     </div>
   )
 }
