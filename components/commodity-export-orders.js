@@ -63,7 +63,7 @@ export default ({ commodities }) => {
           render: (v) => <span style={{ opacity: 0.5 }}>{v}</span>
         },
         {
-          title: 'Distance',
+          title: 'Dist',
           dataIndex: 'distance',
           key: 'distance',
           align: 'right',
@@ -87,7 +87,7 @@ export default ({ commodities }) => {
           key: 'stock',
           align: 'right',
           width: 140,
-          className: 'is-hidden-mobile',
+          className: 'is-hidden-mobile no-wrap',
           render: (v, r) =>
             <>
               {v.toLocaleString()} T
@@ -100,7 +100,7 @@ export default ({ commodities }) => {
           key: 'buyPrice',
           align: 'right',
           width: 140,
-          className: 'is-hidden-mobile',
+          className: 'is-hidden-mobile no-wrap',
           render: (v) => <>{v.toLocaleString()} CR</>
         }
       ]}
@@ -189,7 +189,7 @@ function ExpandedRow({ r }) {
             key: 'stock',
             align: 'right',
             width: 130,
-            className: 'is-hidden-mobile',
+            className: 'is-hidden-mobile no-wrap',
             render: (v, r) =>
               <>
                 {v.toLocaleString()} T
@@ -202,7 +202,7 @@ function ExpandedRow({ r }) {
             key: 'buyPrice',
             align: 'right',
             width: 130,
-            className: 'is-hidden-mobile',
+            className: 'is-hidden-mobile no-wrap',
             render: (v) => <>{v.toLocaleString()} CR</>
           }
         ]}

@@ -105,7 +105,7 @@ export default ({ commodity }) => {
               render: (v) => <span style={{ opacity: 0.75 }}><Link href={`/system/${v}`}>{v}</Link></span>
             },
             {
-              title: 'Distance',
+              title: 'Dist',
               dataIndex: 'distance',
               key: 'distance',
               align: 'right',
@@ -128,7 +128,7 @@ export default ({ commodity }) => {
               key: 'demand',
               align: 'right',
               width: 110,
-              className: 'is-hidden-mobile',
+              className: 'is-hidden-mobile no-wrap',
               render: (v, r) =>
                 <>
                   {v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
@@ -141,7 +141,7 @@ export default ({ commodity }) => {
               key: 'sellPrice',
               align: 'right',
               width: 130,
-              className: 'is-hidden-mobile',
+              className: 'is-hidden-mobile no-wrap',
               render: (v) => <>{v.toLocaleString()} CR</>
             }
           ]}

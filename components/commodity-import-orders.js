@@ -29,7 +29,7 @@ export default ({ commodities }) => {
           align: 'left',
           className: 'max-width-mobile',
           render: (v, r) =>
-            <>
+            <div>
               <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
               {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
@@ -52,7 +52,7 @@ export default ({ commodities }) => {
                 </table>
                 <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
               </div>
-            </>
+            </div>
         },
         {
           title: 'System',
@@ -63,7 +63,7 @@ export default ({ commodities }) => {
           render: (v) => <span style={{ opacity: 0.5 }}>{v}</span>
         },
         {
-          title: 'Distance',
+          title: 'Dist',
           dataIndex: 'distance',
           key: 'distance',
           align: 'right',
@@ -87,7 +87,7 @@ export default ({ commodities }) => {
           key: 'demand',
           align: 'right',
           width: 140,
-          className: 'is-hidden-mobile',
+          className: 'is-hidden-mobile no-wrap',
           render: (v, r) =>
             <>
               {v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}
@@ -100,7 +100,7 @@ export default ({ commodities }) => {
           key: 'sellPrice',
           align: 'right',
           width: 140,
-          className: 'is-hidden-mobile',
+          className: 'is-hidden-mobile no-wrap',
           render: (v) => <>{v.toLocaleString()} CR</>
         }
       ]}
@@ -157,7 +157,7 @@ function ExpandedRow({ r }) {
                 <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
-                <div className='is-visible-mobile'>
+                <div className='is-visible-mobile' >
                   <table className='data-table--mini data-table--compact two-column-table'>
                     <tbody style={{ textTransform: 'uppercase' }}>
                       <tr>
@@ -192,7 +192,7 @@ function ExpandedRow({ r }) {
             key: 'demand',
             align: 'right',
             width: 130,
-            className: 'is-hidden-mobile',
+            className: 'is-hidden-mobile no-wrap',
             render: (v, r) =>
               <>
                 {r.demandBracket === 0
@@ -208,7 +208,7 @@ function ExpandedRow({ r }) {
             key: 'sellPrice',
             align: 'right',
             width: 130,
-            className: 'is-hidden-mobile',
+            className: 'is-hidden-mobile no-wrap no-wrap',
             render: (v) => <>{v.toLocaleString()} CR</>
           }
         ]}

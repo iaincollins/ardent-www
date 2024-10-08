@@ -14,6 +14,8 @@
 .news-ticker__ticker {
   display: block;
   animation: marquee 200s linear infinite;
+  animation-delay: -30s;
+  animation-fill-mode: forwards;
   width: max-content;
 }
 

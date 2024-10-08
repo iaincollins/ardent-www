@@ -10,6 +10,11 @@
   opacity: 0;
 }
 
+.no-wrap {
+  white-space: nowrap !important;
+  text-wrap: nowrap !important;
+}
+
 .text-large {
   font-size: 1.2rem;
 }

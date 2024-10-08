@@ -451,7 +451,7 @@ export default () => {
                       key: 'totalDemand',
                       align: 'right',
                       width: 150,
-                      className: 'is-hidden-mobile',
+                      className: 'is-hidden-mobile no-wrap',
                       render: (v) => <>{v > 0 ? `${v.toLocaleString()} T` : <small>{UNLIMTED_DEMAND_TEXT}</small>}</>
                     },
                     {
@@ -460,7 +460,7 @@ export default () => {
                       key: 'avgPrice',
                       align: 'right',
                       width: 150,
-                      className: 'is-hidden-mobile',
+                      className: 'is-hidden-mobile no-wrap',
                       render: (v, r) =>
                         <>
                           {v.toLocaleString()} CR
@@ -551,7 +551,7 @@ export default () => {
                       key: 'totalStock',
                       align: 'right',
                       width: 150,
-                      className: 'is-hidden-mobile',
+                      className: 'is-hidden-mobile no-wrap',
                       render: (v) => <>{v.toLocaleString()} T</>
                     },
                     {
@@ -560,7 +560,7 @@ export default () => {
                       key: 'avgPrice',
                       align: 'right',
                       width: 150,
-                      className: 'is-hidden-mobile',
+                      className: 'is-hidden-mobile no-wrap',
                       render: (v, r) =>
                         <>
                           {v.toLocaleString()} CR
@@ -617,7 +617,7 @@ export default () => {
                         </>
                     },
                     {
-                      title: 'Distance',
+                      title: 'Dist',
                       dataIndex: 'distance',
                       key: 'distance',
                       align: 'right',

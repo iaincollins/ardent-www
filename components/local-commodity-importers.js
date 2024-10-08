@@ -58,7 +58,7 @@ export default ({ commodityOrders }) => {
               key: 'demand',
               align: 'right',
               width: 130,
-              className: 'is-hidden-mobile',
+              className: 'is-hidden-mobile no-wrap',
               render: (v, r) =>
                 <>
                   {r.demandBracket === 0
@@ -74,7 +74,7 @@ export default ({ commodityOrders }) => {
               key: 'sellPrice',
               align: 'right',
               width: 130,
-              className: 'is-hidden-mobile',
+              className: 'is-hidden-mobile no-wrap',
               render: (v) => <>{v.toLocaleString()} CR</>
             }
           ]}

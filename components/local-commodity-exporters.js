@@ -54,7 +54,7 @@ export default ({ commodityOrders }) => {
               key: 'stock',
               align: 'right',
               width: 130,
-              className: 'is-hidden-mobile',
+              className: 'is-hidden-mobile no-wrap',
               render: (v, r) => <>{v.toLocaleString()} T<TradeBracketIcon bracket={r.stockBracket} /></>
             },
             {
@@ -63,7 +63,7 @@ export default ({ commodityOrders }) => {
               key: 'buyPrice',
               align: 'right',
               width: 130,
-              className: 'is-hidden-mobile',
+              className: 'is-hidden-mobile no-wrap',
               render: (v) => <>{v.toLocaleString()} CR</>
             }
           ]}

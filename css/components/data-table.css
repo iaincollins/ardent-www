@@ -5,7 +5,7 @@
 
 .data-table th,
 .data-table td {
-  white-space: nowrap;
+  text-wrap: pretty;
   overflow: hidden;
   padding: .5rem;
 }
