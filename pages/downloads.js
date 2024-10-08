@@ -72,7 +72,7 @@ export default () => {
             </p>
             <ul className='clear'>
               {Object.entries(database.tables).map(([k, v]) => <li key={`${database.name}_${k}`} style={{ textTransform: 'capitalize' }}>{v.toLocaleString()} {k}</li>)}
-              {database?.size && <li>Requires {byteSize(database.size).value} {byteSize(database.size).unit} of diskspace</li>}
+              {database?.size && <li>Requires {byteSize(database.size).value} {byteSize(database.size).unit} of disk space</li>}
             </ul>
             <p style={{ margin: '1.5rem 0' }}>
               <Link href={database?.download?.url ?? ''} className='button' style={{ padding: '.75rem 1.25rem' }}>
