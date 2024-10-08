@@ -233,15 +233,18 @@ export default () => {
                     <th>Total demand</th>
                     <td>
                       <span className='fx__fade-in'>
-                        {commodity.totalDemand > 0 &&
-                          <progress
-                            max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                            value={commodity.totalDemand}
-                            style={{ maxWidth: '12rem', height: '1.25rem' }}
-                          />}
-                        <p style={{ margin: '0 0 .15rem 0', lineHeight: '0.8rem' }}>
-                          {commodity.totalDemand > 0 ? <small>{commodity.totalDemand.toLocaleString()} T</small> : <InsufficentData />}
-                        </p>
+                        {commodity.totalDemand > 0
+                          ? (
+                            <>
+                              <progress
+                                max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                                value={commodity.totalDemand}
+                                style={{ maxWidth: '12rem', height: '1.25rem' }}
+                              />
+                              <p style={{ margin: '0 0 .15rem 0', lineHeight: '0.8rem' }}><small>{commodity.totalDemand.toLocaleString()} T</small></p>
+                            </>
+                            )
+                          : <InsufficentData />}
                       </span>
                     </td>
                   </tr>
@@ -249,15 +252,18 @@ export default () => {
                     <th>Total supply</th>
                     <td>
                       <span className='fx__fade-in'>
-                        {commodity.totalStock > 0 &&
-                          <progress
-                            max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                            value={commodity.totalStock}
-                            style={{ maxWidth: '12rem', height: '1.25rem' }}
-                          />}
-                        <p style={{ margin: '0 0 .15rem 0', lineHeight: '0.8rem' }}>
-                          {commodity.totalStock > 0 ? <small>{commodity.totalStock.toLocaleString()} T</small> : <InsufficentData />}
-                        </p>
+                        {commodity.totalStock > 0
+                          ? (
+                            <>
+                              <progress
+                                max={Math.max(commodity.totalStock, commodity.totalDemand)}
+                                value={commodity.totalStock}
+                                style={{ maxWidth: '12rem', height: '1.25rem' }}
+                              />
+                              <p style={{ margin: '0 0 .15rem 0', lineHeight: '0.8rem' }}><small>{commodity.totalStock.toLocaleString()} T</small></p>
+                            </>
+                            )
+                          : <InsufficentData />}
                       </span>
                     </td>
                   </tr>

@@ -90,6 +90,7 @@ export default function Page (props) {
                     dataIndex: 'name',
                     key: 'commodityName',
                     align: 'left',
+                    className: 'max-width-mobile',
                     render: (v, r) =>
                       <>
                         <i className='icon icarus-terminal-cargo' />
@@ -121,28 +122,29 @@ export default function Page (props) {
                     dataIndex: 'avgSellPrice',
                     key: 'avgSellPrice',
                     align: 'right',
-                    className: 'is-hidden-mobile',
-                    render: (v, r) => (v > 0)
-                      ? <>{v.toLocaleString()} CR</>
-                      : '-'
+                    className: 'is-hidden-mobile no-wrap',
+                    width: 150,
+                    render: (v, r) => (v > 0) ? <>{v.toLocaleString()} CR</> : <small>-</small>
                   },
                   {
                     title: 'Avg export CR/T',
                     dataIndex: 'avgBuyPrice',
                     key: 'avgBuyPrice',
                     align: 'right',
-                    className: 'is-hidden-mobile',
-                    render: (v) => v > 0 ? <>{v.toLocaleString()} CR</> : '-'
+                    className: 'is-hidden-mobile no-wrap',
+                    width: 150,
+                    render: (v) => v > 0 ? <>{v.toLocaleString()} CR</> : <small>-</small>
                   },
                   {
                     title: 'Avg profit CR/T',
                     dataIndex: 'avgProfit',
                     key: 'avgProfit',
                     align: 'right',
-                    className: 'is-hidden-mobile',
+                    width: 150,
+                    className: 'is-hidden-mobile no-wrap',
                     render: (v, r) =>
                       <div style={{ textTransform: 'uppercase' }}>
-                        {v > 0 ? <>{v.toLocaleString()} CR</> : '-'}
+                        {v > 0 ? <>{v.toLocaleString()} CR</> : <small>-</small>}
                         <br />
                         {v > 0 ? <small>Max {r.maxProfit.toLocaleString()} CR</small> : ''}
                       </div>
