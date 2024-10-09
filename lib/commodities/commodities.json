@@ -2579,6 +2579,13 @@
     "name": "Thargoid Scout Tissue Sample",
     "description": "A sample of bio-mechanical tissue taken from a Thargoid Scout-class vessel. Tissue samples appear to be much sought after for research purposes, despite the fact that they appear to be highly corrosive."
   },
+  "thargoidgeneratortissuesample": {
+    "id": "thargoidgeneratortissuesample",
+    "symbol": "ThargoidGeneratorTissueSample",
+    "category": "Salvage",
+    "name": "Thargoid Caustic Tissue Sample",
+    "description": "A sample of bio-mechanical tissue taken from a caustic generator."
+  },
   "thargoidtissuesampletype1": {
     "id": "128793128",
     "symbol": "ThargoidTissueSampleType1",
