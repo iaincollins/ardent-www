@@ -451,9 +451,8 @@ export default () => {
                       align: 'center',
                       width: 100,
                       className: 'is-hidden-mobile',
-                      render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'absolute', top: '1.3rem', marginLeft: '.25rem' }} className='icarus-terminal-settlement muted' /></span>
+                      render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.2rem', marginLeft: '.4rem' }} className='icarus-terminal-settlement muted' /></span>
                     },
-
                     {
                       title: 'Updated',
                       dataIndex: 'updatedAt',
@@ -567,7 +566,7 @@ export default () => {
                       align: 'center',
                       width: 100,
                       className: 'is-hidden-mobile',
-                      render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'absolute', top: '1.3rem', marginLeft: '.25rem' }} className='icarus-terminal-settlement muted' /></span>
+                      render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.2rem', marginLeft: '.4rem' }} className='icarus-terminal-settlement muted' /></span>
                     },
                     {
                       title: 'Updated',
