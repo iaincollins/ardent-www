@@ -419,7 +419,10 @@ export default () => {
                       render: (v, r) =>
                         <>
                           <i className='icon icarus-terminal-cargo' />{v}<br />
-                          <small>{r.importOrders.length === 1 ? '1 importer ' : `${r.importOrders.length} importers`}</small>
+                          <div className='is-visible-mobile'>
+                            <small style={{ float: 'right' }}>{r.importOrders.length === 1 ? '1 importer ' : `${r.importOrders.length} importers`}</small>
+                          </div>
+                          <small>{r.category}</small>
                           {r?.consumer === true && <small> | Consumer</small>}
                           <div className='is-visible-mobile'>
                             <table className='data-table--mini data-table--compact two-column-table'>
@@ -441,6 +444,16 @@ export default () => {
                         </>
                     },
                     {
+                      title: 'Importers',
+                      dataIndex: 'importOrders',
+                      key: 'importOrders',
+                      align: 'center',
+                      width: 100,
+                      className: 'is-hidden-mobile',
+                      render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{fontSize: '1.25rem', position: 'absolute', top: '1.3rem', marginLeft: '.25rem'}} className='icarus-terminal-settlement muted' /></span>
+                    },
+
+                    {
                       title: 'Updated',
                       dataIndex: 'updatedAt',
                       key: 'updatedAt',
@@ -454,7 +467,7 @@ export default () => {
                       dataIndex: 'totalDemand',
                       key: 'totalDemand',
                       align: 'right',
-                      width: 150,
+                      width: 200,
                       className: 'is-hidden-mobile no-wrap',
                       render: (v) => <>{v > 0 ? `${v.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}</>
                     },
@@ -519,7 +532,10 @@ export default () => {
                       render: (v, r) =>
                         <>
                           <i className='icon icarus-terminal-cargo' />{v}<br />
-                          <small>{r.exportOrders.length === 1 ? '1 exporter ' : `${r.exportOrders.length} exporters`}</small>
+                          <div className='is-visible-mobile'>
+                            <small style={{ float: 'right' }}>{r.exportOrders.length === 1 ? '1 exporter ' : `${r.exportOrders.length} exporters`}</small>
+                          </div>
+                          <small>{r.category}</small>
                           {r?.producer === true && <small> | Producer</small>}
                           {r?.rare === true && <small> | Rare</small>}
                           <div className='is-visible-mobile'>
@@ -542,6 +558,15 @@ export default () => {
                         </>
                     },
                     {
+                      title: 'Exporters',
+                      dataIndex: 'exportOrders',
+                      key: 'exportOrders',
+                      align: 'center',
+                      width: 100,
+                      className: 'is-hidden-mobile',
+                      render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{fontSize: '1.25rem', position: 'absolute', top: '1.3rem', marginLeft: '.25rem'}} className='icarus-terminal-settlement muted' /></span>
+                    },
+                    {
                       title: 'Updated',
                       dataIndex: 'updatedAt',
                       key: 'updatedAt',
@@ -555,7 +580,7 @@ export default () => {
                       dataIndex: 'totalStock',
                       key: 'totalStock',
                       align: 'right',
-                      width: 150,
+                      width: 200,
                       className: 'is-hidden-mobile no-wrap',
                       render: (v) => <>{v.toLocaleString()} T</>
                     },
