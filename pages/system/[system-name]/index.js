@@ -151,13 +151,13 @@ export default () => {
               }
             }
           })
-          importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items list
+          importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
           setImportOrders(importOrders)
           setLastUpdatedAt(mostRecentUpdatedAt)
         })()
 
         ; (async () => {
-          let exportOrders = await getSystemExports(systemName)
+          const exportOrders = await getSystemExports(systemName)
           exportOrders.forEach((order, i) => {
             if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
               mostRecentUpdatedAt = order.updatedAt
@@ -170,7 +170,6 @@ export default () => {
               }
             }
           })
-          exportOrders = exportOrders.filter(order => !order.rare) // Filter 'Rare' items list
           setExportOrders(exportOrders)
           setLastUpdatedAt(mostRecentUpdatedAt)
         })()
@@ -391,12 +390,12 @@ export default () => {
               <Tab>
                 <span className='is-hidden-mobile'>Imports</span>
                 <span className='is-visible-mobile'>Imp</span>
-                <span className='muted'> [{importOrders?.length ?? '-'}]</span>
+                {importOrders && <span className='tab-badge'>{importOrders.length}</span>}
               </Tab>
               <Tab>
                 <span className='is-hidden-mobile'>Exports</span>
                 <span className='is-visible-mobile'>Exp</span>
-                <span className='muted'> [{exportOrders?.length ?? '-'}]</span>
+                {exportOrders && <span className='tab-badge'>{exportOrders.length}</span>}
               </Tab>
               <Tab>
                 <span className='is-hidden-mobile'>Nearby</span>
@@ -422,8 +421,10 @@ export default () => {
                           <div className='is-visible-mobile'>
                             <small style={{ float: 'right' }}>{r.importOrders.length === 1 ? '1 importer ' : `${r.importOrders.length} importers`}</small>
                           </div>
-                          <small>{r.category}</small>
-                          {r?.consumer === true && <small> | Consumer</small>}
+                          <small>
+                            {r.category}
+                            {r?.consumer === true && ', Consumer'}
+                          </small>
                           <div className='is-visible-mobile'>
                             <table className='data-table--mini data-table--compact two-column-table'>
                               <tbody style={{ textTransform: 'uppercase' }}>
@@ -450,7 +451,7 @@ export default () => {
                       align: 'center',
                       width: 100,
                       className: 'is-hidden-mobile',
-                      render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{fontSize: '1.25rem', position: 'absolute', top: '1.3rem', marginLeft: '.25rem'}} className='icarus-terminal-settlement muted' /></span>
+                      render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'absolute', top: '1.3rem', marginLeft: '.25rem' }} className='icarus-terminal-settlement muted' /></span>
                     },
 
                     {
@@ -535,9 +536,11 @@ export default () => {
                           <div className='is-visible-mobile'>
                             <small style={{ float: 'right' }}>{r.exportOrders.length === 1 ? '1 exporter ' : `${r.exportOrders.length} exporters`}</small>
                           </div>
-                          <small>{r.category}</small>
-                          {r?.producer === true && <small> | Producer</small>}
-                          {r?.rare === true && <small> | Rare</small>}
+                          <small>
+                            {r.category}
+                            {r?.rare === true && ', Rare'}
+                            {r?.producer === true && ', Producer'}
+                          </small>
                           <div className='is-visible-mobile'>
                             <table className='data-table--mini two-column-table data-table--compact'>
                               <tbody style={{ textTransform: 'uppercase' }}>
@@ -564,7 +567,7 @@ export default () => {
                       align: 'center',
                       width: 100,
                       className: 'is-hidden-mobile',
-                      render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{fontSize: '1.25rem', position: 'absolute', top: '1.3rem', marginLeft: '.25rem'}} className='icarus-terminal-settlement muted' /></span>
+                      render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'absolute', top: '1.3rem', marginLeft: '.25rem' }} className='icarus-terminal-settlement muted' /></span>
                     },
                     {
                       title: 'Updated',
@@ -641,11 +644,7 @@ export default () => {
                       dataIndex: 'systemName',
                       key: 'systemName',
                       align: 'left',
-                      render: (v, r) =>
-                        <>
-                          <i className='icon icarus-terminal-star' />
-                          {v}
-                        </>
+                      render: (v) => <><i className='icon icarus-terminal-star' />{v}</>
                     },
                     {
                       title: 'Dist.',

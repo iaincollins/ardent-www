@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import AboutDialog from 'components/dialog/about-dialog'
-import { getCommodities } from 'lib/commodities'
+import { getCommoditiesWithAvgPricing } from 'lib/commodities'
 import commodities from 'lib/commodities/commodities'
 import {
   API_BASE_URL,
@@ -26,7 +26,7 @@ export default () => {
   const updateTicker = async () => {
     const res = await fetch(`${API_BASE_URL}/v1-beta/commodities/ticker`)
     const ticker = await res.json()
-    const latestCommodityData = await getCommodities()
+    const latestCommodityData = await getCommoditiesWithAvgPricing()
 
     const newTickerItems = []
     ticker.forEach((item, i) => {
@@ -79,7 +79,7 @@ export default () => {
         <span className='news-ticker__ticker'>
           {newsTicker.map(item =>
             <span key={`ticker_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'>
-              <Link href={`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&systemName=${item.systemName}&maxDistance=1`}>
+              <Link href={`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&location=${item.systemName}&maxDistance=1`}>
                 {item.stationName}, {item.systemName}
                 <br />
                 {item.demandBracket === 3 && <>Buying</>}

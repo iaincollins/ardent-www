@@ -1,7 +1,7 @@
-import { getCommodities } from 'lib/commodities'
+import { getCommoditiesWithAvgPricing } from 'lib/commodities'
 
 export default async function sitemap () {
-  const commodities = await getCommodities()
+  const commodities = await getCommoditiesWithAvgPricing()
   const sitemap = [
     {
       url: 'https://ardent-industry.com',

@@ -38,21 +38,15 @@ export default () => {
     if (basePath === 'exporters') setTabIndex(1)
   }, [router.pathname])
 
-  function getCommodityName() {
-    // Don't seem able to reliably able to get this from the route handler
-    // (e.g. if the URL is updated but the param isn't explicitly passed)
-    // which seems silly as it's right there in the URL bar.
-    return window.location.pathname.split('/')[2]
-  }
-
   async function getImportsAndExports () {
-    const commodityName = getCommodityName()
+    // Can't reliably get this from the the route.query object
+    const commodityName = window.location.pathname.split('/')[2]
     if (!commodityName) return
 
     setImports(undefined)
     setExports(undefined)
 
-    // We can fetch these together at the same time
+    // Fetch imports and exports together at the same time
     ;(async () => {
       const imports = await getImports(commodityName)
       if (Array.isArray(imports)) {
@@ -93,10 +87,8 @@ export default () => {
   }
 
   useEffect(() => {
-    // FIXME Refactor to avoid firing twice on page load (without breaking
-    // subsequent navigation changes)
-    (async () => {
-      const commodityName = getCommodityName()
+    ;(async () => {
+      const commodityName = router.query?.['commodity-name']
       if (!commodityName) return
 
       setCommodity(undefined)
@@ -117,10 +109,10 @@ export default () => {
       if (c && !c.totalStock) c.totalStock = 0
       setCommodity(c || null)
       if (c?.rareMarketId) setRareMarket(await getCommodityFromMarket(c.rareMarketId, c.symbol))
-      
+
       getImportsAndExports()
     })()
-  }, [router.query['commodity-name']])
+  }, [router.query])
 
   useEffect(() => {
     const commodityFilterChangeEvent = () => getImportsAndExports()
@@ -384,4 +376,3 @@ async function getCommodityFromMarket (marketId, commodityName) {
 }
 
 const InsufficentData = () => <span style={{ opacity: 0.4 }}>Insufficent data</span>
-

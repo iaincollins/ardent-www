@@ -4,13 +4,15 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Table from 'rc-table'
 import Layout from 'components/layout'
-import { getCommodities } from 'lib/commodities'
+import { getCommoditiesWithAvgPricing } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 
 export async function getServerSideProps ({ query }) {
-  const rawCommoditiesData = (await import('../../../../ardent-data/cache/commodities.json')).commodities
-  const commodities = await getCommodities(rawCommoditiesData)
+  // When running on the server we can can load the commodity pricing data
+  // directly and pass the data as an argument which the function then parses
+  const commoditiesWithPrices = (await import('../../../../ardent-data/cache/commodities.json')).commodities
+  const commodities = await getCommoditiesWithAvgPricing(commoditiesWithPrices)
 
   const filterByCategory = (query?.['commodity-category'])
     ? commodities.filter((c) => c.category.toLowerCase() === query?.['commodity-category'].toLowerCase())?.[0]?.category ?? false
@@ -36,7 +38,7 @@ export default function Page (props) {
 
   useEffect(() => {
     (async () => {
-      const commodities_ = commodities ?? await getCommodities()
+      const commodities_ = commodities ?? await getCommoditiesWithAvgPricing()
 
       const filterByCategory = (router.query?.['commodity-category'])
         ? commodities_.filter((c) => c.category.toLowerCase() === router.query?.['commodity-category'].toLowerCase())?.[0]?.category ?? false

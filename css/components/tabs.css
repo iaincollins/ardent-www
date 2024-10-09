@@ -98,6 +98,18 @@
   z-index: 3;
 }
 
+.tab-badge {
+  border-radius: 2rem;
+  background: var(--color-primary-darker);
+  color: var(--color-text);
+  padding: .15rem .3rem;
+  line-height: .8rem;
+  font-size: .9rem;
+  position: relative;
+  top: -.15rem;
+  left: .3rem;
+}
+
 .tab-panel__header {
   background: var(--color-primary);
   color: var(--color-text-inverted);
@@ -161,6 +173,24 @@
   background: var(--color-primary);
   border-color: var(--color-primary-dark);
   color: var(--color-primary-darker);
+  cursor:not-allowed;
+}
+
+.tab-options form button {
+  border-radius: .2rem;
+  border: none;
+  background: rgba(0,0,0,.75);
+  color: white;
+  position: absolute;
+  font-size: 1rem;
+  padding: .25rem .5rem;
+  transition: 500ms;
+}
+
+.tab-options form button:disabled {
+  background: var(--color-primary-darker);
+  border-color: var(--color-primary-darker);
+  color: var(--color-primary-dark);
   cursor:not-allowed;
 }
 

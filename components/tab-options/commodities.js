@@ -16,7 +16,7 @@ const DEFAULT_LOCATION_OPTIONS = ['Any location', 'Core Systems', 'Colonia Regio
 
 // FIXME This code is *especially* an absolute garbage fire 🗑️🔥
 
-export default ({ disabled = true }) => {
+export default ({ disabled = false }) => {
   const router = useRouter()
   const componentMounted = useRef(false)
   const [lastUpdatedFilter, setLastUpdatedFilter] = useState(window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
@@ -35,20 +35,27 @@ export default ({ disabled = true }) => {
   }, [lastUpdatedFilter, fleetCarrierFilter, minVolumeFilter, locationFilter, distanceFilter])
 
   useEffect(() => {
-    if (router.query?.maxDaysAgo && router.query.maxDaysAgo !== lastUpdatedFilter) setLastUpdatedFilter(router.query.maxDaysAgo)
-    if (router.query?.fleetCarrier && router.query.fleetCarrier !== fleetCarrierFilter) setFleetCarrierFilter(router.query.fleetCarrier)
-    if (router.query?.minVolume && router.query.minVolume !== minVolumeFilter) setMinVolumeFilter(router.query.minVolume)
-    if (router.query?.systemName && router.query.systemName !== locationFilter) {
-      setLocationFilter(router.query.systemName.trim())
-      document.getElementById('location').value = router.query.systemName.trim()
+    if (router.query?.maxDaysAgo && router.query.maxDaysAgo !== lastUpdatedFilter) {
+      setLastUpdatedFilter(router.query.maxDaysAgo)
+      window.localStorage.setItem('lastUpdatedFilter', router.query.maxDaysAgo)
     }
-    if (router.query?.maxDistance && router.query.maxDaysAgo !== distanceFilter) setDistanceFilter(router.query.maxDistance)
-
-    if (router?.query?.maxDaysAgo) window.localStorage?.setItem('lastUpdatedFilter', router.query.maxDaysAgo)
-    if (router?.query?.fleetCarriers) window.localStorage?.setItem('fleetCarrierFilter', router.query.fleetCarriers)
-    if (router?.query?.minVolume) window.localStorage?.setItem('minVolumeFilter', router.query.minVolume)
-    if (router?.query?.systemName) window.localStorage?.setItem('locationFilter', router.query.systemName.trim())
-    if (router?.query?.maxDistance) window.localStorage?.setItem('distanceFilter', router.query.maxDistance)
+    if (router.query?.fleetCarriers && router.query.fleetCarriers !== fleetCarrierFilter) {
+      setFleetCarrierFilter(router.query.fleetCarriers)
+      window.localStorage.setItem('fleetCarrierFilter', router.query.fleetCarriers)
+    }
+    if (router.query?.minVolume && router.query.minVolume !== minVolumeFilter) {
+      setMinVolumeFilter(router.query.minVolume)
+      window.localStorage.setItem('minVolumeFilter', router.query.minVolume)
+    }
+    if (router.query?.location && router.query.location !== locationFilter) {
+      setLocationFilter(router.query.location.trim())
+      window.localStorage.setItem('locationFilter', router.query.location.trim())
+      document.getElementById('location').value = router.query.location.trim()
+    }
+    if (router.query?.maxDistance && router.query.maxDaysAgo !== distanceFilter) {
+      setDistanceFilter(router.query.maxDistance)
+      window.localStorage.setItem('distanceFilter', router.query.maxDistance)
+    }
   }, [router.query])
 
   return (
@@ -212,34 +219,36 @@ export default ({ disabled = true }) => {
             <option value='10000'>&lt; 10,000 ly</option>
           </select>
         </label>
-      </form>
-      {(
-        lastUpdatedFilter != COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT ||
+        {(
+          lastUpdatedFilter != COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT ||
         fleetCarrierFilter != COMMODITY_FILTER_FLEET_CARRIER_DEFAULT ||
         minVolumeFilter != COMMODITY_FILTER_MIN_VOLUME_DEFAULT ||
         locationFilter != COMMODITY_FILTER_LOCATION_DEFAULT ||
         distanceFilter != COMMODITY_FILTER_DISTANCE_DEFAULT
-      )
-        ? (
-          <button
-            style={{ borderRadius: '.2rem', border: 'none', background: 'rgba(0,0,0,.75)', color: 'white', position: 'absolute', top: '.5rem', right: '.5rem', fontSize: '1rem', padding: '.25rem .5rem' }} onClick={() => {
-              document.getElementById('location').value = ''
-              setLastUpdatedFilter(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
-              setFleetCarrierFilter(COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
-              setMinVolumeFilter(COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
-              setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-              setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
-              window.localStorage.removeItem('lastUpdatedFilter')
-              window.localStorage.removeItem('fleetCarrierFilter')
-              window.localStorage.removeItem('minVolumeFilter')
-              window.localStorage.removeItem('locationFilter')
-              window.localStorage.removeItem('distanceFilter')
-            }}
-          >
-            Reset
-          </button>
-          )
-        : ''}
+        )
+          ? (
+            <button
+              disabled={disabled}
+              style={{ position: 'absolute', top: '.5rem', right: '.5rem' }}
+              onClick={() => {
+                document.getElementById('location').value = ''
+                setLastUpdatedFilter(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
+                setFleetCarrierFilter(COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
+                setMinVolumeFilter(COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
+                setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
+                setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
+                window.localStorage.removeItem('lastUpdatedFilter')
+                window.localStorage.removeItem('fleetCarrierFilter')
+                window.localStorage.removeItem('minVolumeFilter')
+                window.localStorage.removeItem('locationFilter')
+                window.localStorage.removeItem('distanceFilter')
+              }}
+            >
+              Reset
+            </button>
+            )
+          : ''}
+      </form>
     </div>
   )
 }
@@ -268,7 +277,7 @@ function updateUrlWithFilterOptions (router) {
   options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
   options.push(`minVolume=${minVolumeFilterValue}`)
   options.push(`fleetCarriers=${fleetCarrierFilterValue}`)
-  if (locationFilterValue !== null) options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
+  if (locationFilterValue !== null) options.push(`location=${encodeURIComponent(locationFilterValue)}`)
   if (distanceFilterValue !== null) options.push(`maxDistance=${distanceFilterValue}`)
 
   if (options.length > 0) {
