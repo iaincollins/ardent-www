@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import Package from 'package.json'
 
 import { API_BASE_URL } from 'lib/consts'
 
-export default () => {
+export default ({toggle}) => {
   const [stats, setStats] = useState()
   const [version, setVersion] = useState()
 
@@ -65,7 +66,7 @@ export default () => {
       </p>
       <h3>Downloads</h3>
       <p className='clear'>
-        Source code and data exports <a href='/downloads' rel='noreferrer'>available for download</a>.
+        Source code and data <Link href='/downloads'  onClick={() => toggle && toggle(false)}>available for download</Link>.
       </p>
       <h3>Legal</h3>
       <p className='clear'>

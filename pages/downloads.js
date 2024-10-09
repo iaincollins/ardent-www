@@ -39,6 +39,9 @@ export default () => {
         <p className=' clear'>
           Source code and data for Ardent Industry.
         </p>
+        <p>
+          <Link href='/about'>About this software.</Link>
+        </p>
         <h2>Source Code</h2>
         <p className='clear'>
           The software consists of three components - this website, a REST API and a service that processes the data stream from EDDN.

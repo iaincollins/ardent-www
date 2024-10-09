@@ -4,7 +4,7 @@ import About from 'components/about'
 export default ({ toggle }) => {
   return (
     <Dialog title='About' toggle={toggle}>
-      <About />
+      <About toggle={toggle} />
     </Dialog>
   )
 }

@@ -1,9 +1,13 @@
+import Link from 'next/link'
 import Layout from 'components/layout'
 
 export default () =>
   <Layout>
-    <h2>Data Not Found</h2>
+    <h2>404 Not Found</h2>
     <p className='clear'>
-      The information requested could not be found.
+      The requested resource could not be found.
+    </p>
+    <p>
+      <Link href='/'>Home</Link>
     </p>
   </Layout>
