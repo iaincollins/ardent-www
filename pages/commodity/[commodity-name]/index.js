@@ -38,54 +38,69 @@ export default () => {
     if (basePath === 'exporters') setTabIndex(1)
   }, [router.pathname])
 
+  function getCommodityName() {
+    // Don't seem able to reliably able to get this from the route handler
+    // (e.g. if the URL is updated but the param isn't explicitly passed)
+    // which seems silly as it's right there in the URL bar.
+    return window.location.pathname.split('/')[2]
+  }
+
   async function getImportsAndExports () {
-    const commodityName = router?.query?.['commodity-name']
+    const commodityName = getCommodityName()
     if (!commodityName) return
+
     setImports(undefined)
     setExports(undefined)
 
-    const imports = await getImports(commodityName)
-    if (Array.isArray(imports)) {
-      imports.forEach(c => {
-        c.key = c.commodityId
-        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-        c.maxProfit = c.maxSellPrice - c.minBuyPrice
-        c.symbol = c.commodityName.toLowerCase()
-        c.category = listOfCommodities[c.symbol]?.category ?? ''
-        c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-        delete c.commodityName
-      })
-      setImports(imports)
-    } else {
-      setImports([])
-    }
+    // We can fetch these together at the same time
+    ;(async () => {
+      const imports = await getImports(commodityName)
+      if (Array.isArray(imports)) {
+        imports.forEach(c => {
+          c.key = c.commodityId
+          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+          c.maxProfit = c.maxSellPrice - c.minBuyPrice
+          c.symbol = c.commodityName.toLowerCase()
+          c.category = listOfCommodities[c.symbol]?.category ?? ''
+          c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+          delete c.commodityName
+        })
+        setImports(imports)
+      } else {
+        setImports([])
+      }
+    })()
 
-    const exports = await getExports(commodityName)
-    if (Array.isArray(exports)) {
-      exports.forEach(c => {
-        c.key = c.commodityId
-        c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-        c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-        c.maxProfit = c.maxSellPrice - c.minBuyPrice
-        c.symbol = c.commodityName.toLowerCase()
-        c.category = listOfCommodities[c.symbol]?.category ?? ''
-        c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-        delete c.commodityName
-      })
-      setExports(exports)
-    } else {
-      setExports([])
-    }
+    ;(async () => {
+      const exports = await getExports(commodityName)
+      if (Array.isArray(exports)) {
+        exports.forEach(c => {
+          c.key = c.commodityId
+          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+          c.maxProfit = c.maxSellPrice - c.minBuyPrice
+          c.symbol = c.commodityName.toLowerCase()
+          c.category = listOfCommodities[c.symbol]?.category ?? ''
+          c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+          delete c.commodityName
+        })
+        setExports(exports)
+      } else {
+        setExports([])
+      }
+    })()
   }
 
   useEffect(() => {
+    // FIXME Refactor to avoid firing twice on page load (without breaking
+    // subsequent navigation changes)
     (async () => {
+      const commodityName = getCommodityName()
+      if (!commodityName) return
+
       setCommodity(undefined)
       setRareMarket(undefined)
-
-      const commodityName = router?.query?.['commodity-name'] 
-      if (!commodityName) return
 
       let c = await getCommodity(commodityName)
       if (c) {

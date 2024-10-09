@@ -222,7 +222,7 @@ export default ({ disabled = true }) => {
       )
         ? (
           <button
-            style={{ borderRadius: '.1rem', border: 'none', background: 'rgba(0,0,0,.75)', color: 'white', position: 'absolute', top: '.5rem', right: '.5rem', fontSize: '1rem', padding: '.25rem .5rem' }} onClick={() => {
+            style={{ borderRadius: '.2rem', border: 'none', background: 'rgba(0,0,0,.75)', color: 'white', position: 'absolute', top: '.5rem', right: '.5rem', fontSize: '1rem', padding: '.25rem .5rem' }} onClick={() => {
               document.getElementById('location').value = ''
               setLastUpdatedFilter(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
               setFleetCarrierFilter(COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
