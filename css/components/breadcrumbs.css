@@ -9,20 +9,6 @@
   white-space: nowrap;
 }
 
-.breadcrumbs::after {
-  position: absolute;
-  content: '';
-  display: inline-block;
-  height: 1.2rem;
-  width: 1.2rem;
-  margin-top: .24rem;
-  margin-left: -.59rem;
-  z-index: -3;
-  transform: rotate(45deg);
-  background-color: var(--color-primary);
-  color: var(--color-text-inverted);
-}
-
 .breadcrumbs li {
   padding: .25rem 0 .25rem 1.5rem;
   position: relative;
@@ -43,7 +29,8 @@
   border: none !important;
   position: relative;
   left: 0.5rem;
-  z-index: 1;
+  z-index: 2;
+  filter: none !important;
 }
 
 .breadcrumbs li .icon {
@@ -70,10 +57,9 @@
 
 .breadcrumbs li:last-child a {
   color: var(--color-text-inverted);
-  opacity: .8;
 }
 
-.breadcrumbs li:not(:first-child)::after {
+.breadcrumbs li:not(:first-child):after {
   position: absolute;
   content: '';
   display: inline-block;
@@ -84,7 +70,7 @@
   background-color: var(--color-primary-darker);
 }
 
-.breadcrumbs li:not(:first-child)::before {
+.breadcrumbs li:not(:first-child):before {
   position: absolute;
   content: '';
   display: inline-block;
@@ -97,4 +83,17 @@
   background-color: var(--color-primary-darker);
   border-top: .1rem solid rgba(0, 0, 0, .5);
   border-right: .1rem solid rgba(0, 0, 0, .5);
+  z-index: 1;
+}
+
+.breadcrumbs li:last-child a:after {
+  position: absolute;
+  content: '';
+  display: inline-block;
+  height: 1.2rem;
+  width: 1.2rem;
+  margin-left: -.35rem;
+  z-index: -1;
+  transform: rotate(45.5deg);
+  background-color: var(--color-primary);
 }

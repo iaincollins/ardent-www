@@ -1,3 +1,10 @@
+
+@media only screen and (min-width: 1440px) {
+  html {
+    font-size: max(min(1.25vw, 1.5rem), 1.5rem);
+  }
+}
+
 @media only screen and (min-width: 768px) {
   .data-table--striped-not-mobile tbody tr:nth-child(odd) td {
     background: rgba(255,255,255,.1) !important;
@@ -6,12 +13,8 @@
   .is-visible-mobile {
     display: none !important;
   }
-
   html {
-    /*
-      Render font size that is at least 1rem but up to 1.5rem, depending on window size
-      This allows for scaling font sizes on larger displays (e.g. 4k) that keeps the UI readable
-    */
-    font-size: max(min(1.25vw, 1.5rem), 1.25rem);
+    font-size: max(min(1vw, 1.5rem), 1.25rem);
   }
 }
+

@@ -133,7 +133,7 @@
   z-index: 2;
   background: var(--color-primary);
   color: var(--color-text-inverted);
-  padding: .5rem 3.5rem .25rem .5rem;
+  padding: .75rem .5rem .25rem .5rem;
   font-family: "Jura", sans-serif;  
   font-weight: bold;
   font-size: 1rem;
@@ -145,11 +145,24 @@
   display: inline-block;
   top: -.25rem;
   margin-top: 0.25rem;
-  margin-right: 1.5rem;
+  margin-right: 1rem;
+}
+
+.tab-options form label span {
+  float: left;
+  text-transform: uppercase;
+  margin-bottom: .25rem;
+  color: var(--color-text-inverted-muted);
+}
+
+.tab-options form input {
+  width: 9rem;
 }
 
 .tab-options form input,
 .tab-options form select {
+  float: left;
+  clear: both;
   background: var(--color-primary-light);
   border-color: var(--color-primary-darker);
   color: var(--color-text-inverted);
@@ -157,10 +170,9 @@
   border-width: .15rem;
   border-radius: 0.2rem;
   padding: .25rem;
-  margin-left: .5rem;
   font-size: 1rem;
   font-family: "Jura", sans-serif;
-  transition: 500ms;
+  transition: opacity 500ms;
 }
 
 .tab-options form input:hover:not(:disabled),
@@ -185,6 +197,7 @@
   font-size: 1rem;
   padding: .25rem .5rem;
   transition: 500ms;
+  text-transform: uppercase;
 }
 
 .tab-options form input[type="checkbox"] {

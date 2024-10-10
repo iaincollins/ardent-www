@@ -105,7 +105,7 @@ export default ({ disabled = false }) => {
               window.localStorage.setItem('minVolumeFilter', parseInt(e.target.value))
             }}
           >
-            <option value='1'>Any amount</option>
+            <option value='1'>Any quantity</option>
             <option value='100'>&gt; 100 T</option>
             <option value='1000'>&gt; 1,000 T</option>
             <option value='10000'>&gt; 10,000 T</option>
@@ -122,7 +122,7 @@ export default ({ disabled = false }) => {
             autoComplete='off'
             defaultValue={locationFilter}
             previous-value={locationFilter}
-            size={15}
+            size={12}
             onBlur={async (e) => {
               const value = e.target.value.replace(/\u200B/g, '').trim()
               if (e.target.value === ZERO_WIDTH_SPACE) {
@@ -210,10 +210,8 @@ export default ({ disabled = false }) => {
           >
             <option value={COMMODITY_FILTER_DISTANCE_DEFAULT}>Any distance</option>
             <option value='1'>In system</option>
-            <option value='25'>&lt; 25 ly</option>
             <option value='50'>&lt; 50 ly</option>
             <option value='100'>&lt; 100 ly</option>
-            <option value='250'>&lt; 250 ly</option>
             <option value='500'>&lt; 500 ly</option>
             <option value='1000'>&lt; 1,000 ly</option>
             <option value='10000'>&lt; 10,000 ly</option>
@@ -229,7 +227,7 @@ export default ({ disabled = false }) => {
           ? (
             <button
               disabled={disabled}
-              style={{ position: 'absolute', top: '.5rem', right: '.5rem' }}
+              style={{ position: 'absolute', top: '.25rem', right: '.25rem' }}
               onClick={() => {
                 document.getElementById('location').value = ''
                 setLastUpdatedFilter(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)

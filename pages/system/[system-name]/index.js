@@ -28,6 +28,8 @@ import {
   NO_DEMAND_TEXT
 } from 'lib/consts'
 
+const SYSTEM_MAP_POINT_PLOT_MULTIPLIER = 70
+
 // FIXME Ugh who wrote this 🗑️🔥
 
 export default () => {
@@ -214,6 +216,20 @@ export default () => {
             <i className='icon icarus-terminal-system-orbits' />
             {system.systemName}
           </h2>
+          <div className='system-map'>
+            <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />
+            {nearbySystems && nearbySystems.map(nearbySystem =>
+              <div
+                key={nearbySystem.systemAddress} className='system-map__point'
+                onClick={() => router.push(`/system/${nearbySystem.systemName}`)}
+                data-name={nearbySystem.systemName}
+                style={{
+                  top: nearbySystem.systemZ > system.systemZ ? `calc(50% + ${(nearbySystem.systemZ - system.systemZ) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)` : `calc(50% - ${(system.systemZ - nearbySystem.systemZ) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)`, // Z
+                  left: nearbySystem.systemX > system.systemX ? `calc(50% + ${(nearbySystem.systemX - system.systemX) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)` : `calc(50% - ${(system.systemX - nearbySystem.systemX) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)`// X
+                }}
+              />
+            )}
+          </div>
           <table className='properties-table'>
             <tbody>
               <tr>

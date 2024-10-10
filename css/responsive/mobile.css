@@ -1,5 +1,9 @@
 
 @media only screen and (max-width: 768px) {
+  html {
+    font-size: 1rem;
+  }
+
   h2,
   h3,
   h4 {
@@ -9,8 +13,8 @@
   }
 
   h2 {
-    font-size: 1.75rem;
-    line-height: 1.75rem;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
     padding-right: 1rem;
     clip-path: polygon(0 0,calc(100% - .8rem) 0,100% 1.6rem,100% 100%,0 100%);
     margin-right: 0;
@@ -92,8 +96,29 @@
   .tab-options__label-text {
     display: inline-block;
     width: 5rem;
-    text-align: right;
     padding-right: .25em;
+  }
+
+  .tab-options {
+    padding: .25rem;
+  }
+
+  .tab-options form label span,
+  .tab-options form input,
+  .tab-options form select {
+    float: none;
+  }
+
+  .tab-options form label span {
+    margin-right: .25rem;
+  }
+
+  .tab-options form input {
+    width: 9rem;
+  }
+
+  .tab-options form select {
+    width: 10rem;
   }
 
   .tab-options form label {
@@ -102,6 +127,6 @@
   }
 
   .breadcrumbs {
-    font-size: .9rem;
+    zoom: .9;
   }
 }
