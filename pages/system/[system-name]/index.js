@@ -28,7 +28,19 @@ import {
   NO_DEMAND_TEXT
 } from 'lib/consts'
 
-const SYSTEM_MAP_POINT_PLOT_MULTIPLIER = 70
+// These are systems that actually exist in game but that are not "real" systems
+// systems you can normally visit, so we don't want to display them
+const TEST_SYSTEMS = [
+  '7780433924818', // Test
+  '9154823459538', // Test2
+  '9704579273426', // TestRender
+  '349203072180',  // SingleLightTest
+  '353498039476',  // BinaryLightTest
+  '8055311864530', // Training (Tutorial)
+  '7780433924818', // Destination (Tutorial)
+]
+
+const SYSTEM_MAP_POINT_PLOT_MULTIPLIER = 50
 
 // FIXME Ugh who wrote this 🗑️🔥
 
@@ -184,7 +196,7 @@ export default () => {
               [s.systemX, s.systemY, s.systemZ]
             )
           })
-          setNearbySystems(nearbySystems.filter((s, i) => i < 100))
+          setNearbySystems(nearbySystems.filter(s => !TEST_SYSTEMS.includes(`${s.systemAddress}`)).filter((s, i) => i < 100))
         })()
       }
     })()
@@ -218,19 +230,20 @@ export default () => {
           </h2>
           <div className='system-map'>
             <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />
-            {nearbySystems && nearbySystems.map(nearbySystem =>
+            {nearbySystems && nearbySystems.map((nearbySystem, i) =>
               <div
                 key={nearbySystem.systemAddress} className='system-map__point'
                 onClick={() => router.push(`/system/${nearbySystem.systemName}`)}
                 data-name={nearbySystem.systemName}
                 style={{
+                  animationDelay: `${i * 10}ms`,
                   top: nearbySystem.systemZ > system.systemZ ? `calc(50% + ${(nearbySystem.systemZ - system.systemZ) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)` : `calc(50% - ${(system.systemZ - nearbySystem.systemZ) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)`, // Z
                   left: nearbySystem.systemX > system.systemX ? `calc(50% + ${(nearbySystem.systemX - system.systemX) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)` : `calc(50% - ${(system.systemX - nearbySystem.systemX) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)`// X
                 }}
               />
             )}
           </div>
-          <table className='properties-table'>
+          <table className='properties-table' style={{marginBottom: 0}}>
             <tbody>
               <tr>
                 <th>Address</th>
