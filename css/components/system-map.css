@@ -1,22 +1,20 @@
 .system-map {
-  background-color: rgba(0,0,0,.25);
   height: 30rem;
-  width: calc(100% - 2rem);
+  width: calc(100% - 2.6rem);
   display: block;
-  clip-path: polygon(0 0, calc(100% - 1.00rem) 0, 100% 1.00rem, 100% 100%, 1.00rem 100%, 0 calc(100% - 1.00rem));
   padding: .5rem;
-  border-radius: .25rem;
   overflow: hidden;
   position: relative;
-  top: -.25rem;
+  top: -.5rem;
   margin: .5rem;
   margin-bottom: 1rem;
   zoom: 0.5;
   font-size: 2rem;
   line-height: 2rem;
-  background: linear-gradient(rgba(0,0,0,.4), rgba(100, 100, 100, .25));
-  background: linear-gradient(rgba(100, 100, 100, .3), rgba(0,0,0,.6));
+  font-family: 'Jura';
+  background: linear-gradient(rgba(75, 75, 75, .6), rgba(0,0,0,.6));
   z-index: 1;
+  border: .4rem solid var(--color-primary-darker);
 }
 
 .system-map:before {
@@ -34,17 +32,6 @@
   background-image: linear-gradient(white .1rem, transparent .1rem), linear-gradient(90deg, white .1rem, transparent .1rem);
   background-size: 2rem 2rem;
   background-position: center;
-}
-
-.system-map:after {
-  position: absolute;
-  z-index: 100;
-  content: "";
-  inset: 0;
-  background: linear-gradient(rgba(0,0,0,.25), rgba(255, 255, 255, .15));
-  background: var(--color-primary-darker);
-  clip-path: polygon(0 0, calc(100% - 1.00rem) 0, 100% 1.00rem, 100% 100%, 1.00rem 100%, 0 calc(100% - 1.00rem), 0 0, .25rem .25rem, .25rem calc(100% - 1.00rem - 0.10rem), calc(1.00rem + 0.10rem) calc(100% - .25rem), calc(100% - .25rem) calc(100% - .25rem), calc(100% - .25rem) calc(1.00rem + 0.10rem), calc(100% - 1.00rem - 0.10rem) .25rem, .25rem .25rem);
-  pointer-events: none;
 }
 
 .system-map__point {
@@ -80,8 +67,6 @@
   display: block;
   white-space: nowrap;
   content: attr(data-name);
-  text-transform: uppercase;
-  font-family: 'Jura';
   color: white;
   padding: .1rem .25rem;
   border-radius: .1rem;
@@ -96,7 +81,6 @@
 }
 
 .system-map__point:hover:after {
-  /* border-bottom: 1px dotted white; */
   border-radius: .1rem;
   background: var(--color-primary-darker);
   z-index: 2;
@@ -169,5 +153,19 @@
     zoom: 1;
     font-size: .9rem;
     line-height: .9rem;
+    clip-path: polygon(0 0, calc(100% - 1.00rem) 0, 100% 1.00rem, 100% 100%, 1.00rem 100%, 0 calc(100% - 1.00rem));
+    border: none;
+    border-radius: 0;
   }
+
+  .system-map:after {
+    position: absolute;
+    z-index: 100;
+    content: '';
+    inset: 0;
+    background: var(--color-primary-darker);
+    clip-path: polygon(0 0, calc(100% - 1.00rem) 0, 100% 1.00rem, 100% 100%, 1.00rem 100%, 0 calc(100% - 1.00rem), 0 0, .25rem .25rem, .25rem calc(100% - 1.00rem - 0.10rem), calc(1.00rem + 0.10rem) calc(100% - .25rem), calc(100% - .25rem) calc(100% - .25rem), calc(100% - .25rem) calc(1.00rem + 0.10rem), calc(100% - 1.00rem - 0.10rem) .25rem, .25rem .25rem);
+    pointer-events: none;
+  }
+
 }
