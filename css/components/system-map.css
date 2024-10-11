@@ -1,20 +1,27 @@
 .system-map {
-  height: 30rem;
+  height: 50rem;
   width: calc(100% - 2.6rem);
   display: block;
   padding: .5rem;
   overflow: hidden;
   position: relative;
-  top: -.5rem;
-  margin: .5rem;
-  margin-bottom: 1rem;
-  zoom: 0.5;
+  top: -7rem;
+  left: -15%;
+  width: 115%;
+  margin-bottom: -7rem;
+  zoom: 0.6;
   font-size: 2rem;
   line-height: 2rem;
   font-family: 'Jura';
-  background: linear-gradient(rgba(75, 75, 75, .6), rgba(0,0,0,.6));
-  z-index: 1;
-  border: .4rem solid var(--color-primary-darker);
+  background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0));
+  mask-image: linear-gradient(to bottom,
+      transparent,
+      black 30%,
+      black calc(100% - 10rem),
+      transparent), linear-gradient(black, black);
+  mask-size: 100% 100%, 1rem 100%;
+  mask-position: 0 0, 100% 0;
+  mask-repeat: no-repeat, no-repeat;
 }
 
 .system-map:before {
@@ -30,6 +37,7 @@
   opacity: .025;
   background-image: url(/images/grid.svg);
   background-image: linear-gradient(white .1rem, transparent .1rem), linear-gradient(90deg, white .1rem, transparent .1rem);
+  background: transparent;
   background-size: 2rem 2rem;
   background-position: center;
 }
@@ -39,16 +47,32 @@
   opacity: 0;
   animation: system-map__point-fade-in-animation .5s ease-in-out;
   animation-fill-mode: forwards;
+  filter: blur(.075rem);
+  transition: 200ms;
 }
 
 @keyframes system-map__point-fade-in-muted-animation {
-  from { visibility: visible; opacity : 0; }
-  to { visibility: visible; opacity: 0.2; }
+  from {
+    visibility: visible;
+    opacity: 0;
+  }
+
+  to {
+    visibility: visible;
+    opacity: 0.3;
+  }
 }
 
 @keyframes system-map__point-fade-in-animation {
-  from { visibility: visible; opacity : 0; }
-  to { visibility: visible; opacity: 0.8; }
+  from {
+    visibility: visible;
+    opacity: 0;
+  }
+
+  to {
+    visibility: visible;
+    opacity: 0.6;
+  }
 }
 
 .system-map__point:before {
@@ -68,8 +92,8 @@
   white-space: nowrap;
   content: attr(data-name);
   color: white;
-  padding: .1rem .25rem;
-  border-radius: .1rem;
+  padding: .1rem .2rem;
+
 }
 
 .system-map__point:hover {
@@ -78,12 +102,13 @@
   display: block;
   top: .25rem;
   left: .25rem;
+  filter: blur(0);
 }
 
 .system-map__point:hover:after {
-  border-radius: .1rem;
   background: var(--color-primary-darker);
   z-index: 2;
+  zoom: 1.1;
 }
 
 .system-map__point:hover:before {
@@ -93,7 +118,7 @@
 .system-map__point[data-name*="-"],
 .system-map__point[data-name*="+"] {
   animation: system-map__point-fade-in-muted-animation .5s ease-in-out !important;
-  opacity: .2;
+  opacity: .3;
 }
 
 .system-map__point[data-name*="-"]:before,
@@ -106,18 +131,18 @@
 
 .system-map__point[data-name*="-"]:after,
 .system-map__point[data-name*="+"]:after {
-  Xdisplay: none;
   opacity: 0;
 }
 
 .system-map__point[data-name*="-"]:hover:after,
 .system-map__point[data-name*="+"]:hover:after {
-  Xdisplay: block;
   opacity: 1;
 }
 
 .system-map__point--highlighted {
   opacity: 1 !important;
+  filter: blur(0);
+  z-index: 2;
 }
 
 .system-map__point--highlighted:before {
@@ -129,6 +154,8 @@
   z-index: 3;
 }
 
+.system-map__point--highlighted:hover {}
+
 .system-map__point--highlighted:after,
 .system-map__point--highlighted:hover:after {
   display: block !important;
@@ -136,36 +163,35 @@
   background: var(--color-primary);
   top: .2rem;
   left: .2rem;
-  padding: .1rem .25rem;
   z-index: 2;
-  border-radius: .1rem;
   opacity: 1 !important;
+  background: var(--color-primary);
+  color: var(--color-text-inverted) !important;
+  zoom: 1.1 !important;
 }
 
-@media only screen and (min-width: 1280px) {
+@media only screen and (min-width: 768px) {
+  .system-map__point {
+    filter: blur(.05rem);
+  }
+
+  .system-map__point--highlighted {
+    filter: blur(0);
+  }
+
   .system-map {
     position: absolute;
-    left: 38rem;
-    top: 1rem;
-    width: calc(100% - 40rem);
+    top: 0;
+    left: 25rem;
+    right: 0;
+    width: calc(100% - 25rem);
+    height: 25rem;
     margin: 0;
-    height: 20rem;
     zoom: 1;
     font-size: .9rem;
     line-height: .9rem;
-    clip-path: polygon(0 0, calc(100% - 1.00rem) 0, 100% 1.00rem, 100% 100%, 1.00rem 100%, 0 calc(100% - 1.00rem));
-    border: none;
-    border-radius: 0;
+    background: transparent;
+    mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 10%, transparent 50%);
+    z-index: 1;
   }
-
-  .system-map:after {
-    position: absolute;
-    z-index: 100;
-    content: '';
-    inset: 0;
-    background: var(--color-primary-darker);
-    clip-path: polygon(0 0, calc(100% - 1.00rem) 0, 100% 1.00rem, 100% 100%, 1.00rem 100%, 0 calc(100% - 1.00rem), 0 0, .25rem .25rem, .25rem calc(100% - 1.00rem - 0.10rem), calc(1.00rem + 0.10rem) calc(100% - .25rem), calc(100% - .25rem) calc(100% - .25rem), calc(100% - .25rem) calc(1.00rem + 0.10rem), calc(100% - 1.00rem - 0.10rem) .25rem, .25rem .25rem);
-    pointer-events: none;
-  }
-
 }
