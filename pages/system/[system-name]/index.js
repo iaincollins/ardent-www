@@ -8,7 +8,7 @@ import Collapsible from 'react-collapsible'
 import { CollapsibleTrigger } from '../../../components/collapsible-trigger'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
-import { formatSystemSector } from 'lib/utils/system-sectors'
+// import { formatSystemSector } from 'lib/utils/system-sectors'
 import distance from 'lib/utils/distance'
 import animateTableEffect from 'lib/animate-table-effect'
 import Layout from 'components/layout'
@@ -30,7 +30,7 @@ import {
 
 // These are systems that actually exist in game but that are not "real" systems
 // systems you can normally visit, so we don't want to display them
-const TEST_SYSTEMS = [
+const HIDDEN_SYSTEMS = [
   '7780433924818', // Test
   '9154823459538', // Test2
   '9704579273426', // TestRender
@@ -78,7 +78,6 @@ export default () => {
       const systemName = router.query?.['system-name']?.trim()
       if (!systemName) return
 
-      setSystem(undefined)
       setStationsInSystem(undefined)
       setSettlementsInSystem(undefined)
       setFleetCarriersInSystem(undefined)
@@ -100,17 +99,17 @@ export default () => {
           if (system.systemName === 'Sol') {
             system.tradeZoneLocation = 'Systems within 200 Ly of Sol are known as the Core Systems'
           } else {
-            system.tradeZoneLocation = <>{system.systemName} is the Core Systems<br />{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
+            system.tradeZoneLocation = <>{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
           }
         } else if (distance(systemCoordinates, SOL_COORDINATES) <= 400) {
-          system.tradeZone = 'Periphery'
-          system.tradeZoneLocation = <>{system.systemName} is on the periphery of the Core Worlds<br />{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
+          system.tradeZone = 'Core Periphery'
+          system.tradeZoneLocation = <>{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
         } else if (distance(systemCoordinates, COLONIA_COORDINATES) <= 100) {
           system.tradeZone = 'Colonia Region'
           if (system.systemName === 'Colonia') {
             system.tradeZoneLocation = `The Colonia Region is ${distance(systemCoordinates, SOL_COORDINATES)} Ly from the Core Systems`
           } else {
-            system.tradeZoneLocation = <>{system.systemName} is in the Colonia Region<br />{distance(systemCoordinates, COLONIA_COORDINATES)} Ly from Colonia</>
+            system.tradeZoneLocation = <>{distance(systemCoordinates, COLONIA_COORDINATES)} Ly from Colonia</>
           }
         } else {
           system.tradeZone = 'Deep Space'
@@ -122,8 +121,11 @@ export default () => {
             </>
           )
         }
+        setSystem(system)
+      } else {
+        setSystem(undefined)
       }
-      setSystem(system)
+
 
       if (system) {
         ; (async () => {
@@ -196,7 +198,7 @@ export default () => {
               [s.systemX, s.systemY, s.systemZ]
             )
           })
-          setNearbySystems(nearbySystems.filter(s => !TEST_SYSTEMS.includes(`${s.systemAddress}`)).filter((s, i) => i < 100))
+          setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)));
         })()
       }
     })()
@@ -268,7 +270,7 @@ export default () => {
               </tr>
               <tr>
                 <th className='is-hidden-mobile'>Stations/Ports</th>
-                <td>
+                <td className={stationsInSystem?.length === 0 && 'is-hidden-mobile'}>
                   {stationsInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
                       <Collapsible
@@ -290,13 +292,13 @@ export default () => {
                         )}
                       </Collapsible>
                     </span>}
-                  {stationsInSystem?.length === 0 && <small className='muted'>No Stations/Ports</small>}
-                  {stationsInSystem === undefined && '-'}
+                  {stationsInSystem?.length === 0 && <span className='muted-2'>No Stations/Ports</span>}
+                  {stationsInSystem === undefined && <span className='muted'>...</span>}
                 </td>
               </tr>
               <tr>
                 <th className='is-hidden-mobile'>Settlements</th>
-                <td>
+                <td className={settlementsInSystem?.length === 0 && 'is-hidden-mobile'}>
                   {settlementsInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
                       <Collapsible
@@ -321,13 +323,13 @@ export default () => {
                         )}
                       </Collapsible>
                     </span>}
-                  {settlementsInSystem?.length === 0 && <small className='muted'>No Settlements</small>}
-                  {settlementsInSystem === undefined && '-'}
+                  {settlementsInSystem?.length === 0 && <span className='muted-2'>No Settlements</span>}
+                  {settlementsInSystem === undefined && <span className='muted'>...</span>}
                 </td>
               </tr>
               <tr>
                 <th className='is-hidden-mobile'>Megaships</th>
-                <td>
+                <td className={megashipsInSystem?.length === 0 && 'is-hidden-mobile'}>
                   {megashipsInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
                       <Collapsible
@@ -351,13 +353,13 @@ export default () => {
                         )}
                       </Collapsible>
                     </span>}
-                  {megashipsInSystem?.length === 0 && <small className='muted'>No Megaships</small>}
-                  {megashipsInSystem === undefined && '-'}
+                  {megashipsInSystem?.length === 0 && <span className='muted-2'>No Megaships</span>}
+                  {megashipsInSystem === undefined && <span className='muted'>...</span>}
                 </td>
               </tr>
               <tr>
                 <th className='is-hidden-mobile'>Fleet Carriers</th>
-                <td>
+                <td className={fleetCarriersInSystem?.length === 0 && 'is-hidden-mobile'}>
                   {fleetCarriersInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
                       <Collapsible
@@ -381,8 +383,8 @@ export default () => {
                         )}
                       </Collapsible>
                     </span>}
-                  {fleetCarriersInSystem?.length === 0 && <small className='muted'>No Fleet Carriers</small>}
-                  {fleetCarriersInSystem === undefined && '-'}
+                  {fleetCarriersInSystem?.length === 0 && <span className='muted-2'>No Fleet Carriers</span>}
+                  {fleetCarriersInSystem === undefined && <span className='muted'>...</span>}
                 </td>
               </tr>
               <tr>

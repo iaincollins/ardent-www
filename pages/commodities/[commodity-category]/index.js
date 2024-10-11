@@ -69,15 +69,15 @@ export default function Page (props) {
       {commodities && categories &&
         <div className='fx__fade-in'>
           {categories?.length > 1 &&
-            <p className='clear text-center'>
+            <p className='clear text-center' style={{marginBottom: '.5rem'}}>
               The best trade prices for commodities anywhere in the galaxy.
             </p>}
           {categories?.length === 1 && commodityCategories[categories[0]]?.description &&
-            <p className='clear text-center'>
+            <p className='clear text-center' style={{marginBottom: '.5rem'}}>
               {commodityCategories[categories[0]].description}
             </p>}
           {categories?.length === 1 && commodityCategories[categories[0]]?.whereToFind &&
-            <p className='clear text-center'>
+            <p className='clear text-center' style={{marginBottom: '.5rem'}}>
               {commodityCategories[categories[0]]?.whereToFind}
             </p>}
           {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>

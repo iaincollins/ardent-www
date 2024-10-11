@@ -91,9 +91,6 @@ export default () => {
       const commodityName = router.query?.['commodity-name']
       if (!commodityName) return
 
-      setCommodity(undefined)
-      setRareMarket(undefined)
-
       let c = await getCommodity(commodityName)
       if (c) {
         c.avgProfit = c.avgSellPrice - c.avgBuyPrice
@@ -107,8 +104,12 @@ export default () => {
       if (!c) c = listOfCommodities[commodityName.toLowerCase()]
       if (c && !c.totalDemand) c.totalDemand = 0
       if (c && !c.totalStock) c.totalStock = 0
-      setCommodity(c || null)
-      if (c?.rareMarketId) setRareMarket(await getCommodityFromMarket(c.rareMarketId, c.symbol))
+      c ? setCommodity(c) : setCommodity(undefined)
+      if (c?.rareMarketId) {
+        setRareMarket(await getCommodityFromMarket(c.rareMarketId, c.symbol))
+      } else {
+        setRareMarket(undefined)
+      }
 
       getImportsAndExports()
     })()
@@ -146,7 +147,7 @@ export default () => {
             <i className='icon icarus-terminal-cargo' />
             {commodity.name}
           </h2>
-          <table className='properties-table'>
+          <table className='properties-table' style={{ marginBottom: 0 }}>
             <tbody>
               <tr>
                 <th>Import price</th>

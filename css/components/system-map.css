@@ -22,7 +22,6 @@
   mask-size: 100% 100%, 1rem 100%;
   mask-position: 0 0, 100% 0;
   mask-repeat: no-repeat, no-repeat;
-  pointer-events:painted;
 }
 
 .system-map:before {
@@ -35,7 +34,7 @@
   position: absolute;
   height: 100%;
   width: 100%;
-  opacity: .025;
+  opacity: .8;
   background-image: url(/images/grid.svg);
   background-image: linear-gradient(var(--color-primary) .1rem, transparent .1rem), linear-gradient(90deg, var(--color-primary) .1rem, transparent .1rem);
   background: transparent;
@@ -62,7 +61,7 @@
 
   to {
     visibility: visible;
-    opacity: 0.3;
+    opacity: 0.4;
   }
 }
 
@@ -74,7 +73,7 @@
 
   to {
     visibility: visible;
-    opacity: 0.6;
+    opacity: 0.8;
   }
 }
 
@@ -95,17 +94,19 @@
   display: inline-block;
   content: attr(data-name);
   color: var(--color-primary);
-  padding: .1rem .2rem;
-  text-shadow: 0 0 .5rem rgb(0, 0, 0), 0 0 .8rem rgb(0, 0, 0);
+  padding: .1rem .4rem;
+  text-shadow: 0 0 .5rem rgb(255, 255, 255), 0 0 .8rem rgb(255, 255, 255);
   max-width: 6rem;
   overflow-wrap: break-word;
   font-size: .8rem;
   line-height: 1rem;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.4rem), calc(100% - 0.4rem) 100%, 0 100%);
+  border-radius: .2rem;
 }
 
 .system-map__point:hover {
   opacity: 1 !important;
-  z-index: 1;
+  z-index: 10;
   display: block;
   top: .25rem;
   left: .25rem;
@@ -116,6 +117,7 @@
   background: var(--color-primary-darker);
   z-index: 2;
   zoom: 1.1;
+  pointer-events: all;
 }
 
 .system-map__point:hover:before {
@@ -125,7 +127,7 @@
 .system-map__point[data-name*="-"],
 .system-map__point[data-name*="+"] {
   animation: system-map__point-fade-in-muted-animation .5s ease-in-out !important;
-  opacity: .3;
+  opacity: .4;
 }
 
 .system-map__point[data-name*="-"]:before,
@@ -139,6 +141,7 @@
 .system-map__point[data-name*="-"]:after,
 .system-map__point[data-name*="+"]:after {
   opacity: 0;
+  pointer-events: none;
 }
 
 .system-map__point[data-name*="-"]:hover:after,
@@ -172,14 +175,14 @@
   z-index: 2;
   opacity: 1 !important;
   zoom: 1.1 !important;
-  text-shadow: 0 0 .5rem rgb(0, 0, 0), 0 0 .8rem rgb(0, 0, 0);    font-size: .8rem;
+  font-size: .9rem;
   line-height: 1rem;
   color: var(--color-primary) !important;
   background: var(--color-primary-darker) !important;
   filter: invert(1);
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1024px) {
   .system-map__point--highlighted {
     filter: blur(0);
   }
@@ -190,11 +193,9 @@
     left: 25rem;
     right: 0;
     width: calc(100% - 25rem);
-    height: 25rem;
+    height: 22rem;
     margin: 0;
     zoom: 1;
-    font-size: .8rem;
-    line-height: 1rem;
     background: transparent;
     mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 10%, transparent 50%);
     z-index: 1;
