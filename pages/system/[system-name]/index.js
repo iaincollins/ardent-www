@@ -253,10 +253,10 @@ export default () => {
                 <th>Location</th>
                 <td><span className='fx__animated-text' data-fx-order='2'>{system.systemX}, {system.systemY}, {system.systemZ}</span></td>
               </tr>
-              <tr>
+              {/* <tr>
                 <th>Ardent sector</th>
                 <td><span className='fx__animated-text' data-fx-order='3'>{formatSystemSector(system.systemSector)}</span></td>
-              </tr>
+              </tr> */}
               <tr>
                 <th>Trade zone</th>
                 <td>
@@ -267,7 +267,7 @@ export default () => {
                 </td>
               </tr>
               <tr>
-                <th>Stations/Ports</th>
+                <th className='is-hidden-mobile'>Stations/Ports</th>
                 <td>
                   {stationsInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
@@ -290,12 +290,12 @@ export default () => {
                         )}
                       </Collapsible>
                     </span>}
-                  {stationsInSystem?.length === 0 && <span className='muted'>None</span>}
+                  {stationsInSystem?.length === 0 && <small className='muted'>No Stations/Ports</small>}
                   {stationsInSystem === undefined && '-'}
                 </td>
               </tr>
               <tr>
-                <th>Settlements</th>
+                <th className='is-hidden-mobile'>Settlements</th>
                 <td>
                   {settlementsInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
@@ -321,12 +321,12 @@ export default () => {
                         )}
                       </Collapsible>
                     </span>}
-                  {settlementsInSystem?.length === 0 && <span className='muted'>None</span>}
+                  {settlementsInSystem?.length === 0 && <small className='muted'>No Settlements</small>}
                   {settlementsInSystem === undefined && '-'}
                 </td>
               </tr>
               <tr>
-                <th>Megaships</th>
+                <th className='is-hidden-mobile'>Megaships</th>
                 <td>
                   {megashipsInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
@@ -351,12 +351,12 @@ export default () => {
                         )}
                       </Collapsible>
                     </span>}
-                  {megashipsInSystem?.length === 0 && <span className='muted'>None</span>}
+                  {megashipsInSystem?.length === 0 && <small className='muted'>No Megaships</small>}
                   {megashipsInSystem === undefined && '-'}
                 </td>
               </tr>
               <tr>
-                <th>Fleet Carriers</th>
+                <th className='is-hidden-mobile'>Fleet Carriers</th>
                 <td>
                   {fleetCarriersInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
@@ -381,7 +381,7 @@ export default () => {
                         )}
                       </Collapsible>
                     </span>}
-                  {fleetCarriersInSystem?.length === 0 && <span className='muted'>None</span>}
+                  {fleetCarriersInSystem?.length === 0 && <small className='muted'>No Fleet Carriers</small>}
                   {fleetCarriersInSystem === undefined && '-'}
                 </td>
               </tr>
@@ -399,7 +399,7 @@ export default () => {
                   <td>
                     {rareGoods.map(rare =>
                       <span key={`rare_good_${rare.symbol}`} className='text-no-transform'>
-                        {rare.stationName}, {system.systemName} is the exlusive exporter of <Link href={`/commodity/${rare.symbol}`}>{rare.name}</Link>.
+                        {rare.stationName} is the exclusive exporter of {rare.name}.
                         {' '}
                         {rare?.description}
                       </span>)}

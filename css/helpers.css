@@ -5,6 +5,9 @@
 .muted {
   opacity: .75;
 }
+small.muted {
+  opacity: .5;
+}
 
 .transparent {
   opacity: 0;
