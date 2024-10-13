@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import AboutDialog from 'components/dialog/about-dialog'
 import { getCommoditiesWithAvgPricing } from 'lib/commodities'
@@ -11,6 +12,7 @@ import {
 } from 'lib/consts'
 
 export default () => {
+  const router = useRouter()
   const [fullScreenState, setFullScreenState] = useState(false)
   const [aboutDialogVisible, setAboutDialogVisible] = useState(false)
   const [newsTicker, setNewsTicker] = useState([])
@@ -78,15 +80,15 @@ export default () => {
       <div className='news-ticker'>
         <span className='news-ticker__ticker'>
           {newsTicker.map(item =>
-            <span key={`ticker_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'>
-              <Link href={`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&location=${item.systemName}&maxDistance=1`}>
-                {item.stationName}, {item.systemName}
-                <br />
-                {item.demandBracket === 3 && <>Buying</>}
-                {item.stockBracket === 3 && <>Selling</>}
-                {' '}
-                {commodities?.[item.commodityName]?.name ?? item.commodityName}
-              </Link>
+            <span key={`ticker_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'
+              onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&location=${item.systemName}&maxDistance=1`)}
+            >
+              <span className='muted'>{item.stationName}, {item.systemName}</span>
+              <br/>
+              {item.demandBracket === 3 && <>Buying</>}
+              {item.stockBracket === 3 && <>Selling</>}
+              {' '}
+              <span style={{color: 'var(--color-primary--lighter)'}}>{commodities?.[item.commodityName]?.name ?? item.commodityName}</span>
               <span className='news-ticker__ticker-item-price'>
                 {item.demandBracket === 3 && <>{item.demand === 0 ? '' : <>{item.demand.toLocaleString()} T</>}<br />{item.sellPrice.toLocaleString()} CR/T</>}
                 {item.stockBracket === 3 && <>{item.stock.toLocaleString()} T<br />{item.buyPrice.toLocaleString()} CR/T</>}
