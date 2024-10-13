@@ -208,7 +208,7 @@ export default () => {
     <Layout
       loading={system === undefined}
       loadingText='Loading system data'
-      title={system ? `${system.systemName} system in Elite Dangerous` : null}
+      title={system ? `${system.systemName} - star system in Elite Dangerous` : null}
       description={system ? `Trade data for ${system.systemName} in Elite Dangerous` : null}
     >
       <Head>

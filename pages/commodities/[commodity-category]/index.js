@@ -54,7 +54,12 @@ export default function Page (props) {
   }, [router.asPath])
 
   return (
-    <Layout loading={commodities === undefined} loadingText='Loading commodities'>
+    <Layout 
+      loading={commodities === undefined}
+      loadingText='Loading commodities'
+      title={categories?.length === 1 ? `${categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category => category)} in Elite Dangerous` : 'Commodities in Elite Dangerous'}
+      description={categories?.length === 1 ? `Where to buy and sell ${categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category => category)} in Elite Dangerous` : 'Where to buy and sell commodities in Elite Dangerous'}
+      >
       <Head>
         <link rel='canonical' href='https://ardent-industry.com/commodities' />
       </Head>
