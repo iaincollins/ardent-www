@@ -20,7 +20,7 @@ export default () => {
   useEffect(() => {
     document.addEventListener('fullscreenchange', onFullScreenChangeHandler)
     return () => document.removeEventListener('click', onFullScreenChangeHandler)
-    function onFullScreenChangeHandler (event) {
+    function onFullScreenChangeHandler(event) {
       setFullScreenState(isFullScreen())
     }
   }, [])
@@ -78,46 +78,50 @@ export default () => {
         </button>
       </div>
       <div className='news-ticker'>
-        <span className='news-ticker__ticker'>
-          {newsTicker.map(item =>
-            <span key={`ticker_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'
-              onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&location=${item.systemName}&maxDistance=1`)}
-            >
-              <span className='muted'>{item.stationName}, {item.systemName}</span>
-              <br/>
-              {item.demandBracket === 3 && <>Buying</>}
-              {item.stockBracket === 3 && <>Selling</>}
-              {' '}
-              <span style={{color: 'var(--color-primary--lighter)'}}>{commodities?.[item.commodityName]?.name ?? item.commodityName}</span>
-              <span className='news-ticker__ticker-item-price'>
-                {item.demandBracket === 3 && <>{item.demand === 0 ? '' : <>{item.demand.toLocaleString()} T</>}<br />{item.sellPrice.toLocaleString()} CR/T</>}
-                {item.stockBracket === 3 && <>{item.stock.toLocaleString()} T<br />{item.buyPrice.toLocaleString()} CR/T</>}
-              </span>
-              <span className='news-ticker__ticker-item-price-difference'>
-                {item.avgSellPrice !== 0 && item.demandBracket === 3 && <span className='muted'>AVG {item.avgSellPrice.toLocaleString()} CR</span>}
-                {item.avgBuyPrice !== 0 && item.stockBracket === 3 && <span className='muted'>AVG {item.avgBuyPrice.toLocaleString()} CR</span>}
+        {/* Ticker contents rendered twice to allow us to use CSS to make it appear to loop seemlessly */}
+        {[...Array(2)].map((arr, i) =>
+          <span key={`news-ticker-${i}`} className={`news-ticker__ticker news-ticker__ticker--${i}`}>
+            {newsTicker.map(item =>
+              <span key={`ticker_${i}_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'
+                onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&location=${item.systemName}&maxDistance=1`)}
+              >
+                <span className='muted'>{item.stationName}, {item.systemName}</span>
                 <br />
-                {item.demandBracket === 3 && item.avgSellPrice !== 0 &&
-                  <>
-                    {item.sellPrice > item.avgSellPrice && <small className='commodity__price text-positive '>+ {(item.sellPrice - item.avgSellPrice).toLocaleString()} CR</small>}
-                    {item.sellPrice < item.avgSellPrice && <small className='commodity__price text-negative'>- {(item.avgSellPrice - item.sellPrice).toLocaleString()} CR</small>}
-                  </>}
-                {item.stockBracket === 3 && item.avgBuyPrice !== 0 &&
-                  <>
-                    {item.buyPrice > item.avgBuyPrice && <small className='commodity__price text-negative'>- {(item.buyPrice - item.avgBuyPrice).toLocaleString()} CR</small>}
-                    {item.buyPrice < item.avgBuyPrice && <small className='commodity__price text-positive'>+ {(item.avgBuyPrice - item.buyPrice).toLocaleString()} CR</small>}
-                  </>}
+                {item.demandBracket === 3 && <>Buying</>}
+                {item.stockBracket === 3 && <>Selling</>}
+                {' '}
+                <span style={{ color: 'var(--color-primary--lighter)' }}>{commodities?.[item.commodityName]?.name ?? item.commodityName}</span>
+                <span className='news-ticker__ticker-item-price'>
+                  {item.demandBracket === 3 && <>{item.demand === 0 ? '' : <>{item.demand.toLocaleString()} T</>}<br />{item.sellPrice.toLocaleString()} CR/T</>}
+                  {item.stockBracket === 3 && <>{item.stock.toLocaleString()} T<br />{item.buyPrice.toLocaleString()} CR/T</>}
+                </span>
+                <span className='news-ticker__ticker-item-price-difference'>
+                  {item.avgSellPrice !== 0 && item.demandBracket === 3 && <span className='muted'>AVG {item.avgSellPrice.toLocaleString()} CR</span>}
+                  {item.avgBuyPrice !== 0 && item.stockBracket === 3 && <span className='muted'>AVG {item.avgBuyPrice.toLocaleString()} CR</span>}
+                  <br />
+                  {item.demandBracket === 3 && item.avgSellPrice !== 0 &&
+                    <>
+                      {item.sellPrice > item.avgSellPrice && <small className='commodity__price text-positive '>+ {(item.sellPrice - item.avgSellPrice).toLocaleString()} CR</small>}
+                      {item.sellPrice < item.avgSellPrice && <small className='commodity__price text-negative'>- {(item.avgSellPrice - item.sellPrice).toLocaleString()} CR</small>}
+                    </>}
+                  {item.stockBracket === 3 && item.avgBuyPrice !== 0 &&
+                    <>
+                      {item.buyPrice > item.avgBuyPrice && <small className='commodity__price text-negative'>- {(item.buyPrice - item.avgBuyPrice).toLocaleString()} CR</small>}
+                      {item.buyPrice < item.avgBuyPrice && <small className='commodity__price text-positive'>+ {(item.avgBuyPrice - item.buyPrice).toLocaleString()} CR</small>}
+                    </>}
+                </span>
               </span>
-            </span>
-          )}
-        </span>
+            )}
+          </span>
+        )}
+
       </div>
       {aboutDialogVisible && <AboutDialog toggle={setAboutDialogVisible} />}
     </header>
   )
 }
 
-function isFullScreen () {
+function isFullScreen() {
   if (typeof document === 'undefined') return false
 
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
@@ -127,7 +131,7 @@ function isFullScreen () {
   }
 }
 
-async function toggleFullScreen () {
+async function toggleFullScreen() {
   if (isFullScreen()) {
     if (document.cancelFullScreen) {
       document.cancelFullScreen()

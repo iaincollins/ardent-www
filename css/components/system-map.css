@@ -86,7 +86,7 @@
   border-radius: 1rem;
   background: var(--color-primary);
   content: '';
-  box-shadow: 0 0 .1rem .1rem var(--color-primary-lighter), 0 0 1rem .1rem var(--color-primary-lighter);
+  box-shadow: 0 0 .1rem .1rem var(--color-primary-lighter), 0 0 1rem .1rem var(--color-primary-lighter), 0 0 .5rem .2rem var(--color-primary);;
 }
 
 .system-map__point:after {
@@ -153,7 +153,6 @@
   opacity: 1 !important;
   filter: blur(0);
   z-index: 2;
-
 }
 
 .system-map__point--highlighted:before {
@@ -163,7 +162,7 @@
   width: 1rem !important;
   border-color: transparent;
   z-index: 3;
-  box-shadow: 0 0 .4rem .2rem var(--color-primary-lighter), 0 0 3rem .5rem var(--color-primary);
+  box-shadow: 0 0 .4rem .2rem var(--color-primary-lighter), 0 0 2rem .5rem var(--color-primary), 0 0 4rem 1rem var(--color-primary);
 }
 
 .system-map__point--highlighted:hover {}
