@@ -8,6 +8,7 @@ import { getCommoditiesWithAvgPricing } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 
+/*
 export async function getServerSideProps({ query }) {
   // When running on the server we can can load the commodity pricing data
   // directly and pass the data as an argument which the function then parses
@@ -23,6 +24,7 @@ export async function getServerSideProps({ query }) {
     : [...new Set(commodities.map((c) => c.category).sort())]
   return { props: { commodities, categories } }
 }
+*/
 
 export default function Page(props) {
   const router = useRouter()
