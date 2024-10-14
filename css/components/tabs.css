@@ -145,14 +145,14 @@
   display: inline-block;
   top: -.25rem;
   margin-top: 0.25rem;
-  margin-right: 1rem;
+  margin-right: .75rem;
 }
 
 .tab-options form label span {
   float: left;
   text-transform: uppercase;
   margin-bottom: .25rem;
-  color: var(--color-text-inverted-muted);
+  opacity: .75;
 }
 
 .tab-options form input {

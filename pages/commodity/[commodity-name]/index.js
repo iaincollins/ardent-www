@@ -136,7 +136,6 @@ export default () => {
           if (e.target.tagName === 'LI') e.target.children[0].click()
         }}
       >
-        <li><Link href='/'>Home</Link></li>
         <li><Link href='/commodities'>Commodities</Link></li>
         {commodity?.category && <li><Link href={`/commodities/${commodity?.category.toLowerCase()}`}>{commodity?.category}</Link></li>}
       </ul>

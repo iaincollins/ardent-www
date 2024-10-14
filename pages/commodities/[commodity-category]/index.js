@@ -68,8 +68,12 @@ export default function Page (props) {
           if (e.target.tagName === 'LI') e.target.children[0].click()
         }}
       >
-        <li><Link href='/'>Home</Link></li>
         <li><Link href='/commodities'>Commodities</Link></li>
+        {categories?.length === 1 && 
+          <>
+            <li><Link href={`/commodities/${categories[0].toLowerCase()}`}>{categories[0]}</Link></li>
+          </>
+        }
       </ul>
       {commodities && categories &&
         <div className='fx__fade-in'>

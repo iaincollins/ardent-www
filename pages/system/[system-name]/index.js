@@ -97,7 +97,7 @@ export default () => {
         if (distance(systemCoordinates, SOL_COORDINATES) <= 200) {
           system.tradeZone = 'Core Systems'
           if (system.systemName === 'Sol') {
-            system.tradeZoneLocation = 'Systems within 200 Ly of Sol are known as the Core Systems'
+            system.tradeZoneLocation = 'The centre of the Core Systems'
           } else {
             system.tradeZoneLocation = <>{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
           }
@@ -137,7 +137,11 @@ export default () => {
               station.stationType !== null
           ))
           setSettlementsInSystem(stations.filter(station => station.stationType === 'Odyssey Settlement' || station.stationType === null))
-          setFleetCarriersInSystem(stations.filter(station => station.stationType === 'Fleet Carrier'))
+          setFleetCarriersInSystem(
+              stations
+                .filter(station => station.stationType === 'Fleet Carrier')
+                .sort((a, b) => b?.updatedAt.localeCompare(a?.updatedAt))
+              )
           setMegashipsInSystem(stations.filter(station => station.stationType === 'Megaship'))
 
           const marketIds = stations.map(s => s.marketId)
@@ -219,7 +223,6 @@ export default () => {
           if (e.target.tagName === 'LI') e.target.children[0].click()
         }}
       >
-        <li><Link href='/'>Home</Link></li>
         <li><Link href='/'>Systems</Link></li>
         {system?.tradeZone && <li><Link href='/'>{system.tradeZone}</Link></li>}
       </ul>
@@ -363,20 +366,19 @@ export default () => {
                   {fleetCarriersInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
                       <Collapsible
-                        trigger={<CollapsibleTrigger>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'carrier' : 'carriers'}</CollapsibleTrigger>}
-                        triggerWhenOpen={<CollapsibleTrigger open>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'carrier' : 'carriers'}</CollapsibleTrigger>}
+                        trigger={<CollapsibleTrigger>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'Fleet carrier' : 'Fleet carriers'}</CollapsibleTrigger>}
+                        triggerWhenOpen={<CollapsibleTrigger open>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'Fleet carrier' : 'Fleet carriers'}</CollapsibleTrigger>}
                       >
                         {fleetCarriersInSystem.map(station =>
                           <Fragment key={`marketId_${station.marketId}`}>
                             <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
                               <div className='system__entity-name'>
                                 <StationIcon stationType='Fleet Carrier' />
-                                Fleet Carrier {station.stationName}
+                                FC {station.stationName}
                               </div>
                               <div className='system__entity-information'>
-                                {station.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                                {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
                                 {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
+                                {station.distanceToArrival !== null && <small className='text-no-transform'> ({Math.round(station.distanceToArrival).toLocaleString()} Ls)</small>}
                               </div>
                             </div>
                           </Fragment>
