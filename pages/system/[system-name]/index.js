@@ -138,10 +138,10 @@ export default () => {
           ))
           setSettlementsInSystem(stations.filter(station => station.stationType === 'Odyssey Settlement' || station.stationType === null))
           setFleetCarriersInSystem(
-              stations
-                .filter(station => station.stationType === 'Fleet Carrier')
-                .sort((a, b) => b?.updatedAt.localeCompare(a?.updatedAt))
-              )
+            stations
+              .filter(station => station.stationType === 'Fleet Carrier')
+              .sort((a, b) => b?.updatedAt.localeCompare(a?.updatedAt))
+          )
           setMegashipsInSystem(stations.filter(station => station.stationType === 'Megaship'))
 
           const marketIds = stations.map(s => s.marketId)
@@ -157,53 +157,53 @@ export default () => {
           setRareGoods(rareItems)
         })()
 
-        ; (async () => {
-          let importOrders = await getSystemImports(systemName)
-          importOrders.forEach((order, i) => {
-            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-              mostRecentUpdatedAt = order.updatedAt
-            }
-            // Enrich order data with commodity metadata
-            if (commmoditiesWithDescriptions[order.symbol]) {
-              importOrders[i] = {
-                ...commmoditiesWithDescriptions[order.symbol],
-                ...order
+          ; (async () => {
+            let importOrders = await getSystemImports(systemName)
+            importOrders.forEach((order, i) => {
+              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+                mostRecentUpdatedAt = order.updatedAt
               }
-            }
-          })
-          importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
-          setImportOrders(importOrders)
-          setLastUpdatedAt(mostRecentUpdatedAt)
-        })()
-
-        ; (async () => {
-          const exportOrders = await getSystemExports(systemName)
-          exportOrders.forEach((order, i) => {
-            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-              mostRecentUpdatedAt = order.updatedAt
-            }
-            // Enrich order data with commodity metadata
-            if (commmoditiesWithDescriptions[order.symbol]) {
-              exportOrders[i] = {
-                ...commmoditiesWithDescriptions[order.symbol],
-                ...order
+              // Enrich order data with commodity metadata
+              if (commmoditiesWithDescriptions[order.symbol]) {
+                importOrders[i] = {
+                  ...commmoditiesWithDescriptions[order.symbol],
+                  ...order
+                }
               }
-            }
-          })
-          setExportOrders(exportOrders)
-          setLastUpdatedAt(mostRecentUpdatedAt)
-        })()
+            })
+            importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
+            setImportOrders(importOrders)
+            setLastUpdatedAt(mostRecentUpdatedAt)
+          })()
 
-        ; (async () => {
-          const nearbySystems = await getNearbySystems(systemName)
-          nearbySystems.forEach(s => {
-            s.distance = distance(
-              [system.systemX, system.systemY, system.systemZ],
-              [s.systemX, s.systemY, s.systemZ]
-            )
-          })
-          setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)));
-        })()
+          ; (async () => {
+            const exportOrders = await getSystemExports(systemName)
+            exportOrders.forEach((order, i) => {
+              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+                mostRecentUpdatedAt = order.updatedAt
+              }
+              // Enrich order data with commodity metadata
+              if (commmoditiesWithDescriptions[order.symbol]) {
+                exportOrders[i] = {
+                  ...commmoditiesWithDescriptions[order.symbol],
+                  ...order
+                }
+              }
+            })
+            setExportOrders(exportOrders)
+            setLastUpdatedAt(mostRecentUpdatedAt)
+          })()
+
+          ; (async () => {
+            const nearbySystems = await getNearbySystems(systemName)
+            nearbySystems.forEach(s => {
+              s.distance = distance(
+                [system.systemX, system.systemY, system.systemZ],
+                [s.systemX, s.systemY, s.systemZ]
+              )
+            })
+            setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)));
+          })()
       }
     })()
   }, [router.query['system-name']])
@@ -248,7 +248,7 @@ export default () => {
               />
             )}
           </div>
-          <table className='properties-table' style={{marginBottom: 0}}>
+          <table className='properties-table' style={{ marginBottom: 0 }}>
             <tbody>
               <tr>
                 <th>Address</th>
@@ -703,18 +703,18 @@ export default () => {
   )
 }
 
-async function getSystem (systemName) {
+async function getSystem(systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getStationsInSystem (systemName) {
+async function getStationsInSystem(systemName) {
   // @TODO No API endpoint for stations yet, so using 'markets' endpoint
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/stations`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getNearbySystems (systemName) {
+async function getNearbySystems(systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=25`)
   return await res.json()
 }

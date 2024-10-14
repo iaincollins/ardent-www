@@ -8,7 +8,7 @@ import { getCommoditiesWithAvgPricing } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 
-export async function getServerSideProps ({ query }) {
+export async function getServerSideProps({ query }) {
   // When running on the server we can can load the commodity pricing data
   // directly and pass the data as an argument which the function then parses
   const commoditiesWithPrices = (await import('../../../../ardent-data/cache/commodities.json')).commodities
@@ -21,11 +21,10 @@ export async function getServerSideProps ({ query }) {
   const categories = filterByCategory
     ? [filterByCategory]
     : [...new Set(commodities.map((c) => c.category).sort())]
-
   return { props: { commodities, categories } }
 }
 
-export default function Page (props) {
+export default function Page(props) {
   const router = useRouter()
   const [commodities, setCommodities] = useState(props.commodities)
   const [categories, setCategories] = useState(props.categories)
@@ -54,12 +53,12 @@ export default function Page (props) {
   }, [router.asPath])
 
   return (
-    <Layout 
+    <Layout
       loading={commodities === undefined}
       loadingText='Loading commodities'
       title={categories?.length === 1 ? `${categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category => category)} in Elite Dangerous` : 'Commodities in Elite Dangerous'}
       description={categories?.length === 1 ? `Where to buy and sell ${categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category => category)} in Elite Dangerous` : 'Where to buy and sell commodities in Elite Dangerous'}
-      >
+    >
       <Head>
         <link rel='canonical' href='https://ardent-industry.com/commodities' />
       </Head>
@@ -69,7 +68,7 @@ export default function Page (props) {
         }}
       >
         <li><Link href='/commodities'>Commodities</Link></li>
-        {categories?.length === 1 && 
+        {categories?.length === 1 &&
           <>
             <li><Link href={`/commodities/${categories[0].toLowerCase()}`}>{categories[0]}</Link></li>
           </>
@@ -78,15 +77,15 @@ export default function Page (props) {
       {commodities && categories &&
         <div className='fx__fade-in'>
           {categories?.length > 1 &&
-            <p className='clear text-center' style={{marginBottom: '.5rem'}}>
+            <p className='clear text-center' style={{ marginBottom: '.5rem' }}>
               The best trade prices for commodities anywhere in the galaxy.
             </p>}
           {categories?.length === 1 && commodityCategories[categories[0]]?.description &&
-            <p className='clear text-center' style={{marginBottom: '.5rem'}}>
+            <p className='clear text-center' style={{ marginBottom: '.5rem' }}>
               {commodityCategories[categories[0]].description}
             </p>}
           {categories?.length === 1 && commodityCategories[categories[0]]?.whereToFind &&
-            <p className='clear text-center' style={{marginBottom: '.5rem'}}>
+            <p className='clear text-center' style={{ marginBottom: '.5rem' }}>
               {commodityCategories[categories[0]]?.whereToFind}
             </p>}
           {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
