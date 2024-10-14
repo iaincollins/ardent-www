@@ -4,13 +4,14 @@ progress {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 1.25rem;
+  height: 1rem;
   border-width: .15rem;
   border-style: solid;
   border-radius: 0;
   border-color: var(--color-primary);
-  background: var(--color-primary-darker);
-  padding: .125rem;
+  background: var(--color-primary-dark);
+  padding: 0;
+  border: 0;
 }
 
 progress[value] {

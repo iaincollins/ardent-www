@@ -406,6 +406,7 @@ export default () => {
                         {rare.stationName} is the exclusive exporter of {rare.name}.
                         {' '}
                         {rare?.description}
+                        {rare?.limit && <> Export restrictions limit orders to {rare.limit}T at a time.</>}
                       </span>)}
                   </td>
                 </tr>}

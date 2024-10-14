@@ -38,7 +38,7 @@ export default () => {
     if (basePath === 'exporters') setTabIndex(1)
   }, [router.pathname])
 
-  async function getImportsAndExports () {
+  async function getImportsAndExports() {
     // Can't reliably get this from the the route.query object
     const commodityName = window.location.pathname.split('/')[2]
     if (!commodityName) return
@@ -46,48 +46,48 @@ export default () => {
     setImports(undefined)
     setExports(undefined)
 
-    // Fetch imports and exports together at the same time
-    ;(async () => {
-      const imports = await getImports(commodityName)
-      if (Array.isArray(imports)) {
-        imports.forEach(c => {
-          c.key = c.commodityId
-          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-          c.maxProfit = c.maxSellPrice - c.minBuyPrice
-          c.symbol = c.commodityName.toLowerCase()
-          c.category = listOfCommodities[c.symbol]?.category ?? ''
-          c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-          delete c.commodityName
-        })
-        setImports(imports)
-      } else {
-        setImports([])
-      }
-    })()
+      // Fetch imports and exports together at the same time
+      ; (async () => {
+        const imports = await getImports(commodityName)
+        if (Array.isArray(imports)) {
+          imports.forEach(c => {
+            c.key = c.commodityId
+            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+            c.maxProfit = c.maxSellPrice - c.minBuyPrice
+            c.symbol = c.commodityName.toLowerCase()
+            c.category = listOfCommodities[c.symbol]?.category ?? ''
+            c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+            delete c.commodityName
+          })
+          setImports(imports)
+        } else {
+          setImports([])
+        }
+      })()
 
-    ;(async () => {
-      const exports = await getExports(commodityName)
-      if (Array.isArray(exports)) {
-        exports.forEach(c => {
-          c.key = c.commodityId
-          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-          c.maxProfit = c.maxSellPrice - c.minBuyPrice
-          c.symbol = c.commodityName.toLowerCase()
-          c.category = listOfCommodities[c.symbol]?.category ?? ''
-          c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-          delete c.commodityName
-        })
-        setExports(exports)
-      } else {
-        setExports([])
-      }
-    })()
+      ; (async () => {
+        const exports = await getExports(commodityName)
+        if (Array.isArray(exports)) {
+          exports.forEach(c => {
+            c.key = c.commodityId
+            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+            c.maxProfit = c.maxSellPrice - c.minBuyPrice
+            c.symbol = c.commodityName.toLowerCase()
+            c.category = listOfCommodities[c.symbol]?.category ?? ''
+            c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+            delete c.commodityName
+          })
+          setExports(exports)
+        } else {
+          setExports([])
+        }
+      })()
   }
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const commodityName = router.query?.['commodity-name']
       if (!commodityName) return
 
@@ -149,7 +149,7 @@ export default () => {
           <table className='properties-table' style={{ marginBottom: 0 }}>
             <tbody>
               <tr>
-                <th>Import price</th>
+                <th>Bulk import price</th>
                 <td>
                   <span className='fx__animated-text' data-fx-order='2'>
                     {typeof commodity.avgSellPrice === 'number'
@@ -158,15 +158,15 @@ export default () => {
                           {commodity.avgSellPrice.toLocaleString()} CR/T
                           {' '}
                           {commodity.minSellPrice !== commodity.maxSellPrice &&
-                            <small>({commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>}
+                            <small>({commodity.rare && 'Approx. '}{commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>}
                         </>
-                        )
+                      )
                       : <InsufficentData />}
                   </span>
                 </td>
               </tr>
               <tr>
-                <th>Export price</th>
+                <th>Bulk export price</th>
                 <td>
                   <span className='fx__animated-text' data-fx-order='3'>
                     {typeof commodity.avgBuyPrice === 'number'
@@ -177,14 +177,14 @@ export default () => {
                           {commodity.minBuyPrice !== commodity.maxBuyPrice &&
                             <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>}
                         </>
-                        )
+                      )
                       : <InsufficentData />}
                   </span>
                 </td>
               </tr>
               {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
                 <tr>
-                  <th>Typical profit</th>
+                  <th>Avg profit</th>
                   <td>
                     <span className='fx__animated-text' data-fx-order='5'>
                       {commodity.avgProfit === 0
@@ -193,73 +193,53 @@ export default () => {
                           <>
                             {commodity.avgProfit.toLocaleString()} CR/T
                             {' '}
-                            <small>({commodity.avgProfitMargin}% margin)</small>
+                            <small>({commodity.avgProfitMargin.toLocaleString()}% margin)</small>
                           </>
-                          )}
+                        )}
                     </span>
                   </td>
                 </tr>}
-              {commodity?.rare && commodity?.rareMaxCount &&
+              {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
                 <>
-                  <tr>
-                    <th>Export limit</th>
-                    <td>
-                      <span className='fx__animated-text' data-fx-order='3'>
-                        {commodity.rareMaxCount}
-                      </span>
-                    </td>
-                  </tr>
                   {rareMarket?.stationName && rareMarket?.systemName &&
                     <tr>
                       <th>Exported by</th>
                       <td>
                         <span className='fx__animated-text text-no-transform' data-fx-order='4'>
                           <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
+                          {commodity?.rareMaxCount && <small> (limit {commodity.rareMaxCount}T)</small>}
                         </span>
                       </td>
                     </tr>}
                 </>}
               {!commodity.rare &&
-                <>
-                  <tr>
-                    <th>Total demand</th>
-                    <td>
-                      <span className='fx__fade-in'>
-                        {commodity.totalDemand > 0
-                          ? (
-                            <>
-                              <progress
-                                max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                                value={commodity.totalDemand}
-                                style={{ maxWidth: '12rem', height: '1.25rem' }}
-                              />
-                              <p style={{ margin: '0 0 .15rem 0', lineHeight: '1.25rem', fontSize: '0.9rem' }}>{commodity.totalDemand.toLocaleString()} T</p>
-                            </>
-                            )
-                          : <InsufficentData />}
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Total supply</th>
-                    <td>
-                      <span className='fx__fade-in'>
-                        {commodity.totalStock > 0
-                          ? (
-                            <>
-                              <progress
-                                max={Math.max(commodity.totalStock, commodity.totalDemand)}
-                                value={commodity.totalStock}
-                                style={{ maxWidth: '12rem', height: '1.25rem' }}
-                              />
-                              <p style={{ margin: '0 0 .15rem 0', lineHeight: '1.25rem', fontSize: '0.9rem' }}>{commodity.totalStock.toLocaleString()} T</p>
-                            </>
-                            )
-                          : <InsufficentData />}
-                      </span>
-                    </td>
-                  </tr>
-                </>}
+                <tr>
+                  <th>Supply/Demand</th>
+                  <td>
+                    <span className='fx__fade-in'>
+                      {commodity.totalDemand > 0 &&
+                        <div style={{ maxWidth: '12rem' }}>
+                          <progress
+                            max={commodity.totalDemand}
+                            value={commodity.totalStock}
+                          />
+                          <p style={{ margin: 0 }}>
+                            {commodity.totalDemand > commodity.totalStock
+                              ? <small>
+                                {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 75 && <>Low demand</>}
+                                {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 25 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 75 && <>Moderate demand</>}
+                                {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) > 0 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 25 && <>High demand ++</>}
+                                {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) === 0 && <>Very high demand +++</>}
+                              </small>
+                              : <small>Oversupply</small>
+                            }
+                          </p>
+                        </div>}
+                      {(commodity.totalDemand === 0) && <InsufficentData />}
+                    </span>
+                  </td>
+                </tr>
+              }
               {listOfCommodities[commodity.symbol]?.description &&
                 <tr>
                   <th>
@@ -280,7 +260,6 @@ export default () => {
                   <td>
                     <p style={{ margin: 0, textTransform: 'none', fontSize: '.8rem' }}>
                       Rare items are usually only available in limited quantities from exclusive locations but can be sold almost anywhere.
-
                       They fetch a higher price in stations that are further from the system that produced them, typically fetching the
                       the highest possible value around 150-200 ly away.
                     </p>
@@ -315,12 +294,12 @@ export default () => {
   )
 }
 
-async function getCommodity (commodityName) {
+async function getCommodity(commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getExports (commodityName) {
+async function getExports(commodityName) {
   let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/exports`
   const options = []
 
@@ -345,7 +324,7 @@ async function getExports (commodityName) {
   return await res.json()
 }
 
-async function getImports (commodityName) {
+async function getImports(commodityName) {
   let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/imports`
   const options = []
 
@@ -370,9 +349,14 @@ async function getImports (commodityName) {
   return await res.json()
 }
 
-async function getCommodityFromMarket (marketId, commodityName) {
+async function getCommodityFromMarket(marketId, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/market/${marketId}/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
 const InsufficentData = () => <span style={{ opacity: 0.4 }}>Insufficent data</span>
+
+const ratio = (a, b) => {
+  const greatestCommonDivisor = (a, b) => (b == 0) ? a : greatestCommonDivisor(b, a % b);
+  return `${a / greatestCommonDivisor(a, b)}:${b / greatestCommonDivisor(a, b)}`
+}
