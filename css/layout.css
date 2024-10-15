@@ -56,5 +56,12 @@
   mask-size: 100% 100%, 1rem 100%;
   mask-position: 0 0, 100% 0;
   mask-repeat: no-repeat, no-repeat;
-  scrollbar-gutter: stable;
+  /*
+    This line actually causes Chrome to fail to render the site (hard failure).
+    It seems like the tab crashes, but no errors in the logs. Only reproducable
+    in production builds, but can be reliably reproduced on ~50% of reloads on Mac
+    Windows and Android systems, by shift-refreshing.
+    I guess the implementation of scrollbar-gutter in Chrome has a bug.
+  */
+  /* scrollbar-gutter: stable; */
 }
