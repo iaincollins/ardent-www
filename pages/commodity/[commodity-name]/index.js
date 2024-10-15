@@ -219,19 +219,14 @@ export default () => {
                     <span className='fx__fade-in'>
                       {commodity.totalDemand > 0 &&
                         <div style={{ maxWidth: '12rem' }}>
-                          <progress
-                            max={commodity.totalDemand}
-                            value={commodity.totalStock}
-                          />
                           <p style={{ margin: 0 }}>
                             {commodity.totalDemand > commodity.totalStock
-                              ? <small>
+                              ? <>
                                 {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 75 && <>Low demand</>}
                                 {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 25 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 75 && <>Moderate demand</>}
-                                {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) > 0 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 25 && <>High demand ++</>}
-                                {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) === 0 && <>Very high demand +++</>}
-                              </small>
-                              : <small>Oversupply</small>
+                                {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 0 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 25 && <>High demand</>}
+                              </>
+                              : <>Oversupply</>
                             }
                           </p>
                         </div>}

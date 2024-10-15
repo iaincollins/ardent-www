@@ -74,14 +74,14 @@ export default () => {
               <em>{database.description}</em>
             </p>
             <ul className='clear'>
-              {Object.entries(database.tables).map(([k, v]) => <li key={`${database.name}_${k}`} style={{ textTransform: 'capitalize' }}>{v.toLocaleString()} {k}</li>)}
-              {database?.size && <li>Requires {byteSize(database.size).value} {byteSize(database.size).unit} of disk space</li>}
+              {Object.entries(database.tables).map(([k, v]) => <li key={`${database.name}_${k}`} style={{ textTransform: 'capitalize' }}> {k}: {v.toLocaleString()}</li>)}
+              {database?.size && <li>Disk space: {byteSize(database.size).value} {byteSize(database.size).unit}</li>}
             </ul>
             <p style={{ margin: '1.5rem 0' }}>
               <Link href={database?.download?.url ?? ''} className='button' style={{ padding: '.75rem 1.25rem' }}>
                 <i className='icarus-terminal-download' style={{ position: 'relative', top: '-.125rem', fontSize: '1.25rem' }} />
                 {' '}
-                <strong>Download {database.name}.gz</strong>
+                <strong>{database.name}.gz</strong>
                 {' '}
                 {database?.download?.size && <span className='muted'>({byteSize(database.download.size).value} {byteSize(database.download.size).unit})</span>}
               </Link>

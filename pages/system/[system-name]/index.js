@@ -393,7 +393,7 @@ export default () => {
                 <th>Last update</th>
                 <td>
                   {(system !== undefined && importOrders !== undefined && exportOrders !== undefined)
-                    ? `${timeBetweenTimestamps(lastUpdatedAt)}`
+                    ? `${timeBetweenTimestamps(lastUpdatedAt)} ago`
                     : <span className='muted'>...</span>}
                 </td>
               </tr>
