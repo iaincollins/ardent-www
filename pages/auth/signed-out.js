@@ -1,2 +1,2 @@
-import page from './index'
+import page from '../cmdr'
 export default page
