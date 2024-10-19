@@ -16,15 +16,15 @@ export default () => {
     })()
     ;(async () => {
       const res = await fetch(`${API_BASE_URL}/auth/csrftoken`, { credentials: 'include' })
-      setCsrfToken((await res.json()).csrfToken)
+      setCsrfToken((await res.json())?.csrfToken ?? null)
     })()
     ;(async () => {
       const res = await fetch(`${API_BASE_URL}/auth/cmdr/profile`, { credentials: 'include' })
-      setCmdrProfile(await res.json())
+      setCmdrProfile(res.ok ? await res.json() : null)
     })()
     ;(async () => {
       const res = await fetch(`${API_BASE_URL}/auth/cmdr/fleetcarrier`, { credentials: 'include' })
-      setCmdrFleetCarrier(await res.json())
+      setCmdrFleetCarrier(res.ok ? await res.json() : null)
     })()
   }, [])
 
@@ -38,12 +38,12 @@ export default () => {
         <div className='clear'>
           {accessTokenExpiryTime && cmdrProfile && 
             <>
-              <p>Welcome {cmdrProfile.commander.name}, you are signed in.</p>
-              <p>Credit balance: {cmdrProfile.commander.credits.toLocaleString} CR</p>
-              <p>Current location: <Link href={`/system/${cmdrProfile.ship.starsystem}`}>{cmdrProfile.ship.starsystem}</Link></p>
-              <p>Current ship: {cmdrProfile.ship.shipName} ({cmdrProfile.ship.shipID})</p>
-              <p>You currently own {Object.keys(cmdrProfile.ships).length} {Object.keys(cmdrProfile.ships).length == 1 ? 'ship' : 'ships'}.</p>
-              {cmdrFleetCarrier && <p>You own a Fleet Carrier {hexToAscii(cmdrFleetCarrier.name.vanityName)} ({cmdrFleetCarrier.name.callsign}), it is currently located in <Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem}</Link></p>}
+              {cmdrProfile.commander && <p>Welcome {cmdrProfile.commander.name}, you are signed in.</p>}
+              {cmdrProfile.commander && <p>Credit balance: {cmdrProfile.commander.credits.toLocaleString()} CR</p>}
+              {cmdrProfile.ship && <p>Current location: <Link href={`/system/${cmdrProfile.ship.starsystem}`}>{cmdrProfile.ship.starsystem}</Link></p>}
+              {cmdrProfile.ship && <p>Current ship: {cmdrProfile.ship.shipName} ({cmdrProfile.ship.shipID})</p>}
+              {cmdrProfile.ships && <p>You currently own {Object.keys(cmdrProfile.ships).length} {Object.keys(cmdrProfile.ships).length == 1 ? 'ship' : 'ships'}.</p>}
+              {cmdrFleetCarrier.name && <p>You own a Fleet Carrier {hexToAscii(cmdrFleetCarrier.name.vanityName)} ({cmdrFleetCarrier.name.callsign}), it is currently located in <Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem}</Link></p>}
               {csrfToken &&
                 <form method='POST' action={`${API_BASE_URL}/auth/signout`}>
                   <input type='hidden' name='csrfToken' value={csrfToken} />
