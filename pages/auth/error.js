@@ -5,10 +5,10 @@ export default () => {
     <Layout >
       <div className='fx__fade-in'>
         <h1>
-          Sign in failed
+          Authentication error
         </h1>
         <p className='clear'>
-          An error occured during sign in.
+          An error occured during authentication.
         </p>
       </div>
     </Layout>
