@@ -38,12 +38,11 @@ export default () => {
         <div className='clear'>
           {accessTokenExpiryTime && cmdrProfile && 
             <>
-              {cmdrProfile.commander && <p>Welcome {cmdrProfile.commander.name}, you are signed in.</p>}
-              {cmdrProfile.commander && <p>Credit balance: {cmdrProfile.commander.credits.toLocaleString()} CR</p>}
-              {cmdrProfile.ship && <p>Current location: <Link href={`/system/${cmdrProfile.ship.starsystem}`}>{cmdrProfile.ship.starsystem}</Link></p>}
-              {cmdrProfile.ship && <p>Current ship: {cmdrProfile.ship.shipName} ({cmdrProfile.ship.shipID})</p>}
-              {cmdrProfile.ships && <p>You currently own {Object.keys(cmdrProfile.ships).length} {Object.keys(cmdrProfile.ships).length == 1 ? 'ship' : 'ships'}.</p>}
-              {cmdrFleetCarrier.name && <p>You own a Fleet Carrier {hexToAscii(cmdrFleetCarrier.name.vanityName)} ({cmdrFleetCarrier.name.callsign}), it is currently located in <Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem}</Link></p>}
+              {cmdrProfile.commander && <p>Welcome CMDR {cmdrProfile.commander.name}, you are signed in.</p>}
+              {cmdrProfile.commander && <p>Your credit balance is {cmdrProfile.commander.credits.toLocaleString()} CR.</p>}
+              {cmdrProfile.ship && <p>Your current location is <Link href={`/system/${cmdrProfile.ship.starsystem.name}`}>{cmdrProfile.ship.starsystem.name}</Link>.</p>}
+              {cmdrProfile.ship && cmdrProfile.ships && <p>Your current ship is {cmdrProfile.ship.shipName} ({cmdrProfile.ship.shipID}), you own {Object.keys(cmdrProfile.ships).length} {Object.keys(cmdrProfile.ships).length == 1 ? 'ship' : 'ships'} in total.</p>}
+              {cmdrFleetCarrier.name && <p>You also own a Fleet Carrier {hexToAscii(cmdrFleetCarrier.name.vanityName)} ({cmdrFleetCarrier.name.callsign}), it is currently located in <Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem}</Link>.</p>}
               {csrfToken &&
                 <form method='POST' action={`${API_BASE_URL}/auth/signout`}>
                   <input type='hidden' name='csrfToken' value={csrfToken} />
