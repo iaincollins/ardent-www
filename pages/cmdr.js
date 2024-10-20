@@ -29,14 +29,15 @@ export default () => {
         {signedIn === true &&
           <>
             <h1>Signed in</h1>
-            {cmdrProfile !== undefined &&
+            {cmdrProfile?.commander &&
               <div className='clear'>
                 {cmdrProfile?.commander?.name && <p>Welcome CMDR {cmdrProfile.commander.name}</p>}
                 {cmdrProfile?.commander?.credits && <p>Your credit balance is {cmdrProfile.commander.credits.toLocaleString()} CR.</p>}
+                {cmdrProfile?.lastSystem?.name && <p>Last known location <Link href={`/system/${cmdrProfile.lastSystem.name}`}>{cmdrProfile.lastSystem.name}</Link>.</p>}
                 {cmdrProfile?.ship?.shipName && cmdrProfile?.ship?.shipID &&
                   <p>
-                    {cmdrProfile?.ships && <>You own {Object.keys(cmdrProfile.ships).length} {Object.keys(cmdrProfile.ships).length == 1 ? 'ship' : 'ships'}.</>}
-                    <> Your current ship is {cmdrProfile.ship.shipName} ({cmdrProfile.ship.shipID}), located in <Link href={`/system/${cmdrProfile.ship.starsystem.name}`}>{cmdrProfile.ship.starsystem.name}</Link>.</>
+                    {cmdrProfile?.ships && <>You own {Object.keys(cmdrProfile.ships).length} {Object.keys(cmdrProfile.ships).length == 1 ? 'ship' : 'ships'}. </>}
+                    <>Your current ship is {cmdrProfile.ship.shipName} ({cmdrProfile.ship.shipID}).</>
                   </p>
                 }
                 {cmdrFleetCarrier?.name && cmdrFleetCarrier?.currentStarSystem && <p>Your Fleet Carrier {hexToAscii(cmdrFleetCarrier.name?.vanityName)} ({cmdrFleetCarrier.name?.callsign}) is currently located in <Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem}</Link>.</p>}
