@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { getCsrfToken, isSignedIn } from 'lib/auth'
 import { getCmdrInfo } from 'lib/cmdr'
+import hexToAscii from 'lib/utils/hex-to-ascii'
 import Layout from 'components/layout'
 import { API_BASE_URL } from 'lib/consts'
 
@@ -34,8 +35,8 @@ export default () => {
                 {cmdrProfile?.commander?.credits && <p>Your credit balance is {cmdrProfile.commander.credits.toLocaleString()} CR.</p>}
                 {cmdrProfile?.ship?.shipName && cmdrProfile?.ship?.shipID &&
                   <p>
-                    {cmdrProfile?.ships && <> You own {Object.keys(cmdrProfile.ships).length} {Object.keys(cmdrProfile.ships).length == 1 ? 'ship' : 'ships'}.</>}
-                    Your current ship is {cmdrProfile.ship.shipName} ({cmdrProfile.ship.shipID}), located in <Link href={`/system/${cmdrProfile.ship.starsystem.name}`}>{cmdrProfile.ship.starsystem.name}</Link>.
+                    {cmdrProfile?.ships && <>You own {Object.keys(cmdrProfile.ships).length} {Object.keys(cmdrProfile.ships).length == 1 ? 'ship' : 'ships'}.</>}
+                    <> Your current ship is {cmdrProfile.ship.shipName} ({cmdrProfile.ship.shipID}), located in <Link href={`/system/${cmdrProfile.ship.starsystem.name}`}>{cmdrProfile.ship.starsystem.name}</Link>.</>
                   </p>
                 }
                 {cmdrFleetCarrier?.name && cmdrFleetCarrier?.currentStarSystem && <p>Your Fleet Carrier {hexToAscii(cmdrFleetCarrier.name?.vanityName)} ({cmdrFleetCarrier.name?.callsign}) is currently located in <Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem}</Link>.</p>}
