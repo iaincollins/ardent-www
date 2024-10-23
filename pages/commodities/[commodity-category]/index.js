@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -7,6 +7,7 @@ import Layout from 'components/layout'
 import { getCommoditiesWithAvgPricing } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
+import { NavigationContext } from 'lib/context'
 
 /*
 export async function getServerSideProps({ query }) {
@@ -26,7 +27,9 @@ export async function getServerSideProps({ query }) {
 }
 */
 
-export default function Page(props) {
+export default function Page (props) {
+  const [navigationPath, setNavigationPath] = useContext(NavigationContext)
+
   const router = useRouter()
   const [commodities, setCommodities] = useState(props.commodities)
   const [categories, setCategories] = useState(props.categories)
@@ -51,6 +54,12 @@ export default function Page(props) {
 
       setCommodities(commodities_)
       setCategories(categories_)
+
+      setNavigationPath(
+        (categories_.length === 1)
+          ? [{ name: 'Commodities', path: '/commodities' }, { name: categories_[0], path: `/commodities/${categories_[0].toLowerCase()}` }]
+          : [{ name: 'Home', path: '/' }, { name: 'Commodities', path: '/commodities' }]
+      )
     })()
   }, [router.asPath])
 
@@ -64,18 +73,6 @@ export default function Page(props) {
       <Head>
         <link rel='canonical' href='https://ardent-industry.com/commodities' />
       </Head>
-      <ul
-        className='breadcrumbs fx__fade-in' onClick={(e) => {
-          if (e.target.tagName === 'LI') e.target.children[0].click()
-        }}
-      >
-        <li><Link href='/commodities'>Commodities</Link></li>
-        {categories?.length === 1 &&
-          <>
-            <li><Link href={`/commodities/${categories[0].toLowerCase()}`}>{categories[0]}</Link></li>
-          </>
-        }
-      </ul>
       {commodities && categories &&
         <div className='fx__fade-in'>
           {categories?.length > 1 &&

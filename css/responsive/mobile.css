@@ -43,7 +43,7 @@
   .header__logo h1 {
     padding-top: .2rem;
     padding-bottom: .1em;
-    width: 12.5rem;
+    width: 10rem;
     padding-left: 1rem;
   }
 
@@ -128,5 +128,9 @@
 
   .breadcrumbs {
     zoom: .9;
+  }
+
+  .breadcrumbs li:not(:last-child) {
+    display: none;
   }
 }

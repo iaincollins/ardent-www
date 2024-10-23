@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import { NavigationContext } from 'lib/context'
 import Layout from 'components/layout'
 import { API_BASE_URL } from 'lib/consts'
 import byteSize from 'byte-size'
@@ -12,10 +13,12 @@ const databaseDescription = {
   'locations.db': 'Unusual locations and points of interest'
 }
 export default () => {
+  const [navigationPath, setNavigationPath] = useContext(NavigationContext)
   const [databases, setDatabases] = useState()
 
   useEffect(() => {
     (async () => {
+      setNavigationPath([{ name: 'Home', path: '/' }, { name: 'Downloads', path: '/downloads' }])
       const res = await fetch(`${API_BASE_URL}/v1/backup`)
       const databases = (await res.json()).databases
       databases.forEach(database => { database.description = databaseDescription?.[database.name] })

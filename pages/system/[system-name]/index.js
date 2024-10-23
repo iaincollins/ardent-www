@@ -1,5 +1,5 @@
 import path from 'path'
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect, Fragment, useContext } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
@@ -20,6 +20,7 @@ import StationIcon from 'components/station-icon'
 import getSystemExports from 'lib/system-exports'
 import getSystemImports from 'lib/system-imports'
 import commmoditiesWithDescriptions from 'lib/commodities/commodities.json'
+import { NavigationContext } from 'lib/context'
 
 import {
   API_BASE_URL,
@@ -34,10 +35,10 @@ const HIDDEN_SYSTEMS = [
   '7780433924818', // Test
   '9154823459538', // Test2
   '9704579273426', // TestRender
-  '349203072180',  // SingleLightTest
-  '353498039476',  // BinaryLightTest
+  '349203072180', // SingleLightTest
+  '353498039476', // BinaryLightTest
   '8055311864530', // Training (Tutorial)
-  '7780433924818', // Destination (Tutorial)
+  '7780433924818' // Destination (Tutorial)
 ]
 
 const SYSTEM_MAP_POINT_PLOT_MULTIPLIER = 50
@@ -46,6 +47,7 @@ const SYSTEM_MAP_POINT_PLOT_MULTIPLIER = 50
 
 export default () => {
   const router = useRouter()
+  const [navigationPath, setNavigationPath] = useContext(NavigationContext)
   const [system, setSystem] = useState()
   const [stationsInSystem, setStationsInSystem] = useState()
   const [settlementsInSystem, setSettlementsInSystem] = useState()
@@ -122,10 +124,15 @@ export default () => {
           )
         }
         setSystem(system)
+
+        setNavigationPath(
+          (system?.tradeZone)
+            ? [{ name: 'Systems', path: '/' }, { name: system.tradeZone, path: '/' }]
+            : [{ name: 'Systems', path: '/' }]
+        )
       } else {
         setSystem(undefined)
       }
-
 
       if (system) {
         ; (async () => {
@@ -157,53 +164,53 @@ export default () => {
           setRareGoods(rareItems)
         })()
 
-          ; (async () => {
-            let importOrders = await getSystemImports(systemName)
-            importOrders.forEach((order, i) => {
-              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-                mostRecentUpdatedAt = order.updatedAt
+        ; (async () => {
+          let importOrders = await getSystemImports(systemName)
+          importOrders.forEach((order, i) => {
+            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+              mostRecentUpdatedAt = order.updatedAt
+            }
+            // Enrich order data with commodity metadata
+            if (commmoditiesWithDescriptions[order.symbol]) {
+              importOrders[i] = {
+                ...commmoditiesWithDescriptions[order.symbol],
+                ...order
               }
-              // Enrich order data with commodity metadata
-              if (commmoditiesWithDescriptions[order.symbol]) {
-                importOrders[i] = {
-                  ...commmoditiesWithDescriptions[order.symbol],
-                  ...order
-                }
-              }
-            })
-            importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
-            setImportOrders(importOrders)
-            setLastUpdatedAt(mostRecentUpdatedAt)
-          })()
+            }
+          })
+          importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
+          setImportOrders(importOrders)
+          setLastUpdatedAt(mostRecentUpdatedAt)
+        })()
 
-          ; (async () => {
-            const exportOrders = await getSystemExports(systemName)
-            exportOrders.forEach((order, i) => {
-              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-                mostRecentUpdatedAt = order.updatedAt
+        ; (async () => {
+          const exportOrders = await getSystemExports(systemName)
+          exportOrders.forEach((order, i) => {
+            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+              mostRecentUpdatedAt = order.updatedAt
+            }
+            // Enrich order data with commodity metadata
+            if (commmoditiesWithDescriptions[order.symbol]) {
+              exportOrders[i] = {
+                ...commmoditiesWithDescriptions[order.symbol],
+                ...order
               }
-              // Enrich order data with commodity metadata
-              if (commmoditiesWithDescriptions[order.symbol]) {
-                exportOrders[i] = {
-                  ...commmoditiesWithDescriptions[order.symbol],
-                  ...order
-                }
-              }
-            })
-            setExportOrders(exportOrders)
-            setLastUpdatedAt(mostRecentUpdatedAt)
-          })()
+            }
+          })
+          setExportOrders(exportOrders)
+          setLastUpdatedAt(mostRecentUpdatedAt)
+        })()
 
-          ; (async () => {
-            const nearbySystems = await getNearbySystems(systemName)
-            nearbySystems.forEach(s => {
-              s.distance = distance(
-                [system.systemX, system.systemY, system.systemZ],
-                [s.systemX, s.systemY, s.systemZ]
-              )
-            })
-            setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)));
-          })()
+        ; (async () => {
+          const nearbySystems = await getNearbySystems(systemName)
+          nearbySystems.forEach(s => {
+            s.distance = distance(
+              [system.systemX, system.systemY, system.systemZ],
+              [s.systemX, s.systemY, s.systemZ]
+            )
+          })
+          setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)))
+        })()
       }
     })()
   }, [router.query['system-name']])
@@ -218,14 +225,6 @@ export default () => {
       <Head>
         <link rel='canonical' href={`https://ardent-industry.com/system/${system?.systemName}/${tabs[tabIndex]}`} />
       </Head>
-      <ul
-        className='breadcrumbs fx__fade-in' onClick={(e) => {
-          if (e.target.tagName === 'LI') e.target.children[0].click()
-        }}
-      >
-        <li><Link href='/'>Systems</Link></li>
-        {system?.tradeZone && <li><Link href='/'>{system.tradeZone}</Link></li>}
-      </ul>
       {system === null && <><h1>Error: Not found</h1><p className='text-large clear'>System not found.</p></>}
       {system &&
         <div className='fx__fade-in'>
@@ -703,18 +702,18 @@ export default () => {
   )
 }
 
-async function getSystem(systemName) {
+async function getSystem (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getStationsInSystem(systemName) {
+async function getStationsInSystem (systemName) {
   // @TODO No API endpoint for stations yet, so using 'markets' endpoint
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/stations`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getNearbySystems(systemName) {
+async function getNearbySystems (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=25`)
   return await res.json()
 }

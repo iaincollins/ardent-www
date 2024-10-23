@@ -24,7 +24,7 @@ export default () => {
   }, [])
 
   return (
-    <Layout >
+    <Layout>
       <div className='fx__fade-in'>
         {signedIn === true &&
           <>
@@ -38,8 +38,7 @@ export default () => {
                   <p>
                     {cmdrProfile?.ships && <>You own {Object.keys(cmdrProfile.ships).length} {Object.keys(cmdrProfile.ships).length == 1 ? 'ship' : 'ships'}. </>}
                     <>Your current ship is {cmdrProfile.ship.shipName} ({cmdrProfile.ship.shipID}).</>
-                  </p>
-                }
+                  </p>}
                 {cmdrFleetCarrier?.name && cmdrFleetCarrier?.currentStarSystem && <p>Your Fleet Carrier {hexToAscii(cmdrFleetCarrier.name?.vanityName)} ({cmdrFleetCarrier.name?.callsign}) is currently located in <Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem}</Link>.</p>}
                 {csrfToken &&
                   <form method='POST' action={`${API_BASE_URL}/auth/signout`}>
@@ -62,4 +61,3 @@ export default () => {
     </Layout>
   )
 }
-

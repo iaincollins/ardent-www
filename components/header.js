@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import AboutDialog from 'components/dialog/about-dialog'
 import { getCommoditiesWithAvgPricing } from 'lib/commodities'
 import commodities from 'lib/commodities/commodities'
+import { NavigationContext } from 'lib/context'
 import {
   API_BASE_URL,
   COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
@@ -13,6 +14,7 @@ import {
 
 export default () => {
   const router = useRouter()
+  const [navigationPath, setNavigationPath] = useContext(NavigationContext)
   const [fullScreenState, setFullScreenState] = useState(false)
   const [aboutDialogVisible, setAboutDialogVisible] = useState(false)
   const [newsTicker, setNewsTicker] = useState([])
@@ -20,7 +22,7 @@ export default () => {
   useEffect(() => {
     document.addEventListener('fullscreenchange', onFullScreenChangeHandler)
     return () => document.removeEventListener('click', onFullScreenChangeHandler)
-    function onFullScreenChangeHandler(event) {
+    function onFullScreenChangeHandler (event) {
       setFullScreenState(isFullScreen())
     }
   }, [])
@@ -52,16 +54,18 @@ export default () => {
 
   return (
     <header>
-      <Link href='/' className='--no-hover' style={{ border: 'none' }}>
-        <div className='header__logo'>
+      <div className='header__logo'>
+        <Link href='/' className='--no-hover' style={{ border: 'none' }}>
           <h1>
             <em>A</em>rdent <span className='is-hidden-mobile'><em>I</em>ndustry</span>
           </h1>
-          <p style={{ fontStyle: 'italic' }}>
-            Trade &amp; Exploration<span className='is-hidden-mobile'> Data</span>
-          </p>
-        </div>
-      </Link>
+        </Link>
+        <ul className='breadcrumbs' style={{ position: 'relative', top: '-.6rem', left: '.6rem' }}>
+          {navigationPath.map(({ name, path }) => (
+            <li><Link href={path}>{name}</Link></li>
+          ))}
+        </ul>
+      </div>
       <div className='header__navigation' style={{ display: 'block' }}>
         {/* <Link href='/commodities'>
           <button className='button'><i className='icon icarus-terminal-cargo' /></button>
@@ -82,7 +86,8 @@ export default () => {
         {[...Array(2)].map((arr, i) =>
           <span key={`news-ticker-${i}`} className={`news-ticker__ticker news-ticker__ticker--${i}`}>
             {newsTicker.map(item =>
-              <span key={`ticker_${i}_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'
+              <span
+                key={`ticker_${i}_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'
                 onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&location=${item.systemName}&maxDistance=1`)}
               >
                 <span className='muted'>{item.stationName}, {item.systemName}</span>
@@ -121,7 +126,7 @@ export default () => {
   )
 }
 
-function isFullScreen() {
+function isFullScreen () {
   if (typeof document === 'undefined') return false
 
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
@@ -131,7 +136,7 @@ function isFullScreen() {
   }
 }
 
-async function toggleFullScreen() {
+async function toggleFullScreen () {
   if (isFullScreen()) {
     if (document.cancelFullScreen) {
       document.cancelFullScreen()

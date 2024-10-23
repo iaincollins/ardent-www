@@ -2,7 +2,7 @@ import Layout from 'components/layout'
 
 export default () => {
   return (
-    <Layout >
+    <Layout>
       <div className='fx__fade-in'>
         <h1>
           Authentication error
