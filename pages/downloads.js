@@ -35,7 +35,7 @@ export default () => {
         <link rel='canonical' href='https://ardent-industry.com/downloads' />
       </Head>
       <div className='fx__fade-in'>
-        <div className='heading--with-underline'>
+        <div className='heading--with-underline' style={{marginBottom: 0}}>
           <h2 className='heading--with-icon'>
             <i className='icon icarus-terminal-download' />
             Downloads

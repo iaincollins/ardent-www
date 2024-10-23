@@ -27,6 +27,12 @@
     font-size: 1.25rem !important;
   }
 
+  
+  .heading--with-underline {
+    mask: linear-gradient(90deg, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%);
+    mask: none;
+  }
+
   h3 {
     font-size: 1.25rem;
     line-height: 1.25rem;
