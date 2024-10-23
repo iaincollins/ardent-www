@@ -87,9 +87,9 @@ h1:after {
 
 h2 {
   font-size: 2rem;
-  line-height: 2rem;
+  line-height: 2.5rem;
   padding-right: 1.5rem;
-  clip-path: polygon(0 0,calc(100% - 1.1rem) 0,100% 2.1rem,100% 100%,0 100%);
+  clip-path: polygon(0 0,calc(100% - 1.1rem) 0,100% 2.5rem,100% 100%,0 100%);
   border-top-left-radius: .1rem;
   border-bottom-left-radius: .1rem;
 }

@@ -421,18 +421,15 @@ export default () => {
           >
             <TabList>
               <Tab>
-                <span className='is-hidden-mobile'>Imports</span>
-                <span className='is-visible-mobile'>Imp</span>
+                Imp<span className='is-hidden-mobile'>orts</span>
                 {importOrders && <span className='tab-badge'>{importOrders.length}</span>}
               </Tab>
               <Tab>
-                <span className='is-hidden-mobile'>Exports</span>
-                <span className='is-visible-mobile'>Exp</span>
+                Exp<span className='is-hidden-mobile'>orts</span>
                 {exportOrders && <span className='tab-badge'>{exportOrders.length}</span>}
               </Tab>
               <Tab>
-                <span className='is-hidden-mobile'>Nearby</span>
-                <span className='is-visible-mobile'>Near</span>
+                Near<span className='is-hidden-mobile'>by</span>
               </Tab>
             </TabList>
             {/* {tabIndex !== 2 && <CommodityTabOptions />} */}

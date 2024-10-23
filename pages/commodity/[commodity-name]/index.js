@@ -156,10 +156,14 @@ export default () => {
           >
             <TabList>
               <Tab>About</Tab>
-              <Tab>Importers</Tab>
-              <Tab>Exporters</Tab>
+              <Tab>Imp<span className='is-hidden-mobile'>orters</span></Tab>
+              <Tab>Exp<span className='is-hidden-mobile'>orters</span></Tab>
             </TabList>
-            <TabDescription>{commodity.name} :: {commodity.rare && 'Rare '}{commodity.category.replace(/s$/, '')}</TabDescription>
+            <TabDescription>
+              {tabIndex === 0 && <>About {commodity.name}</>}
+              {tabIndex === 1 && <>Importers of {commodity.name}</>}
+              {tabIndex === 2 && <>Exporters of {commodity.name}</>}
+            </TabDescription>
             {(tabIndex > 0) ? <CommodityTabOptions disabled={!!((!imports || !exports))} /> : ''}
             <TabPanel>
               <table className='properties-table' style={{ marginTop: '1rem' }}>
