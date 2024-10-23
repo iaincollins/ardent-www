@@ -228,10 +228,12 @@ export default () => {
       {system === null && <><h1>Error: Not found</h1><p className='text-large clear'>System not found.</p></>}
       {system &&
         <div className='fx__fade-in'>
-          <h2 className='heading--with-icon'>
-            <i className='icon icarus-terminal-system-orbits' />
-            {system.systemName}
-          </h2>
+          <div className='heading--with-underline'>
+            <h2 className='heading--with-icon'>
+              <i className='icon icarus-terminal-system-orbits' />
+              {system.systemName}
+            </h2>
+          </div>
           <div className='system-map'>
             <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />
             {nearbySystems && nearbySystems.map((nearbySystem, i) =>
@@ -272,7 +274,7 @@ export default () => {
               </tr>
               <tr>
                 <th className='is-hidden-mobile'>Stations/Ports</th>
-                <td className={stationsInSystem?.length === 0 && 'is-hidden-mobile'}>
+                <td className={stationsInSystem?.length === 0 ? 'is-hidden-mobile' : ''}>
                   {stationsInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
                       <Collapsible
@@ -300,7 +302,7 @@ export default () => {
               </tr>
               <tr>
                 <th className='is-hidden-mobile'>Settlements</th>
-                <td className={settlementsInSystem?.length === 0 && 'is-hidden-mobile'}>
+                <td className={settlementsInSystem?.length === 0 ? 'is-hidden-mobile' : ''}>
                   {settlementsInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
                       <Collapsible
@@ -331,7 +333,7 @@ export default () => {
               </tr>
               <tr>
                 <th className='is-hidden-mobile'>Megaships</th>
-                <td className={megashipsInSystem?.length === 0 && 'is-hidden-mobile'}>
+                <td className={megashipsInSystem?.length === 0 ? 'is-hidden-mobile' : ''}>
                   {megashipsInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
                       <Collapsible
@@ -361,7 +363,7 @@ export default () => {
               </tr>
               <tr>
                 <th className='is-hidden-mobile'>Fleet Carriers</th>
-                <td className={fleetCarriersInSystem?.length === 0 && 'is-hidden-mobile'}>
+                <td className={fleetCarriersInSystem?.length === 0 ? 'is-hidden-mobile' : ''}>
                   {fleetCarriersInSystem?.length > 0 &&
                     <span className='fx__fade-in'>
                       <Collapsible

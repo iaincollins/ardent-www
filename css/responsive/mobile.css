@@ -7,17 +7,16 @@
   h2,
   h3,
   h4 {
-    display: block;
+    display: inline-block;
     text-overflow: ellipsis;
     left: 0;
   }
 
   h2 {
     font-size: 1.5rem;
-    line-height: 1.5rem;
-    padding-right: 1rem;
-    clip-path: polygon(0 0,calc(100% - .8rem) 0,100% 1.6rem,100% 100%,0 100%);
-    margin-right: 0;
+    line-height: 1.75rem;
+    margin-right: 1rem;
+    width: auto;
   }
 
   h2.heading--with-icon {
@@ -43,7 +42,7 @@
   .header__logo h1 {
     padding-top: .2rem;
     padding-bottom: .1em;
-    width: 10rem;
+    width: 8rem;
     padding-left: 1rem;
   }
 
@@ -128,6 +127,7 @@
 
   .breadcrumbs {
     zoom: .9;
+    margin-left: -.25rem;
   }
 
   .breadcrumbs li:not(:last-child) {

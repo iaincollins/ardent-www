@@ -20,6 +20,7 @@
   font-style: italic;
   padding-right: .5rem;
   float: none;
+  margin-right: 5rem;
 }
 
 .header__logo h1:after {
@@ -80,6 +81,7 @@
   top: 0;
   right: .4em;
   padding: .6rem;
+  z-index: 50;
 }
 
 .header__navigation a {

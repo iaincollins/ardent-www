@@ -14,7 +14,7 @@ import {
 
 export default () => {
   const router = useRouter()
-  const [navigationPath, setNavigationPath] = useContext(NavigationContext)
+  const [navigationPath] = useContext(NavigationContext)
   const [fullScreenState, setFullScreenState] = useState(false)
   const [aboutDialogVisible, setAboutDialogVisible] = useState(false)
   const [newsTicker, setNewsTicker] = useState([])
@@ -60,9 +60,9 @@ export default () => {
             <em>A</em>rdent <span className='is-hidden-mobile'><em>I</em>ndustry</span>
           </h1>
         </Link>
-        <ul className='breadcrumbs' style={{ position: 'relative', top: '-.6rem', left: '.6rem' }}>
+        <ul className='breadcrumbs' style={{ position: 'relative', top: '-.5rem', left: '.6rem' }}>
           {navigationPath.map(({ name, path }) => (
-            <li><Link href={path}>{name}</Link></li>
+            <li key={`${name}:${path}`}><Link href={path}>{name}</Link></li>
           ))}
         </ul>
       </div>

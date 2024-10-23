@@ -36,7 +36,7 @@ export default () => {
                 {cmdrProfile?.lastSystem?.name && <p>Last known location <Link href={`/system/${cmdrProfile.lastSystem.name}`}>{cmdrProfile.lastSystem.name}</Link>.</p>}
                 {cmdrProfile?.ship?.shipName && cmdrProfile?.ship?.shipID &&
                   <p>
-                    {cmdrProfile?.ships && <>You own {Object.keys(cmdrProfile.ships).length} {Object.keys(cmdrProfile.ships).length == 1 ? 'ship' : 'ships'}. </>}
+                    {cmdrProfile?.ships && <>You own {Object.keys(cmdrProfile.ships).length} {Object.keys(cmdrProfile.ships).length === 1 ? 'ship' : 'ships'}. </>}
                     <>Your current ship is {cmdrProfile.ship.shipName} ({cmdrProfile.ship.shipID}).</>
                   </p>}
                 {cmdrFleetCarrier?.name && cmdrFleetCarrier?.currentStarSystem && <p>Your Fleet Carrier {hexToAscii(cmdrFleetCarrier.name?.vanityName)} ({cmdrFleetCarrier.name?.callsign}) is currently located in <Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem}</Link>.</p>}

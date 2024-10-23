@@ -35,28 +35,30 @@ export default () => {
         <link rel='canonical' href='https://ardent-industry.com/downloads' />
       </Head>
       <div className='fx__fade-in'>
-        <h1 className='heading--with-icon'>
-          <i className='icarus-terminal-download' />
-          Downloads
-        </h1>
-        <p className=' clear'>
+        <div className='heading--with-underline'>
+          <h2 className='heading--with-icon'>
+            <i className='icon icarus-terminal-download' />
+            Downloads
+          </h2>
+        </div>
+        <p>
           Source code and data for Ardent Industry.
         </p>
         <p>
           <Link href='/about'>About this software.</Link>
         </p>
-        <h2>Source Code</h2>
-        <p className='clear'>
-          The software consists of three components - this website, a REST API and a service that processes the data stream from EDDN.
+        <h3>Source Code</h3>
+        <p>
+          The software consists of three components; this website, a REST API and a service that processes the data stream from EDDN.
         </p>
-        <ul className='clear'>
+        <ul>
           <li><a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>Ardent Website Source Code</a></li>
           <li><a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent API Source Code</a></li>
           <li><a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector Source Code</a></li>
         </ul>
-
-        <h2>Databases</h2>
-        <p className='clear'>
+        <p />
+        <h3>Databases</h3>
+        <p>
           Sources used to originally seed the databases include <a href='https://edsm.net' rel='noreferrer' target='_blank'>ESDM</a>,
           {' '}<a href='https://spansh.co.uk' rel='noreferrer' target='_blank'>Spansh</a>,
           {' '}<a href='https://github.com/EDCD/EDDN' rel='noreferrer' target='_blank'>EDDN</a> and EDDB.io (discontinued).
@@ -73,10 +75,10 @@ export default () => {
         {databases && databases.map(database =>
           <div key={database.name}>
             <h3>{database.name}</h3>
-            <p className='clear'>
+            <p>
               <em>{database.description}</em>
             </p>
-            <ul className='clear'>
+            <ul>
               {Object.entries(database.tables).map(([k, v]) => <li key={`${database.name}_${k}`} style={{ textTransform: 'capitalize' }}> {k}: {v.toLocaleString()}</li>)}
               {database?.size && <li>Disk space: {byteSize(database.size).value} {byteSize(database.size).unit}</li>}
             </ul>

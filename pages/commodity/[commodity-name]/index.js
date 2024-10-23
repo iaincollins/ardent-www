@@ -141,23 +141,25 @@ export default () => {
       {commodity === null && <><h1>Error: Not found</h1><p className='text-large clear'>Commodity not found.</p></>}
       {commodity &&
         <div className='fx__fade-in'>
-          <h2 className='heading--with-icon'>
-            <i className='icon icarus-terminal-cargo' />
-            {commodity.name}
-          </h2>
+          <div className='heading--with-underline'>
+            <h2 className='heading--with-icon'>
+              <i className='icon icarus-terminal-cargo' />
+              {commodity.name}
+            </h2>
+          </div>
           <Tabs
             selectedIndex={tabIndex}
             className='clear'
             onSelect={
               (newTabIndex) => {
-                router.push(`/commodity/${router.query['commodity-name']}/${(newTabIndex > 0) ? TABS[newTabIndex] : ''}`)
+                router.push(`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/${(newTabIndex > 0) ? TABS[newTabIndex] : ''}`)
               }
             }
           >
             <TabList>
               <Tab>About</Tab>
-              <Tab>Imp<span className='is-hidden-mobile'>orters</span></Tab>
-              <Tab>Exp<span className='is-hidden-mobile'>orters</span></Tab>
+              <Tab>Imp<span className='is-hidden-mobile'>o</span>rt<span className='is-hidden-mobile'>er</span>s</Tab>
+              <Tab>Exp<span className='is-hidden-mobile'>o</span>rt<span className='is-hidden-mobile'>er</span>s</Tab>
             </TabList>
             <TabDescription>
               {tabIndex === 0 && <>About {commodity.name}</>}
@@ -241,11 +243,13 @@ export default () => {
                             <div style={{ maxWidth: '12rem' }}>
                               <p style={{ margin: 0 }}>
                                 {commodity.totalDemand > commodity.totalStock
-                                  ? <>
-                                    {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 75 && <><i className='trade-bracket-icon text-warning icarus-terminal-signal flip-vertical' /> Low demand</>}
-                                    {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 25 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 75 && <><i className='trade-bracket-icon  icarus-terminal-signal' /> Medium demand</>}
-                                    {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 0 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 25 && <><i className='trade-bracket-icon text-positive icarus-terminal-signal' /> High demand</>}
-                                  </>
+                                  ? (
+                                    <>
+                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 75 && <><i className='trade-bracket-icon text-warning icarus-terminal-signal flip-vertical' /> Low demand</>}
+                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 25 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 75 && <><i className='trade-bracket-icon  icarus-terminal-signal' /> Medium demand</>}
+                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 0 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 25 && <><i className='trade-bracket-icon text-positive icarus-terminal-signal' /> High demand</>}
+                                    </>
+                                    )
                                   : <><i className='trade-bracket-icon text-negative icarus-terminal-signal flip-vertical' /> Oversupply </>}
                               </p>
                             </div>}
@@ -278,8 +282,18 @@ export default () => {
                         </p>
                       </td>
                     </tr>}
+                  <tr>
+                    <th>&nbsp;</th>
+                    <td>
+                      <ul style={{ padding: '0 0 0 1rem' }}>
+                        <li style={{ marginBottom: '1rem' }}><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/importers`}>Where to sell {commodity.name}</Link></li>
+                        <li><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/exporters`}>Where to buy {commodity.name}</Link></li>
+                      </ul>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
+
             </TabPanel>
             <TabPanel>
               {!imports && <div className='loading-bar loading-bar--tab' />}
@@ -358,7 +372,7 @@ async function getCommodityFromMarket (marketId, commodityName) {
 const InsufficentData = () => <span style={{ opacity: 0.4 }}>Insufficent data</span>
 
 const ratio = (a, b) => {
-  const greatestCommonDivisor = (a, b) => (b == 0) ? a : greatestCommonDivisor(b, a % b)
+  const greatestCommonDivisor = (a, b) => (b === 0) ? a : greatestCommonDivisor(b, a % b)
   return `${a / greatestCommonDivisor(a, b)}:${b / greatestCommonDivisor(a, b)}`
 }
 

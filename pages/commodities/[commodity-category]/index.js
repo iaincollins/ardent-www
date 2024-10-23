@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import Link from 'next/link'
 import Table from 'rc-table'
 import Layout from 'components/layout'
 import { getCommoditiesWithAvgPricing } from 'lib/commodities'
@@ -57,8 +56,8 @@ export default function Page (props) {
 
       setNavigationPath(
         (categories_.length === 1)
-          ? [{ name: 'Commodities', path: '/commodities' }, { name: categories_[0], path: `/commodities/${categories_[0].toLowerCase()}` }]
-          : [{ name: 'Home', path: '/' }, { name: 'Commodities', path: '/commodities' }]
+          ? [{ name: 'Home', path: '/' }, { name: 'Commodities', path: '/commodities' }]
+          : [{ name: 'Home', path: '/' }, { name: 'All Commodities', path: '/commodities' }]
       )
     })()
   }, [router.asPath])
@@ -88,7 +87,7 @@ export default function Page (props) {
               {commodityCategories[categories[0]]?.whereToFind}
             </p>}
           {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
-            <div key={`category_${category}`}>
+            <div key={`category_${category}`} style={{ marginTop: '1rem' }}>
               {categories?.length === 1 && <h3 style={{ marginBottom: '-.1rem' }}>{category}</h3>}
               {categories?.length > 1 && <h3 style={{ marginBottom: '-.1rem' }} onClick={() => router.push(`/commodities/${category.toLowerCase()}`)}>{category}</h3>}
               <Table
