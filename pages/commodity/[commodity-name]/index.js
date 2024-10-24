@@ -45,47 +45,52 @@ export default () => {
     const commodityName = window.location.pathname.split('/')[2]
     if (!commodityName) return
 
-    setImports(undefined)
-    setExports(undefined)
+    const queryType = window.location.pathname.split('/')[3]?.toLowerCase()
+    if (!queryType) return
 
-    // Fetch imports and exports together at the same time
-    ; (async () => {
-      const imports = await getImports(commodityName)
-      if (Array.isArray(imports)) {
-        imports.forEach(c => {
-          c.key = c.commodityId
-          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-          c.maxProfit = c.maxSellPrice - c.minBuyPrice
-          c.symbol = c.commodityName.toLowerCase()
-          c.category = listOfCommodities[c.symbol]?.category ?? ''
-          c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-          delete c.commodityName
-        })
-        setImports(imports)
-      } else {
-        setImports([])
-      }
-    })()
+    if (queryType === 'importers') {
+      setImports(undefined)
+      ;(async () => {
+        const imports = await getImports(commodityName)
+        if (Array.isArray(imports)) {
+          imports.forEach(c => {
+            c.key = c.commodityId
+            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+            c.maxProfit = c.maxSellPrice - c.minBuyPrice
+            c.symbol = c.commodityName.toLowerCase()
+            c.category = listOfCommodities[c.symbol]?.category ?? ''
+            c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+            delete c.commodityName
+          })
+          setImports(imports)
+        } else {
+          setImports([])
+        }
+      })()
+    }
 
-    ; (async () => {
-      const exports = await getExports(commodityName)
-      if (Array.isArray(exports)) {
-        exports.forEach(c => {
-          c.key = c.commodityId
-          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-          c.maxProfit = c.maxSellPrice - c.minBuyPrice
-          c.symbol = c.commodityName.toLowerCase()
-          c.category = listOfCommodities[c.symbol]?.category ?? ''
-          c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-          delete c.commodityName
-        })
-        setExports(exports)
-      } else {
-        setExports([])
-      }
-    })()
+    if (queryType === 'exporters') {
+      setExports(undefined)
+      ; (async () => {
+        const exports = await getExports(commodityName)
+        if (Array.isArray(exports)) {
+          exports.forEach(c => {
+            c.key = c.commodityId
+            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+            c.maxProfit = c.maxSellPrice - c.minBuyPrice
+            c.symbol = c.commodityName.toLowerCase()
+            c.category = listOfCommodities[c.symbol]?.category ?? ''
+            c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+            delete c.commodityName
+          })
+          setExports(exports)
+        } else {
+          setExports([])
+        }
+      })()
+    }
   }
 
   useEffect(() => {
@@ -166,7 +171,8 @@ export default () => {
               {tabIndex === 1 && <>Importers of {commodity.name}</>}
               {tabIndex === 2 && <>Exporters of {commodity.name}</>}
             </TabDescription>
-            {(tabIndex > 0) ? <CommodityTabOptions disabled={!!((!imports || !exports))} /> : ''}
+            {(tabIndex === 1) ? <CommodityTabOptions disabled={!imports} /> : ''}
+            {(tabIndex === 2) ? <CommodityTabOptions disabled={!exports} /> : ''}
             <TabPanel>
               <table className='properties-table' style={{ marginTop: '1rem' }}>
                 <tbody>
@@ -283,7 +289,7 @@ export default () => {
                       </td>
                     </tr>}
                   <tr>
-                    <th>&nbsp;</th>
+                    <th className='is-hidden-mobile'>&nbsp;</th>
                     <td>
                       <ul style={{ padding: '0 0 0 1rem' }}>
                         <li style={{ marginBottom: '1rem' }}><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/importers`}>Where to sell {commodity.name}</Link></li>
