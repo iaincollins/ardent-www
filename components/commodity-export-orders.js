@@ -22,7 +22,7 @@ export default ({ commodities }) => {
 
   useEffect(() => {
     setHideDistanceColumn((!window.localStorage?.getItem('locationFilter') || parseInt(window.localStorage?.getItem('distanceFilter')) === 1))
-  }, [])
+  }, [commodities])
 
   if (hideDistanceColumn === undefined) return
 
@@ -43,7 +43,7 @@ export default ({ commodities }) => {
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
               <div className='is-visible-mobile'>
                 <span style={{ textTransform: 'none', opacity: 0.75, paddingLeft: '2rem' }}>
-                  {r.systemName} <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance} Ly</> : ''}</span>
+                  {r.systemName} <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} Ly</> : ''}</span>
                 </span>
                 <table className='data-table--mini data-table--compact two-column-table'>
                   <tbody style={{ textTransform: 'uppercase' }}>
@@ -62,22 +62,17 @@ export default ({ commodities }) => {
             </>
         },
         {
-          title: 'System',
+          title: 'Location',
           dataIndex: 'systemName',
           key: 'systemName',
           align: 'right',
           className: 'is-hidden-mobile',
-          render: (v) => <span style={{ opacity: 0.5 }}>{v}</span>
-        },
-        {
-          title: 'Dist.',
-          dataIndex: 'distance',
-          key: 'distance',
-          align: 'right',
-          width: 110,
-          className: 'is-hidden-mobile no-wrap',
-          render: (v) => <span style={{ opacity: 0.5 }}>{Number.isInteger(v) ? <>{v.toLocaleString()} ly</> : ''}</span>,
-          hidden: hideDistanceColumn
+          render: (v, r) => (
+            <>
+              <span style={{ opacity: 0.5 }}>{v}</span>
+              {hideDistanceColumn === false && <span style={{ display: 'inline-block', width: 150, opacity: 0.5 }}>{Number.isInteger(r.distance) ? <>{r.distance.toLocaleString()} ly</> : ''}</span>}
+            </>
+          )
         },
         {
           title: 'Updated',
