@@ -18,6 +18,14 @@ async function getImportsForCommodityBySystem (systemName, commodityName) {
 }
 
 export default ({ commodities }) => {
+  const [hideDistanceColumn, setHideDistanceColumn] = useState()
+
+  useEffect(() => {
+    setHideDistanceColumn((!window.localStorage?.getItem('locationFilter') || parseInt(window.localStorage?.getItem('distanceFilter')) === 1))
+  }, [])
+
+  if (hideDistanceColumn === undefined) return
+
   return (
     <Table
       className='data-table data-table--striped data-table--interactive data-table--animated'
@@ -68,8 +76,8 @@ export default ({ commodities }) => {
           align: 'right',
           width: 110,
           className: 'is-hidden-mobile no-wrap',
-          render: (v) => <span style={{ opacity: 0.5 }}>{Number.isInteger(v) ? <>{v.toLocaleString()} ly</> : '?'}</span>,
-          hidden: (!window.localStorage?.getItem('locationFilter') || window.localStorage?.getItem('distanceFilter') === '1')
+          render: (v) => <span style={{ opacity: 0.5 }}>{Number.isInteger(v) ? <>{v.toLocaleString()} ly</> : ''}</span>,
+          hidden: hideDistanceColumn
         },
         {
           title: 'Updated',
