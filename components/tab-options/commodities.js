@@ -275,7 +275,7 @@ function updateUrlWithFilterOptions (router) {
   options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
   options.push(`minVolume=${minVolumeFilterValue}`)
   options.push(`fleetCarriers=${fleetCarrierFilterValue}`)
-  if (locationFilterValue !== null) options.push(`location=${encodeURIComponent(locationFilterValue)}`)
+  if (locationFilterValue !== null) options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
   if (distanceFilterValue !== null) options.push(`maxDistance=${distanceFilterValue}`)
 
   if (options.length > 0) {
