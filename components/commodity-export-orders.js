@@ -31,9 +31,9 @@ export default ({ commodities }) => {
       className='data-table data-table--striped data-table--interactive data-table--animated'
       columns={[
         {
-          title: 'Location',
-          dataIndex: 'systemName',
-          key: 'systemName',
+          title: 'Exporters',
+          dataIndex: 'stationName',
+          key: 'stationName',
           align: 'left',
           className: 'max-width-mobile',
           render: (v, r) =>
@@ -43,7 +43,7 @@ export default ({ commodities }) => {
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
               <div className='is-visible-mobile'>
                 <span style={{ textTransform: 'none', opacity: 0.75, paddingLeft: '2rem' }}>
-                  {r.systemName} <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} Ly</> : ''}</span>
+                  {r.systemName} <small style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} ly</> : ''}</small>
                 </span>
                 <table className='data-table--mini data-table--compact two-column-table'>
                   <tbody style={{ textTransform: 'uppercase' }}>
@@ -62,15 +62,15 @@ export default ({ commodities }) => {
             </>
         },
         {
-          title: 'Location',
+          title: 'System',
           dataIndex: 'systemName',
           key: 'systemName',
           align: 'right',
           className: 'is-hidden-mobile',
           render: (v, r) => (
             <>
-              <span style={{ opacity: 0.5 }}>{v}</span>
-              {hideDistanceColumn === false && <span style={{ display: 'inline-block', width: 150, opacity: 0.5 }}>{Number.isInteger(r.distance) ? <>{r.distance.toLocaleString()} ly</> : ''}</span>}
+              <span style={{ opacity: 0.75 }}>{v}</span>
+              {hideDistanceColumn === false && <small className='text-no-transform' style={{ marginLeft: '.5rem', opacity: 0.5 }}>{Number.isInteger(r.distance) ? <>{r.distance.toLocaleString()} ly</> : ''}</small>}
             </>
           )
         },
