@@ -35,8 +35,14 @@ export default () => {
   useEffect(() => {
     const basePath = path.basename(router.pathname)
     let newTabIndex = 0
-    if (basePath === 'importers') newTabIndex = 1
-    if (basePath === 'exporters') newTabIndex = 2
+    if (basePath === 'importers') {
+      setImports(undefined)
+      newTabIndex = 1
+    }
+    if (basePath === 'exporters') {
+      setExports(undefined)
+      newTabIndex = 2
+    }
     setTabIndex(newTabIndex)
   }, [router.pathname])
 
