@@ -5,7 +5,7 @@ import { NavigationContext } from 'lib/context'
 import { getCmdrInfo } from 'lib/cmdr'
 import hexToAscii from 'lib/utils/hex-to-ascii'
 import Layout from 'components/layout'
-import { API_BASE_URL } from 'lib/consts'
+import { SIGN_IN_URL, SIGN_OUT_URL, } from 'lib/consts'
 
 export default () => {
   const [signedIn, setSignedIn] = useState()
@@ -44,7 +44,7 @@ export default () => {
                   </p>}
                 {cmdrFleetCarrier?.name && cmdrFleetCarrier?.currentStarSystem && <p>Your Fleet Carrier {hexToAscii(cmdrFleetCarrier.name?.vanityName)} ({cmdrFleetCarrier.name?.callsign}) is currently located in <Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem}</Link>.</p>}
                 {csrfToken &&
-                  <form method='POST' action={`${API_BASE_URL}/auth/signout`}>
+                  <form method='POST' action={SIGN_OUT_URL}>
                     <input type='hidden' name='csrfToken' value={csrfToken} />
                     <button className='button'>Sign out</button>
                   </form>}
@@ -55,7 +55,7 @@ export default () => {
             <div style={{marginBottom: '0rem'}} className='heading--with-underline'><h2>Signed out</h2></div>
             <div style={{padding: '0 1rem'}}>
               <p>You are not signed in.</p>
-              <form method='GET' action={`${API_BASE_URL}/auth/signin`}>
+              <form method='GET' action={SIGN_IN_URL}>
                 <button className='button'>Sign in</button>
               </form>
             </div>
