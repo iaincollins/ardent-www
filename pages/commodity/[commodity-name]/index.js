@@ -297,15 +297,15 @@ export default () => {
                         </p>
                       </td>
                     </tr>}
-                  <tr>
+                  {!commodity?.rare &&<tr>
                     <th className='is-hidden-mobile'>&nbsp;</th>
                     <td>
-                      <ul style={{ padding: '0 0 0 1rem' }}>
-                        <li style={{ marginBottom: '1rem' }}><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/importers`}>Where to sell {commodity.name}</Link></li>
+                      <ul style={{ padding: '0 0 0 1.5rem' }}>
+                        <li style={{ marginBottom: '.5rem' }}><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/importers`}>Where to sell {commodity.name}</Link></li>
                         <li><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/exporters`}>Where to buy {commodity.name}</Link></li>
                       </ul>
                     </td>
-                  </tr>
+                  </tr>}
                 </tbody>
               </table>
 

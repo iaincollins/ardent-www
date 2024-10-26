@@ -35,15 +35,15 @@ export default ({ disabled = false }) => {
   }, [lastUpdatedFilter, fleetCarrierFilter, minVolumeFilter, locationFilter, distanceFilter])
 
   useEffect(() => {
-    if (router.query?.maxDaysAgo && router.query.maxDaysAgo !== lastUpdatedFilter) {
+    if (router.query?.maxDaysAgo && parseInt(router.query.maxDaysAgo) !== parseInt(lastUpdatedFilter)) {
       setLastUpdatedFilter(router.query.maxDaysAgo)
       window.localStorage.setItem('lastUpdatedFilter', router.query.maxDaysAgo)
     }
-    if (router.query?.fleetCarriers && router.query.fleetCarriers !== fleetCarrierFilter) {
+    if (router.query?.fleetCarriers && router.query.fleetCarriers !== parseInt(fleetCarrierFilter)) {
       setFleetCarrierFilter(router.query.fleetCarriers)
       window.localStorage.setItem('fleetCarrierFilter', router.query.fleetCarriers)
     }
-    if (router.query?.minVolume && router.query.minVolume !== minVolumeFilter) {
+    if (router.query?.minVolume && parseInt(router.query.minVolume) !== parseInt(minVolumeFilter)) {
       setMinVolumeFilter(router.query.minVolume)
       window.localStorage.setItem('minVolumeFilter', router.query.minVolume)
     }
@@ -52,7 +52,7 @@ export default ({ disabled = false }) => {
       window.localStorage.setItem('locationFilter', router.query.location.trim())
       document.getElementById('location').value = router.query.location.trim()
     }
-    if (router.query?.maxDistance && router.query.maxDaysAgo !== distanceFilter) {
+    if (router.query?.maxDistance && parseInt(router.query.maxDaysAgo) !== parseInt(distanceFilter)) {
       setDistanceFilter(router.query.maxDistance)
       window.localStorage.setItem('distanceFilter', router.query.maxDistance)
     }
@@ -60,7 +60,10 @@ export default ({ disabled = false }) => {
 
   return (
     <div className='tab-options'>
-      <form onSubmit={(e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent('CommodityFilterChangeEvent')); document.activeElement.blur() }}>
+      <form method='GET' action='/' onSubmit={(e) => {
+          e.preventDefault()
+          document.activeElement.blur()
+        }}>
         <label>
           <span className='tab-options__label-text'>Updated</span>
           <select
@@ -123,6 +126,12 @@ export default ({ disabled = false }) => {
             defaultValue={locationFilter}
             previous-value={locationFilter}
             size={12}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                document.activeElement.blur()
+              }
+            }}
             onBlur={async (e) => {
               const value = e.target.value.replace(/\u200B/g, '').trim()
               if (e.target.value === ZERO_WIDTH_SPACE) {
