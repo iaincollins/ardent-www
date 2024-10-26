@@ -1,16 +1,17 @@
-# Ardent Industry Website
+# Ardent Website
 
 This is the website for [ardent-industry.com](https://ardent-industry.com)
 
-Ardent Industry provides trade and exploration data for the game [Elite Dangerous](https://www.elitedangerous.com/).
+Ardent provides trade and exploration data for the game [Elite Dangerous](https://www.elitedangerous.com/).
 
 It uses a live data feed from the [Elite: Dangerous Data Network](https://eddn.edcd.io) by the [Elite: Dangerous Community Developers](https://edcd.github.io/).
 
-These three repositories combined make up the Ardent Industry service:
+These repositories combined make up Ardent :
 
 * https://github.com/iaincollins/ardent-www
 * https://github.com/iaincollins/ardent-api
 * https://github.com/iaincollins/ardent-collector
+* https://github.com/iaincollins/ardent-auth
 
 ## Credits
 
