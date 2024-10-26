@@ -104,6 +104,9 @@ export default () => {
       const commodityName = router.query?.['commodity-name']
       if (!commodityName) return
 
+      setImports(undefined)
+      setExports(undefined)
+
       let c = await getCommodity(commodityName)
       if (c) {
         c.avgProfit = c.avgSellPrice - c.avgBuyPrice
