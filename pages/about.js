@@ -18,7 +18,7 @@ export default () => {
         <link rel='canonical' href='https://ardent-industry.com/about' />
       </Head>
       <div className='fx__fade-in'>
-        <div className='heading--with-underline' style={{marginBottom: 0}}>
+        <div className='heading--with-underline' style={{ marginBottom: 0 }}>
           <h2>
             About this software
           </h2>
