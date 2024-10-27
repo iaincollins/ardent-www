@@ -240,8 +240,8 @@ export default ({ disabled = false }) => {
               onClick={() => {
                 document.getElementById('location').value = ''
                 setLastUpdatedFilter(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
-                setFleetCarrierFilter(COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
                 setMinVolumeFilter(COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
+                setFleetCarrierFilter(COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
                 setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
                 setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
               }}

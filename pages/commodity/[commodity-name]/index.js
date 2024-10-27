@@ -26,6 +26,7 @@ const TABS = ['default', 'importers', 'exporters']
 export default () => {
   const router = useRouter()
   const [navigationPath, setNavigationPath] = useContext(NavigationContext)
+  const [cachedQuery, setCachedQuery] = useState()
   const [tabIndex, setTabIndex] = useState(0)
   const [commodity, setCommodity] = useState()
   const [exports, setExports] = useState()
@@ -53,10 +54,10 @@ export default () => {
     const commodityName = window.location.pathname.split('/')[2]
     if (!commodityName) return
 
-    const queryType = window.location.pathname.split('/')[3]?.toLowerCase()
-    if (!queryType) return
+    const activeTabName = window.location.pathname.split('/')[3]?.toLowerCase()
+    if (!activeTabName) return
 
-    if (queryType === 'importers') {
+    if (activeTabName === 'importers') {
       setImports(undefined)
       ;(async () => {
         const imports = await getImports(commodityName)
@@ -78,7 +79,7 @@ export default () => {
       })()
     }
 
-    if (queryType === 'exporters') {
+    if (activeTabName === 'exporters') {
       setExports(undefined)
       ; (async () => {
         const exports = await getExports(commodityName)
@@ -105,6 +106,19 @@ export default () => {
     ; (async () => {
       const commodityName = router.query?.['commodity-name']
       if (!commodityName) return
+
+      // Compare current tab (i.e. Importers, Exporters) and query options
+      // If they have not actually changed then avoid triggering a redraw.
+      const activeTabName = window.location.pathname.split('/')[3]?.toLowerCase()
+      if (activeTabName) {
+        const cacheFingerprint = JSON.stringify({ activeTabName, query: router.query })
+        if (cachedQuery && cachedQuery === cacheFingerprint) {
+          return // If query has not changed, we don't need to do anything
+        } else {
+          // If query really has changed then update the cached query
+          setCachedQuery(cacheFingerprint)
+        }
+      }
 
       setImports(undefined)
       setExports(undefined)
@@ -162,7 +176,12 @@ export default () => {
             className='clear'
             onSelect={
               (newTabIndex) => {
-                router.push(`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/${(newTabIndex > 0) ? TABS[newTabIndex] : ''}${window.location.search}`)
+                // Explicitly specifying default query string options makes identifying
+                // a query cache hit easier (and helps avoid unnecessary network requests)
+                const queryString = window.location.search
+                  ? window.location.search
+                  : `?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}`
+                router.push(`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/${(newTabIndex > 0) ? TABS[newTabIndex] : ''}${queryString}`)
               }
             }
           >

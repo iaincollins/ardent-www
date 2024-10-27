@@ -88,7 +88,7 @@ export default () => {
             {newsTicker.map(item =>
               <span
                 key={`ticker_${i}_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'
-                onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&location=${item.systemName}&maxDistance=1`)}
+                onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}&location=${item.systemName}&maxDistance=1`)}
               >
                 <span className='muted'>{item.stationName}, {item.systemName}</span>
                 <br />
