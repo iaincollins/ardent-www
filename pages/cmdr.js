@@ -5,7 +5,7 @@ import { NavigationContext } from 'lib/context'
 import { getCmdrInfo } from 'lib/cmdr'
 import hexToAscii from 'lib/utils/hex-to-ascii'
 import Layout from 'components/layout'
-import { SIGN_IN_URL, SIGN_OUT_URL, } from 'lib/consts'
+import { SIGN_IN_URL, SIGN_OUT_URL } from 'lib/consts'
 
 export default () => {
   const [signedIn, setSignedIn] = useState()

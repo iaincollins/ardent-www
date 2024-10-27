@@ -16,7 +16,9 @@ import {
   API_BASE_URL,
   COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
   COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
-  COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+  COMMODITY_FILTER_MIN_VOLUME_DEFAULT,
+  COMMODITY_FILTER_LOCATION_DEFAULT,
+  COMMODITY_FILTER_DISTANCE_DEFAULT
 } from 'lib/consts'
 
 const TABS = ['default', 'importers', 'exporters']
@@ -136,12 +138,6 @@ export default () => {
     })()
   }, [router.query])
 
-  useEffect(() => {
-    const commodityFilterChangeEvent = () => getImportsAndExports()
-    window.addEventListener('CommodityFilterChangeEvent', commodityFilterChangeEvent)
-    return () => window.removeEventListener('CommodityFilterChangeEvent', commodityFilterChangeEvent)
-  }, [])
-
   return (
     <Layout
       loading={commodity === undefined}
@@ -166,7 +162,7 @@ export default () => {
             className='clear'
             onSelect={
               (newTabIndex) => {
-                router.push(`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/${(newTabIndex > 0) ? TABS[newTabIndex] : ''}`)
+                router.push(`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/${(newTabIndex > 0) ? TABS[newTabIndex] : ''}${window.location.search}`)
               }
             }
           >
@@ -180,8 +176,7 @@ export default () => {
               {tabIndex === 1 && <>Importers of {commodity.name}</>}
               {tabIndex === 2 && <>Exporters of {commodity.name}</>}
             </TabDescription>
-            {(tabIndex === 1) ? <CommodityTabOptions disabled={!imports} /> : ''}
-            {(tabIndex === 2) ? <CommodityTabOptions disabled={!exports} /> : ''}
+            {(tabIndex !== 0) ? <CommodityTabOptions disabled={((tabIndex === 1 && !imports) || (tabIndex === 2 && !exports))}/> : ''}
             <TabPanel>
               <table className='properties-table' style={{ marginTop: '1rem' }}>
                 <tbody>
@@ -297,18 +292,18 @@ export default () => {
                         </p>
                       </td>
                     </tr>}
-                  {!commodity?.rare &&<tr>
-                    <th className='is-hidden-mobile'>&nbsp;</th>
-                    <td>
-                      <ul style={{ padding: '0 0 0 1.5rem' }}>
-                        <li style={{ marginBottom: '.5rem' }}><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/importers`}>Where to sell {commodity.name}</Link></li>
-                        <li><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/exporters`}>Where to buy {commodity.name}</Link></li>
-                      </ul>
-                    </td>
-                  </tr>}
+                  {!commodity?.rare &&
+                    <tr>
+                      <th className='is-hidden-mobile'>&nbsp;</th>
+                      <td>
+                        <ul style={{ padding: '0 0 0 1.5rem' }}>
+                          <li style={{ marginBottom: '.5rem' }}><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/importers`}>Where to sell {commodity.name}</Link></li>
+                          <li><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/exporters`}>Where to buy {commodity.name}</Link></li>
+                        </ul>
+                      </td>
+                    </tr>}
                 </tbody>
               </table>
-
             </TabPanel>
             <TabPanel>
               {!imports && <div className='loading-bar loading-bar--tab' />}
@@ -330,51 +325,13 @@ async function getCommodity (commodityName) {
 }
 
 async function getExports (commodityName) {
-  let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/exports`
-  const options = []
-
-  const lastUpdatedFilterValue = window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
-  const minVolumeFilterValue = window.localStorage?.getItem('minVolumeFilter') ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT
-  const fleetCarrierFilterValue = window.localStorage?.getItem('fleetCarrierFilter') ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
-  const locationFilterValue = window.localStorage?.getItem('locationFilter') ?? null
-  const distanceFilterValue = window.localStorage?.getItem('distanceFilter') ?? null
-
-  options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
-  options.push(`minVolume=${minVolumeFilterValue}`)
-  if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
-  if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
-  if (locationFilterValue !== null) options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
-  if (distanceFilterValue !== null) options.push(`maxDistance=${distanceFilterValue}`)
-
-  if (options.length > 0) {
-    url += `?${options.join('&')}`
-  }
-
+  let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/exports?${apiQueryOptions()}`
   const res = await fetch(url)
   return await res.json()
 }
 
 async function getImports (commodityName) {
-  let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/imports`
-  const options = []
-
-  const lastUpdatedFilterValue = window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
-  const minVolumeFilterValue = window.localStorage?.getItem('minVolumeFilter') ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT
-  const fleetCarrierFilterValue = window.localStorage?.getItem('fleetCarrierFilter') ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
-  const locationFilterValue = window.localStorage?.getItem('locationFilter') ?? null
-  const distanceFilterValue = window.localStorage?.getItem('distanceFilter') ?? null
-
-  options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
-  options.push(`minVolume=${minVolumeFilterValue}`)
-  if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
-  if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
-  if (locationFilterValue !== null) options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
-  if (distanceFilterValue !== null) options.push(`maxDistance=${distanceFilterValue}`)
-
-  if (options.length > 0) {
-    url += `?${options.join('&')}`
-  }
-
+  let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/imports?${apiQueryOptions()}`
   const res = await fetch(url)
   return await res.json()
 }
@@ -398,3 +355,37 @@ const TabDescription = ({ children }) => {
     </div>
   )
 }
+
+function apiQueryOptions () {
+  // Parse current query string and convert the params to an API query parametrer string
+  const options = []
+
+  const query = parseQueryString()
+  const lastUpdatedFilterValue = query?.maxDaysAgo ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
+  const minVolumeFilterValue = query?.minVolume ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+  const fleetCarrierFilterValue = query?.fleetCarriers ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
+  const locationFilterValue = query?.location ?? COMMODITY_FILTER_LOCATION_DEFAULT
+  const distanceFilterValue = query?.maxDistance ?? COMMODITY_FILTER_DISTANCE_DEFAULT
+
+  options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
+  options.push(`minVolume=${minVolumeFilterValue}`)
+  if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
+  if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
+  if (locationFilterValue && locationFilterValue !== COMMODITY_FILTER_LOCATION_DEFAULT) {
+    options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
+    if (distanceFilterValue && distanceFilterValue !== COMMODITY_FILTER_DISTANCE_DEFAULT) {
+      options.push(`maxDistance=${distanceFilterValue}`)
+    }
+  }
+
+  return options.join('&')
+}
+
+function parseQueryString () {
+  const obj = {}
+  window.location.search.replace(
+    new RegExp('([^?=&]+)(=([^&]*))?', 'g'),
+    ($0, $1, $2, $3) => { obj[$1] = decodeURIComponent($3) }
+  )
+  return obj
+};

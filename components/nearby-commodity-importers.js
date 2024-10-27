@@ -4,35 +4,12 @@ import Table from 'rc-table'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
 import StationIcon from './station-icon'
-import {
-  API_BASE_URL,
-  // COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
-  // COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
-  // COMMODITY_FILTER_MIN_VOLUME_DEFAULT,
-  NO_DEMAND_TEXT
-} from 'lib/consts'
+import { API_BASE_URL, NO_DEMAND_TEXT } from 'lib/consts'
 
 const MAX_ROWS_TO_DISPLAY = 10
 
 async function getNearbyImportersOfCommodity (systemName, commodityName) {
   let url = `${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}/nearby/imports`
-  const options = []
-
-  /*
-  const lastUpdatedFilterValue = window.localStorage?.getItem('lastUpdatedFilter') ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
-  const minVolumeFilterValue = window.localStorage?.getItem('minVolumeFilter') ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT
-  const fleetCarrierFilterValue = window.localStorage?.getItem('fleetCarrierFilter') ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
-
-  options.push(`maxDaysAgo=${lastUpdatedFilterValue}`)
-  options.push(`minVolume=${minVolumeFilterValue}`)
-  if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
-  if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
-  */
-
-  if (options.length > 0) {
-    url += `?${options.join('&')}`
-  }
-
   const res = await fetch(url)
   return await res.json()
 }
@@ -47,16 +24,6 @@ export default ({ commodity }) => {
       )
     })()
   }, [commodity.commodityName, commodity.systemName])
-
-  useEffect(() => {
-    const eventHandler = async () => {
-      setNearbyImporters(
-        (await getNearbyImportersOfCommodity(commodity.systemName, commodity.symbol)).slice(0, MAX_ROWS_TO_DISPLAY)
-      )
-    }
-    window.addEventListener('CommodityFilterChangeEvent', eventHandler)
-    return () => window.removeEventListener('CommodityFilterChangeEvent', eventHandler)
-  }, [])
 
   return (
     <>
