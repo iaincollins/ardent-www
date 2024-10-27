@@ -5,12 +5,7 @@ import AboutDialog from 'components/dialog/about-dialog'
 import { getCommoditiesWithAvgPricing } from 'lib/commodities'
 import commodities from 'lib/commodities/commodities'
 import { NavigationContext } from 'lib/context'
-import {
-  API_BASE_URL,
-  COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
-  COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
-  COMMODITY_FILTER_MIN_VOLUME_DEFAULT
-} from 'lib/consts'
+import { API_BASE_URL } from 'lib/consts'
 
 export default () => {
   const router = useRouter()
@@ -88,7 +83,7 @@ export default () => {
             {newsTicker.map(item =>
               <span
                 key={`ticker_${i}_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'
-                onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}&location=${item.systemName}&maxDistance=1`)}
+                onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?location=${encodeURIComponent(item.systemName)}&maxDistance=1`)}
               >
                 <span className='muted'>{item.stationName}, {item.systemName}</span>
                 <br />

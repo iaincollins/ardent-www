@@ -3,8 +3,8 @@ import { useRouter } from 'next/router'
 import {
   API_BASE_URL,
   COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
-  COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
   COMMODITY_FILTER_MIN_VOLUME_DEFAULT,
+  COMMODITY_FILTER_FLEET_CARRIER_DEFAULT,
   COMMODITY_FILTER_LOCATION_DEFAULT,
   COMMODITY_FILTER_DISTANCE_DEFAULT,
   COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
@@ -28,14 +28,21 @@ export default ({ disabled = false }) => {
   function updateUrlWithFilterOptions (router) {
     const commodityName = window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
 
-    let activeTab = 'importers'
+    let activeTab = ''
     if (window?.location?.pathname?.endsWith('exporters')) activeTab = 'exporters'
+    if (window?.location?.pathname?.endsWith('importers')) activeTab = 'importers'
 
     let url = `/commodity/${commodityName}/${activeTab}`
     const options = []
-    options.push(`maxDaysAgo=${lastUpdatedFilter}`)
-    options.push(`minVolume=${minVolumeFilter}`)
-    options.push(`fleetCarriers=${fleetCarrierFilter}`)
+    if (lastUpdatedFilter && lastUpdatedFilter !== COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT) {
+      options.push(`maxDaysAgo=${lastUpdatedFilter}`)
+    }
+    if (minVolumeFilter && minVolumeFilter !== COMMODITY_FILTER_MIN_VOLUME_DEFAULT) {
+      options.push(`minVolume=${minVolumeFilter}`)
+    }
+    if (fleetCarrierFilter && fleetCarrierFilter !== COMMODITY_FILTER_FLEET_CARRIER_DEFAULT) {
+      options.push(`fleetCarriers=${fleetCarrierFilter}`)
+    }
     if (locationFilter && locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT) {
       options.push(`location=${encodeURIComponent(locationFilter)}`)
       if (distanceFilter) {

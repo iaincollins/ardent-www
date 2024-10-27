@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import CommodityTabOptions from 'components/tab-options/commodities'
+import CommodityTabOptions from 'components/tab-options/commodities-options'
 import Layout from 'components/layout'
 import CommodityImportOrders from 'components/commodity-import-orders'
 import CommodityExportOrders from 'components/commodity-export-orders'
@@ -176,12 +176,7 @@ export default () => {
             className='clear'
             onSelect={
               (newTabIndex) => {
-                // Explicitly specifying default query string options makes identifying
-                // a query cache hit easier (and helps avoid unnecessary network requests)
-                const queryString = window.location.search
-                  ? window.location.search
-                  : `?maxDaysAgo=${COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT}&minVolume=${COMMODITY_FILTER_MIN_VOLUME_DEFAULT}&fleetCarriers=${COMMODITY_FILTER_FLEET_CARRIER_DEFAULT}`
-                router.push(`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/${(newTabIndex > 0) ? TABS[newTabIndex] : ''}${queryString}`)
+                router.push(`/commodity/${router.query['commodity-name'].toLowerCase()}/${(newTabIndex > 0) ? TABS[newTabIndex] : ''}${window.location.search}`)
               }
             }
           >
