@@ -23,7 +23,7 @@ export default () => {
   }, [])
 
   const updateTicker = async () => {
-    const res = await fetch(`${API_BASE_URL}/v1-beta/commodities/ticker`)
+    const res = await fetch(`${API_BASE_URL}/v1/news/commodities`)
     const ticker = await res.json()
     const latestCommodityData = await getCommoditiesWithAvgPricing()
 

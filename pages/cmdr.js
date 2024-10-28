@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
-import { getCsrfToken, isSignedIn } from 'lib/auth'
+import { getCsrfToken } from 'lib/auth'
 import { NavigationContext } from 'lib/context'
 import { getCmdrInfo } from 'lib/cmdr'
 import hexToAscii from 'lib/utils/hex-to-ascii'
