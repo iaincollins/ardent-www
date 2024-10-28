@@ -263,7 +263,7 @@ export default ({ disabled = false }) => {
 }
 
 async function findSystemsByName (systemName) {
-  if (systemName.length < 3) return []
+  if (systemName.length < 1) return []
   const res = await fetch(`${API_BASE_URL}/v1/search/system/name/${systemName}/`)
   return await res.json()
 }
