@@ -45,7 +45,7 @@ export default ({ commodities }) => {
                         <TradeBracketIcon bracket={r.stockBracket} />
                         {r.stock.toLocaleString()} T
                       </td>
-                      <td><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                      <td className='text-right'><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
                     </tr>
                   </tbody>
                 </table>
@@ -161,7 +161,7 @@ function ExpandedRow ({ r }) {
                           <TradeBracketIcon bracket={r.stockBracket} />
                           {r.stock.toLocaleString()} T
                         </td>
-                        <td><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                        <td className='text-right'><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
                       </tr>
                     </tbody>
                   </table>

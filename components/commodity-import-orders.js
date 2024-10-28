@@ -45,7 +45,7 @@ export default ({ commodities }) => {
                         <TradeBracketIcon bracket={r.demandBracket} />
                         {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
                       </td>
-                      <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
+                      <td className='text-right'><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                     </tr>
                   </tbody>
                 </table>
@@ -161,7 +161,7 @@ function ExpandedRow ({ r }) {
                           <TradeBracketIcon bracket={r.demandBracket} />
                           {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
                         </td>
-                        <td><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
+                        <td className='text-right'><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                       </tr>
                     </tbody>
                   </table>
