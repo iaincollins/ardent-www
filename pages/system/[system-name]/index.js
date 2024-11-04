@@ -455,7 +455,7 @@ export default () => {
                           </div>
                           <small>
                             {r.category}
-                            {r?.consumer === true && ', Consumer'}
+                            {r?.consumer === true && ' (Consumer)'}
                           </small>
                           <div className='is-visible-mobile'>
                             <table className='data-table--mini data-table--compact two-column-table'>
@@ -570,7 +570,7 @@ export default () => {
                           <small>
                             {r.category}
                             {r?.rare === true && ', Rare'}
-                            {r?.producer === true && ', Producer'}
+                            {r?.producer === true && ' (Producer)'}
                           </small>
                           <div className='is-visible-mobile'>
                             <table className='data-table--mini two-column-table data-table--compact'>

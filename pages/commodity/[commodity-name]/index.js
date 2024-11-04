@@ -263,7 +263,7 @@ export default () => {
                                 {commodity.totalDemand > commodity.totalStock
                                   ? (
                                     <>
-                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 75 && <><i className='trade-bracket-icon text-warning icarus-terminal-signal flip-vertical' /> Low demand</>}
+                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 75 && <><i className='trade-bracket-icon text-warning icarus-terminal-signal flip-horizontal' /> Low demand</>}
                                       {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 25 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 75 && <><i className='trade-bracket-icon  icarus-terminal-signal' /> Medium demand</>}
                                       {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 0 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 25 && <><i className='trade-bracket-icon text-positive icarus-terminal-signal' /> High demand</>}
                                     </>

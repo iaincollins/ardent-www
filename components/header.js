@@ -85,6 +85,10 @@ export default () => {
                 key={`ticker_${i}_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'
                 onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?location=${encodeURIComponent(item.systemName)}&maxDistance=1`)}
               >
+                <i
+                  className='icarus-terminal-cargo muted'
+                  style={{position: 'absolute', left: '-2rem', fontSize: '1.5rem', lineHeight: '2rem'}}
+                />
                 <span className='muted'>{item.stationName}, {item.systemName}</span>
                 <br />
                 {item.demandBracket === 3 && <>Buying</>}
