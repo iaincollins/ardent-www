@@ -234,11 +234,11 @@ export default ({ disabled = false }) => {
           </select>
         </label>
         {(
-          lastUpdatedFilter !== COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT ||
+          parseInt(lastUpdatedFilter) !== parseInt(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT) ||
+          parseInt(minVolumeFilter) !== parseInt(COMMODITY_FILTER_MIN_VOLUME_DEFAULT) ||
           fleetCarrierFilter !== COMMODITY_FILTER_FLEET_CARRIER_DEFAULT ||
-          minVolumeFilter !== COMMODITY_FILTER_MIN_VOLUME_DEFAULT ||
           locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT ||
-          distanceFilter !== COMMODITY_FILTER_DISTANCE_DEFAULT
+          (locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT  && parseInt(distanceFilter) !== parseInt(COMMODITY_FILTER_DISTANCE_DEFAULT))
         )
           ? (
             <button
