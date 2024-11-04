@@ -54,10 +54,10 @@ export default () => {
     const commodityName = window.location.pathname.split('/')[2]
     if (!commodityName) return
 
-    const activeTabName = window.location.pathname.split('/')[3]?.toLowerCase()
-    if (!activeTabName) return
+    const activeTab = window.location.pathname.split('/')[3]?.toLowerCase() ?? TABS[0]
+    if (activeTab === TABS[0]) return
 
-    if (activeTabName === 'importers') {
+    if (activeTab === 'importers') {
       setImports(undefined)
       ;(async () => {
         const imports = await getImports(commodityName)
@@ -79,7 +79,7 @@ export default () => {
       })()
     }
 
-    if (activeTabName === 'exporters') {
+    if (activeTab === 'exporters') {
       setExports(undefined)
       ; (async () => {
         const exports = await getExports(commodityName)
@@ -109,16 +109,10 @@ export default () => {
 
       // Compare current tab (i.e. Importers, Exporters) and query options
       // If they have not actually changed then avoid triggering a redraw.
-      const activeTabName = window.location.pathname.split('/')[3]?.toLowerCase()
-      if (activeTabName) {
-        const cacheFingerprint = JSON.stringify({ activeTabName, query: router.query })
-        if (cachedQuery && cachedQuery === cacheFingerprint) {
-          return // If query has not changed, we don't need to do anything
-        } else {
-          // If query really has changed then update the cached query
-          setCachedQuery(cacheFingerprint)
-        }
-      }
+      const activeTab = window.location.pathname.split('/')[3]?.toLowerCase() ?? TABS[0]
+      const cacheFingerprint = JSON.stringify({ activeTab, query: router.query }) // Could be a checksum, but not worth it
+      if (cachedQuery && cachedQuery === cacheFingerprint) return // If the query hasn't *really* changed, return early
+      setCachedQuery(cacheFingerprint) // If the query has changed, continue and update the "last seen" query
 
       setImports(undefined)
       setExports(undefined)
