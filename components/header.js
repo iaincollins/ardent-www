@@ -86,18 +86,19 @@ export default () => {
                 onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?location=${encodeURIComponent(item.systemName)}&maxDistance=1`)}
               >
                 <i
-                  className='icarus-terminal-cargo muted'
-                  style={{position: 'absolute', left: '-2rem', fontSize: '1.5rem', lineHeight: '2rem'}}
+                  className={`icarus-terminal-cargo-${item.demandBracket > item.stockBracket ? 'import' : 'export'} muted`}
+                  style={{position: 'absolute', left: '-2.25rem', fontSize: '2rem', lineHeight: '2rem'}}
                 />
                 <span className='muted'>{item.stationName}, {item.systemName}</span>
                 <br />
-                {item.demandBracket === 3 && <>Buying</>}
-                {item.stockBracket === 3 && <>Selling</>}
+                {item.demandBracket > item.stockBracket ? 'Buying' : 'Selling'}
                 {' '}
                 <span style={{ color: 'var(--color-primary--lighter)' }}>{commodities?.[item.commodityName]?.name ?? item.commodityName}</span>
                 <span className='news-ticker__ticker-item-price'>
-                  {item.demandBracket === 3 && <>{item.demand === 0 ? '' : <>{item.demand.toLocaleString()} T</>}<br />{item.sellPrice.toLocaleString()} CR/T</>}
-                  {item.stockBracket === 3 && <>{item.stock.toLocaleString()} T<br />{item.buyPrice.toLocaleString()} CR/T</>}
+                  {(item.demandBracket > item.stockBracket) 
+                    ? <>{item.demand === 0 ? '' : <>{item.demand.toLocaleString()} T</>}<br />{item.sellPrice.toLocaleString()} CR/T</>
+                    : <>{item.stock.toLocaleString()} T<br />{item.buyPrice.toLocaleString()} CR/T</>
+                  }
                 </span>
                 <span className='news-ticker__ticker-item-price-difference'>
                   {item.avgSellPrice !== 0 && item.demandBracket === 3 && <span className='muted'>AVG {item.avgSellPrice.toLocaleString()} CR</span>}
