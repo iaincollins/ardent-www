@@ -14,7 +14,7 @@ async function getNearbyImportersOfCommodity (systemName, commodityName) {
   return await res.json()
 }
 
-export default ({ commodity }) => {
+export default ({ commodity, rare }) => {
   const [nearbyImporters, setNearbyImporters] = useState()
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export default ({ commodity }) => {
                         <tr>
                           <td>
                             <span className='data-table__label'>Demand</span>
-                            <TradeBracketIcon bracket={r.demandBracket} />
+                            <TradeBracketIcon bracket={rare ? 2 : r.demandBracket} />
                             {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
                           </td>
                           <td className='text-right'><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
@@ -99,7 +99,7 @@ export default ({ commodity }) => {
               render: (v, r) =>
                 <>
                   {v > 0 ? `${v.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
-                  <TradeBracketIcon bracket={r.demandBracket} />
+                  <TradeBracketIcon bracket={rare ? 2 : r.demandBracket} />
                 </>
             },
             {

@@ -101,18 +101,28 @@ export default () => {
                   }
                 </span>
                 <span className='news-ticker__ticker-item-price-difference'>
-                  {item.avgSellPrice !== 0 && item.demandBracket === 3 && <span className='muted'>AVG {item.avgSellPrice.toLocaleString()} CR</span>}
-                  {item.avgBuyPrice !== 0 && item.stockBracket === 3 && <span className='muted'>AVG {item.avgBuyPrice.toLocaleString()} CR</span>}
+                  {item.avgSellPrice !== 0 && item.demandBracket === 3 && 
+                     <>
+                     {item.sellPrice > item.avgSellPrice && <small className='text-positive'>AVG Profit</small>}
+                     {item.sellPrice < item.avgSellPrice && <small className='text-negative'>AVG Loss</small>}
+                   </>
+                  }
+                  {item.avgBuyPrice !== 0 && item.stockBracket === 3 &&
+                    <>
+                      {item.buyPrice > item.avgBuyPrice && <small className='text-negative'>AVG Loss</small>}
+                      {item.buyPrice < item.avgBuyPrice && <small className='text-positive'>AVG Profit</small>}
+                    </>
+                  }
                   <br />
                   {item.demandBracket === 3 && item.avgSellPrice !== 0 &&
                     <>
-                      {item.sellPrice > item.avgSellPrice && <small className='commodity__price text-positive '>+ {(item.sellPrice - item.avgSellPrice).toLocaleString()} CR</small>}
-                      {item.sellPrice < item.avgSellPrice && <small className='commodity__price text-negative'>- {(item.avgSellPrice - item.sellPrice).toLocaleString()} CR</small>}
+                      {item.sellPrice > item.avgSellPrice && <small className='commodity__price text-positive '>+ {(item.sellPrice - item.avgSellPrice).toLocaleString()} CR/T</small>}
+                      {item.sellPrice < item.avgSellPrice && <small className='commodity__price text-negative'>- {(item.avgSellPrice - item.sellPrice).toLocaleString()} CR/T</small>}
                     </>}
                   {item.stockBracket === 3 && item.avgBuyPrice !== 0 &&
                     <>
-                      {item.buyPrice > item.avgBuyPrice && <small className='commodity__price text-negative'>- {(item.buyPrice - item.avgBuyPrice).toLocaleString()} CR</small>}
-                      {item.buyPrice < item.avgBuyPrice && <small className='commodity__price text-positive'>+ {(item.avgBuyPrice - item.buyPrice).toLocaleString()} CR</small>}
+                      {item.buyPrice > item.avgBuyPrice && <small className='commodity__price text-negative'>- {(item.buyPrice - item.avgBuyPrice).toLocaleString()} CR/T</small>}
+                      {item.buyPrice < item.avgBuyPrice && <small className='commodity__price text-positive'>+ {(item.avgBuyPrice - item.buyPrice).toLocaleString()} CR/T</small>}
                     </>}
                 </span>
               </span>

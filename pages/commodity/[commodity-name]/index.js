@@ -11,6 +11,7 @@ import CommodityExportOrders from 'components/commodity-export-orders'
 import listOfCommodities from 'lib/commodities/commodities.json'
 import animateTableEffect from 'lib/animate-table-effect'
 import { NavigationContext } from 'lib/context'
+import TradeBracketIcon from 'components/trade-bracket'
 
 import {
   API_BASE_URL,
@@ -272,12 +273,12 @@ export default () => {
                                 {commodity.totalDemand > commodity.totalStock
                                   ? (
                                     <>
-                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 75 && <><i className='trade-bracket-icon text-warning icarus-terminal-trending-down' /> Low demand</>}
-                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 25 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 75 && <><i className='trade-bracket-icon icarus-terminal-trending-steady muted' /> Steady demand</>}
-                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 0 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 25 && <><i className='trade-bracket-icon text-positive icarus-terminal-trending-up' /> High demand</>}
+                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 75 && <><TradeBracketIcon bracket={1}/> Low demand</>}
+                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 25 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 75 && <><TradeBracketIcon bracket={2}/> Steady demand</>}
+                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 0 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 25 && <><TradeBracketIcon bracket={3}/> High demand</>}
                                     </>
                                     )
-                                  : <><i className='trade-bracket-icon text-negative icarus-terminal-trending-down' /> Oversupply </>}
+                                  : <><TradeBracketIcon bracket={0}/> Oversupply </>}
                               </p>
                             </div>}
                           {(commodity.totalDemand === 0) && <InsufficentData />}
@@ -324,7 +325,7 @@ export default () => {
             </TabPanel>
             <TabPanel>
               {!imports && <div className='loading-bar loading-bar--tab' />}
-              {imports && <CommodityImportOrders commodities={imports} />}
+              {imports && <CommodityImportOrders commodities={imports} rare={!!rareMarket} />}
             </TabPanel>
             <TabPanel>
               {!exports && <div className='loading-bar loading-bar--tab' />}

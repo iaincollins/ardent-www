@@ -17,7 +17,7 @@ async function getImportsForCommodityBySystem (systemName, commodityName) {
   return imports.filter(c => c.commodityName === commodityName)
 }
 
-export default ({ commodities }) => {
+export default ({ commodities, rare }) => {
   return (
     <Table
       className='data-table data-table--striped data-table--interactive data-table--animated'
@@ -42,7 +42,7 @@ export default ({ commodities }) => {
                     <tr>
                       <td>
                         <span className='data-table__label'>Demand</span>
-                        <TradeBracketIcon bracket={r.demandBracket} />
+                        <TradeBracketIcon bracket={rare ? 2 : r.demandBracket} />
                         {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
                       </td>
                       <td className='text-right'><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
@@ -85,7 +85,7 @@ export default ({ commodities }) => {
           render: (v, r) =>
             <>
               {v > 0 ? `${v.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
-              <TradeBracketIcon bracket={r.demandBracket} />
+              <TradeBracketIcon bracket={rare ? 2 : r.demandBracket} />
             </>
         },
         {
@@ -102,13 +102,13 @@ export default ({ commodities }) => {
       rowKey={(r) => `commodity_import_orders_${r.commodityId}`}
       expandable={{
         expandRowByClick: true,
-        expandedRowRender: (r) => <ExpandedRow r={r} />
+        expandedRowRender: (r) => <ExpandedRow r={r} rare={rare} />
       }}
     />
   )
 }
 
-function ExpandedRow ({ r }) {
+function ExpandedRow ({ r, rare }) {
   if (!r) return
 
   const [imports, setImports] = useState()
@@ -158,7 +158,7 @@ function ExpandedRow ({ r }) {
                       <tr>
                         <td>
                           <span className='data-table__label'>Demand</span>
-                          <TradeBracketIcon bracket={r.demandBracket} />
+                          <TradeBracketIcon bracket={rare ? 2 : r.demandBracket} />
                           {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
                         </td>
                         <td className='text-right'><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
@@ -188,7 +188,7 @@ function ExpandedRow ({ r }) {
             render: (v, r) =>
               <>
                 {v > 0 ? `${v.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
-                <TradeBracketIcon bracket={r.demandBracket} />
+                <TradeBracketIcon bracket={rare ? 2 : r.demandBracket} />
               </>
           },
           {
@@ -214,7 +214,7 @@ function ExpandedRow ({ r }) {
         trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
         triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
       >
-        <NearbyCommodityImporters commodity={r} />
+        <NearbyCommodityImporters commodity={r} rare={rare} />
       </Collapsible>
     </>
   )

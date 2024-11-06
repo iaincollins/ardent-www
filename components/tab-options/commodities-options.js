@@ -71,6 +71,9 @@ export default ({ disabled = false }) => {
     setFleetCarrierFilter(router.query?.fleetCarriers ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
     setLocationFilter(router.query?.location ?? COMMODITY_FILTER_LOCATION_DEFAULT)
     setDistanceFilter(router.query?.maxDistance ?? COMMODITY_FILTER_DISTANCE_DEFAULT)
+    if (router.query?.location) { // Force UI text input to update (text inputs are a special case)
+      document.getElementById('location').value = router.query.location
+    }
   }, [router.query])
 
   return (
