@@ -17,6 +17,8 @@
     line-height: 1.75rem;
     margin-right: 1rem;
     width: auto;
+    background: none;
+    color: var(--color-primary);
   }
 
   h2.heading--with-icon {
@@ -27,8 +29,8 @@
     font-size: 1.25rem !important;
   }
 
-  
   .heading--with-underline {
+    padding-bottom: .5rem;
     mask: linear-gradient(90deg, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%);
     mask: none;
   }

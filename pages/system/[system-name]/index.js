@@ -423,15 +423,18 @@ export default () => {
           >
             <TabList>
               <Tab>
-                Imp<span className='is-hidden-mobile'>orts</span>
+                <i style={{lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-cargo-import'/>
+                <span className='is-hidden-mobile'>Imports</span>
                 {importOrders && <span className='tab-badge'>{importOrders.length}</span>}
               </Tab>
               <Tab>
-                Exp<span className='is-hidden-mobile'>orts</span>
+                <i style={{lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-cargo-export'/>
+                <span className='is-hidden-mobile'>Exports</span>
                 {exportOrders && <span className='tab-badge'>{exportOrders.length}</span>}
               </Tab>
               <Tab>
-                Near<span className='is-hidden-mobile'>by</span>
+                <i style={{lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-route'/>
+                <span className='is-hidden-mobile'>Nearby</span>
               </Tab>
             </TabList>
             {/* {tabIndex !== 2 && <CommodityTabOptions />} */}

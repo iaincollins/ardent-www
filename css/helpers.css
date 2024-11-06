@@ -58,3 +58,8 @@
 .flip-horizontal {
   transform: rotateY(180deg);
 }
+
+.flip-both,
+.flip-horizontal.flip-vertical {
+  transform: rotateY(180deg) rotateX(180deg);
+}

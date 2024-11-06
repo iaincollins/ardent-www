@@ -175,9 +175,18 @@ export default () => {
             }
           >
             <TabList>
-              <Tab>About</Tab>
-              <Tab>Imp<span className='is-hidden-mobile'>o</span>rt<span className='is-hidden-mobile'>er</span>s</Tab>
-              <Tab>Exp<span className='is-hidden-mobile'>o</span>rt<span className='is-hidden-mobile'>er</span>s</Tab>
+              <Tab>
+                <i style={{lineHeight: '1.5rem', fontSize: '1.25rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-info'/>
+                <span className='is-hidden-mobile'>About</span>
+              </Tab>
+              <Tab>
+                <i style={{lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-cargo-import'/>
+                <span className='is-hidden-mobile'>Importers</span>
+              </Tab>
+              <Tab>
+                <i style={{lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-cargo-export'/>
+                <span className='is-hidden-mobile'>Exporters</span>
+              </Tab>
             </TabList>
             <TabDescription>
               {tabIndex === 0 && <>About {commodity.name}</>}
@@ -263,12 +272,12 @@ export default () => {
                                 {commodity.totalDemand > commodity.totalStock
                                   ? (
                                     <>
-                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 75 && <><i className='trade-bracket-icon text-warning icarus-terminal-signal flip-horizontal' /> Low demand</>}
-                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 25 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 75 && <><i className='trade-bracket-icon  icarus-terminal-signal' /> Medium demand</>}
-                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 0 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 25 && <><i className='trade-bracket-icon text-positive icarus-terminal-signal' /> High demand</>}
+                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 75 && <><i className='trade-bracket-icon text-warning icarus-terminal-trending-down' /> Low demand</>}
+                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 25 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 75 && <><i className='trade-bracket-icon icarus-terminal-trending-steady muted' /> Steady demand</>}
+                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 0 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 25 && <><i className='trade-bracket-icon text-positive icarus-terminal-trending-up' /> High demand</>}
                                     </>
                                     )
-                                  : <><i className='trade-bracket-icon text-negative icarus-terminal-signal flip-vertical' /> Oversupply </>}
+                                  : <><i className='trade-bracket-icon text-negative icarus-terminal-trending-down' /> Oversupply </>}
                               </p>
                             </div>}
                           {(commodity.totalDemand === 0) && <InsufficentData />}

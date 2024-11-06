@@ -73,7 +73,7 @@ export default () => {
           <i className='icon icarus-terminal-info' />
         </button>
         <button className='button' onClick={() => toggleFullScreen()}>
-          <i className={`icon ${fullScreenState === true ? 'icarus-terminal-exit' : 'icarus-terminal-fullscreen'}`} />
+          <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
         </button>
       </div>
       <div className='news-ticker'>
@@ -86,7 +86,7 @@ export default () => {
                 onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?location=${encodeURIComponent(item.systemName)}&maxDistance=1`)}
               >
                 <i
-                  className={`icarus-terminal-cargo-${item.demandBracket > item.stockBracket ? 'import' : 'export'} muted`}
+                  className={`icarus-terminal-cargo-${item.demandBracket > item.stockBracket ? 'sell' : 'buy'} muted`}
                   style={{position: 'absolute', left: '-2.25rem', fontSize: '2rem', lineHeight: '2rem'}}
                 />
                 <span className='muted'>{item.stationName}, {item.systemName}</span>
