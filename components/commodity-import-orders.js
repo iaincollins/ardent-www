@@ -11,10 +11,10 @@ import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
 
 async function getImportsForCommodityBySystem (systemName, commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodities/imports`)
+  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}`)
   const imports = await res.json()
   if (!imports || imports.error) return [] // Handle system not found
-  return imports.filter(c => c.commodityName === commodityName)
+  return imports.filter(c => (c.demand > 0 || c.demand === 0) && c.sellPrice > 1)
 }
 
 export default ({ commodities, rare }) => {
