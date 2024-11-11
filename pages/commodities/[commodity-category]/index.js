@@ -88,8 +88,8 @@ export default function Page (props) {
             </p>}
           {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
             <div key={`category_${category}`} style={{ marginTop: '1rem' }}>
-              {categories?.length === 1 && <h3 style={{ marginBottom: '-.1rem' }}>{category}</h3>}
-              {categories?.length > 1 && <h3 style={{ marginBottom: '-.1rem' }} onClick={() => router.push(`/commodities/${category.toLowerCase()}`)}>{category}</h3>}
+              {categories?.length === 1 && <h2 className='heading--table'>{category}</h2>}
+              {categories?.length > 1 && <h2 className='heading--table' onClick={() => router.push(`/commodities/${category.toLowerCase()}`)}>{category}</h2>}
               <Table
                 className='data-table data-table--striped data-table--interactive data-table--animated'
                 columns={[

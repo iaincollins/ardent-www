@@ -62,17 +62,15 @@ export default () => {
         </ul>
       </div>
       <div className='header__navigation' style={{ display: 'block' }}>
-        {/* <Link href='/commodities'>
-          <button className='button'><i className='icon icarus-terminal-cargo' /></button>
-        </Link>
-        <button className='button'><i className='icon icarus-terminal-system-orbits' /></button> */}
-        <button
-          className='button'
-          onClick={() => setAboutDialogVisible(!aboutDialogVisible)}
+        {/* 
+        <button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button>
+        <button aria-label='Map' className='button'><i className='icon icarus-terminal-system-orbits' /></button>
+        */}
+        <button aria-label='About' className='button' onClick={() => setAboutDialogVisible(!aboutDialogVisible)}
         >
           <i className='icon icarus-terminal-info' />
         </button>
-        <button className='button' onClick={() => toggleFullScreen()}>
+        <button aria-label='Toggle Fullscreen' className='button' onClick={() => toggleFullScreen()}>
           <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
         </button>
       </div>

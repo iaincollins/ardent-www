@@ -425,12 +425,12 @@ export default () => {
               <Tab>
                 <i style={{lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-cargo-import'/>
                 <span className='is-hidden-mobile'>Imports</span>
-                {importOrders && <span className='tab-badge'>{importOrders.length}</span>}
+                {/* {importOrders && <span className='tab-badge'>{importOrders.length}</span>} */}
               </Tab>
               <Tab>
                 <i style={{lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-cargo-export'/>
                 <span className='is-hidden-mobile'>Exports</span>
-                {exportOrders && <span className='tab-badge'>{exportOrders.length}</span>}
+                {/* {exportOrders && <span className='tab-badge'>{exportOrders.length}</span>} */}
               </Tab>
               <Tab>
                 <i style={{lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-route'/>
@@ -445,7 +445,7 @@ export default () => {
                   className='data-table data-table--striped data-table--interactive data-table--animated'
                   columns={[
                     {
-                      title: 'Commodities imported',
+                      title: `Commodities imported (${importOrders.length})`,
                       dataIndex: 'name',
                       key: 'name',
                       align: 'left',
@@ -559,7 +559,7 @@ export default () => {
                   className='data-table data-table--striped data-table--interactive data-table--animated'
                   columns={[
                     {
-                      title: 'Commodities exported',
+                      title: `Commodities exported (${exportOrders.length})`,
                       dataIndex: 'name',
                       key: 'name',
                       align: 'left',
@@ -674,7 +674,7 @@ export default () => {
                   className='data-table data-table--striped data-table--interactive data-table--animated'
                   columns={[
                     {
-                      title: 'Nearest systems',
+                      title: 'Nearby systems',
                       dataIndex: 'systemName',
                       key: 'systemName',
                       align: 'left',

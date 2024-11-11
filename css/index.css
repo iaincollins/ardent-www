@@ -21,6 +21,7 @@
 @font-face {
   font-family: 'Jura';
   src: url('../public/fonts/Jura-VariableFont_wght.ttf') format('truetype');
+  font-display: swap;
 }
 
 /* Override generated defaults for terminal font */
