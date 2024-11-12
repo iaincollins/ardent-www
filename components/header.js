@@ -66,6 +66,10 @@ export default () => {
         <button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button>
         <button aria-label='Map' className='button'><i className='icon icarus-terminal-system-orbits' /></button>
         */}
+        {/* <label className='header__search' aria-label='Search' onMouseEnter={() => document.getElementById('header-search').focus()}>
+          <i className='icon icarus-terminal-search'/>
+          <input id='header-search' name='header-search' type='text' autoComplete='off' placeholder='Search'/>
+        </label> */}
         <button aria-label='About' className='button' onClick={() => setAboutDialogVisible(!aboutDialogVisible)}
         >
           <i className='icon icarus-terminal-info' />

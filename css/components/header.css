@@ -153,3 +153,52 @@
   width: 5rem;
   font-weight: 900;
 }
+
+.header__search {
+  position: relative;
+  margin-right: .5rem;
+  top: .25rem;
+  display: inline-block;
+}
+
+.header__search input {
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+  padding: .5rem .25rem .5rem 2.4rem;
+  background: rgba(0,0,0,.5);
+  border: .22rem solid var(--color-primary);
+  border-radius: 2rem;
+  font-family: 'Jura';
+  font-weight: bold;
+  width: 0rem;
+  color: transparent;
+  transition: .5s;
+  transition-property: width, color, background;
+}
+
+.header__search .icon {
+  position: absolute;
+  content: '123';
+  display: block;
+  height: 2rem;
+  width: 2rem;
+  left: .4rem;
+  top: .4rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  z-index: 10000;
+  color: var(--color-primary);
+}
+
+.header__search:focus-within .icon  {
+  color: var(--color-text-inverted);
+}
+
+.header__search input:focus {
+  color: var(--color-text-inverted);
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  outline: none;
+  width: 15rem;
+  box-shadow: 0 0 1rem black, 0 0 2rem black;
+}

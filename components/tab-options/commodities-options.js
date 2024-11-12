@@ -136,6 +136,11 @@ export default ({ disabled = false }) => {
           <span className='tab-options__label-text'>Near</span>
           <input
             id='location' name='location' type='text' list='location-list'
+            style={{
+              borderRadius: '2rem',
+              paddingLeft: '.75rem',
+              paddingRight: '.75rem'
+            }}
             disabled={disabled}
             data-previous-value=''
             placeholder={COMMODITY_FILTER_LOCATION_DEFAULT}
