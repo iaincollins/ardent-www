@@ -56,14 +56,8 @@
   }
 
   .header__logo h1 {
-    padding-top: .2rem;
-    padding-bottom: .1em;
     width: 8rem;
     padding-left: 1rem;
-  }
-
-  .header__logo h1,
-  .header__logo h1 em {
     top: 0;
     font-size: 2rem !important;
     line-height: 2rem;
@@ -95,6 +89,13 @@
   .react-tabs__tab {
     padding-left: .25rem;
     padding-right: .25rem;
+  }
+  
+  .react-tabs__tab i,
+  .react-tabs__tab .icon {
+    font-size: 2rem !important;
+    line-height: 2.8rem !important;
+    top: 0 !important;
   }
 
   i.trade-bracket-icon {
@@ -148,5 +149,29 @@
 
   .breadcrumbs li:not(:last-child) {
     display: none;
+  }
+
+  .header__search input {
+    transition: 0s !important;
+  }
+
+  .header__search input:focus {
+    width: auto;
+    position: fixed;
+    top: 1.5rem;
+    left: 1rem;
+    right: 2rem;
+    z-index: 10;
+  }
+
+  .header__search .icon {
+    top: .5rem;
+  }
+
+  .header__search:focus-within .icon  {
+    position: fixed;
+    top: 2rem;
+    left: 1.5rem;
+    z-index: 11;
   }
 }

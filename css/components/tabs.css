@@ -50,7 +50,7 @@
   font-family: "Jura", sans-serif;
   font-weight: bold;
   font-size: 1.25rem;
-  line-height: 1.75rem;
+  line-height: 2rem;
   padding: 0 .5rem;
   margin-bottom: 0;
   margin-right: .5rem;
@@ -155,8 +155,11 @@
   opacity: .75;
 }
 
-.tab-options form input {
-  width: 9rem;
+.tab-options form input[type="text"] {
+  width: 8.25rem;
+  border-radius: 2rem;
+  padding-left: .75rem;
+  padding-right: .75rem;
 }
 
 .tab-options form input,

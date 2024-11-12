@@ -17,8 +17,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: background-color .1s ease-in-out, color .1s ease-in-out;
+  transition: .25s;
+  transition-property: width, color, background-colo;
   clip-path: polygon(0 0,calc(100% - 1.00rem) 0,100% 1.00rem,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem));
+  outline: 0;
 }
 
 a.button {
