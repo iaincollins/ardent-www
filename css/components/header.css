@@ -85,13 +85,13 @@
 
 .header__navigation .button {
   margin-left: 0;
-  padding: .2rem .9rem;
+  padding: .2rem 1rem;
 }
 
 .header__navigation .button .icon {
   font-size: 1.5rem !important;
   line-height: 1.25rem !important;
-  top: -.1rem;
+  top: -.125rem;
   position: relative;
 }
 
@@ -105,7 +105,7 @@
 .header__search input {
   font-size: 1.25rem;
   line-height: 1.25rem;
-  padding: .25rem .25rem .25rem 2rem;
+  padding: .25rem .25rem .25rem 1.75rem;
   background-color: transparent;
   border: .22rem solid var(--color-primary);
   border-radius: 2rem;
@@ -123,10 +123,10 @@
   display: block;
   height: 2rem;
   width: 2rem;
-  left: .4rem;
+  left: .35rem;
   top: .6rem;
-  font-size: 1.25rem;
-  line-height: 1.25rem;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
   z-index: 10000;
   color: var(--color-primary);
 }
@@ -150,5 +150,6 @@
 }
 
 .header__search input:focus {
-  width: 15rem;
+  width: 12rem;
+  padding-left: 2rem;
 }
