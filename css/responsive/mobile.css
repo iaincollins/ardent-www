@@ -164,14 +164,21 @@
     z-index: 10;
   }
 
-  .header__search .icon {
-    top: .5rem;
-  }
-
   .header__search:focus-within .icon  {
     position: fixed;
-    top: 2rem;
+    top: 2.1rem;
     left: 1.5rem;
     z-index: 11;
+  }
+
+  .header__search:focus-within .header__search-results {
+    position: fixed;
+    display: block;
+    top: 2rem;
+    left: 2rem;
+    right: 2rem;
+    width: calc(100vw - 6rem);
+    max-width: none;
+    padding-top: 2.5rem;
   }
 }

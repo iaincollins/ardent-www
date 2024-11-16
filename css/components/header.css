@@ -95,13 +95,18 @@
 }
 
 .header__search {
+  display: inline-block;
+  position: relative;
+}
+
+.header__search-input {
   position: relative;
   margin-right: .5rem;
   top: .1rem;
   display: inline-block;
 }
 
-.header__search input {
+.header__search-input input {
   font-size: 1.25rem;
   line-height: 1.25rem;
   padding: .25rem .25rem .25rem 1.75rem;
@@ -116,7 +121,7 @@
   transition-property: width, color, background-color;
 }
 
-.header__search .icon {
+.header__search-input .icon {
   position: absolute;
   content: '123';
   display: block;
@@ -130,17 +135,17 @@
   color: var(--color-primary);
 }
 
-.header__search .icon:has(+ input:hover),
-.header__search:focus-within .icon {
+.header__search-input .icon:has(+ input:hover),
+.header__search-input:focus-within .icon {
   color: var(--color-text-inverted);
 }
 
-.header__search:focus-within .icon {
+.header__search-input:focus-within .icon {
   text-shadow: none;
 }
 
-.header__search input:hover,
-.header__search input:focus  {
+.header__search-input input:hover,
+.header__search-input input:focus  {
   color: var(--color-text-inverted);
   background-color: var(--color-primary);
   border-color: var(--color-primary);
@@ -148,7 +153,52 @@
   box-shadow: 0 0 1rem black, 0 0 2rem black;
 }
 
-.header__search input:focus {
+.header__search-input input:focus {
   width: 12rem;
   padding-left: 2rem;
+}
+
+.header__search-results {
+  display: none;
+}
+
+.header__search:focus-within .header__search-results {
+  display: block;
+  position: absolute;
+  top: 3rem;
+  right: 1rem;
+  height: auto;
+  max-height: 14rem;
+  overflow: hidden;
+  width: 100vw;
+  max-width: 12rem;
+  border: .2rem solid var(--color-primary);
+  background-color: rgba(0,0,0,.5);
+  backdrop-filter: blur(1rem);
+  border-radius: .2rem;
+  padding: .5rem;  
+  text-align: right;
+  font-family: 'Jura';
+  box-shadow: 0 0 1rem black;
+}
+
+.header__search-results h5 {
+  text-transform: uppercase;
+  padding-bottom: .15rem;
+  margin: 1rem 0 .25rem 0;
+  margin-top: 1rem;
+  border-bottom: .1rem solid var(--color-primary-dark);
+  font-size: .8rem;
+}
+
+.header__search-results h5:first-of-type {
+  margin-top: 0;
+}
+
+.header__search-results p {
+  margin: 0;
+  font-size: .8rem;
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }

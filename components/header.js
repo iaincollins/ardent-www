@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import AboutDialog from 'components/dialog/about-dialog'
-import { getCommoditiesWithAvgPricing } from 'lib/commodities'
+import { getCommoditiesWithAvgPricing, listOfCommoditiesAsArray } from 'lib/commodities'
 import commodities from 'lib/commodities/commodities'
 import { NavigationContext } from 'lib/context'
 import { API_BASE_URL } from 'lib/consts'
@@ -13,6 +13,9 @@ export default () => {
   const [fullScreenState, setFullScreenState] = useState(false)
   const [aboutDialogVisible, setAboutDialogVisible] = useState(false)
   const [newsTicker, setNewsTicker] = useState([])
+  const [commoditySearchResults, setCommoditySearchResults] = useState()
+  const [systemSearchResults, setSystemSearchResults] = useState()
+  const [stationSearchResults, setStationSearchResults] = useState()
 
   useEffect(() => {
     document.addEventListener('fullscreenchange', onFullScreenChangeHandler)
@@ -66,10 +69,84 @@ export default () => {
         <button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button>
         <button aria-label='Map' className='button'><i className='icon icarus-terminal-system-orbits' /></button>
         */}
-        {/* <label className='header__search' aria-label='Search' onClick={() => document.getElementById('header-search').focus()}>
-          <i className='icon icarus-terminal-search'/>
-          <input id='header-search' name='header-search' type='text' autoComplete='off' placeholder='Search'/>
-        </label> */}
+        <div className='header__search' style={{ display: 'none' }}>
+          <label className='header__search-input' aria-label='Search' onClick={() => document.getElementById('header-search').focus()}>
+            <i className='icon icarus-terminal-search'/>
+            <input id='header-search' name='header-search' type='text' autoComplete='off' placeholder='Search'
+              onBlur={(e) => {
+                setCommoditySearchResults(undefined)
+                setSystemSearchResults(undefined)
+                e.target.value = ''
+              }}
+              onChange={async (e) => {
+                const searchText = e.target.value.trim()
+
+                if (searchText.length === 0) {
+                  setCommoditySearchResults(undefined)
+                  setSystemSearchResults(undefined)
+                  return
+                }
+
+                try { 
+                  const matchingCommodities = listOfCommoditiesAsArray
+                    .filter(c => c.name.toLowerCase().includes(searchText.toLowerCase()))
+
+                  matchingCommodities.forEach((c,i) => {
+                    if (c.name.toLowerCase().startsWith(searchText.toLowerCase())) {
+                      delete matchingCommodities[i]
+                      matchingCommodities.unshift(c)
+                    }
+                  })
+
+                  matchingCommodities.forEach((c,i) => {
+                    if (c.name.toLowerCase() === searchText.toLowerCase()) {
+                      delete matchingCommodities[i]
+                      matchingCommodities.unshift(c)
+                    }
+                  })
+
+                  ;(matchingCommodities.length > 0)
+                    ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
+                    : setCommoditySearchResults(undefined)
+                } catch (e) {}
+
+                try {
+                  const res = await fetch(`${API_BASE_URL}/v1/search/system/name/${searchText}`)
+                  const matchingSystems = await res.json()
+                  ;(matchingSystems.length > 0)
+                    ? setSystemSearchResults(matchingSystems.splice(0, 5))
+                    : setSystemSearchResults(undefined)
+                } catch (e) {}
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  document.activeElement.blur()
+                  // TODO Attempt to match against exact name of commodity or a system (do nothing if neither)
+                }
+              }}
+            />
+          </label>
+          {(commoditySearchResults || systemSearchResults) &&
+            <div className='header__search-results'>
+              {(commoditySearchResults?.length > 0) &&
+                <>
+                  <h5 className='muted'>
+                    <i className='icarus-terminal-cargo'/>
+                    Commodities
+                  </h5>
+                  {commoditySearchResults.map(c => <p>{c.name}</p>)}
+                </>}
+                {(systemSearchResults && systemSearchResults.length > 0) &&
+                <>
+                  <h5 className='muted'>
+                    <i className='icarus-terminal-system-orbits'/>
+                    Systems
+                  </h5>
+                  {systemSearchResults.map(s => <p>{s.systemName}</p>)}
+                </>}
+            </div>}
+        </div>
         <button aria-label='About' className='button' onClick={() => setAboutDialogVisible(!aboutDialogVisible)}
         >
           <i className='icon icarus-terminal-info' />
