@@ -85,54 +85,6 @@ export default ({ disabled = false }) => {
         }}
       >
         <label>
-          <span className='tab-options__label-text'>Updated</span>
-          <select
-            name='last-updated' value={lastUpdatedFilter}
-            disabled={disabled}
-            onChange={(e) => {
-              setLastUpdatedFilter(e.target.value)
-            }}
-          >
-            <option value='1'>Today</option>
-            <option value='7'>Last week</option>
-            <option value='30'>Last month</option>
-            <option value='90'>Last 3 months</option>
-            <option value='356'>Last year</option>
-          </select>
-        </label>
-
-        <label>
-          <span className='tab-options__label-text'>Quantity</span>
-          <select
-            name='commodity-quantity' value={minVolumeFilter}
-            disabled={disabled}
-            onChange={(e) => {
-              setMinVolumeFilter(e.target.value)
-            }}
-          >
-            <option value='1'>Any quantity</option>
-            <option value='100'>&gt; 100 T</option>
-            <option value='1000'>&gt; 1,000 T</option>
-            <option value='10000'>&gt; 10,000 T</option>
-          </select>
-        </label>
-
-        <label>
-          <span className='tab-options__label-text'>Carriers</span>
-          <select
-            name='fleet-carriers' value={fleetCarrierFilter}
-            disabled={disabled}
-            onChange={(e) => {
-              setFleetCarrierFilter(e.target.value)
-            }}
-          >
-            <option value='included'>Included</option>
-            <option value='excluded'>Excluded</option>
-            <option value='only'>Only</option>
-          </select>
-        </label>
-
-        <label>
           <span className='tab-options__label-text'>Near</span>
           <input
             id='location' name='location' type='text' list='location-list'
@@ -234,6 +186,54 @@ export default ({ disabled = false }) => {
             <option value='500'>&lt; 500 ly</option>
             <option value='1000'>&lt; 1,000 ly</option>
             <option value='10000'>&lt; 10,000 ly</option>
+          </select>
+        </label>
+
+        <label>
+          <span className='tab-options__label-text'>Updated</span>
+          <select
+            name='last-updated' value={lastUpdatedFilter}
+            disabled={disabled}
+            onChange={(e) => {
+              setLastUpdatedFilter(e.target.value)
+            }}
+          >
+            <option value='1'>Today</option>
+            <option value='7'>Last week</option>
+            <option value='30'>Last month</option>
+            <option value='90'>Last 3 months</option>
+            <option value='356'>Last year</option>
+          </select>
+        </label>
+
+        <label>
+          <span className='tab-options__label-text'>Quantity</span>
+          <select
+            name='commodity-quantity' value={minVolumeFilter}
+            disabled={disabled}
+            onChange={(e) => {
+              setMinVolumeFilter(e.target.value)
+            }}
+          >
+            <option value='1'>Any quantity</option>
+            <option value='100'>&gt; 100 T</option>
+            <option value='1000'>&gt; 1,000 T</option>
+            <option value='10000'>&gt; 10,000 T</option>
+          </select>
+        </label>
+
+        <label>
+          <span className='tab-options__label-text'>Carriers</span>
+          <select
+            name='fleet-carriers' value={fleetCarrierFilter}
+            disabled={disabled}
+            onChange={(e) => {
+              setFleetCarrierFilter(e.target.value)
+            }}
+          >
+            <option value='included'>Included</option>
+            <option value='excluded'>Excluded</option>
+            <option value='only'>Only</option>
           </select>
         </label>
         {(

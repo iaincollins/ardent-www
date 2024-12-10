@@ -315,8 +315,8 @@ export default () => {
                       <th className='is-hidden-mobile'>&nbsp;</th>
                       <td>
                         <ul style={{ padding: '0 0 0 1.5rem' }}>
-                          <li style={{ marginBottom: '.5rem' }}><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/importers`}>Where to sell {commodity.name}</Link></li>
-                          <li><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/exporters`}>Where to buy {commodity.name}</Link></li>
+                          <li style={{ marginBottom: '.5rem' }}><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/importers`}>Sell {commodity.name}</Link></li>
+                          <li><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/exporters`}>Buy {commodity.name}</Link></li>
                         </ul>
                       </td>
                     </tr>}
