@@ -16,11 +16,13 @@ export default () => {
   const [commoditySearchResults, setCommoditySearchResults] = useState()
   const [systemSearchResults, setSystemSearchResults] = useState()
   const [stationSearchResults, setStationSearchResults] = useState()
+  const [searchResults, setSearchResults] = useState()
+  const [searchResultsVisible, setSearchResultsVisible] = useState(false)
 
   useEffect(() => {
     document.addEventListener('fullscreenchange', onFullScreenChangeHandler)
     return () => document.removeEventListener('click', onFullScreenChangeHandler)
-    function onFullScreenChangeHandler (event) {
+    function onFullScreenChangeHandler(event) {
       setFullScreenState(isFullScreen())
     }
   }, [])
@@ -50,6 +52,53 @@ export default () => {
     return () => clearInterval(timeoutId)
   }, [])
 
+  useEffect(() => {
+    const searchResults = []
+    if (Array.isArray(commoditySearchResults)) {
+      commoditySearchResults.forEach(i => searchResults.push({
+        icon: 'icarus-terminal-cargo',
+        name: i.name,
+        path: `/commodity/${i.symbol}`
+      }))
+    }
+    if (Array.isArray(systemSearchResults)) {
+      systemSearchResults.forEach(i => searchResults.push({
+        icon: 'icarus-terminal-star',
+        name: i.systemName,
+        path: `/system/${i.systemName}`
+      }))
+    }
+    if (Array.isArray(stationSearchResults)) {
+      stationSearchResults.forEach(i => searchResults.push({
+        icon: '',
+        name: i.stationName
+      }))
+    }
+    setSearchResults(searchResults)
+    if (searchResults.length > 0) {
+      setSearchResultsVisible(true)
+    } else {
+      setSearchResultsVisible(false)
+    }
+  }, [commoditySearchResults, systemSearchResults, stationSearchResults])
+
+  useEffect(() => {
+    const onKeyDown = ({key}) => {
+      if (key === 'Enter') {
+        if (document.activeElement?.id === 'header-search'
+            || document.activeElement?.id === 'location') {
+          document.activeElement.blur()
+        } else {
+          document.getElementById('header-search').focus()
+        }
+      }
+    }
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keyup', onKeyUp);
+    }
+    }, [])
+
   return (
     <header>
       <div className='header__logo'>
@@ -69,86 +118,95 @@ export default () => {
         <button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button>
         <button aria-label='Map' className='button'><i className='icon icarus-terminal-system-orbits' /></button>
         */}
-        <div className='header__search' style={{ display: 'none' }}>
+        <div className='header__search' style={{ xdisplay: 'none' }}>
           <label className='header__search-input' aria-label='Search' onClick={() => document.getElementById('header-search').focus()}>
-            <i className='icon icarus-terminal-search'/>
+            <i className='icon icarus-terminal-search' />
             <input id='header-search' name='header-search' type='text' autoComplete='off' placeholder='Search'
               onBlur={(e) => {
+                setSearchResultsVisible(false)
+              }}
+              onFocus={(e) => {
+                e.target.value = ''
+                setSearchResultsVisible(false)
+                setSearchResults(undefined)
                 setCommoditySearchResults(undefined)
                 setSystemSearchResults(undefined)
-                e.target.value = ''
               }}
               onChange={async (e) => {
                 const searchText = e.target.value.trim()
 
                 if (searchText.length === 0) {
+                  setSearchResults(undefined)
                   setCommoditySearchResults(undefined)
                   setSystemSearchResults(undefined)
                   return
                 }
 
-                try { 
+                try {
                   const matchingCommodities = listOfCommoditiesAsArray
                     .filter(c => c.name.toLowerCase().includes(searchText.toLowerCase()))
 
-                  matchingCommodities.forEach((c,i) => {
+                  matchingCommodities.forEach((c, i) => {
                     if (c.name.toLowerCase().startsWith(searchText.toLowerCase())) {
                       delete matchingCommodities[i]
                       matchingCommodities.unshift(c)
                     }
                   })
 
-                  matchingCommodities.forEach((c,i) => {
+                  matchingCommodities.forEach((c, i) => {
                     if (c.name.toLowerCase() === searchText.toLowerCase()) {
                       delete matchingCommodities[i]
                       matchingCommodities.unshift(c)
                     }
                   })
 
-                  ;(matchingCommodities.length > 0)
-                    ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
-                    : setCommoditySearchResults(undefined)
-                } catch (e) {}
+                    ; (matchingCommodities.length > 0)
+                      ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
+                      : setCommoditySearchResults(undefined)
+                } catch (e) { }
 
                 try {
                   const res = await fetch(`${API_BASE_URL}/v1/search/system/name/${searchText}`)
                   const matchingSystems = await res.json()
-                  ;(matchingSystems.length > 0)
-                    ? setSystemSearchResults(matchingSystems.splice(0, 5))
-                    : setSystemSearchResults(undefined)
-                } catch (e) {}
+                    ; (matchingSystems.length > 0)
+                      ? setSystemSearchResults(matchingSystems.splice(0, 5))
+                      : setSystemSearchResults(undefined)
+                } catch (e) { }
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault()
-                  document.activeElement.blur()
-                  // TODO Attempt to match against exact name of commodity or a system (do nothing if neither)
+                  const searchText = e.target.value.trim().toLowerCase()
+                  if (searchResults?.length > 0) {
+                    searchResults.forEach(result => {
+                      if (result.name.toLowerCase() === searchText) {
+                        router.push(result.path)
+                        setSearchResultsVisible(false)
+                      }
+                    })
+                    // TODO Attempt to match against exact name of commodity or a system (do nothing if neither)
+                  }
                 }
               }}
             />
           </label>
-          {(commoditySearchResults || systemSearchResults) &&
-            <div className='header__search-results'>
-              {(commoditySearchResults?.length > 0) &&
-                <>
-                  <h5 className='muted'>
-                    <i className='icarus-terminal-cargo'/>
-                    Commodities
-                  </h5>
-                  {commoditySearchResults.map(c => <p>{c.name}</p>)}
-                </>}
-                {(systemSearchResults && systemSearchResults.length > 0) &&
-                <>
-                  <h5 className='muted'>
-                    <i className='icarus-terminal-system-orbits'/>
-                    Systems
-                  </h5>
-                  {systemSearchResults.map(s => <p>{s.systemName}</p>)}
-                </>}
+          {
+            <div className='header__search-results' 
+              style={{
+                opacity: (searchResultsVisible) ? 1 : 0
+              }}
+            >
+              {searchResults?.length > 0 && searchResults.map((result, i) =>
+                <p key={`${i}:${result.icon}:${result.name}`}
+                  onMouseDown={() => {
+                    router.push(result.path)
+                    setSearchResultsVisible(false)
+                  }}
+                ><i className={result.icon} />{result.name}</p>
+              )}
             </div>}
         </div>
-        <button aria-label='About' className='button' onClick={() => setAboutDialogVisible(!aboutDialogVisible)}
-        >
+        <button aria-label='About' className='button' onClick={() => setAboutDialogVisible(!aboutDialogVisible)}>
           <i className='icon icarus-terminal-info' />
         </button>
         <button aria-label='Toggle Fullscreen' className='button' onClick={() => toggleFullScreen()}>
@@ -166,7 +224,7 @@ export default () => {
               >
                 <i
                   className={`icarus-terminal-cargo-${item.demandBracket > item.stockBracket ? 'sell' : 'buy'} muted`}
-                  style={{position: 'absolute', left: '-2.25rem', fontSize: '2rem', lineHeight: '2rem'}}
+                  style={{ position: 'absolute', left: '-2.25rem', fontSize: '2rem', lineHeight: '2rem' }}
                 />
                 <span className='muted'>{item.stationName}, {item.systemName}</span>
                 <br />
@@ -174,17 +232,17 @@ export default () => {
                 {' '}
                 <span style={{ color: 'var(--color-primary--lighter)' }}>{commodities?.[item.commodityName]?.name ?? item.commodityName}</span>
                 <span className='news-ticker__ticker-item-price'>
-                  {(item.demandBracket > item.stockBracket) 
+                  {(item.demandBracket > item.stockBracket)
                     ? <>{item.demand === 0 ? '' : <>{item.demand.toLocaleString()} T</>}<br />{item.sellPrice.toLocaleString()} CR/T</>
                     : <>{item.stock.toLocaleString()} T<br />{item.buyPrice.toLocaleString()} CR/T</>
                   }
                 </span>
                 <span className='news-ticker__ticker-item-price-difference'>
-                  {item.avgSellPrice !== 0 && item.demandBracket === 3 && 
-                     <>
-                     {item.sellPrice > item.avgSellPrice && <small className='text-positive'>AVG Profit</small>}
-                     {item.sellPrice < item.avgSellPrice && <small className='text-negative'>AVG Loss</small>}
-                   </>
+                  {item.avgSellPrice !== 0 && item.demandBracket === 3 &&
+                    <>
+                      {item.sellPrice > item.avgSellPrice && <small className='text-positive'>AVG Profit</small>}
+                      {item.sellPrice < item.avgSellPrice && <small className='text-negative'>AVG Loss</small>}
+                    </>
                   }
                   {item.avgBuyPrice !== 0 && item.stockBracket === 3 &&
                     <>
@@ -215,7 +273,7 @@ export default () => {
   )
 }
 
-function isFullScreen () {
+function isFullScreen() {
   if (typeof document === 'undefined') return false
 
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
@@ -225,7 +283,7 @@ function isFullScreen () {
   }
 }
 
-async function toggleFullScreen () {
+async function toggleFullScreen() {
   if (isFullScreen()) {
     if (document.cancelFullScreen) {
       document.cancelFullScreen()

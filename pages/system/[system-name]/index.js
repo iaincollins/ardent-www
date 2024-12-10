@@ -668,7 +668,7 @@ export default () => {
                 />}
             </TabPanel>
             <TabPanel>
-              {!nearbySystems && <div className='loading-bar loading-bar--tab' />}
+              {!nearbySystems && <div style={{ marginTop: '2rem' }}   className='loading-bar loading-bar--tab' />}
               {nearbySystems &&
                 <Table
                   className='data-table data-table--striped data-table--interactive data-table--animated'

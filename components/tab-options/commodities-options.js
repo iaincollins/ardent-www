@@ -98,7 +98,6 @@ export default ({ disabled = false }) => {
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault()
-                document.activeElement.blur()
               }
             }}
             onBlur={async (e) => {
