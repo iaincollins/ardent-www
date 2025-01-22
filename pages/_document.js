@@ -18,7 +18,7 @@ class MyDocument extends Document {
         <Head>
           <meta name='theme-color' content='#000' />
           <style dangerouslySetInnerHTML={{
-            __html: 'html{background:#000;}'
+            __html: 'html,body{background:#000;}'
           }}
           />
           <script dangerouslySetInnerHTML={{ __html: onContextMenu }} />
