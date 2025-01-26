@@ -26,13 +26,10 @@ export default ({ toggle }) => {
       <p>
         ArdentOS v{Package.version} (<a href={API_BASE_URL} rel='noreferrer' target='_blank' className='muted'>API v{version?.version ?? '?.?.?'}</a>).
       </p>
-      <p>
-        Trade and exploration data for the game <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>.
-      </p>
       {stats &&
         <>
           <p>
-            Processed {stats.updatedInLast24Hours.toLocaleString()} updates in the last 24 hours.
+            Updated {stats.updatedInLast24Hours.toLocaleString()} times in the last 24 hours.
           </p>
           <ul className='clear'>
             <li>
@@ -62,7 +59,10 @@ export default ({ toggle }) => {
         <span className='muted'>* Includes stations, outposts, ports, settlements and megaships</span>
       </p>
       <p>
-        Data is provided by <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a> which is run by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>.
+        Trade and exploration data for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>.
+      </p>
+      <p>
+        Data from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>, which is run by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>.
       </p>
       <h3>Downloads</h3>
       <p className='clear'>
