@@ -35,6 +35,18 @@ export default async function sitemap () {
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.8
+    }),
+    sitemap.push({
+      url: `https://ardent-industry.com/commodity/${commodity.commodityName}/importers`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.8
+    }),
+    sitemap.push({
+      url: `https://ardent-industry.com/commodity/${commodity.commodityName}/exporters`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.8
     })
   })
 

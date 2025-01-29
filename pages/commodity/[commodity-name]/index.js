@@ -151,7 +151,7 @@ export default () => {
     <Layout
       loading={commodity === undefined}
       loadingText='Loading trade data'
-      title={commodity ? `${commodity.name} - commodity in Elite Dangerous` : null}
+      title={commodity ? `${commodity.name} - best commodity prices in Elite Dangerous` : null}
       description={commodity ? `Where to buy and sell ${commodity.name} in Elite Dangerous` : null}
     >
       <Head>
