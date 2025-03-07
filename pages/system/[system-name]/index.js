@@ -19,7 +19,7 @@ import NearbyCommodityExporters from 'components/nearby-commodity-exporters'
 import StationIcon from 'components/station-icon'
 import getSystemExports from 'lib/system-exports'
 import getSystemImports from 'lib/system-imports'
-import commmoditiesWithDescriptions from 'lib/commodities/commodities.json'
+import listOfCommodities from 'lib/commodities/commodities.json'
 import { NavigationContext } from 'lib/context'
 
 import {
@@ -153,7 +153,7 @@ export default () => {
 
           const marketIds = stations.map(s => s.marketId)
           const rareItems = []
-          for (const [, commodity] of Object.entries(commmoditiesWithDescriptions)) {
+          for (const [, commodity] of Object.entries(listOfCommodities)) {
             if (marketIds.includes(parseInt(commodity.market_id)) && commodity.rare) {
               rareItems.push({
                 stationName: stations.filter(s => s.marketId === parseInt(commodity.market_id))[0].stationName,
@@ -171,9 +171,9 @@ export default () => {
               mostRecentUpdatedAt = order.updatedAt
             }
             // Enrich order data with commodity metadata
-            if (commmoditiesWithDescriptions[order.symbol]) {
+            if (listOfCommodities[order.symbol]) {
               importOrders[i] = {
-                ...commmoditiesWithDescriptions[order.symbol],
+                ...listOfCommodities[order.symbol],
                 ...order
               }
             }
@@ -190,9 +190,9 @@ export default () => {
               mostRecentUpdatedAt = order.updatedAt
             }
             // Enrich order data with commodity metadata
-            if (commmoditiesWithDescriptions[order.symbol]) {
+            if (listOfCommodities[order.symbol]) {
               exportOrders[i] = {
-                ...commmoditiesWithDescriptions[order.symbol],
+                ...listOfCommodities[order.symbol],
                 ...order
               }
             }
