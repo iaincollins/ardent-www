@@ -206,6 +206,8 @@
   overflow-x: hidden;
   text-overflow: ellipsis;
   pointer-events: all;
+  padding-top: .1rem;
+  padding-bottom: .1rem;
 }
 
 .header__search-results p i {

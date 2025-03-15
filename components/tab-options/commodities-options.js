@@ -9,6 +9,7 @@ import {
   COMMODITY_FILTER_DISTANCE_DEFAULT,
   COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
 } from 'lib/consts'
+import { getCommoditiesWithAvgPricing } from 'lib/commodities'
 
 const ZERO_WIDTH_SPACE = '​' // Looking forward to regretting *this* later
 
@@ -24,9 +25,19 @@ export default ({ disabled = false }) => {
   const [fleetCarrierFilter, setFleetCarrierFilter] = useState()
   const [locationFilter, setLocationFilter] = useState()
   const [distanceFilter, setDistanceFilter] = useState()
+  const [commodities, setCommodities] = useState([])
+  const [selectedCommodity, setSelectedCommodity] = useState()
 
-  function updateUrlWithFilterOptions (router) {
-    const commodityName = window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
+  useEffect(() => {
+    (async () => {
+      setCommodities(await getCommoditiesWithAvgPricing())
+    })()
+  }, [])
+
+  function updateUrlWithFilterOptions (router, newCommodityName) {
+    const commodityName = newCommodityName ?? window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
+
+    setSelectedCommodity(commodityName.toLowerCase())
 
     let activeTab = ''
     if (window?.location?.pathname?.endsWith('exporters')) activeTab = 'exporters'
@@ -66,6 +77,9 @@ export default ({ disabled = false }) => {
   }, [lastUpdatedFilter, fleetCarrierFilter, minVolumeFilter, locationFilter, distanceFilter])
 
   useEffect(() => {
+    const commodityName = window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
+    setSelectedCommodity(commodityName.toLowerCase())
+
     setLastUpdatedFilter(router.query?.maxDaysAgo ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
     setMinVolumeFilter(router.query?.minVolume ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
     setFleetCarrierFilter(router.query?.fleetCarriers ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
@@ -77,13 +91,28 @@ export default ({ disabled = false }) => {
   }, [router.query])
 
   return (
-    <div className='tab-options'>
+    <div className='sidebar__options'>
       <form
         method='GET' action='/' onSubmit={(e) => {
           e.preventDefault()
           document.activeElement.blur()
         }}
       >
+        <label>
+            <span className='tab-options__label-text'>Commodity</span>
+            <select
+              value={selectedCommodity}
+              onChange={(e) => {
+                updateUrlWithFilterOptions(router, e.target.value)
+              }}>
+              {commodities.map(commodity => (
+                <option 
+                  key={`commodity_select_${commodity.symbol}`}
+                  value={commodity.symbol.toLowerCase()}
+                  >{commodity.name}</option>
+              ))}
+            </select>
+        </label>
         <label>
           <span className='tab-options__label-text'>Near</span>
           <input
@@ -236,11 +265,12 @@ export default ({ disabled = false }) => {
           </select>
         </label>
         {(
-          parseInt(lastUpdatedFilter) !== parseInt(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT) ||
-          parseInt(minVolumeFilter) !== parseInt(COMMODITY_FILTER_MIN_VOLUME_DEFAULT) ||
-          fleetCarrierFilter !== COMMODITY_FILTER_FLEET_CARRIER_DEFAULT ||
-          locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT ||
-          (locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT  && parseInt(distanceFilter) !== parseInt(COMMODITY_FILTER_DISTANCE_DEFAULT))
+          // parseInt(lastUpdatedFilter) !== parseInt(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT) ||
+          // parseInt(minVolumeFilter) !== parseInt(COMMODITY_FILTER_MIN_VOLUME_DEFAULT) ||
+          // fleetCarrierFilter !== COMMODITY_FILTER_FLEET_CARRIER_DEFAULT ||
+          // locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT ||
+          // (locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT  && parseInt(distanceFilter) !== parseInt(COMMODITY_FILTER_DISTANCE_DEFAULT))
+          false
         )
           ? (
             <button

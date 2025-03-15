@@ -58,7 +58,7 @@ export default () => {
       commoditySearchResults.forEach(i => searchResults.push({
         icon: 'icarus-terminal-cargo',
         name: i.name,
-        path: `/commodity/${i.symbol}`
+        path: `/commodity/${i.symbol.toLowerCase()}`
       }))
     }
     if (Array.isArray(systemSearchResults)) {

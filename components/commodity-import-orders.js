@@ -30,7 +30,10 @@ export default ({ commodities, rare }) => {
           className: 'max-width-mobile',
           render: (v, r) =>
             <div>
-              <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
+              {r.stationName == 'Stronghold Carrier' && r.stationType === null 
+                ? <StationIcon stationType='Stronghold Carrier'/>
+                : <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
+              }
               {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
               <div className='is-visible-mobile'>
@@ -62,7 +65,7 @@ export default ({ commodities, rare }) => {
           render: (v, r) => (
             <>
               <span style={{ opacity: 0.75 }}>{v}</span>
-              {Number.isInteger(r.distance) && <small className='text-no-transform' style={{ marginLeft: '.5rem', opacity: 0.5 }}>{Number.isInteger(r.distance) ? <>{r.distance.toLocaleString()} ly</> : ''}</small>}
+              {Number.isInteger(r.distance) && <small className='text-no-transform no-wrap' style={{ marginLeft: '.5rem', opacity: 0.5 }}>{Number.isInteger(r.distance) ? <>{r.distance.toLocaleString()} ly</> : ''}</small>}
             </>
           )
         },

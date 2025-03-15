@@ -181,4 +181,26 @@
     max-width: none;
     padding-top: 2.25rem;
   }
+  
+  .layout__content-with-sidebar-wrapper {
+    top: 4.5rem;
+    bottom: 5rem;
+    position: absolute;
+    overflow: auto;
+    width: calc(100% - .5rem);
+    left: 0rem;
+  }
+
+  .layout__content--has-sidebar {
+    display: block;
+    position: relative;
+    top: 0rem;
+  }
+
+  .layout__content--is-sidebar {
+    display: block;
+    position: relative;
+    top: 0rem;
+    padding-left: .1rem;
+  }
 }

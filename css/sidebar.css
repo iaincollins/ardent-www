@@ -1,0 +1,75 @@
+.sidebar__options {
+  padding-bottom: .15rem;
+}
+
+.sidebar__options form label {
+  position: relative;
+  display: block;
+  margin-top: .5rem;
+}
+
+.sidebar__options form label span {
+  display: block;
+  text-transform: uppercase;
+  opacity: .75;
+  font-size: .9rem;
+}
+
+.sidebar__options form input[type="text"] {
+  width: calc(100% - .75rem);
+}
+
+.sidebar__options form input,
+.sidebar__options form select {
+  width: calc(100%);
+  background: var(--color-primary-light);
+  border-color: var(--color-primary-darker);
+  color: var(--color-text-inverted);
+  border-style: solid;
+  border-width: .15rem;
+  border-radius: 0.2rem;
+  padding: .25rem;
+  font-size: 1rem;
+  font-family: "Jura", sans-serif;
+  transition: opacity 500ms;
+}
+
+.sidebar__options form input:hover:not(:disabled),
+.sidebar__options form select:hover:not(:disabled) {
+  background: var(--color-primary-lighter);
+  border-color: var(--color-primary-darker);
+}
+
+.sidebar__options form button:disabled,
+.sidebar__options form input:disabled,
+.sidebar__options form select:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.sidebar__options form button {
+  border-radius: .2rem;
+  border: none;
+  background: rgba(0,0,0,.75);
+  color: white;
+  position: absolute;
+  font-size: 1rem;
+  padding: .25rem .5rem;
+  transition: 500ms;
+  text-transform: uppercase;
+}
+
+.sidebar__options form input[type="checkbox"] {
+  margin-left: 0;
+  margin-right: .5rem;
+}
+
+.sidebar__properties-table th,
+.sidebar__properties-table td {
+  text-align: left;
+}
+
+.sidebar__properties-table th {
+  text-transform: uppercase;
+  opacity: .75;
+}

@@ -10,6 +10,19 @@
   html {
     font-size: max(min(1vw, 1.5rem), 1.25rem);
   }
+  
+  .layout__content--has-sidebar {
+    width: calc(100% - 17.25rem);
+    left: 16rem;
+  }
+
+  .layout__content--is-sidebar {
+    width: 15rem;
+    top: 5rem;
+    border-right: .2rem solid var(--color-primary-darker);
+    padding-left: .1rem;
+    padding-right: .35rem;
+  }
 }
 
 @media only screen and (min-width: 1900px) {

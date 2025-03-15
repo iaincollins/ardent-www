@@ -3,6 +3,7 @@
 @import url('helpers.css');
 @import url('layout.css');
 @import url('elements/index.css');
+@import url('sidebar.css');
 
 @import url('components/header.css');
 @import url('components/breadcrumbs.css');

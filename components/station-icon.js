@@ -6,10 +6,10 @@ module.exports = ({ stationType }) => {
   if (stationType === 'Asteroid Base') icon = 'asteroid-base'
   if (stationType === 'Outpost') icon = 'outpost'
   if (stationType === 'Megaship') icon = 'megaship'
+  if (stationType === 'Stronghold Carrier') icon = 'megaship'
   if (stationType === 'Fleet Carrier') icon = 'fleet-carrier'
   if (stationType === 'Planetary Port') icon = 'planetary-port'
   if (stationType === 'Planetary Outpost') icon = 'planetary-port'
   if (stationType === 'Odyssey Settlement') icon = 'settlement'
-
   return <i className={`station-icon icarus-terminal-${icon}`} />
 }

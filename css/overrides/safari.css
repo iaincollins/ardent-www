@@ -27,3 +27,7 @@ html[data-browser="safari"] label {
 html[data-browser="safari"] .breadcrumbs li {
   text-shadow: none;
 }
+
+html[data-browser="safari"] select {
+  height: 2rem;
+}

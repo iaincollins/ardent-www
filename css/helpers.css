@@ -23,6 +23,10 @@
   font-size: 1.2rem;
 }
 
+.text-uppercase {
+  text-transform: uppercase;
+}
+
 .text-positive {
   color: var(--color-positive);
 }

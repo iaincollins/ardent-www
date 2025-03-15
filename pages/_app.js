@@ -22,9 +22,7 @@ export default ({ Component, pageProps }) => {
         <div className='fx__background' />
         <NavigationContext.Provider value={[navigationPath, setNavigationPath]}>
           <Header />
-          <div className='layout__content scrollable'>
-            <Component {...pageProps} />
-          </div>
+          <Component {...pageProps} />
         </NavigationContext.Provider>
       </div>
       <div className='fx__scanlines' />
