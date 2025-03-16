@@ -204,15 +204,23 @@ async function getCommodity(commodityName) {
 }
 
 async function getExports(commodityName) {
-  let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/exports?${apiQueryOptions()}`
-  const res = await fetch(url)
-  return await res.json()
+  try {
+    const url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/exports?${apiQueryOptions()}`
+    const res = await fetch(url)
+    return await res.json()
+  } catch (e) {
+    return []
+  }
 }
 
 async function getImports(commodityName) {
-  let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/imports?${apiQueryOptions()}`
-  const res = await fetch(url)
-  return await res.json()
+  try {
+    let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/imports?${apiQueryOptions()}`
+    const res = await fetch(url)
+    return await res.json()
+  } catch (e) {
+    return []
+  }
 }
 
 async function getCommodityFromMarket(marketId, commodityName) {
@@ -275,21 +283,21 @@ const CommodityInfo = ({ commodity, rareMarket }) => {
   return (
     <>
       <CommodityTabOptions />
-      <div className='fx__fade-in' style={{padding: '0 .1rem'}}>
+      <div className='fx__fade-in' style={{ padding: '0 .1rem' }}>
         <p className='fx__animated-text text-uppercase' data-fx-order='3' style={{ marginBottom: 0 }}>
-          <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>{commodity?.rare ? <span class='text-uppercase muted'>, Rare</span> : undefined}
+          <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>{commodity?.rare ? <span className='text-uppercase muted'>, Rare</span> : undefined}
         </p>
         <p className='text-no-transform muted' style={{ fontSize: '.8rem', marginTop: '.1rem' }}>
           {commodityCategories[commodity.category].description}
         </p>
         {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
-        <>
-          <span className='text-uppercase muted' style={{ fontSize: '.9rem', display: 'block', marginTop: '.5rem' }}>Exclusive exporter</span>
-          <span className='fx__animated-text text-no-transform' data-fx-order='2' style={{ fontSize: '.9rem' }}>
-            <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
-            {commodity?.rareMaxCount && <><br /><small>limit {commodity.rareMaxCount}T</small></>}
-          </span>
-        </>}
+          <>
+            <span className='text-uppercase muted' style={{ fontSize: '.9rem', display: 'block', marginTop: '.5rem' }}>Exclusive exporter</span>
+            <span className='fx__animated-text text-no-transform' data-fx-order='2' style={{ fontSize: '.9rem' }}>
+              <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
+              {commodity?.rareMaxCount && <><br /><small>limit {commodity.rareMaxCount}T</small></>}
+            </span>
+          </>}
         {listOfCommodities[commodity.symbol]?.description &&
           <p style={{ marginBottom: 0, textTransform: 'none', fontSize: '.9rem' }}>
             {listOfCommodities[commodity.symbol]?.description}
