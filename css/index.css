@@ -4,19 +4,21 @@
 @import url('layout.css');
 @import url('elements/index.css');
 
-@import url('components/header.css');
 @import url('components/breadcrumbs.css');
-@import url('components/tabs.css');
+@import url('components/data-table.css');
+@import url('components/header.css');
 @import url('components/loader.css');
 @import url('components/loading-bar.css');
-@import url('components/data-table.css');
-@import url('components/properties-table.css');
+@import url('components/menu-grid.css');
 @import url('components/news-ticker.css');
-@import url('components/system-map.css');
+@import url('components/properties-table.css');
 @import url('components/sidebar.css');
+@import url('components/system-map.css');
+@import url('components/tabs.css');
 
-@import url('responsive/mobile.css');
 @import url('responsive/desktop.css');
+@import url('responsive/mobile.css');
+
 @import url("overrides/safari.css");
 
 @font-face {

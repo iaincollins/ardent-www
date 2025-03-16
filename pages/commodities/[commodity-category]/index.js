@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import Head from 'next/head'
 import Table from 'rc-table'
 import Layout from 'components/layout'
@@ -26,7 +27,7 @@ export async function getServerSideProps({ query }) {
 }
 */
 
-export default function Page (props) {
+export default function Page(props) {
   const [navigationPath, setNavigationPath] = useContext(NavigationContext)
 
   const router = useRouter()
@@ -57,7 +58,7 @@ export default function Page (props) {
       setNavigationPath(
         (categories_.length === 1)
           ? [{ name: 'Home', path: '/' }, { name: 'Commodities', path: '/commodities' }]
-          : [{ name: 'Home', path: '/' }, { name: 'All Commodities', path: '/commodities' }]
+          : [{ name: 'Home', path: '/' }, { name: 'Commodities', path: '/commodities' }]
       )
     })()
   }, [router.asPath])
@@ -75,20 +76,36 @@ export default function Page (props) {
       {commodities && categories &&
         <div className='fx__fade-in'>
           {categories?.length > 1 &&
-            <p className='clear text-center' style={{ marginBottom: '.5rem' }}>
-              The best trade prices for commodities anywhere in the galaxy.
-            </p>}
-          {categories?.length === 1 && commodityCategories[categories[0]]?.description &&
-            <p className='clear text-center' style={{ marginBottom: '.5rem' }}>
+            <div className='heading--with-underline'>
+              <h2 className='heading--with-icon'>
+                <i className='icon icarus-terminal-cargo' />
+                Commodities
+              </h2>
+            </div>
+          }
+          {categories?.length === 1 && commodityCategories[categories[0]]?.description && <>
+            <div className='heading--with-underline'>
+              <h2 className='heading--with-icon'>
+                <i className='icon icarus-terminal-cargo' />
+                {categories}
+              </h2>
+            </div>
+            <p className='clear text-centerx' style={{ marginTop: 0, marginBottom: '.5rem' }}>
               {commodityCategories[categories[0]].description}
-            </p>}
-          {categories?.length === 1 && commodityCategories[categories[0]]?.whereToFind &&
-            <p className='clear text-center' style={{ marginBottom: '.5rem' }}>
-              {commodityCategories[categories[0]]?.whereToFind}
-            </p>}
-          {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
+              {categories?.length === 1 && commodityCategories[categories[0]]?.whereToFind && <>
+                {' '}{commodityCategories[categories[0]]?.whereToFind}
+              </>}
+            </p>
+          </>}
+          {categories?.length > 1 &&
+            <div className='menu-button-grid'>
+              {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
+                <Link className='button' href={`/commodities/${category.toLowerCase()}`}>{category}</Link>
+              )}
+            </div>
+          }
+          {categories?.length === 1 && categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
             <div key={`category_${category}`} style={{ marginTop: '1rem' }}>
-              {categories?.length === 1 && <h2 className='heading--table'>{category}</h2>}
               {categories?.length > 1 && <h2 className='heading--table' onClick={() => router.push(`/commodities/${category.toLowerCase()}`)}>{category}</h2>}
               <Table
                 className='data-table data-table--striped data-table--interactive data-table--animated'
@@ -111,28 +128,21 @@ export default function Page (props) {
                           <table className='data-table--mini data-table--compact two-column-table'>
                             <tbody style={{ textTransform: 'uppercase' }}>
                               <tr>
-                                <td><span className='data-table__label'>Avg Import CR/T</span>
-                                  {r.avgSellPrice > 0 ? <>{r.avgSellPrice.toLocaleString()} CR</> : '-'}
-                                </td>
+                              <td><span className='data-table__label'>Avg Export CR/T</span>{r.avgBuyPrice > 0 ? <>{r.avgBuyPrice.toLocaleString()} CR</> : '-'}</td>
+
                                 <td><span className='data-table__label'>Avg Profit CR/T</span>{r.avgProfit > 0 ? <>{r.avgProfit.toLocaleString()} CR</> : '-'}</td>
                               </tr>
                               <tr>
-                                <td><span className='data-table__label'>Avg Export CR/T</span>{r.avgBuyPrice > 0 ? <>{r.avgBuyPrice.toLocaleString()} CR</> : '-'}</td>
+                              <td><span className='data-table__label'>Avg Import CR/T</span>
+                                  {r.avgSellPrice > 0 ? <>{r.avgSellPrice.toLocaleString()} CR</> : '-'}
+                                </td>
+
                                 <td><span className='data-table__label'>Max Profit CR/T</span>{r.maxProfit > 0 ? <>{r.maxProfit.toLocaleString()} CR</> : '-'}</td>
                               </tr>
                             </tbody>
                           </table>
                         </div>
                       </>
-                  },
-                  {
-                    title: 'Avg import CR/T',
-                    dataIndex: 'avgSellPrice',
-                    key: 'avgSellPrice',
-                    align: 'right',
-                    className: 'is-hidden-mobile no-wrap',
-                    width: 150,
-                    render: (v, r) => (v > 0) ? <>{v.toLocaleString()} CR</> : <small>-</small>
                   },
                   {
                     title: 'Avg export CR/T',
@@ -142,6 +152,15 @@ export default function Page (props) {
                     className: 'is-hidden-mobile no-wrap',
                     width: 150,
                     render: (v) => v > 0 ? <>{v.toLocaleString()} CR</> : <small>-</small>
+                  },
+                  {
+                    title: 'Avg import CR/T',
+                    dataIndex: 'avgSellPrice',
+                    key: 'avgSellPrice',
+                    align: 'right',
+                    className: 'is-hidden-mobile no-wrap',
+                    width: 150,
+                    render: (v, r) => (v > 0) ? <>{v.toLocaleString()} CR</> : <small>-</small>
                   },
                   {
                     title: 'Avg profit CR/T',
