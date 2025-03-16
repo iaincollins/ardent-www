@@ -12,6 +12,7 @@ import listOfCommodities from 'lib/commodities/commodities.json'
 import animateTableEffect from 'lib/animate-table-effect'
 import { NavigationContext } from 'lib/context'
 import TradeBracketIcon from 'components/trade-bracket'
+import commodityCategories from 'lib/commodities/commodity-categories.json'
 
 import {
   API_BASE_URL,
@@ -138,7 +139,7 @@ export default () => {
 
       setNavigationPath([
         { name: 'Commodities', path: '/commodities' },
-        { name: c.category, path: `/commodities/${c.category.toLowerCase()}` }
+        { name: 'Search', path: '/commodities' }
       ])
 
       getImportsAndExports()
@@ -151,20 +152,14 @@ export default () => {
       loadingText='Loading trade data'
       title={commodity ? `${commodity.name} - best commodity prices in Elite Dangerous` : null}
       description={commodity ? `Where to buy and sell ${commodity.name} in Elite Dangerous` : null}
-      sidebar={<About commodity={commodity} router={router} rareMarket={rareMarket} />}
+      sidebar={<CommodityInfo commodity={commodity} rareMarket={rareMarket} />}
     >
       <Head>
         <link rel='canonical' href={`https://ardent-industry.com/commodity/${commodity?.symbol}${(tabIndex > 0) ? `/${TABS[tabIndex]}` : ''}`} />
       </Head>
       {commodity === null && <><h1>Error: Not found</h1><p className='text-large clear'>Commodity not found.</p></>}
       {commodity &&
-        <div className='fx__fade-in'>
-          {/* <div className='heading--with-underline'>
-            <h2 className='heading--with-icon'>
-              <i className='icon icarus-terminal-cargo' />
-              {commodity.name}
-            </h2>
-          </div> */}
+        <div className='sticky-heading fx__fade-in'>
           <Tabs
             selectedIndex={tabIndex}
             className='clear'
@@ -175,17 +170,13 @@ export default () => {
             }
           >
             <TabList>
-              {/* <Tab>
-                <i style={{lineHeight: '1.5rem', fontSize: '1.25rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-info'/>
-                <span className='is-hidden-mobile'>About</span>
-              </Tab> */}
               <Tab>
                 <i style={{ lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative' }} className='icarus-terminal-cargo-export' />
-                <span className='is-hidden-mobile'>Buy</span>
+                Exp<span className='is-hidden-mobile'>orters</span>
               </Tab>
               <Tab>
                 <i style={{ lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative' }} className='icarus-terminal-cargo-import' />
-                <span className='is-hidden-mobile'>Sell</span>
+                Imp<span className='is-hidden-mobile'>orters</span>
               </Tab>
             </TabList>
             <TabDescription>
@@ -193,135 +184,6 @@ export default () => {
               {tabIndex === 0 && <>Exporters of {commodity.name}</>}
               {tabIndex === 1 && <>Importers of {commodity.name}</>}
             </TabDescription>
-            {/* {(tabIndex !== 0) ? <CommodityTabOptions disabled={((tabIndex === 1 && !imports) || (tabIndex === 2 && !exports))}/> : ''} */}
-            {/* <TabPanel>
-              <table className='properties-table' style={{ marginTop: '1rem' }}>
-                <tbody>
-                  <tr>
-                    <th>Bulk import price</th>
-                    <td>
-                      <span className='fx__animated-text' data-fx-order='2'>
-                        {typeof commodity.avgSellPrice === 'number'
-                          ? (
-                            <>
-                              {commodity.avgSellPrice.toLocaleString()} CR/T
-                              {' '}
-                              {commodity.minSellPrice !== commodity.maxSellPrice &&
-                                <small>({commodity.rare && 'Approx. '}{commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>}
-                            </>
-                            )
-                          : <InsufficentData />}
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Bulk export price</th>
-                    <td>
-                      <span className='fx__animated-text' data-fx-order='3'>
-                        {typeof commodity.avgBuyPrice === 'number'
-                          ? (
-                            <>
-                              {commodity.avgBuyPrice.toLocaleString()} CR/T
-                              {' '}
-                              {commodity.minBuyPrice !== commodity.maxBuyPrice &&
-                                <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>}
-                            </>
-                            )
-                          : <InsufficentData />}
-                      </span>
-                    </td>
-                  </tr>
-                  {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
-                    <tr>
-                      <th>Avg profit</th>
-                      <td>
-                        <span className='fx__animated-text' data-fx-order='5'>
-                          {commodity.avgProfit === 0
-                            ? <InsufficentData />
-                            : (
-                              <>
-                                {commodity.avgProfit.toLocaleString()} CR/T
-                                {' '}
-                                <small>({commodity.avgProfitMargin.toLocaleString()}% margin)</small>
-                              </>
-                              )}
-                        </span>
-                      </td>
-                    </tr>}
-                  {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
-                    <>
-                      {rareMarket?.stationName && rareMarket?.systemName &&
-                        <tr>
-                          <th>Exported by</th>
-                          <td>
-                            <span className='fx__animated-text text-no-transform' data-fx-order='4'>
-                              <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
-                              {commodity?.rareMaxCount && <small> (limit {commodity.rareMaxCount}T)</small>}
-                            </span>
-                          </td>
-                        </tr>}
-                    </>}
-                  {!commodity.rare &&
-                    <tr>
-                      <th>Supply/Demand</th>
-                      <td>
-                        <span className='fx__fade-in'>
-                          {commodity.totalDemand > 0 &&
-                            <div style={{ maxWidth: '12rem' }}>
-                              <p style={{ margin: 0 }}>
-                                {commodity.totalDemand > commodity.totalStock
-                                  ? (
-                                    <>
-                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 75 && <><TradeBracketIcon bracket={1}/> Low demand</>}
-                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 25 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 75 && <><TradeBracketIcon bracket={2}/> Steady demand</>}
-                                      {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 0 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 25 && <><TradeBracketIcon bracket={3}/> High demand</>}
-                                    </>
-                                    )
-                                  : <><TradeBracketIcon bracket={0}/> Oversupply </>}
-                              </p>
-                            </div>}
-                          {(commodity.totalDemand === 0) && <InsufficentData />}
-                        </span>
-                      </td>
-                    </tr>}
-                  {listOfCommodities[commodity.symbol]?.description &&
-                    <tr>
-                      <th>
-                        Description
-                      </th>
-                      <td>
-                        <p style={{ margin: 0, textTransform: 'none' }}>
-                          {listOfCommodities[commodity.symbol]?.description}
-                        </p>
-                      </td>
-                    </tr>}
-                  {commodity.rare &&
-                    <tr className='muted'>
-                      <th style={{ fontSize: '.8rem' }}>
-                        <i className='icon icarus-terminal-info' style={{ position: 'relative', top: '-.1rem', marginRight: '.25rem' }} />
-                        RARE
-                      </th>
-                      <td>
-                        <p style={{ margin: 0, textTransform: 'none', fontSize: '.8rem' }}>
-                          Rare items are usually only available in limited quantities from exclusive locations but can be sold almost anywhere.
-                          They fetch a higher price in stations that are further from the system that produced them, typically fetching the
-                          the highest possible value around 150-200 ly away.
-                        </p>
-                      </td>
-                    </tr>}
-                  {!commodity?.rare &&
-                    <tr>
-                      <th className='is-hidden-mobile'>&nbsp;</th>
-                      <td>
-                        <ul style={{ padding: '0 0 0 1.5rem' }}>
-                          <li style={{ marginBottom: '.5rem' }}><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/importers`}>Sell {commodity.name}</Link></li>
-                          <li><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/exporters`}>Buy {commodity.name}</Link></li>
-                        </ul>
-                      </td>
-                    </tr>}
-                </tbody>
-              </table>
-            </TabPanel> */}
             <TabPanel>
               {!exports && <div className='loading-bar loading-bar--tab' />}
               {exports && <CommodityExportOrders commodities={exports} />}
@@ -407,189 +269,36 @@ function parseQueryString() {
   return obj
 };
 
-const About = ({ commodity, router, rareMarket }) => {
-  if (!commodity || !router) return
-
-  // return (<CommodityTabOptions/>);
+const CommodityInfo = ({ commodity, rareMarket }) => {
+  if (!commodity) return
 
   return (
     <>
       <CommodityTabOptions />
       {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
         <>
-          <span className='text-uppercase muted' style={{fontSize: '.9rem', display: 'block', marginTop: '.5rem'}}>Exported exclusively by</span>
-          <span className='fx__animated-text text-no-transform' data-fx-order='3' style={{fontSize: '.9rem'}}>
+          <span className='text-uppercase muted' style={{ fontSize: '.9rem', display: 'block', marginTop: '.5rem' }}>Exported exclusively by</span>
+          <span className='fx__animated-text text-no-transform' data-fx-order='2' style={{ fontSize: '.9rem' }}>
             <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
-            {commodity?.rareMaxCount && <><br/><small>limit {commodity.rareMaxCount}T</small></>}
+            {commodity?.rareMaxCount && <><br /><small>limit {commodity.rareMaxCount}T</small></>}
           </span>
         </>}
-        
-     
-      <span className='text-uppercase muted' style={{fontSize: '.9rem', display: 'block', marginTop: '.5rem'}}>Description</span>
-      <span className='fx__animated-text text-no-transform' data-fx-order='4' style={{fontSize: '.9rem'}}>
-        {commodity.category}
-      </span>   
-      {listOfCommodities[commodity.symbol]?.description &&
-        <p style={{ marginBottom: 0, textTransform: 'none', fontSize: '.8rem' }}>
-          {listOfCommodities[commodity.symbol]?.description}
+      <span className='text-uppercase muted' style={{ fontSize: '.9rem', display: 'block', marginTop: '.5rem' }}>Description</span>
+      <span className='fx__animated-text text-no-transform' data-fx-order='3' style={{ fontSize: '.9rem' }}>
+        <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>{commodity?.rare ? <small>, rare</small> : undefined}
+      </span>
+      <div className='fx__fade-in'>
+        <p className='text-no-transform muted' style={{ fontSize: '.8rem', marginTop: '.1rem' }}>
+          {commodityCategories[commodity.category].description}
         </p>
-      }
 
-      <table className='sidebar__properties-table' style={{ marginTop: '1rem' }}>
-        <tbody>
-          {/* 
-      <tr>
-        <th>Bulk import price</th>
-      </tr>
-      <tr>
-        <td>
-          <span className='fx__animated-text' data-fx-order='2'>
-            {typeof commodity.avgSellPrice === 'number'
-              ? (
-                <>
-                  {commodity.avgSellPrice.toLocaleString()} CR/T
-                  {' '}
-                  {commodity.minSellPrice !== commodity.maxSellPrice &&
-                    <small>({commodity.rare && 'Approx. '}{commodity.minSellPrice.toLocaleString()} - {commodity.maxSellPrice.toLocaleString()} CR)</small>}
-                </>
-                )
-              : <InsufficentData />}
-          </span>
-        </td>
-      </tr>
-      <tr>
-        <th>Bulk export price</th>
-      </tr>
-      <tr>
-        <td>
-          <span className='fx__animated-text' data-fx-order='3'>
-            {typeof commodity.avgBuyPrice === 'number'
-              ? (
-                <>
-                  {commodity.avgBuyPrice.toLocaleString()} CR/T
-                  {' '}
-                  {commodity.minBuyPrice !== commodity.maxBuyPrice &&
-                    <small>({commodity.minBuyPrice.toLocaleString()} - {commodity.maxBuyPrice.toLocaleString()} CR)</small>}
-                </>
-                )
-              : <InsufficentData />}
-          </span>
-        </td>
-      </tr>
-      {typeof commodity.avgBuyPrice === 'number' && typeof commodity.avgSellPrice === 'number' &&
-      <>
-        <tr>
-          <th>Avg profit</th>
-        </tr>
-        <tr>
-          <td>
-            <span className='fx__animated-text' data-fx-order='5'>
-              {commodity.avgProfit === 0
-                ? <InsufficentData />
-                : (
-                  <>
-                    {commodity.avgProfit.toLocaleString()} CR/T
-                    {' '}
-                    <small>({commodity.avgProfitMargin.toLocaleString()}% margin)</small>
-                  </>
-                  )}
-            </span>
-          </td>
-        </tr>
-        </>} */}
-          {/* {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
-        <>
-          {rareMarket?.stationName && rareMarket?.systemName &&
-          <>
-            <tr>
-              <th>Exclusively exported by</th>
-              </tr>
-      <tr>
-              <td>
-                <span className='fx__animated-text text-no-transform' data-fx-order='4'>
-                  <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
-                  {commodity?.rareMaxCount && <small> (limit {commodity.rareMaxCount}T)</small>}
-                </span>
-              </td>
-            </tr>
-            </>}
-        </>} */}
-          {/* {!commodity.rare &&
-      <>
-        <tr>
-          <th>Supply/Demand</th>
-          </tr>
-      <tr>
-          <td>
-            <span className='fx__fade-in'>
-              {commodity.totalDemand > 0 &&
-                <div style={{ maxWidth: '12rem' }}>
-                  <p style={{ margin: 0 }}>
-                    {commodity.totalDemand > commodity.totalStock
-                      ? (
-                        <>
-                          {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 75 && <><TradeBracketIcon bracket={1}/> Low demand</>}
-                          {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 25 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 75 && <><TradeBracketIcon bracket={2}/> Steady demand</>}
-                          {Math.floor((commodity.totalStock / commodity.totalDemand) * 100) >= 0 && Math.floor((commodity.totalStock / commodity.totalDemand) * 100) < 25 && <><TradeBracketIcon bracket={3}/> High demand</>}
-                        </>
-                        )
-                      : <><TradeBracketIcon bracket={0}/> Oversupply </>}
-                  </p>
-                </div>}
-              {(commodity.totalDemand === 0) && <InsufficentData />}
-            </span>
-          </td>
-        </tr>
-        </>} */}
-          {/* {listOfCommodities[commodity.symbol]?.description &&
-      <>
-        <tr>
-          <th>
-            Description
-          </th>
-          </tr>
-      <tr>
-          <td>
-            <p style={{ textTransform: 'none', fontSize: '.8rem' }}>
-              {listOfCommodities[commodity.symbol]?.description}
-            </p>
-          </td>
-        </tr>
-        </>} */}
-          {/* {commodity.rare &&
-      <>
-        <tr className='muted'>
-          <th style={{ fontSize: '.8rem' }}>
-            <i className='icon icarus-terminal-info' style={{ position: 'relative', top: '-.1rem', marginRight: '.25rem' }} />
-            RARE
-          </th>
-          </tr>
-      <tr>
-          <td>
-            <p style={{ margin: 0, textTransform: 'none', fontSize: '.8rem' }}>
-              Rare items are usually only available in limited quantities from exclusive locations but can be sold almost anywhere.
-              They fetch a higher price in stations that are further from the system that produced them, typically fetching the
-              the highest possible value around 150-200 ly away.
-            </p>
-          </td>
-        </tr>
-        </>} */}
-          {/* {!commodity?.rare &&
-      <>
-        <tr>
-          <th className='is-hidden-mobile'>&nbsp;</th>
-          </tr>
-      <tr>
-          <td>
-            <ul style={{ padding: '0 0 0 1.5rem' }}>
-              <li style={{ marginBottom: '.5rem' }}><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/importers`}>Sell {commodity.name}</Link></li>
-              <li><Link href={`/commodity/${router.query['commodity-name'].toLocaleLowerCase()}/exporters`}>Buy {commodity.name}</Link></li>
-            </ul>
-          </td>
-        </tr>
-      </>} */}
-        </tbody>
-      </table>
+        {listOfCommodities[commodity.symbol]?.description &&
+          <p style={{ marginBottom: 0, textTransform: 'none', fontSize: '.9rem' }}>
+            {listOfCommodities[commodity.symbol]?.description}
+          </p>
+
+        }
+      </div>
     </>
   )
 }

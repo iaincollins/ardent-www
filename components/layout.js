@@ -21,7 +21,7 @@ export default ({
       <meta name='viewport' content='width=device-width' />
     </Head>
     <Loader visible={loading} text={loadingText} />
-    <div className={sidebar !== null ? 'layout__content-with-sidebar-wrapper' : undefined}>
+    <div className={sidebar !== null ? 'layout__content-with-sidebar-wrapper scrollable' : undefined}>
       {sidebar !== null && 
         <div className='layout__content layout__content--is-sidebar scrollable'>
           {sidebar}

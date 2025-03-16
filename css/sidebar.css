@@ -13,10 +13,14 @@
   text-transform: uppercase;
   opacity: .75;
   font-size: .9rem;
+  padding-bottom: .15rem;
 }
 
 .sidebar__options form input[type="text"] {
-  width: calc(100% - .75rem);
+  width: calc(100% - 1.75rem);
+  border-radius: 2rem;
+  padding-left: .75rem;
+  padding-right: .75rem;
 }
 
 .sidebar__options form input,

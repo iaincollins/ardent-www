@@ -184,7 +184,7 @@
   
   .layout__content-with-sidebar-wrapper {
     top: 4.5rem;
-    bottom: 5rem;
+    bottom: 3.25rem;
     position: absolute;
     overflow: auto;
     width: calc(100% - .5rem);
@@ -202,5 +202,21 @@
     position: relative;
     top: 0rem;
     padding-left: .1rem;
+  }
+
+  .sidebar__options form label span {
+    display: inline-block;
+    width: 6rem;
+    text-align: right;
+    padding-right: 1rem;
+  }
+  
+  .sidebar__options form input[type="text"] {
+    width: calc(100% - 9rem);
+  }
+  
+  .sidebar__options form input,
+  .sidebar__options form select {
+    width: calc(100% - 7rem);
   }
 }

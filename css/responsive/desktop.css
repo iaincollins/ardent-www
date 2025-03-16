@@ -14,11 +14,13 @@
   .layout__content--has-sidebar {
     width: calc(100% - 17.25rem);
     left: 16rem;
+    bottom: 3.25rem;
   }
 
   .layout__content--is-sidebar {
     width: 15rem;
     top: 5rem;
+    bottom: 3.25rem;
     border-right: .2rem solid var(--color-primary-darker);
     padding-left: .1rem;
     padding-right: .35rem;
