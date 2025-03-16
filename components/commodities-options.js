@@ -15,8 +15,6 @@ const ZERO_WIDTH_SPACE = '​' // Looking forward to regretting *this* later
 
 const DEFAULT_LOCATION_OPTIONS = ['Any location', 'Core Systems', 'Colonia Region']
 
-// FIXME This code is *especially* an absolute garbage fire 🗑️🔥
-
 export default ({ disabled = false }) => {
   const router = useRouter()
   const componentMounted = useRef(false)

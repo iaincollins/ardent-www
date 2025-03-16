@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import CommodityTabOptions from 'components/tab-options/commodities-options'
+import CommodityTabOptions from 'components/commodities-options'
 import Layout from 'components/layout'
 import CommodityImportOrders from 'components/commodity-import-orders'
 import CommodityExportOrders from 'components/commodity-export-orders'
@@ -275,28 +275,25 @@ const CommodityInfo = ({ commodity, rareMarket }) => {
   return (
     <>
       <CommodityTabOptions />
-      {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
+      <div className='fx__fade-in' style={{padding: '0 .1rem'}}>
+        <p className='fx__animated-text text-uppercase' data-fx-order='3' style={{ marginBottom: 0 }}>
+          <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>{commodity?.rare ? <span class='text-uppercase muted'>, Rare</span> : undefined}
+        </p>
+        <p className='text-no-transform muted' style={{ fontSize: '.8rem', marginTop: '.1rem' }}>
+          {commodityCategories[commodity.category].description}
+        </p>
+        {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
         <>
-          <span className='text-uppercase muted' style={{ fontSize: '.9rem', display: 'block', marginTop: '.5rem' }}>Exported exclusively by</span>
+          <span className='text-uppercase muted' style={{ fontSize: '.9rem', display: 'block', marginTop: '.5rem' }}>Exclusive exporter</span>
           <span className='fx__animated-text text-no-transform' data-fx-order='2' style={{ fontSize: '.9rem' }}>
             <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
             {commodity?.rareMaxCount && <><br /><small>limit {commodity.rareMaxCount}T</small></>}
           </span>
         </>}
-      <span className='text-uppercase muted' style={{ fontSize: '.9rem', display: 'block', marginTop: '.5rem' }}>Description</span>
-      <span className='fx__animated-text text-no-transform' data-fx-order='3' style={{ fontSize: '.9rem' }}>
-        <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>{commodity?.rare ? <small>, rare</small> : undefined}
-      </span>
-      <div className='fx__fade-in'>
-        <p className='text-no-transform muted' style={{ fontSize: '.8rem', marginTop: '.1rem' }}>
-          {commodityCategories[commodity.category].description}
-        </p>
-
         {listOfCommodities[commodity.symbol]?.description &&
           <p style={{ marginBottom: 0, textTransform: 'none', fontSize: '.9rem' }}>
             {listOfCommodities[commodity.symbol]?.description}
           </p>
-
         }
       </div>
     </>

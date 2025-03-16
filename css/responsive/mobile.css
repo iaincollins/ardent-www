@@ -201,6 +201,7 @@
     display: block;
     position: relative;
     top: 0rem;
+    padding-top: 1rem;
     padding-left: .1rem;
   }
 

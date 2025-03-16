@@ -3,7 +3,6 @@
 @import url('helpers.css');
 @import url('layout.css');
 @import url('elements/index.css');
-@import url('sidebar.css');
 
 @import url('components/header.css');
 @import url('components/breadcrumbs.css');
@@ -14,6 +13,7 @@
 @import url('components/properties-table.css');
 @import url('components/news-ticker.css');
 @import url('components/system-map.css');
+@import url('components/sidebar.css');
 
 @import url('responsive/mobile.css');
 @import url('responsive/desktop.css');
