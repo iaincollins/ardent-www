@@ -69,16 +69,10 @@ export default ({ commodity }) => {
               key: 'systemName',
               align: 'right',
               className: 'is-hidden-mobile',
-              render: (v) => <span style={{ opacity: 0.75 }}><Link href={`/system/${v}`}>{v}</Link></span>
-            },
-            {
-              title: 'Dist.',
-              dataIndex: 'distance',
-              key: 'distance',
-              align: 'right',
-              width: 100,
-              className: 'is-hidden-mobile no-wrap',
-              render: (v) => <span style={{ opacity: 0.75 }}>{v.toLocaleString()} Ly</span>
+              render: (v, r) => <>
+                <span style={{ opacity: 0.75 }}><Link href={`/system/${v}`}>{v}</Link></span>
+                <span style={{ fontSize: '.8rem', opacity: 0.5 }}> {r.distance.toLocaleString()} Ly</span>
+              </>
             },
             {
               title: 'Updated',

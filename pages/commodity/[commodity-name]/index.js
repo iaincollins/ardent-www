@@ -284,7 +284,7 @@ const CommodityInfo = ({ commodity, rareMarket }) => {
     <>
       <CommodityTabOptions />
       <div className='fx__fade-in' style={{ padding: '0 .1rem' }}>
-        <p className='fx__animated-text text-uppercase' data-fx-order='3' style={{ marginBottom: 0 }}>
+        <p className='fx__animated-text text-uppercase' data-fx-order='3' style={{ marginBottom: 0, fontSize: '.9rem' }}>
           <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>{commodity?.rare ? <span className='text-uppercase muted'>, Rare</span> : undefined}
         </p>
         <p className='text-no-transform muted' style={{ fontSize: '.8rem', marginTop: '.1rem' }}>
@@ -292,9 +292,9 @@ const CommodityInfo = ({ commodity, rareMarket }) => {
         </p>
         {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
           <>
-            <span className='text-uppercase muted' style={{ fontSize: '.9rem', display: 'block', marginTop: '.5rem' }}>Exclusive exporter</span>
+            <span className='text-uppercase muted' style={{ fontSize: '.9rem', display: 'block', marginTop: '.5rem' }}>Only exported from</span>
             <span className='fx__animated-text text-no-transform' data-fx-order='2' style={{ fontSize: '.9rem' }}>
-              <Link href={`/system/${rareMarket.systemName}/`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
+              <Link href={`/commodity/${commodity.symbol.toLowerCase()}?location=${rareMarket.systemName}`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
               {commodity?.rareMaxCount && <><br /><small>limit {commodity.rareMaxCount}T</small></>}
             </span>
           </>}
