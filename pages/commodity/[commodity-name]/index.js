@@ -153,6 +153,13 @@ export default () => {
       title={commodity ? `${commodity.name} - best commodity prices in Elite Dangerous` : null}
       description={commodity ? `Where to buy and sell ${commodity.name} in Elite Dangerous` : null}
       sidebar={<CommodityInfo commodity={commodity} rareMarket={rareMarket} />}
+      heading={
+        <div className='heading--with-underline'>
+          <h2 className='heading--with-icon'>
+            <i className='icon icarus-terminal-cargo' />Trade Data
+          </h2>
+        </div>
+      }
     >
       <Head>
         <link rel='canonical' href={`https://ardent-industry.com/commodity/${commodity?.symbol}${(tabIndex > 0) ? `/${TABS[tabIndex]}` : ''}`} />

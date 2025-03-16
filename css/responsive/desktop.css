@@ -7,6 +7,7 @@
   .is-visible-mobile {
     display: none !important;
   }
+
   html {
     font-size: max(min(1vw, 1.5rem), 1.25rem);
   }
@@ -14,16 +15,31 @@
   .layout__content--has-sidebar {
     width: calc(100% - 17.25rem);
     left: 16rem;
-    bottom: 3.25rem;
+    bottom: 0;
+    padding-top: 1rem;
+    top: 3rem;
   }
 
   .layout__content--is-sidebar {
+    padding-top: 1rem;
     width: 15rem;
-    top: 5rem;
-    bottom: 3.25rem;
+    top: 3rem;
+    bottom: 0;
     border-right: .2rem solid var(--color-primary-darker);
     padding-left: .1rem;
     padding-right: .35rem;
+  }
+
+  .layout__content-with-sidebar-wrapper {
+    position: absolute;
+    top: 5rem;
+    bottom: 3.25rem;
+    width: calc(100% - 1rem);
+  }
+
+  .layout__content--sidebar-heading {
+    position: relative;
+    top: -0.2rem;
   }
 }
 

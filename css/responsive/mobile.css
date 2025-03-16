@@ -194,15 +194,26 @@
   .layout__content--has-sidebar {
     display: block;
     position: relative;
-    top: 0rem;
+    top: -1.5rem;
+    padding-top: 1rem;
+    width: calc(100% - .75rem);
   }
 
   .layout__content--is-sidebar {
     display: block;
     position: relative;
-    top: 0rem;
-    padding-top: 1rem;
+    top: -1rem;
+    padding-top: .75rem;
     padding-left: .1rem;
+    padding-bottom: 1.5rem;
+    width: calc(100% - 1rem);
+  }
+
+  .layout__content--sidebar-heading {
+    position: relative;
+    top: .3rem;
+    width: calc(100% - .75rem);
+    left: .5rem;
   }
 
   .sidebar__options form label span {

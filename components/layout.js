@@ -10,7 +10,8 @@ export default ({
   loading = false,
   loadingText,
   children,
-  sidebar = null
+  sidebar = undefined,
+  heading = undefined
 }) =>
   <>
     <Head>
@@ -21,13 +22,21 @@ export default ({
       <meta name='viewport' content='width=device-width' />
     </Head>
     <Loader visible={loading} text={loadingText} />
-    <div className={sidebar !== null ? 'layout__content-with-sidebar-wrapper scrollable' : undefined}>
-      {sidebar !== null && 
+    <div className={sidebar !== undefined ? 'layout__content-with-sidebar-wrapper scrollable' : undefined}>
+      {heading !== undefined && sidebar !== undefined && 
+        <div className='layout__content--sidebar-heading'>
+          {heading}
+        </div>}
+      {sidebar !== undefined && 
         <div className='layout__content layout__content--is-sidebar scrollable'>
           {sidebar}
         </div>
       }
-      <div className={`layout__content ${sidebar !== null ? 'layout__content--has-sidebar' : undefined} scrollable`}>
+      <div className={`layout__content ${sidebar !== undefined ? 'layout__content--has-sidebar' : undefined} scrollable`}>
+        {heading !== undefined && sidebar === undefined && 
+        <div>
+          {heading}
+        </div>}
         {children}
       </div>
     </div>

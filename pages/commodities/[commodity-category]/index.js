@@ -9,24 +9,6 @@ import animateTableEffect from 'lib/animate-table-effect'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 import { NavigationContext } from 'lib/context'
 
-/*
-export async function getServerSideProps({ query }) {
-  // When running on the server we can can load the commodity pricing data
-  // directly and pass the data as an argument which the function then parses
-  const commoditiesWithPrices = (await import('../../../../ardent-data/cache/commodities.json')).commodities
-  const commodities = await getCommoditiesWithAvgPricing(commoditiesWithPrices)
-
-  const filterByCategory = (query?.['commodity-category'])
-    ? commodities.filter((c) => c.category.toLowerCase() === query?.['commodity-category'].toLowerCase())?.[0]?.category ?? false
-    : false
-
-  const categories = filterByCategory
-    ? [filterByCategory]
-    : [...new Set(commodities.map((c) => c.category).sort())]
-  return { props: { commodities, categories } }
-}
-*/
-
 export default function Page(props) {
   const [navigationPath, setNavigationPath] = useContext(NavigationContext)
 
@@ -76,13 +58,17 @@ export default function Page(props) {
       {commodities && categories &&
         <div className='fx__fade-in'>
           {categories?.length > 1 &&
-            <div className='heading--with-underline'>
-              <h2 className='heading--with-icon'>
-                <i className='icon icarus-terminal-cargo' />
-                Commodities
-              </h2>
-            </div>
-          }
+            <>
+              <div className='heading--with-underline'>
+                <h2 className='heading--with-icon'>
+                  <i className='icon icarus-terminal-cargo' />
+                  Commodities
+                </h2>
+              </div>
+              <p className='text-center muted' style={{marginTop: 0}}>
+                Commodity prices and supply / demand updated in real time via <Link target='_blank' href='https://eddn.edcd.io/'>EDDN</Link>.
+              </p>
+            </>}
           {categories?.length === 1 && commodityCategories[categories[0]]?.description && <>
             <div className='heading--with-underline'>
               <h2 className='heading--with-icon'>
@@ -128,12 +114,12 @@ export default function Page(props) {
                           <table className='data-table--mini data-table--compact two-column-table'>
                             <tbody style={{ textTransform: 'uppercase' }}>
                               <tr>
-                              <td><span className='data-table__label'>Avg Export CR/T</span>{r.avgBuyPrice > 0 ? <>{r.avgBuyPrice.toLocaleString()} CR</> : '-'}</td>
+                                <td><span className='data-table__label'>Avg Export CR/T</span>{r.avgBuyPrice > 0 ? <>{r.avgBuyPrice.toLocaleString()} CR</> : '-'}</td>
 
                                 <td><span className='data-table__label'>Avg Profit CR/T</span>{r.avgProfit > 0 ? <>{r.avgProfit.toLocaleString()} CR</> : '-'}</td>
                               </tr>
                               <tr>
-                              <td><span className='data-table__label'>Avg Import CR/T</span>
+                                <td><span className='data-table__label'>Avg Import CR/T</span>
                                   {r.avgSellPrice > 0 ? <>{r.avgSellPrice.toLocaleString()} CR</> : '-'}
                                 </td>
 

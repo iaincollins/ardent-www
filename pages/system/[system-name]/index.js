@@ -162,53 +162,53 @@ export default () => {
           setRareGoods(rareItems)
         })()
 
-        ; (async () => {
-          let importOrders = await getSystemImports(systemName)
-          importOrders.forEach((order, i) => {
-            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-              mostRecentUpdatedAt = order.updatedAt
-            }
-            // Enrich order data with commodity metadata
-            if (listOfCommodities[order.symbol]) {
-              importOrders[i] = {
-                ...listOfCommodities[order.symbol],
-                ...order
+          ; (async () => {
+            let importOrders = await getSystemImports(systemName)
+            importOrders.forEach((order, i) => {
+              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+                mostRecentUpdatedAt = order.updatedAt
               }
-            }
-          })
-          importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
-          setImportOrders(importOrders)
-          setLastUpdatedAt(mostRecentUpdatedAt)
-        })()
-
-        ; (async () => {
-          const exportOrders = await getSystemExports(systemName)
-          exportOrders.forEach((order, i) => {
-            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-              mostRecentUpdatedAt = order.updatedAt
-            }
-            // Enrich order data with commodity metadata
-            if (listOfCommodities[order.symbol]) {
-              exportOrders[i] = {
-                ...listOfCommodities[order.symbol],
-                ...order
+              // Enrich order data with commodity metadata
+              if (listOfCommodities[order.symbol]) {
+                importOrders[i] = {
+                  ...listOfCommodities[order.symbol],
+                  ...order
+                }
               }
-            }
-          })
-          setExportOrders(exportOrders)
-          setLastUpdatedAt(mostRecentUpdatedAt)
-        })()
+            })
+            importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
+            setImportOrders(importOrders)
+            setLastUpdatedAt(mostRecentUpdatedAt)
+          })()
 
-        ; (async () => {
-          const nearbySystems = await getNearbySystems(systemName)
-          nearbySystems.forEach(s => {
-            s.distance = distance(
-              [system.systemX, system.systemY, system.systemZ],
-              [s.systemX, s.systemY, s.systemZ]
-            )
-          })
-          setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)))
-        })()
+          ; (async () => {
+            const exportOrders = await getSystemExports(systemName)
+            exportOrders.forEach((order, i) => {
+              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+                mostRecentUpdatedAt = order.updatedAt
+              }
+              // Enrich order data with commodity metadata
+              if (listOfCommodities[order.symbol]) {
+                exportOrders[i] = {
+                  ...listOfCommodities[order.symbol],
+                  ...order
+                }
+              }
+            })
+            setExportOrders(exportOrders)
+            setLastUpdatedAt(mostRecentUpdatedAt)
+          })()
+
+          ; (async () => {
+            const nearbySystems = await getNearbySystems(systemName)
+            nearbySystems.forEach(s => {
+              s.distance = distance(
+                [system.systemX, system.systemY, system.systemZ],
+                [s.systemX, s.systemY, s.systemZ]
+              )
+            })
+            setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)))
+          })()
       }
     })()
   }, [router.query['system-name']])
@@ -219,6 +219,13 @@ export default () => {
       loadingText='Loading system data'
       title={system ? `${system.systemName} - star system in Elite Dangerous` : null}
       description={system ? `Trade data for ${system.systemName} in Elite Dangerous` : null}
+      heading={
+        <div className='heading--with-underline'>
+          <h2 className='heading--with-icon'>
+            <i className='icon icarus-terminal-system-orbits' />{system?.systemName}
+          </h2>
+        </div>
+      }
     >
       <Head>
         <link rel='canonical' href={`https://ardent-industry.com/system/${system?.systemName}/${tabs[tabIndex]}`} />
@@ -226,12 +233,6 @@ export default () => {
       {system === null && <><h1>Error: Not found</h1><p className='text-large clear'>System not found.</p></>}
       {system &&
         <div className='fx__fade-in'>
-          <div className='heading--with-underline'>
-            <h2 className='heading--with-icon'>
-              <i className='icon icarus-terminal-system-orbits' />
-              {system.systemName}
-            </h2>
-          </div>
           <div className='system-map'>
             <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />
             {nearbySystems && nearbySystems.map((nearbySystem, i) =>
@@ -421,17 +422,17 @@ export default () => {
           >
             <TabList>
               <Tab>
-                <i style={{lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-cargo-export'/>
+                <i style={{ lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative' }} className='icarus-terminal-cargo-export' />
                 <span className='is-hidden-mobile'>Exports</span>
                 {/* {exportOrders && <span className='tab-badge'>{exportOrders.length}</span>} */}
               </Tab>
               <Tab>
-                <i style={{lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-cargo-import'/>
+                <i style={{ lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative' }} className='icarus-terminal-cargo-import' />
                 <span className='is-hidden-mobile'>Imports</span>
                 {/* {importOrders && <span className='tab-badge'>{importOrders.length}</span>} */}
               </Tab>
               <Tab>
-                <i style={{lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative'}} className='icarus-terminal-route'/>
+                <i style={{ lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative' }} className='icarus-terminal-route' />
                 <span className='is-hidden-mobile'>Nearby</span>
               </Tab>
             </TabList>
@@ -665,7 +666,7 @@ export default () => {
                 />}
             </TabPanel>
             <TabPanel>
-              {!nearbySystems && <div style={{ marginTop: '2rem' }}   className='loading-bar loading-bar--tab' />}
+              {!nearbySystems && <div style={{ marginTop: '2rem' }} className='loading-bar loading-bar--tab' />}
               {nearbySystems &&
                 <Table
                   className='data-table data-table--striped data-table--interactive data-table--animated'
@@ -701,18 +702,18 @@ export default () => {
   )
 }
 
-async function getSystem (systemName) {
+async function getSystem(systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getStationsInSystem (systemName) {
+async function getStationsInSystem(systemName) {
   // @TODO No API endpoint for stations yet, so using 'markets' endpoint
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/stations`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getNearbySystems (systemName) {
+async function getNearbySystems(systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=25`)
   return await res.json()
 }
