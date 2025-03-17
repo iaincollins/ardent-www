@@ -18,6 +18,11 @@ module.exports = {
         source: '/system',
         destination: '/',
         permanent: false
+      },
+      {
+        source: '/trade-data',
+        destination: '/commodity/agronomictreatment',
+        permanent: false
       }
     ]
   },

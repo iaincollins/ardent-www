@@ -17,11 +17,11 @@ export default (props) => {
   const [version, setVersion] = useState()
 
   useEffect(() => {
-    setNavigationPath([{ name: 'Trade Data', path: '/' }])
+    setNavigationPath([{ name: 'Home', path: '/' }, { name: 'News', path: '/' }])
       ; (async () => {
         const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
         let news = res.ok ? await res.json() : []
-        setGalnetNews(news.slice(0, 2))
+        setGalnetNews(news.slice(0, 3))
       })()
 
       ; (async () => {
@@ -46,13 +46,13 @@ export default (props) => {
       </Head>
       <div className='fx__fade-in'>
         <div className='news__about'>
-          <p style={{ textAlign: 'right' }}>
+          <p style={{ textAlign: 'center' }}>
             <small>
-              Ardent OS {Package.version} // <a href={API_BASE_URL} rel='noreferrer' target='_blank'>API {version?.version ?? '?.?.?'}</a>
+              Ardent OS {Package.version} | <a href={API_BASE_URL} rel='noreferrer' target='_blank'>API {version?.version ?? '?.?.?'}</a>
             </small>
           </p>
           <div className='heading--with-underline'>
-            <h2 className='heading--with-icon text-uppercase' style={{fontSize: '1rem'}}>
+            <h2 className='heading--with-icon text-uppercase' style={{ fontSize: '1rem' }}>
               <i className='icon icarus-terminal-economy' />
               Trade Data
             </h2>
@@ -79,18 +79,18 @@ export default (props) => {
                   {stats.pointsOfInterest.toLocaleString()} Points of Interest
                 </li>
               </ul>
-              <p className='text-uppercase muted' style={{textAlign: 'center'}}>
+              <p className='text-uppercase muted' style={{ textAlign: 'center' }}>
                 {stats.updatedInLast24Hours.toLocaleString()} updates
-                <br/>in the last 24 hours
+                <br />in the last 24 hours
               </p>
             </>}
-          <Link className='button' style={{ textAlign: 'center', display: 'block', padding: '.5rem', fontSize: '1.25rem', margin: '0 1rem'}} href='/commodity/agronomictreatment'>
-          <i className='icon icarus-terminal-cargo' style={{ marginRight: '.5rem', fontSize: '1.25rem !important' }} />
+          <Link className='button' style={{ textAlign: 'center', display: 'block', padding: '.5rem', fontSize: '1.25rem', margin: '0 1rem' }} href='/trade-data'>
+            <i className='icon icarus-terminal-cargo' style={{ marginRight: '.5rem', fontSize: '1.25rem !important' }} />
             Trade Data
             <i className='icon icarus-terminal-chevron-right' style={{ marginLeft: '.5rem', fontSize: '1.25rem !important' }} />
           </Link>
-          <div className='heading--with-underline' style={{marginTop: '1rem'}}>
-            <h2 className='heading--with-icon text-uppercase' style={{fontSize: '1rem'}}>
+          <div className='heading--with-underline' style={{ marginTop: '1rem' }}>
+            <h2 className='heading--with-icon text-uppercase' style={{ fontSize: '1rem' }}>
               <i className='icon icarus-terminal-cargo' />
               Commodities
             </h2>
@@ -100,13 +100,13 @@ export default (props) => {
               <li key={category}><Link href={`/commodities/${category.toLowerCase()}`}>{category}</Link></li>
             )}
           </ul>
-          <div className='heading--with-underline' style={{marginTop: '1rem'}}>
-            <h2 className='heading--with-icon text-uppercase' style={{fontSize: '1rem'}}>
+          <div className='heading--with-underline' style={{ marginTop: '1rem' }}>
+            <h2 className='heading--with-icon text-uppercase' style={{ fontSize: '1rem' }}>
               <i className='icon icarus-terminal-logo' />
               About
             </h2>
           </div>
-          <p style={{marginTop: 0}}>
+          <p style={{ marginTop: 0 }}>
             Ardent Industry is the leading provider of trade data and market insights in the galaxy.
           </p>
           <p>
@@ -120,20 +120,23 @@ export default (props) => {
           </p>
         </div>
         <div className='news__feed'>
-        <div className='heading--with-underline'>
-            <h2 className='heading--with-icon text-uppercase' style={{fontSize: '1rem'}}>
+          <div className='heading--with-underline'>
+            <h2 className='heading--with-icon text-uppercase' style={{ fontSize: '1rem' }}>
               <i className='icon icarus-terminal-location-filled' />
-              Galnet News Feed
+              Galnet News Headlines
             </h2>
           </div>
           <div className='clear' />
           {galnetNews && galnetNews.map((newsItem, i) => (
             <div key={newsItem.url}>
-              <h3>{newsItem.title}</h3>
-              <img src={newsItem.image} width='100%' alt='News headline' style={{ WebkitFilter: 'grayscale(1)' }} />
-              <p className='muted'>{newsItem.date} :: <a href={newsItem.url}>Galnet News</a></p>
-              <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
-              {i < galnetNews.length - 1 && <hr style={{ marginBottom: '1rem' }} />}
+              <h3 className='news__article-headline'>{newsItem.title}</h3>
+              <div className='news__article-body'>
+                <img src={newsItem.image} width='100%' alt='News article headline' className='news__headline-image' />
+                <div className='news__article-text'>
+                  <p className='muted text-uppercase'><a href={newsItem.url}>Galnet News, {newsItem.date} </a></p>
+                  <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
+                </div>
+              </div>
             </div>
           ))}
         </div>
