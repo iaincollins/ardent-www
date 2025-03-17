@@ -183,7 +183,7 @@
   }
   
   .layout__content-with-sidebar-wrapper {
-    top: 4.5rem;
+    top: 4.3rem;
     bottom: 3.25rem;
     position: absolute;
     overflow: auto;
@@ -203,7 +203,7 @@
     display: block;
     position: relative;
     top: -1rem;
-    padding-top: .75rem;
+    padding-top: 1rem;
     padding-left: .1rem;
     padding-bottom: 1.5rem;
     width: calc(100% - 1rem);
@@ -211,7 +211,7 @@
 
   .layout__content--sidebar-heading {
     position: relative;
-    top: .3rem;
+    top: .5rem;
     width: calc(100% - .75rem);
     left: .5rem;
   }

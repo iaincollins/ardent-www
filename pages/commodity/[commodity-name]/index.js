@@ -139,7 +139,7 @@ export default () => {
 
       setNavigationPath([
         { name: 'Commodities', path: '/commodities' },
-        { name: 'Search', path: '/commodities' }
+        { name: 'Trade Data', path: '/commodities' }
       ])
 
       getImportsAndExports()

@@ -25,6 +25,7 @@
 
 a.button {
   border-bottom-color: transparent !important;
+  border-bottom: 0 !important;
 }
 
 .button::before {

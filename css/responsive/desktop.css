@@ -13,17 +13,18 @@
   }
   
   .layout__content--has-sidebar {
-    width: calc(100% - 17.25rem);
-    left: 16rem;
+    width: calc(100% - 16.25rem);
+    left: 15.5rem;
     bottom: 0;
     padding-top: 1rem;
-    top: 3rem;
+    top: 2.5rem;
   }
 
   .layout__content--is-sidebar {
     padding-top: 1rem;
     width: 15rem;
     top: 3rem;
+    left: -.5rem;
     bottom: 0;
     border-right: .2rem solid var(--color-primary-darker);
     padding-left: .1rem;
@@ -40,6 +41,16 @@
   .layout__content--sidebar-heading {
     position: relative;
     top: -0.2rem;
+  }
+
+  .news__feed {
+    float: left;
+    width: calc(100% - 18rem);
+  }
+
+  .news__about {
+    float: right;
+    width: 17rem;
   }
 }
 
