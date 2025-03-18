@@ -243,6 +243,9 @@ table.two-column-table>tbody>tr>td,
   margin-bottom: .5rem;
   margin-right: .5rem;
   font-size: .9rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .counter__number {
@@ -250,7 +253,7 @@ table.two-column-table>tbody>tr>td,
   color: var(--color-primary);
   padding: .25rem .5rem;
   border-radius: 2rem 0 0 2rem;
-  width: 6rem;
+  width: calc(50% - 2rem);
   display: inline-block;
   text-align: right;
 }

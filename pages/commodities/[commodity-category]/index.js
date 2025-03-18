@@ -9,7 +9,7 @@ import animateTableEffect from 'lib/animate-table-effect'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 import { NavigationContext } from 'lib/context'
 
-export default function Page(props) {
+export default function Page (props) {
   const [navigationPath, setNavigationPath] = useContext(NavigationContext)
 
   const router = useRouter()
@@ -85,8 +85,7 @@ export default function Page(props) {
               {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
                 <Link className='button' href={`/commodities/${category.toLowerCase()}`}>{category}</Link>
               )}
-            </div>
-          }
+            </div>}
           {categories?.length === 1 && categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
             <div key={`category_${category}`} style={{ marginTop: '1rem' }}>
               {categories?.length > 1 && <h2 className='heading--table' onClick={() => router.push(`/commodities/${category.toLowerCase()}`)}>{category}</h2>}
@@ -169,7 +168,7 @@ export default function Page(props) {
             </div>
           )}
           <p className='text-center muted'>
-            Commodity prices and supply and demand are updated in real time using data submitted to <Link target='_blank' href='https://eddn.edcd.io/'>EDDN</Link>.
+            Commodity prices and supply and demand are updated in real time using data submitted to <Link target='_blank' href='https://eddn.edcd.io/' rel='noreferrer'>EDDN</Link>.
           </p>
         </div>}
     </Layout>

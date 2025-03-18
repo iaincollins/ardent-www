@@ -32,31 +32,30 @@ export default ({ commodities }) => {
             <>
               <div style={{ paddingLeft: '2em' }}>
                 <span style={{ position: 'absolute', left: '.5rem' }}>
-                  {r.stationName == 'Stronghold Carrier' && r.stationType === null 
-                    ? <StationIcon stationType='Stronghold Carrier'/>
-                    : <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
-                  }
+                  {r.stationName === 'Stronghold Carrier' && r.stationType === null
+                    ? <StationIcon stationType='Stronghold Carrier' />
+                    : <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />}
                 </span>
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
-              <div className='is-visible-mobile'>
-                <span style={{ textTransform: 'none', opacity: 0.75 }}>
-                  {r.systemName} <small style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} ly</> : ''}</small>
-                </span>
-                <table className='data-table--mini data-table--compact two-column-table'>
-                  <tbody style={{ textTransform: 'uppercase' }}>
-                    <tr>
-                      <td>
-                        <span className='data-table__label'>Stock</span>
-                        <TradeBracketIcon bracket={r.stockBracket} />
-                        {r.stock.toLocaleString()} T
-                      </td>
-                      <td className='text-right'><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
-              </div>
+                <div className='is-visible-mobile'>
+                  <span style={{ textTransform: 'none', opacity: 0.75 }}>
+                    {r.systemName} <small style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} ly</> : ''}</small>
+                  </span>
+                  <table className='data-table--mini data-table--compact two-column-table'>
+                    <tbody style={{ textTransform: 'uppercase' }}>
+                      <tr>
+                        <td>
+                          <span className='data-table__label'>Stock</span>
+                          <TradeBracketIcon bracket={r.stockBracket} />
+                          {r.stock.toLocaleString()} T
+                        </td>
+                        <td className='text-right'><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
+                </div>
               </div>
             </>
         },

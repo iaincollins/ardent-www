@@ -6,7 +6,7 @@ import Layout from 'components/layout'
 import { NavigationContext } from 'lib/context'
 import { API_BASE_URL } from 'lib/consts'
 import Markdown from 'react-markdown'
-import commodityCategories from 'lib/commodities/commodity-categories.json'
+// import commodityCategories from 'lib/commodities/commodity-categories.json'
 import Package from 'package.json'
 
 export default (props) => {
@@ -18,35 +18,36 @@ export default (props) => {
 
   useEffect(() => {
     setNavigationPath([{ name: 'Home', path: '/' }, { name: 'News', path: '/' }])
-      ; (async () => {
-        const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
-        let news = res.ok ? await res.json() : []
-        setGalnetNews(news.slice(0, 3))
-      })()
+    ; (async () => {
+      const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
+      const news = res.ok ? await res.json() : []
+      setGalnetNews(news.slice(0, 1))
+    })()
 
-      ; (async () => {
-        const res = await fetch(`${API_BASE_URL}/v1/stats`)
-        const stats = await res.json()
-        setStats(stats)
-      })()
-      ; (async () => {
-        const res = await fetch(`${API_BASE_URL}/v1/version`)
-        const version = await res.json()
-        setVersion(version)
-      })()
+    ; (async () => {
+      const res = await fetch(`${API_BASE_URL}/v1/stats`)
+      const stats = await res.json()
+      setStats(stats)
+    })()
+    ; (async () => {
+      const res = await fetch(`${API_BASE_URL}/v1/version`)
+      const version = await res.json()
+      setVersion(version)
+    })()
   }, [])
 
   return (
     <Layout
       title='Ardent Industry - Elite Dangerous'
       description='Ardent Industry provides trade and exploration data for the game Elite Dangerous.'
+      className='layout--no-scrolling-on-desktop'
     >
       <Head>
         <link rel='canonical' href='https://ardent-industry.com/about' />
       </Head>
       <div className='fx__fade-in'>
         <div className='home__news-about'>
-          <p style={{ textAlign: 'center' }}>
+          <p style={{ textAlign: 'center', margin: '.5rem 0 0 0' }}>
             <small>
               Ardent OS {Package.version} | <a href={API_BASE_URL} rel='noreferrer' target='_blank'>API {version?.version ?? '?.?.?'}</a>
             </small>
@@ -87,7 +88,7 @@ export default (props) => {
             Trade Data
             <i className='icon icarus-terminal-chevron-right' style={{ marginLeft: '.5rem', fontSize: '1.25rem !important' }} />
           </Link>
-          <div className='heading--with-underline' style={{ marginTop: '1rem' }}>
+          {/* <div className='heading--with-underline' style={{ marginTop: '1rem' }}>
             <h2 className='heading--with-icon text-uppercase' style={{ fontSize: '1rem' }}>
               <i className='icon icarus-terminal-cargo' />
               Commodities
@@ -97,7 +98,7 @@ export default (props) => {
             {Object.entries(commodityCategories).map(([c, data]) => c).filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
               <li key={category}><Link href={`/commodities/${category.toLowerCase()}`}>{category}</Link></li>
             )}
-          </ul>
+          </ul> */}
           <div className='heading--with-underline' style={{ marginTop: '1rem' }}>
             <h2 className='heading--with-icon text-uppercase' style={{ fontSize: '1rem' }}>
               <i className='icon icarus-terminal-logo' />
@@ -108,35 +109,34 @@ export default (props) => {
             Ardent Industry is the leading provider of open trade data and market insights in the galaxy.
           </p>
           <p>
-            Real time commodity data sourced from the <Link target='_blank' href='https://eddn.edcd.io/'>EDDN</Link> relay.
+            Real time commodity data sourced from the <Link target='_blank' href='https://eddn.edcd.io/' rel='noreferrer'>EDDN</Link> relay.
           </p>
-          <h3 style={{ fontSize: '1rem', lineHeight: '1rem' }}>Where to find us</h3>
-          <p>
+          <h3 style={{ fontSize: '1rem', lineHeight: '1rem' }}>Main Office</h3>
+          <p style={{ backgroundColor: 'var(--color-text-inverted)', margin: 0, padding: '.5rem .25rem' }}>
             <Link href='/system/Puppis%20Sector%20GB-X%20b1-5' className='text-uppercase' style={{ border: 0 }}>
               <i className='icon icarus-terminal-outpost' />Icarus Terminal
               <br />
-              <i className='icon icarus-terminal-star' />Puppis Sector GB-X b1-5</Link>
+              <i className='icon icarus-terminal-star' />Puppis Sector GB-X b1-5
+            </Link>
           </p>
           <p className='muted' style={{ fontSize: '.8rem' }}>
-            Ardent Industry is a subsidiary of ICARUS Communications Corporation (ICC), creators of <Link target='_blank' href='https://github.com/iaincollins/icarus'>ICARUS Terminal</Link>.
+            Ardent Industry is a subsidiary of ICARUS Communications Corporation (ICC), creators of <Link target='_blank' href='https://github.com/iaincollins/icarus' rel='noreferrer'>ICARUS Terminal</Link>.
           </p>
-
+        </div>
+        <div className='home__news-feed-heading'>
+          <h2 className='heading--with-icon text-uppercase'>
+            <i className='icon icarus-terminal-location-filled' />
+            Galnet News
+          </h2>
         </div>
         <div className='home__news-feed'>
-          <div className='heading--with-underline'>
-            <h2 className='heading--with-icon text-uppercase' style={{ fontSize: '1rem' }}>
-              <i className='icon icarus-terminal-location-filled' />
-              Galnet News Headlines
-            </h2>
-          </div>
-          <div className='clear' />
           {galnetNews && galnetNews.map((newsItem, i) => (
             <div key={newsItem.url}>
-              <h3 className='home__news-article-headline'>{newsItem.title}</h3>
               <div className='home__news-article-body'>
                 <img src={newsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' />
-                <div className='home__news-article-text'>
-                  <p className='muted text-uppercase'><a target='_blank' href={newsItem.url}>Galnet News, {newsItem.date} </a></p>
+                <div className='home__news-article-text scrollable'>
+                  <h3 className='home__news-article-headline'>{newsItem.title}</h3>
+                  <p className='muted text-uppercase'><a target='_blank' href={newsItem.url} rel='noreferrer'>Galnet News, {newsItem.date} </a></p>
                   <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
                 </div>
               </div>

@@ -29,15 +29,14 @@ export default ({ commodities, rare }) => {
           align: 'left',
           className: 'max-width-mobile',
           render: (v, r) =>
-<div style={{ paddingLeft: '2em' }}>
-                <span style={{ position: 'absolute', left: '.5rem' }}>
-                  {r.stationName == 'Stronghold Carrier' && r.stationType === null 
-                    ? <StationIcon stationType='Stronghold Carrier'/>
-                    : <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
-                  }
-                </span>
-                {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}              <div className='is-visible-mobile'>
+            <div style={{ paddingLeft: '2em' }}>
+              <span style={{ position: 'absolute', left: '.5rem' }}>
+                {r.stationName === 'Stronghold Carrier' && r.stationType === null
+                  ? <StationIcon stationType='Stronghold Carrier' />
+                  : <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />}
+              </span>
+              {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+              {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}              <div className='is-visible-mobile'>
                 <span style={{ textTransform: 'none', opacity: 0.75 }}>
                   {r.systemName} <small style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} ly</> : ''}</small>
                 </span>

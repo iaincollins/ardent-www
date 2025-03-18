@@ -162,53 +162,53 @@ export default () => {
           setRareGoods(rareItems)
         })()
 
-          ; (async () => {
-            let importOrders = await getSystemImports(systemName)
-            importOrders.forEach((order, i) => {
-              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-                mostRecentUpdatedAt = order.updatedAt
+        ; (async () => {
+          let importOrders = await getSystemImports(systemName)
+          importOrders.forEach((order, i) => {
+            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+              mostRecentUpdatedAt = order.updatedAt
+            }
+            // Enrich order data with commodity metadata
+            if (listOfCommodities[order.symbol]) {
+              importOrders[i] = {
+                ...listOfCommodities[order.symbol],
+                ...order
               }
-              // Enrich order data with commodity metadata
-              if (listOfCommodities[order.symbol]) {
-                importOrders[i] = {
-                  ...listOfCommodities[order.symbol],
-                  ...order
-                }
-              }
-            })
-            importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
-            setImportOrders(importOrders)
-            setLastUpdatedAt(mostRecentUpdatedAt)
-          })()
+            }
+          })
+          importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
+          setImportOrders(importOrders)
+          setLastUpdatedAt(mostRecentUpdatedAt)
+        })()
 
-          ; (async () => {
-            const exportOrders = await getSystemExports(systemName)
-            exportOrders.forEach((order, i) => {
-              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-                mostRecentUpdatedAt = order.updatedAt
+        ; (async () => {
+          const exportOrders = await getSystemExports(systemName)
+          exportOrders.forEach((order, i) => {
+            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+              mostRecentUpdatedAt = order.updatedAt
+            }
+            // Enrich order data with commodity metadata
+            if (listOfCommodities[order.symbol]) {
+              exportOrders[i] = {
+                ...listOfCommodities[order.symbol],
+                ...order
               }
-              // Enrich order data with commodity metadata
-              if (listOfCommodities[order.symbol]) {
-                exportOrders[i] = {
-                  ...listOfCommodities[order.symbol],
-                  ...order
-                }
-              }
-            })
-            setExportOrders(exportOrders)
-            setLastUpdatedAt(mostRecentUpdatedAt)
-          })()
+            }
+          })
+          setExportOrders(exportOrders)
+          setLastUpdatedAt(mostRecentUpdatedAt)
+        })()
 
-          ; (async () => {
-            const nearbySystems = await getNearbySystems(systemName)
-            nearbySystems.forEach(s => {
-              s.distance = distance(
-                [system.systemX, system.systemY, system.systemZ],
-                [s.systemX, s.systemY, s.systemZ]
-              )
-            })
-            setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)))
-          })()
+        ; (async () => {
+          const nearbySystems = await getNearbySystems(systemName)
+          nearbySystems.forEach(s => {
+            s.distance = distance(
+              [system.systemX, system.systemY, system.systemZ],
+              [s.systemX, s.systemY, s.systemZ]
+            )
+          })
+          setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)))
+        })()
       }
     })()
   }, [router.query['system-name']])
@@ -702,18 +702,18 @@ export default () => {
   )
 }
 
-async function getSystem(systemName) {
+async function getSystem (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getStationsInSystem(systemName) {
+async function getStationsInSystem (systemName) {
   // @TODO No API endpoint for stations yet, so using 'markets' endpoint
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/stations`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getNearbySystems(systemName) {
+async function getNearbySystems (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=25`)
   return await res.json()
 }

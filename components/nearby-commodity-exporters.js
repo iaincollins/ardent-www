@@ -9,7 +9,7 @@ import { API_BASE_URL } from 'lib/consts'
 const MAX_ROWS_TO_DISPLAY = 10
 
 async function getNearbyExportersOfCommodity (systemName, commodityName) {
-  let url = `${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}/nearby/exports`
+  const url = `${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}/nearby/exports`
   const res = await fetch(url)
   return await res.json()
 }

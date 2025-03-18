@@ -11,7 +11,6 @@ import CommodityExportOrders from 'components/commodity-export-orders'
 import listOfCommodities from 'lib/commodities/commodities.json'
 import animateTableEffect from 'lib/animate-table-effect'
 import { NavigationContext } from 'lib/context'
-import TradeBracketIcon from 'components/trade-bracket'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 
 import {
@@ -50,7 +49,7 @@ export default () => {
     setTabIndex(newTabIndex)
   }, [router.pathname])
 
-  async function getImportsAndExports() {
+  async function getImportsAndExports () {
     // Can't reliably get this from the the route.query object
     const commodityName = window.location.pathname.split('/')[2]
     if (!commodityName) return
@@ -59,46 +58,46 @@ export default () => {
 
     if (activeTab === 'importers') {
       setImports(undefined)
-        ; (async () => {
-          const imports = await getImports(commodityName)
-          if (Array.isArray(imports)) {
-            imports.forEach(c => {
-              c.key = c.commodityId
-              c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-              c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-              c.maxProfit = c.maxSellPrice - c.minBuyPrice
-              c.symbol = c.commodityName.toLowerCase()
-              c.category = listOfCommodities[c.symbol]?.category ?? ''
-              c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-              delete c.commodityName
-            })
-            setImports(imports)
-          } else {
-            setImports([])
-          }
-        })()
+      ; (async () => {
+        const imports = await getImports(commodityName)
+        if (Array.isArray(imports)) {
+          imports.forEach(c => {
+            c.key = c.commodityId
+            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+            c.maxProfit = c.maxSellPrice - c.minBuyPrice
+            c.symbol = c.commodityName.toLowerCase()
+            c.category = listOfCommodities[c.symbol]?.category ?? ''
+            c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+            delete c.commodityName
+          })
+          setImports(imports)
+        } else {
+          setImports([])
+        }
+      })()
     }
 
     if (activeTab === 'exporters') {
       setExports(undefined)
-        ; (async () => {
-          const exports = await getExports(commodityName)
-          if (Array.isArray(exports)) {
-            exports.forEach(c => {
-              c.key = c.commodityId
-              c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-              c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-              c.maxProfit = c.maxSellPrice - c.minBuyPrice
-              c.symbol = c.commodityName.toLowerCase()
-              c.category = listOfCommodities[c.symbol]?.category ?? ''
-              c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-              delete c.commodityName
-            })
-            setExports(exports)
-          } else {
-            setExports([])
-          }
-        })()
+      ; (async () => {
+        const exports = await getExports(commodityName)
+        if (Array.isArray(exports)) {
+          exports.forEach(c => {
+            c.key = c.commodityId
+            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+            c.maxProfit = c.maxSellPrice - c.minBuyPrice
+            c.symbol = c.commodityName.toLowerCase()
+            c.category = listOfCommodities[c.symbol]?.category ?? ''
+            c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+            delete c.commodityName
+          })
+          setExports(exports)
+        } else {
+          setExports([])
+        }
+      })()
     }
   }
 
@@ -205,12 +204,12 @@ export default () => {
   )
 }
 
-async function getCommodity(commodityName) {
+async function getCommodity (commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getExports(commodityName) {
+async function getExports (commodityName) {
   try {
     const url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/exports?${apiQueryOptions()}`
     const res = await fetch(url)
@@ -220,9 +219,9 @@ async function getExports(commodityName) {
   }
 }
 
-async function getImports(commodityName) {
+async function getImports (commodityName) {
   try {
-    let url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/imports?${apiQueryOptions()}`
+    const url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/imports?${apiQueryOptions()}`
     const res = await fetch(url)
     return await res.json()
   } catch (e) {
@@ -230,17 +229,17 @@ async function getImports(commodityName) {
   }
 }
 
-async function getCommodityFromMarket(marketId, commodityName) {
+async function getCommodityFromMarket (marketId, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/market/${marketId}/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-const InsufficentData = () => <span style={{ opacity: 0.4 }}>Insufficent data</span>
+// const InsufficentData = () => <span style={{ opacity: 0.4 }}>Insufficent data</span>
 
-const ratio = (a, b) => {
-  const greatestCommonDivisor = (a, b) => (b === 0) ? a : greatestCommonDivisor(b, a % b)
-  return `${a / greatestCommonDivisor(a, b)}:${b / greatestCommonDivisor(a, b)}`
-}
+// const ratio = (a, b) => {
+//   const greatestCommonDivisor = (a, b) => (b === 0) ? a : greatestCommonDivisor(b, a % b)
+//   return `${a / greatestCommonDivisor(a, b)}:${b / greatestCommonDivisor(a, b)}`
+// }
 
 const TabDescription = ({ children }) => {
   return (
@@ -250,7 +249,7 @@ const TabDescription = ({ children }) => {
   )
 }
 
-function apiQueryOptions() {
+function apiQueryOptions () {
   // Parse current query string and convert the params to an API query parametrer string
   const options = []
 
@@ -275,7 +274,7 @@ function apiQueryOptions() {
   return options.join('&')
 }
 
-function parseQueryString() {
+function parseQueryString () {
   const obj = {}
   window.location.search.replace(
     new RegExp('([^?=&]+)(=([^&]*))?', 'g'),
@@ -308,8 +307,7 @@ const CommodityInfo = ({ commodity, rareMarket }) => {
         {listOfCommodities[commodity.symbol]?.description &&
           <p style={{ marginBottom: 0, textTransform: 'none', fontSize: '.9rem' }}>
             {listOfCommodities[commodity.symbol]?.description}
-          </p>
-        }
+          </p>}
       </div>
     </>
   )

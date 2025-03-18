@@ -97,19 +97,21 @@ export default ({ disabled = false }) => {
         }}
       >
         <label>
-            <span className='tab-options__label-text'>Commodity</span>
-            <select
-              value={selectedCommodity}
-              onChange={(e) => {
-                updateUrlWithFilterOptions(router, e.target.value)
-              }}>
-              {commodities.map(commodity => (
-                <option 
-                  key={`commodity_select_${commodity.symbol}`}
-                  value={commodity.symbol.toLowerCase()}
-                  >{commodity.name}</option>
-              ))}
-            </select>
+          <span className='tab-options__label-text'>Commodity</span>
+          <select
+            value={selectedCommodity}
+            onChange={(e) => {
+              updateUrlWithFilterOptions(router, e.target.value)
+            }}
+          >
+            {commodities.map(commodity => (
+              <option
+                key={`commodity_select_${commodity.symbol}`}
+                value={commodity.symbol.toLowerCase()}
+              >{commodity.name}
+              </option>
+            ))}
+          </select>
         </label>
         <label>
           <span className='tab-options__label-text'>Near</span>

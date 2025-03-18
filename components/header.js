@@ -22,7 +22,7 @@ export default () => {
   useEffect(() => {
     document.addEventListener('fullscreenchange', onFullScreenChangeHandler)
     return () => document.removeEventListener('click', onFullScreenChangeHandler)
-    function onFullScreenChangeHandler(event) {
+    function onFullScreenChangeHandler (event) {
       setFullScreenState(isFullScreen())
     }
   }, [])
@@ -83,21 +83,21 @@ export default () => {
   }, [commoditySearchResults, systemSearchResults, stationSearchResults])
 
   useEffect(() => {
-    const onKeyDown = ({key}) => {
+    const onKeyDown = ({ key }) => {
       if (key === 'Enter') {
-        if (document.activeElement?.id === 'header-search'
-            || document.activeElement?.id === 'location') {
+        if (document.activeElement?.id === 'header-search' ||
+            document.activeElement?.id === 'location') {
           document.activeElement.blur()
         } else {
           document.getElementById('header-search').focus()
         }
       }
     }
-    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keydown', onKeyDown)
     return () => {
-      document.removeEventListener('keyup', onKeyUp);
+      document.removeEventListener('keyup', onKeyUp)
     }
-    }, [])
+  }, [])
 
   return (
     <header>
@@ -114,14 +114,15 @@ export default () => {
         </ul>
       </div>
       <div className='header__navigation' style={{ display: 'block' }}>
-        {/* 
+        {/*
         <button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button>
         <button aria-label='Map' className='button'><i className='icon icarus-terminal-system-orbits' /></button>
         */}
         <div className='header__search' style={{ xdisplay: 'none' }}>
           <label className='header__search-input' aria-label='Search' onClick={() => document.getElementById('header-search').focus()}>
             <i className='icon icarus-terminal-search' />
-            <input id='header-search' name='header-search' type='text' autoComplete='off' placeholder='Search'
+            <input
+              id='header-search' name='header-search' type='text' autoComplete='off' placeholder='Search'
               onBlur={(e) => {
                 setSearchResultsVisible(false)
               }}
@@ -160,17 +161,17 @@ export default () => {
                     }
                   })
 
-                    ; (matchingCommodities.length > 0)
-                      ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
-                      : setCommoditySearchResults(undefined)
+                  ; (matchingCommodities.length > 0)
+                    ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
+                    : setCommoditySearchResults(undefined)
                 } catch (e) { }
 
                 try {
                   const res = await fetch(`${API_BASE_URL}/v1/search/system/name/${searchText}`)
                   const matchingSystems = await res.json()
                     ; (matchingSystems.length > 0)
-                      ? setSystemSearchResults(matchingSystems.splice(0, 5))
-                      : setSystemSearchResults(undefined)
+                    ? setSystemSearchResults(matchingSystems.splice(0, 5))
+                    : setSystemSearchResults(undefined)
                 } catch (e) { }
               }}
               onKeyDown={(e) => {
@@ -190,21 +191,23 @@ export default () => {
               }}
             />
           </label>
-          {
-            <div className='header__search-results' 
-              style={{
-                opacity: (searchResultsVisible) ? 1 : 0
-              }}
-            >
-              {searchResults?.length > 0 && searchResults.map((result, i) =>
-                <p key={`${i}:${result.icon}:${result.name}`}
-                  onMouseDown={() => {
-                    router.push(result.path)
-                    setSearchResultsVisible(false)
-                  }}
-                ><i className={result.icon} />{result.name}</p>
-              )}
-            </div>}
+          <div
+            className='header__search-results'
+            style={{
+              opacity: (searchResultsVisible) ? 1 : 0
+            }}
+          >
+            {searchResults?.length > 0 && searchResults.map((result, i) =>
+              <p
+                key={`${i}:${result.icon}:${result.name}`}
+                onMouseDown={() => {
+                  router.push(result.path)
+                  setSearchResultsVisible(false)
+                }}
+              ><i className={result.icon} />{result.name}
+              </p>
+            )}
+          </div>
         </div>
         <button aria-label='About' className='button' onClick={() => setAboutDialogVisible(!aboutDialogVisible)}>
           <i className='icon icarus-terminal-info' />
@@ -234,22 +237,19 @@ export default () => {
                 <span className='news-ticker__ticker-item-price'>
                   {(item.demandBracket > item.stockBracket)
                     ? <>{item.demand === 0 ? '' : <>{item.demand.toLocaleString()} T</>}<br />{item.sellPrice.toLocaleString()} CR/T</>
-                    : <>{item.stock.toLocaleString()} T<br />{item.buyPrice.toLocaleString()} CR/T</>
-                  }
+                    : <>{item.stock.toLocaleString()} T<br />{item.buyPrice.toLocaleString()} CR/T</>}
                 </span>
                 <span className='news-ticker__ticker-item-price-difference'>
                   {item.avgSellPrice !== 0 && item.demandBracket === 3 &&
                     <>
                       {item.sellPrice > item.avgSellPrice && <small className='text-positive'>AVG Profit</small>}
                       {item.sellPrice < item.avgSellPrice && <small className='text-negative'>AVG Loss</small>}
-                    </>
-                  }
+                    </>}
                   {item.avgBuyPrice !== 0 && item.stockBracket === 3 &&
                     <>
                       {item.buyPrice > item.avgBuyPrice && <small className='text-negative'>AVG Loss</small>}
                       {item.buyPrice < item.avgBuyPrice && <small className='text-positive'>AVG Profit</small>}
-                    </>
-                  }
+                    </>}
                   <br />
                   {item.demandBracket === 3 && item.avgSellPrice !== 0 &&
                     <>
@@ -273,7 +273,7 @@ export default () => {
   )
 }
 
-function isFullScreen() {
+function isFullScreen () {
   if (typeof document === 'undefined') return false
 
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
@@ -283,7 +283,7 @@ function isFullScreen() {
   }
 }
 
-async function toggleFullScreen() {
+async function toggleFullScreen () {
   if (isFullScreen()) {
     if (document.cancelFullScreen) {
       document.cancelFullScreen()

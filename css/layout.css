@@ -49,13 +49,13 @@
   padding-top: .5rem;
   margin: 0 .5rem;
   mask-image: linear-gradient(to bottom,
-      transparent,
-      black 1.25rem,
-      black calc(100% - 1.25rem),
-      transparent), linear-gradient(black, black);
-  mask-size: 100% 100%, 1rem 100%;
-  mask-position: 0 0, 100% 0;
-  mask-repeat: no-repeat, no-repeat;
+  transparent,
+  black 1.25rem,
+  black calc(100% - 1.25rem),
+  transparent), linear-gradient(black, black);
+mask-size: 100% 100%, 1rem 100%;
+mask-position: 0 0, 100% 0;
+mask-repeat: no-repeat, no-repeat;
   /*
     This line actually causes Chrome to fail to render the site (hard failure).
     It seems like the tab crashes, but no errors in the logs. Only reproducable
