@@ -12,7 +12,7 @@
     font-size: max(min(1vw, 1.5rem), 1.25rem);
   }
   
-  .layout__content--has-sidebar {
+  .layout__content--right {
     width: calc(100% - 16.25rem);
     left: 15.5rem;
     bottom: 0;
@@ -20,7 +20,7 @@
     top: 2.5rem;
   }
 
-  .layout__content--is-sidebar {
+  .layout__content--left-sidebar {
     padding-top: 1rem;
     width: 15rem;
     top: 3rem;
@@ -31,24 +31,24 @@
     padding-right: .35rem;
   }
 
-  .layout__content-with-sidebar-wrapper {
+  .layout__content-wrapper {
     position: absolute;
     top: 5rem;
     bottom: 3.25rem;
     width: calc(100% - 1rem);
   }
 
-  .layout__content--sidebar-heading {
+  .layout__content-heading {
     position: relative;
     top: -0.2rem;
   }
 
-  .news__feed {
+  .home__news-feed {
     float: left;
     width: calc(100% - 18rem);
   }
 
-  .news__about {
+  .home__news-about {
     float: right;
     width: 17rem;
   }

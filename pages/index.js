@@ -45,7 +45,7 @@ export default (props) => {
         <link rel='canonical' href='https://ardent-industry.com/about' />
       </Head>
       <div className='fx__fade-in'>
-        <div className='news__about'>
+        <div className='home__news-about'>
           <p style={{ textAlign: 'center' }}>
             <small>
               Ardent OS {Package.version} | <a href={API_BASE_URL} rel='noreferrer' target='_blank'>API {version?.version ?? '?.?.?'}</a>
@@ -59,26 +59,24 @@ export default (props) => {
           </div>
           {stats &&
             <>
-              <ul>
-                <li>
-                  {stats.systems.toLocaleString()} Star Systems
-                </li>
-                <li>
-                  {stats.stations.stations.toLocaleString()}<span className='muted'></span> Stations/Ports
-                </li>
-                <li>
-                  {stats.stations.carriers.toLocaleString()} Fleet Carriers
-                </li>
-                <li>
-                  {stats.trade.tradeOrders.toLocaleString()} Buy/Sell Orders
-                </li>
-                <li>
-                  {(stats.trade.stations + stats.trade.carriers).toLocaleString()} Markets
-                </li>
-                <li>
-                  {stats.pointsOfInterest.toLocaleString()} Points of Interest
-                </li>
-              </ul>
+              <p className='counter'>
+                <span className='counter__number'>{stats.systems.toLocaleString()}</span> Star Systems
+              </p>
+              <p className='counter'>
+                <span className='counter__number'>{stats.stations.stations.toLocaleString()}</span> Stations/Ports
+              </p>
+              <p className='counter'>
+                <span className='counter__number'>{stats.stations.carriers.toLocaleString()}</span> Fleet Carriers
+              </p>
+              <p className='counter'>
+                <span className='counter__number'>{stats.trade.tradeOrders.toLocaleString()}</span> Buy/Sell Orders
+              </p>
+              <p className='counter'>
+                <span className='counter__number'>{(stats.trade.stations + stats.trade.carriers).toLocaleString()}</span> Markets
+              </p>
+              <p className='counter'>
+                <span className='counter__number'>{stats.pointsOfInterest.toLocaleString()}</span> Points of Interest
+              </p>
               <p className='text-uppercase muted' style={{ textAlign: 'center' }}>
                 {stats.updatedInLast24Hours.toLocaleString()} updates
                 <br />in the last 24 hours
@@ -95,7 +93,7 @@ export default (props) => {
               Commodities
             </h2>
           </div>
-          <ul>
+          <ul className='home__commodity_categories'>
             {Object.entries(commodityCategories).map(([c, data]) => c).filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
               <li key={category}><Link href={`/commodities/${category.toLowerCase()}`}>{category}</Link></li>
             )}
@@ -110,9 +108,9 @@ export default (props) => {
             Ardent Industry is the leading provider of open trade data and market insights in the galaxy.
           </p>
           <p>
-            Real time commodity data sourced from <Link target='_blank' href='https://eddn.edcd.io/'>EDDN</Link> relay.
+            Real time commodity data sourced from the <Link target='_blank' href='https://eddn.edcd.io/'>EDDN</Link> relay.
           </p>
-          <h3 style={{ fontSize: '.9rem', lineHeight: '1rem' }}>Main Office</h3>
+          <h3 style={{ fontSize: '1rem', lineHeight: '1rem' }}>Where to find us</h3>
           <p>
             <Link href='/system/Puppis%20Sector%20GB-X%20b1-5' className='text-uppercase' style={{ border: 0 }}>
               <i className='icon icarus-terminal-outpost' />Icarus Terminal
@@ -124,7 +122,7 @@ export default (props) => {
           </p>
 
         </div>
-        <div className='news__feed'>
+        <div className='home__news-feed'>
           <div className='heading--with-underline'>
             <h2 className='heading--with-icon text-uppercase' style={{ fontSize: '1rem' }}>
               <i className='icon icarus-terminal-location-filled' />
@@ -134,10 +132,10 @@ export default (props) => {
           <div className='clear' />
           {galnetNews && galnetNews.map((newsItem, i) => (
             <div key={newsItem.url}>
-              <h3 className='news__article-headline'>{newsItem.title}</h3>
-              <div className='news__article-body'>
-                <img src={newsItem.image} width='100%' alt='News article headline' className='news__headline-image' />
-                <div className='news__article-text'>
+              <h3 className='home__news-article-headline'>{newsItem.title}</h3>
+              <div className='home__news-article-body'>
+                <img src={newsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' />
+                <div className='home__news-article-text'>
                   <p className='muted text-uppercase'><a target='_blank' href={newsItem.url}>Galnet News, {newsItem.date} </a></p>
                   <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
                 </div>

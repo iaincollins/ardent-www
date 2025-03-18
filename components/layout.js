@@ -22,17 +22,17 @@ export default ({
       <meta name='viewport' content='width=device-width' />
     </Head>
     <Loader visible={loading} text={loadingText} />
-    <div className={sidebar !== undefined ? 'layout__content-with-sidebar-wrapper scrollable' : undefined}>
+    <div className={sidebar !== undefined ? 'layout__content-wrapper scrollable' : undefined}>
       {heading !== undefined && sidebar !== undefined && 
-        <div className='layout__content--sidebar-heading'>
+        <div className='layout__content-heading'>
           {heading}
         </div>}
       {sidebar !== undefined && 
-        <div className='layout__content layout__content--is-sidebar scrollable'>
+        <div className='layout__content layout__content--left-sidebar scrollable'>
           {sidebar}
         </div>
       }
-      <div className={`layout__content ${sidebar !== undefined ? 'layout__content--has-sidebar' : undefined} scrollable`}>
+      <div className={`layout__content ${sidebar !== undefined ? 'layout__content--right' : undefined} scrollable`}>
         {heading !== undefined && sidebar === undefined && 
         <div>
           {heading}

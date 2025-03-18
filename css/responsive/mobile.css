@@ -182,7 +182,7 @@
     padding-top: 2.25rem;
   }
   
-  .layout__content-with-sidebar-wrapper {
+  .layout__content-wrapper {
     top: 4.3rem;
     bottom: 3.25rem;
     position: absolute;
@@ -199,7 +199,7 @@ mask-position: 0 0, 100% 0;
 mask-repeat: no-repeat, no-repeat;
   }
 
-  .layout__content--has-sidebar {
+  .layout__content--right {
     display: block;
     position: relative;
     top: -1.5rem;
@@ -207,7 +207,7 @@ mask-repeat: no-repeat, no-repeat;
     width: calc(100% - .75rem);
   }
 
-  .layout__content--is-sidebar {
+  .layout__content--left-sidebar {
     display: block;
     position: relative;
     top: -1rem;
@@ -217,7 +217,7 @@ mask-repeat: no-repeat, no-repeat;
     width: calc(100% - 1rem);
   }
 
-  .layout__content--sidebar-heading {
+  .layout__content-heading {
     position: relative;
     top: .5rem;
     width: calc(100% - .75rem);
