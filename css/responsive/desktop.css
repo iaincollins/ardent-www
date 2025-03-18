@@ -42,11 +42,6 @@
     top: -0.2rem;
   }
 
-  .layout--no-scrolling-on-desktop .layout__content {
-    mask-image: none;
-    overflow: hidden;
-  }
-  
   .home__news-about {
     float: right;
     width: 17rem;

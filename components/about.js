@@ -26,7 +26,7 @@ export default ({ toggle }) => {
       <p>
         ArdentOS v{Package.version} (<a href={API_BASE_URL} rel='noreferrer' target='_blank' className='muted'>API v{version?.version ?? '?.?.?'}</a>).
       </p>
-      {stats &&
+      {/* {stats &&
         <>
           <p>
             Updated {stats.updatedInLast24Hours.toLocaleString()} times in the last 24 hours.
@@ -57,15 +57,14 @@ export default ({ toggle }) => {
         </>}
       <p>
         <span className='muted'>* Includes stations, outposts, ports, settlements and megaships</span>
-      </p>
+      </p> */}
       <p>
         Trade and exploration data for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>.
       </p>
       <p>
-        Data from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>, which is run by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>.
+        The data feed comes from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>, which is run by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>.
       </p>
-      <h3>Downloads</h3>
-      <p className='clear'>
+      <p>
         Source code and data <Link href='/downloads' onClick={() => toggle && toggle(false)}>available for download</Link>.
       </p>
       <h3>Legal</h3>

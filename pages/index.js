@@ -40,7 +40,6 @@ export default (props) => {
     <Layout
       title='Ardent Industry - Elite Dangerous'
       description='Ardent Industry provides trade and exploration data for the game Elite Dangerous.'
-      className='layout--no-scrolling-on-desktop'
     >
       <Head>
         <link rel='canonical' href='https://ardent-industry.com/about' />
@@ -118,6 +117,12 @@ export default (props) => {
               <br />
               <i className='icon icarus-terminal-star' />Puppis Sector GB-X b1-5
             </Link>
+          </p>
+          <h3 style={{ marginTop: '1rem', fontSize: '1rem', lineHeight: '1rem' }}>Fleet Carrier</h3>
+          <p style={{ backgroundColor: 'var(--color-text-inverted)', margin: 0, padding: '.5rem .25rem' }}>
+            <span className='text-uppercase'>
+              <i className='icon icarus-terminal-fleet-carrier' />Ardent Pioneer [ V9G-G7Z ]
+            </span>
           </p>
           <p className='muted' style={{ fontSize: '.8rem' }}>
             Ardent Industry is a subsidiary of ICARUS Communications Corporation (ICC), creators of <Link target='_blank' href='https://github.com/iaincollins/icarus' rel='noreferrer'>ICARUS Terminal</Link>.
