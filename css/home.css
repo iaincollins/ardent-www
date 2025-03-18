@@ -2,9 +2,9 @@
 
   .home__news-feed {
     position: fixed;
-    top: 7.65rem;
-    bottom: 4.5rem;
-    left: 1.5rem;
+    bottom: 4.5rem !important;
+    top: 7.65rem !important;
+    left: 1.5rem !important;
     width: calc(100% - 22rem);
     padding: 0 .5rem .5rem .5rem;
     background-color: rgba(0, 0, 0, .25);
@@ -15,9 +15,9 @@
     content: "";
     position: fixed;
     inset: 0;
-    top: 7.65rem;
-    bottom: 4.25rem;
-    left: 1.5rem;
+    bottom: 4.5rem !important;
+    top: 7.65rem !important;
+    left: 1.5rem !important;
     width: calc(100% - 22rem);
     padding: 0 .5rem .5rem .5rem;
     background: var(--color-primary);
