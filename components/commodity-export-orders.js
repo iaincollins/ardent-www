@@ -10,7 +10,7 @@ import { API_BASE_URL } from 'lib/consts'
 import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
 
-async function getExportsForCommodityBySystem (systemName, commodityName) {
+async function getExportsForCommodityBySystem(systemName, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}`)
   const exports = await res.json()
   if (!exports || exports.error) return [] // Handle system not found
@@ -32,9 +32,9 @@ export default ({ commodities }) => {
             <>
               <div style={{ paddingLeft: '2em' }}>
                 <span style={{ position: 'absolute', left: '.5rem' }}>
-                  {r.stationName === 'Stronghold Carrier' && r.stationType === null
-                    ? <StationIcon stationType='Stronghold Carrier' />
-                    : <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />}
+                  {r.stationName === 'Stronghold' && r.stationType === null
+                    ? <StationIcon stationType='Stronghold' />
+                    : <StationIcon stationType={r.fleetCarrier === 1 ? 'FleetCarrier' : r.stationType} />}
                 </span>
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
@@ -114,7 +114,7 @@ export default ({ commodities }) => {
   )
 }
 
-function ExpandedRow ({ r }) {
+function ExpandedRow({ r }) {
   if (!r) return
 
   const [exports, setExports] = useState()
@@ -155,7 +155,7 @@ function ExpandedRow ({ r }) {
             className: 'max-width-mobile',
             render: (v, r) =>
               <>
-                <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
+                <StationIcon stationType={r.fleetCarrier === 1 ? 'FleetCarrier' : r.stationType} />
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                 <div className='is-visible-mobile'>

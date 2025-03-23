@@ -10,7 +10,7 @@ import { API_BASE_URL, NO_DEMAND_TEXT } from 'lib/consts'
 import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
 
-async function getImportsForCommodityBySystem (systemName, commodityName) {
+async function getImportsForCommodityBySystem(systemName, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}`)
   const imports = await res.json()
   if (!imports || imports.error) return [] // Handle system not found
@@ -31,12 +31,13 @@ export default ({ commodities, rare }) => {
           render: (v, r) =>
             <div style={{ paddingLeft: '2em' }}>
               <span style={{ position: 'absolute', left: '.5rem' }}>
-                {r.stationName === 'Stronghold Carrier' && r.stationType === null
-                  ? <StationIcon stationType='Stronghold Carrier' />
-                  : <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />}
+                {r.stationName === 'Stronghold' && r.stationType === null
+                  ? <StationIcon stationType='Stronghold' />
+                  : <StationIcon stationType={r.fleetCarrier === 1 ? 'FleetCarrier' : r.stationType} />}
               </span>
               {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-              {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}              <div className='is-visible-mobile'>
+              {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+              <div className='is-visible-mobile'>
                 <span style={{ textTransform: 'none', opacity: 0.75 }}>
                   {r.systemName} <small style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} ly</> : ''}</small>
                 </span>
@@ -111,7 +112,7 @@ export default ({ commodities, rare }) => {
   )
 }
 
-function ExpandedRow ({ r, rare }) {
+function ExpandedRow({ r, rare }) {
   if (!r) return
 
   const [imports, setImports] = useState()
@@ -152,7 +153,7 @@ function ExpandedRow ({ r, rare }) {
             className: 'max-width-mobile',
             render: (v, r) =>
               <>
-                <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
+                <StationIcon stationType={r.fleetCarrier === 1 ? 'FleetCarrier' : r.stationType} />
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                 <div className='is-visible-mobile'>

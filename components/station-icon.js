@@ -1,15 +1,19 @@
 module.exports = ({ stationType }) => {
-  let icon = 'poi'
-  if (stationType === 'Orbis Starport') icon = 'orbis-starport'
-  if (stationType === 'Coriolis Starport') icon = 'coriolis-starport'
-  if (stationType === 'Ocellus Starport') icon = 'orbis-starport'
-  if (stationType === 'Asteroid Base') icon = 'asteroid-base'
+  let icon = 'poi' // Default is to redner as unknown signal if no explit data
+  if (stationType === 'Orbis') icon = 'orbis-starport'
+  if (stationType === 'Coriolis') icon = 'coriolis-starport'
+  if (stationType === 'Ocellus') icon = 'orbis-starport'
+  if (stationType === 'AsteroidBase') icon = 'asteroid-base'
   if (stationType === 'Outpost') icon = 'outpost'
-  if (stationType === 'Megaship') icon = 'megaship'
-  if (stationType === 'Stronghold Carrier') icon = 'megaship'
-  if (stationType === 'Fleet Carrier') icon = 'fleet-carrier'
-  if (stationType === 'Planetary Port') icon = 'planetary-port'
-  if (stationType === 'Planetary Outpost') icon = 'planetary-port'
-  if (stationType === 'Odyssey Settlement') icon = 'settlement'
+  if (stationType === 'MegaShip') icon = 'megaship'
+  if (stationType === 'Stronghold') icon = 'megaship'
+  if (stationType === 'FleetCarrier') icon = 'fleet-carrier'
+  if (stationType === 'CraterPort') icon = 'planetary-port'
+  if (stationType === 'CraterOutpost') icon = 'planetary-port'
+  if (stationType === 'SurfaceStation') icon = 'planetary-port'
+  if (stationType === 'OnFootSettlement') icon = 'settlement'
+  // No icons for these two yet!
+  // if (stationType === 'PlanetaryConstructionDepot') icon = 'construction'
+  // if (stationType === 'SpaceConstructionDepot') icon = 'construction'
   return <i className={`station-icon icarus-terminal-${icon}`} />
 }

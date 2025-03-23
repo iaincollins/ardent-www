@@ -19,8 +19,8 @@ export default ({ commodityOrders }) => {
               className: 'max-width-mobile',
               render: (v, r) =>
                 <>
-                  <StationIcon stationType={r.fleetCarrier === 1 ? 'Fleet Carrier' : r.stationType} />
-                  {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+                  <StationIcon stationType={r.fleetCarrier === 1 ? 'FleetCarrier' : r.stationType} />
+                  {r.fleetCarrier === 1 && 'FleetCarrier '}{r.stationName}
                   {r.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                   <div className='is-visible-mobile'>
                     <table className='data-table--mini data-table--compact two-column-table'>
