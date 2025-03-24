@@ -136,9 +136,10 @@ export default () => {
         ; (async () => {
           const stations = await getStationsInSystem(systemName)
           setStationsInSystem(stations.filter(
-            station => station.stationType !== 'FleetCarrier' &&
-              station.stationType !== 'OnFootSettlement' &&
-              station.stationType !== 'MegaShip' &&
+            station => station.stationType !== 'OnFootSettlement' &&
+              station.stationType !== 'Megaship' &&
+              station.stationType !== 'FleetCarrier' &&
+              station.stationType !== 'StrongholdCarrier' &&
               station.stationType !== null
           ))
           setSettlementsInSystem(stations.filter(station => station.stationType === 'OnFootSettlement' || station.stationType === null))
@@ -147,7 +148,7 @@ export default () => {
               .filter(station => station.stationType === 'FleetCarrier')
               .sort((a, b) => b?.updatedAt.localeCompare(a?.updatedAt))
           )
-          setMegashipsInSystem(stations.filter(station => station.stationType === 'MegaShip'))
+          setMegashipsInSystem(stations.filter(station => (station.stationType === 'Megaship' || station.stationType === 'StrongholdCarrier')))
 
           const marketIds = stations.map(s => s.marketId)
           const rareItems = []
@@ -708,7 +709,6 @@ async function getSystem(systemName) {
 }
 
 async function getStationsInSystem(systemName) {
-  // @TODO No API endpoint for stations yet, so using 'markets' endpoint
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/stations`)
   return (res.status === 200) ? await res.json() : null
 }

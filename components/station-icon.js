@@ -5,7 +5,7 @@ module.exports = ({ stationType }) => {
   if (stationType === 'Ocellus') icon = 'orbis-starport'
   if (stationType === 'AsteroidBase') icon = 'asteroid-base'
   if (stationType === 'Outpost') icon = 'outpost'
-  if (stationType === 'MegaShip') icon = 'megaship'
+  if (stationType === 'Megaship') icon = 'megaship'
   if (stationType === 'StrongholdCarrier') icon = 'megaship' // Note: This is not an offical FDev type
   if (stationType === 'FleetCarrier') icon = 'fleet-carrier'
   if (stationType === 'CraterPort') icon = 'planetary-port'
