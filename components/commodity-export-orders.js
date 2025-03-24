@@ -32,9 +32,7 @@ export default ({ commodities }) => {
             <>
               <div style={{ paddingLeft: '2em' }}>
                 <span style={{ position: 'absolute', left: '.5rem' }}>
-                  {r.stationName === 'Stronghold' && r.stationType === null
-                    ? <StationIcon stationType='Stronghold' />
-                    : <StationIcon stationType={r.fleetCarrier === 1 ? 'FleetCarrier' : r.stationType} />}
+                  <StationIcon stationType={r.fleetCarrier === 1 ? 'FleetCarrier' : r.stationType} />
                 </span>
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
