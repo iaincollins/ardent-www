@@ -230,7 +230,6 @@ export default ({ disabled = false }) => {
             <option value='7'>Last week</option>
             <option value='30'>Last month</option>
             <option value='90'>Last 3 months</option>
-            <option value='356'>Last year</option>
           </select>
         </label>
 
