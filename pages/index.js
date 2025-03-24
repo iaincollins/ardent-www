@@ -18,22 +18,22 @@ export default (props) => {
 
   useEffect(() => {
     setNavigationPath([{ name: 'Home', path: '/' }, { name: 'News', path: '/' }])
-    ; (async () => {
-      const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
-      const news = res.ok ? await res.json() : []
-      setGalnetNews(news.slice(0, 1))
-    })()
+      ; (async () => {
+        const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
+        const news = res.ok ? await res.json() : []
+        setGalnetNews(news.slice(0, 1))
+      })()
 
-    ; (async () => {
-      const res = await fetch(`${API_BASE_URL}/v1/stats`)
-      const stats = await res.json()
-      setStats(stats)
-    })()
-    ; (async () => {
-      const res = await fetch(`${API_BASE_URL}/v1/version`)
-      const version = await res.json()
-      setVersion(version)
-    })()
+      ; (async () => {
+        const res = await fetch(`${API_BASE_URL}/v1/stats`)
+        const stats = await res.json()
+        setStats(stats)
+      })()
+      ; (async () => {
+        const res = await fetch(`${API_BASE_URL}/v1/version`)
+        const version = await res.json()
+        setVersion(version)
+      })()
   }, [])
 
   return (
@@ -57,31 +57,29 @@ export default (props) => {
               Trade Data
             </h2>
           </div>
-          {stats &&
-            <>
-              <p className='counter'>
-                <span className='counter__number'>{stats.systems.toLocaleString()}</span> Star Systems
-              </p>
-              <p className='counter'>
-                <span className='counter__number'>{stats.stations.stations.toLocaleString()}</span> Stations/Ports
-              </p>
-              <p className='counter'>
-                <span className='counter__number'>{stats.stations.carriers.toLocaleString()}</span> Fleet Carriers
-              </p>
-              <p className='counter'>
-                <span className='counter__number'>{stats.trade.tradeOrders.toLocaleString()}</span> Buy/Sell Orders
-              </p>
-              <p className='counter'>
-                <span className='counter__number'>{(stats.trade.stations + stats.trade.carriers).toLocaleString()}</span> Markets
-              </p>
-              <p className='counter'>
-                <span className='counter__number'>{stats.pointsOfInterest.toLocaleString()}</span> Points of Interest
-              </p>
-              <p className='text-uppercase muted' style={{ textAlign: 'center' }}>
-                {stats.updatedInLast24Hours.toLocaleString()} updates
-                <br />in the last 24 hours
-              </p>
-            </>}
+
+          <p className='counter'>
+            <span className='counter__number'>{stats ? stats.systems.toLocaleString() : '…'}</span> Star Systems
+          </p>
+          <p className='counter'>
+            <span className='counter__number'>{stats ? stats.stations.stations.toLocaleString() : '…'}</span> Stations/Ports
+          </p>
+          <p className='counter'>
+            <span className='counter__number'>{stats ? stats.stations.carriers.toLocaleString() : '…'}</span> Fleet Carriers
+          </p>
+          <p className='counter'>
+            <span className='counter__number'>{stats ? stats.trade.tradeOrders.toLocaleString() : '…'}</span> Buy/Sell Orders
+          </p>
+          <p className='counter'>
+            <span className='counter__number'>{stats ? (stats.trade.stations + stats.trade.carriers).toLocaleString() : '…'}</span> Markets
+          </p>
+          <p className='counter'>
+            <span className='counter__number'>{stats ? stats.pointsOfInterest.toLocaleString() : '…'}</span> Points of Interest
+          </p>
+          <p className='text-uppercase muted' style={{ textAlign: 'center' }}>
+            {stats ? stats.updatedInLast24Hours.toLocaleString() : '…'} updates
+            <br />in the last 24 hours
+          </p>
           <Link className='button' style={{ textAlign: 'center', display: 'block', padding: '.5rem', fontSize: '1.25rem', margin: '0 1rem' }} href='/trade-data'>
             <i className='icon icarus-terminal-cargo' style={{ marginRight: '.5rem', fontSize: '1.25rem !important' }} />
             Trade Data
@@ -121,7 +119,7 @@ export default (props) => {
           <h3 style={{ marginTop: '1rem', fontSize: '1rem', lineHeight: '1rem' }}>Fleet Carrier</h3>
           <p style={{ backgroundColor: 'var(--color-text-inverted)', margin: 0, padding: '.5rem .25rem' }}>
             <span className='text-uppercase'>
-              <i className='icon icarus-terminal-fleet-carrier' />Ardent Pioneer [ V9G-G7Z ]
+              <i className='icon icarus-terminal-fleet-carrier' />Ardent Pioneer (V9G-G7Z)
             </span>
           </p>
           <p className='muted' style={{ fontSize: '.8rem' }}>
