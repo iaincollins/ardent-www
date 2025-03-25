@@ -44,6 +44,7 @@
 
 .sidebar__options form input:focus,
 .sidebar__options form input:hover:not(:disabled),
+.sidebar__options form select:focus,
 .sidebar__options form select:hover:not(:disabled) {
   background: var(--color-primary-lighter);
   border-color: var(--color-primary-dark);

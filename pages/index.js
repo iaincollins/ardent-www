@@ -21,7 +21,7 @@ export default (props) => {
       ; (async () => {
         const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
         const news = res.ok ? await res.json() : []
-        setGalnetNews(news.slice(0, 1))
+        setGalnetNews(news)
       })()
 
       ; (async () => {
@@ -52,9 +52,9 @@ export default (props) => {
             </small>
           </p>
           <div className='heading--with-underline'>
-            <h2 className='heading--with-icon text-uppercase' style={{ fontSize: '1rem' }}>
+            <h2 className='heading--with-icon text-uppercase'>
               <i className='icon icarus-terminal-economy' />
-              Trade Data
+              Stats
             </h2>
           </div>
 
@@ -80,7 +80,7 @@ export default (props) => {
             {stats ? stats.updatedInLast24Hours.toLocaleString() : '…'} updates
             <br />in the last 24 hours
           </p>
-          <Link className='button' style={{ textAlign: 'center', display: 'block', padding: '.5rem', fontSize: '1.25rem', margin: '0 1rem' }} href='/trade-data'>
+          <Link className='button' style={{ textAlign: 'center', display: 'block', padding: '.5rem', fontSize: '1.25rem', margin: '0 1rem' }} href={'/commodity/advancedcatalysers'}>
             <i className='icon icarus-terminal-cargo' style={{ marginRight: '.5rem', fontSize: '1.25rem !important' }} />
             Trade Data
             <i className='icon icarus-terminal-chevron-right' style={{ marginLeft: '.5rem', fontSize: '1.25rem !important' }} />
@@ -97,7 +97,7 @@ export default (props) => {
             )}
           </ul> */}
           <div className='heading--with-underline' style={{ marginTop: '1rem' }}>
-            <h2 className='heading--with-icon text-uppercase' style={{ fontSize: '1rem' }}>
+            <h2 className='heading--with-icon text-uppercase'>
               <i className='icon icarus-terminal-logo' />
               About
             </h2>
@@ -108,7 +108,7 @@ export default (props) => {
           <p>
             Real time commodity data sourced from the <Link target='_blank' href='https://eddn.edcd.io/' rel='noreferrer'>EDDN</Link> relay.
           </p>
-          <h3 style={{ fontSize: '1rem', lineHeight: '1rem' }}>Main Office</h3>
+          <h3 style={{ fontSize: '1rem', lineHeight: '1.2rem' }}>Ardent HQ</h3>
           <p style={{ backgroundColor: 'var(--color-text-inverted)', margin: 0, padding: '.5rem .25rem' }}>
             <Link href='/system/Puppis%20Sector%20GB-X%20b1-5' className='text-uppercase' style={{ border: 0 }}>
               <i className='icon icarus-terminal-outpost' />Icarus Terminal
@@ -116,7 +116,7 @@ export default (props) => {
               <i className='icon icarus-terminal-star' />Puppis Sector GB-X b1-5
             </Link>
           </p>
-          <h3 style={{ marginTop: '1rem', fontSize: '1rem', lineHeight: '1rem' }}>Fleet Carrier</h3>
+          <h3 style={{ marginTop: '1rem', fontSize: '1rem', lineHeight: '1.2rem' }}>Ardent Carrier</h3>
           <p style={{ backgroundColor: 'var(--color-text-inverted)', margin: 0, padding: '.5rem .25rem' }}>
             <span className='text-uppercase'>
               <i className='icon icarus-terminal-fleet-carrier' />Ardent Pioneer (V9G-G7Z)
@@ -133,14 +133,20 @@ export default (props) => {
           </h2>
         </div>
         <div className='home__news-feed'>
-          {galnetNews && galnetNews.map((newsItem, i) => (
+          {galnetNews && galnetNews.slice(0, 1).map((newsItem, i) => (
             <div key={newsItem.url}>
               <div className='home__news-article-body'>
                 <img src={newsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' />
                 <div className='home__news-article-text scrollable'>
                   <h3 className='home__news-article-headline'>{newsItem.title}</h3>
-                  <p className='muted text-uppercase'><a target='_blank' href={newsItem.url} rel='noreferrer'>Galnet News, {newsItem.date} </a></p>
+                  <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${newsItem.slug}`} rel='noreferrer'>Galnet News, {newsItem.date} </a></p>
                   <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
+                  <h3 style={{fontSize: '1.2rem' }}>More from Galnet</h3>
+                  <ul>
+                    {galnetNews.slice(1, 5).map((nextNewsItem, j) => (
+                      <li className='text-uppercase' style={{marginTop: '.5rem'}}><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>{nextNewsItem.title}</a> <small>{nextNewsItem.date}</small></li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>

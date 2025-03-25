@@ -137,7 +137,7 @@ export default () => {
           const stations = await getStationsInSystem(systemName)
           setStationsInSystem(stations.filter(
             station => station.stationType !== 'OnFootSettlement' &&
-              station.stationType !== 'Megaship' &&
+              station.stationType !== 'MegaShip' &&
               station.stationType !== 'FleetCarrier' &&
               station.stationType !== 'StrongholdCarrier' &&
               station.stationType !== null
@@ -148,7 +148,7 @@ export default () => {
               .filter(station => station.stationType === 'FleetCarrier')
               .sort((a, b) => b?.updatedAt.localeCompare(a?.updatedAt))
           )
-          setMegashipsInSystem(stations.filter(station => (station.stationType === 'Megaship' || station.stationType === 'StrongholdCarrier')))
+          setMegashipsInSystem(stations.filter(station => (station.stationType === 'MegaShip' || station.stationType === 'StrongholdCarrier')))
 
           const marketIds = stations.map(s => s.marketId)
           const rareItems = []

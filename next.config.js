@@ -21,7 +21,7 @@ module.exports = {
       },
       {
         source: '/trade-data',
-        destination: '/commodity/agronomictreatment',
+        destination: '/commodity/advancedcatalysers',
         permanent: false
       }
     ]

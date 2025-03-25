@@ -59,18 +59,18 @@ export default () => {
         <p />
         <h3>Databases</h3>
         <p>
+          Data downloads are compressed SQLite Database files, they are updated weekly on Thursdays from 07:00-09:00 UTC.
+        </p>
+        <p>
+          It is recommended to avoid downloading during that time window the backup files may be rotated during that time.
+        </p>
+        <p>
+          To query for more recent data you can use the <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>REST API</a> at any time.
+        </p>
+        <p>
           Sources used to originally seed the databases include <a href='https://edsm.net' rel='noreferrer' target='_blank'>ESDM</a>,
           {' '}<a href='https://spansh.co.uk' rel='noreferrer' target='_blank'>Spansh</a>,
           {' '}<a href='https://github.com/EDCD/EDDN' rel='noreferrer' target='_blank'>EDDN</a> and EDDB.io (discontinued).
-        </p>
-        <p>
-          Data downloads are in SQLite Database File Format and are updated daily, between 07:00-08:00 UTC.
-        </p>
-        <p>
-          It is recommended to avoid downloading exports during that time window as older files may be automatically deleted.
-        </p>
-        <p>
-          To query live data you can use the <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>REST API</a>.
         </p>
         {databases && databases.map(database =>
           <div key={database.name}>
