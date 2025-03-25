@@ -31,7 +31,7 @@ export default ({ commodities, rare }) => {
           render: (v, r) =>
             <div style={{ paddingLeft: '2em' }}>
               <span style={{ position: 'absolute', left: '.5rem' }}>
-                <StationIcon stationType={r.fleetCarrier === 1 ? 'FleetCarrier' : r.stationType} />
+                <StationIcon station={r} />
               </span>
               {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
@@ -151,7 +151,7 @@ function ExpandedRow({ r, rare }) {
             className: 'max-width-mobile',
             render: (v, r) =>
               <>
-                <StationIcon stationType={r.fleetCarrier === 1 ? 'FleetCarrier' : r.stationType} />
+                <StationIcon station={r} />
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                 <div className='is-visible-mobile'>

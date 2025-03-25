@@ -285,7 +285,7 @@ export default () => {
                           <Fragment key={`marketId_${station.marketId}`}>
                             <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
                               <div className='system__entity-name'>
-                                <StationIcon stationType={station.stationType} />
+                              <StationIcon station={station} />
                                 {station.stationName}
                               </div>
                               <div className='system__entity-information'>
@@ -313,7 +313,7 @@ export default () => {
                           <Fragment key={`marketId_${station.marketId}`}>
                             <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
                               <div className='system__entity-name'>
-                                <StationIcon stationType={station.stationType} />
+                                <StationIcon station={station} />
                                 {station.stationName}
                               </div>
                               <div className='system__entity-information'>
@@ -344,7 +344,7 @@ export default () => {
                           <Fragment key={`marketId_${station.marketId}`}>
                             <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
                               <div className='system__entity-name'>
-                                <StationIcon stationType={station.stationType} />
+                                <StationIcon station={station} />
                                 {station.stationName}
                               </div>
                               <div className='system__entity-information'>

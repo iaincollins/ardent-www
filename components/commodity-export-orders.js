@@ -29,33 +29,31 @@ export default ({ commodities }) => {
           align: 'left',
           className: 'max-width-mobile',
           render: (v, r) =>
-            <>
-              <div style={{ paddingLeft: '2em' }}>
-                <span style={{ position: 'absolute', left: '.5rem' }}>
-                  <StationIcon stationType={r.fleetCarrier === 1 ? 'FleetCarrier' : r.stationType} />
+            <div style={{ paddingLeft: '2em' }}>
+              <span style={{ position: 'absolute', left: '.5rem' }}>
+                <StationIcon station={r} />
+              </span>
+              {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+              {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+              <div className='is-visible-mobile'>
+                <span style={{ textTransform: 'none', opacity: 0.75 }}>
+                  {r.systemName} <small style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} ly</> : ''}</small>
                 </span>
-                {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
-                <div className='is-visible-mobile'>
-                  <span style={{ textTransform: 'none', opacity: 0.75 }}>
-                    {r.systemName} <small style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} ly</> : ''}</small>
-                  </span>
-                  <table className='data-table--mini data-table--compact two-column-table'>
-                    <tbody style={{ textTransform: 'uppercase' }}>
-                      <tr>
-                        <td>
-                          <span className='data-table__label'>Stock</span>
-                          <TradeBracketIcon bracket={r.stockBracket} />
-                          {r.stock.toLocaleString()} T
-                        </td>
-                        <td className='text-right'><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
-                </div>
+                <table className='data-table--mini data-table--compact two-column-table'>
+                  <tbody style={{ textTransform: 'uppercase' }}>
+                    <tr>
+                      <td>
+                        <span className='data-table__label'>Stock</span>
+                        <TradeBracketIcon bracket={r.stockBracket} />
+                        {r.stock.toLocaleString()} T
+                      </td>
+                      <td className='text-right'><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
               </div>
-            </>
+            </div>
         },
         {
           title: 'System',
@@ -153,7 +151,7 @@ function ExpandedRow({ r }) {
             className: 'max-width-mobile',
             render: (v, r) =>
               <>
-                <StationIcon stationType={r.fleetCarrier === 1 ? 'FleetCarrier' : r.stationType} />
+                <StationIcon station={r} />
                 {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
                 {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                 <div className='is-visible-mobile'>
