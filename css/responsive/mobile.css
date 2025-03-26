@@ -62,7 +62,7 @@
     line-height: 2rem;
     height: 2rem;
   }
-
+  
   .is-hidden-mobile {
     display: none !important;
     width: 0;
@@ -250,4 +250,5 @@
   .counter__number {
     width: calc(50% - 1rem) !important;
   }
+
 }

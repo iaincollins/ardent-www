@@ -54,7 +54,7 @@ export default (props) => {
           <div className='heading--with-underline'>
             <h2 className='heading--with-icon text-uppercase'>
               <i className='icon icarus-terminal-economy' />
-              Stats
+              Data
             </h2>
           </div>
 

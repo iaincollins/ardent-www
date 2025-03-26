@@ -1,3 +1,50 @@
+/* .home__news-article-body {
+  position: relative;
+  margin-bottom: 1rem;
+  padding: 0 .5rem .5rem .5rem;
+  background-color: rgba(0,0,0,.5);
+  clip-path: polygon(0 0,100% 0,100% calc(100% - 2rem),calc(100% - 2rem) 100%,0 100%);
+} */
+
+.home__news-headline-image {
+  mask-image: linear-gradient(to bottom,
+      transparent,
+      black 0rem,
+      black calc(100% - 15rem),
+      transparent), linear-gradient(black, black);
+  mask-size: 100% 100%, 0 100%;
+  mask-position: 0 0, 100% 0;
+  mask-repeat: no-repeat, no-repeat;
+  object-fit: cover;
+  width: 100%;
+  z-index: 1;
+  filter: contrast(.5) grayscale(1);
+}
+
+.home__commodity_categories {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.home__commodity_categories li {
+  margin: 0;
+}
+
+.home__commodity_categories li a {
+  display: block;
+  margin-bottom: .25rem;
+}
+
+.home__commodity_categories li:not(:last-of-type) {
+  border-bottom: none;
+}
+
+
+.home__news-article-text p {
+  font-size: 1.15rem;
+}
+
 @media only screen and (min-width: 768px) {
 
   .home__news-feed {
@@ -25,14 +72,12 @@
     z-index: 2;
   }
 
-
   .home__news-feed-heading {
     position: fixed !important;
     top: 5.2rem;
     left: 1.5rem;
     z-index: 2;
   }
-
 
   .home__news-article-text {
     position: absolute;
@@ -75,56 +120,5 @@
     opacity: .25;
   }
 
-
 }
 
-
-
-.home__news-article-text p {
-  font-size: 1.15rem;
-}
-
-
-/* .home__news-article-body {
-  position: relative;
-  margin-bottom: 1rem;
-  padding: 0 .5rem .5rem .5rem;
-  background-color: rgba(0,0,0,.5);
-  clip-path: polygon(0 0,100% 0,100% calc(100% - 2rem),calc(100% - 2rem) 100%,0 100%);
-} */
-
-.home__news-headline-image {
-  mask-image: linear-gradient(to bottom,
-      transparent,
-      black 0rem,
-      black calc(100% - 5rem),
-      transparent), linear-gradient(black, black);
-  mask-size: 100% 100%, 0 100%;
-  mask-position: 0 0, 100% 0;
-  mask-repeat: no-repeat, no-repeat;
-  object-fit: cover;
-  width: 100%;
-  z-index: 1;
-  filter: contrast(.5) grayscale(1);
-}
-
-
-
-.home__commodity_categories {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-.home__commodity_categories li {
-  margin: 0;
-}
-
-.home__commodity_categories li a {
-  display: block;
-  margin-bottom: .25rem;
-}
-
-.home__commodity_categories li:not(:last-of-type) {
-  border-bottom: none;
-}
