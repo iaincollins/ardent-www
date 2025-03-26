@@ -62,7 +62,7 @@ export default () => {
           Data downloads are compressed SQLite Database files, they are updated weekly on Thursdays from 07:00-09:00 UTC.
         </p>
         <p>
-          It is recommended to avoid downloading during that time window the backup files may be rotated during that time.
+          You may wish to avoid downloading these files during that time window as that's when the files may be updated.
         </p>
         <p>
           To query for more recent data you can use the <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>REST API</a> at any time.
