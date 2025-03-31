@@ -27,6 +27,7 @@ module.exports = {
     ]
   },
   publicRuntimeConfig: {
-    API_BASE_URL: process.env.API_BASE_URL
+    ARDENT_API_BASE_URL: process.env.ARDENT_API_BASE_URL,
+    ARDENT_AUTH_BASE_URL: process.env.ARDENT_AUTH_BASE_URL
   }
 }
