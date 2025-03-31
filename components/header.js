@@ -95,7 +95,7 @@ export default () => {
     }
     document.addEventListener('keydown', onKeyDown)
     return () => {
-      document.removeEventListener('keyup', onKeyUp)
+      document.removeEventListener('keyup', onKeyDown)
     }
   }, [])
 

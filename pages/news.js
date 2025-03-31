@@ -6,7 +6,7 @@ import { API_BASE_URL } from 'lib/consts'
 import Markdown from 'react-markdown'
 
 export default () => {
-  const [navigationPath, setNavigationPath] = useContext(NavigationContext)
+  const [, setNavigationPath] = useContext(NavigationContext)
   const [galnetNews, setGalnetNews] = useState()
   useEffect(() => {
     setNavigationPath([{ name: 'Home', path: '/' }, { name: 'News', path: '/news' }])

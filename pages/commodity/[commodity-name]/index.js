@@ -26,7 +26,7 @@ const TABS = ['exporters', 'importers']
 
 export default () => {
   const router = useRouter()
-  const [navigationPath, setNavigationPath] = useContext(NavigationContext)
+  const [, setNavigationPath] = useContext(NavigationContext)
   const [cachedQuery, setCachedQuery] = useState()
   const [tabIndex, setTabIndex] = useState(0)
   const [commodity, setCommodity] = useState()

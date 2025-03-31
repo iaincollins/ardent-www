@@ -5,7 +5,7 @@ import Package from 'package.json'
 import { API_BASE_URL } from 'lib/consts'
 
 export default ({ toggle }) => {
-  const [stats, setStats] = useState()
+  const [, setStats] = useState()
   const [version, setVersion] = useState()
 
   useEffect(() => {

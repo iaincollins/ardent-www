@@ -10,7 +10,7 @@ import { API_BASE_URL, NO_DEMAND_TEXT } from 'lib/consts'
 import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
 
-async function getImportsForCommodityBySystem(systemName, commodityName) {
+async function getImportsForCommodityBySystem (systemName, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}`)
   const imports = await res.json()
   if (!imports || imports.error) return [] // Handle system not found
@@ -110,7 +110,7 @@ export default ({ commodities, rare }) => {
   )
 }
 
-function ExpandedRow({ r, rare }) {
+function ExpandedRow ({ r, rare }) {
   if (!r) return
 
   const [imports, setImports] = useState()

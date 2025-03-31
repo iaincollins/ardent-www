@@ -1,17 +1,17 @@
-module.exports = ({ stationType, station }) => {
+module.exports = ({ stationType, station, children }) => {
   // Default to unknown POI if we don't know the type, and all the data we have
   // is the name and that it's a dockable location of some description.
   let icon = 'poi'
 
-  let _stationType = station?.stationType ?? stationType
+  const _stationType = station?.stationType ?? stationType
 
-  // If we don't know the type for sure, but it's on the surface of a planet, we 
-  // can use the settlement icon, which is a guess (it could be a port) but 
+  // If we don't know the type for sure, but it's on the surface of a planet, we
+  // can use the settlement icon, which is a guess (it could be a port) but
   // is at least more helpful than displaying it as an unknown POI.
-  if (!_stationType && station?.bodyName) icon = 'settlement' 
+  if (!_stationType && station?.bodyName) icon = 'settlement'
 
   // These are edge cases when we know the name but we don't have an explicit
-  // record of the station type as there isn't an entry for the station in the 
+  // record of the station type as there isn't an entry for the station in the
   // 'Stations' databases, this is usually because for some reason we don't have
   // a record of any docking events at the station.
   if (!_stationType && station?.fleetCarrier === 1) icon = 'fleet-carrier'
@@ -34,5 +34,14 @@ module.exports = ({ stationType, station }) => {
   if (_stationType === 'PlanetaryConstructionDepot') icon = 'settlement'
   if (_stationType === 'SpaceConstructionDepot') icon = 'megaship'
 
-  return <i className={`station-icon icarus-terminal-${icon}`} />
+  if (children) {
+    return (
+      <div style={{ position: 'relative', paddingLeft: '2rem' }}>
+        <i style={{ position: 'absolute', left: 0, top: '.1rem' }} className={`station-icon icarus-terminal-${icon}`} />
+        {children}
+      </div>
+    )
+  } else {
+    return <i className={`station-icon icarus-terminal-${icon}`} />
+  }
 }

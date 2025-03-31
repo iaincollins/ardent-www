@@ -13,7 +13,7 @@ const databaseDescription = {
   'locations.db': 'Unusual locations and points of interest'
 }
 export default () => {
-  const [navigationPath, setNavigationPath] = useContext(NavigationContext)
+  const [, setNavigationPath] = useContext(NavigationContext)
   const [databases, setDatabases] = useState()
 
   useEffect(() => {

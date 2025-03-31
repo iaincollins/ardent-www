@@ -1,7 +1,6 @@
 import { useEffect, useContext, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import Layout from 'components/layout'
 import { NavigationContext } from 'lib/context'
 import { API_BASE_URL } from 'lib/consts'
@@ -9,31 +8,30 @@ import Markdown from 'react-markdown'
 // import commodityCategories from 'lib/commodities/commodity-categories.json'
 import Package from 'package.json'
 
-export default (props) => {
-  const router = useRouter()
-  const [navigationPath, setNavigationPath] = useContext(NavigationContext)
+export default () => {
+  const [, setNavigationPath] = useContext(NavigationContext)
   const [galnetNews, setGalnetNews] = useState()
   const [stats, setStats] = useState()
   const [version, setVersion] = useState()
 
   useEffect(() => {
     setNavigationPath([{ name: 'Home', path: '/' }, { name: 'News', path: '/' }])
-      ; (async () => {
-        const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
-        const news = res.ok ? await res.json() : []
-        setGalnetNews(news)
-      })()
+    ; (async () => {
+      const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
+      const news = res.ok ? await res.json() : []
+      setGalnetNews(news)
+    })()
 
-      ; (async () => {
-        const res = await fetch(`${API_BASE_URL}/v1/stats`)
-        const stats = await res.json()
-        setStats(stats)
-      })()
-      ; (async () => {
-        const res = await fetch(`${API_BASE_URL}/v1/version`)
-        const version = await res.json()
-        setVersion(version)
-      })()
+    ; (async () => {
+      const res = await fetch(`${API_BASE_URL}/v1/stats`)
+      const stats = await res.json()
+      setStats(stats)
+    })()
+    ; (async () => {
+      const res = await fetch(`${API_BASE_URL}/v1/version`)
+      const version = await res.json()
+      setVersion(version)
+    })()
   }, [])
 
   return (
@@ -80,7 +78,7 @@ export default (props) => {
             {stats ? stats.updatedInLast24Hours.toLocaleString() : '…'} updates
             <br />in the last 24 hours
           </p>
-          <Link className='button' style={{ textAlign: 'center', display: 'block', padding: '.5rem', fontSize: '1.25rem', margin: '0 1rem' }} href={'/commodity/advancedcatalysers'}>
+          <Link className='button' style={{ textAlign: 'center', display: 'block', padding: '.5rem', fontSize: '1.25rem', margin: '0 1rem' }} href='/commodity/advancedcatalysers'>
             <i className='icon icarus-terminal-cargo' style={{ marginRight: '.5rem', fontSize: '1.25rem !important' }} />
             Trade Data
             <i className='icon icarus-terminal-chevron-right' style={{ marginLeft: '.5rem', fontSize: '1.25rem !important' }} />
@@ -141,10 +139,10 @@ export default (props) => {
                   <h3 className='home__news-article-headline'>{newsItem.title}</h3>
                   <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${newsItem.slug}`} rel='noreferrer'>Galnet News, {newsItem.date} </a></p>
                   <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
-                  <h3 style={{fontSize: '1.2rem' }}>More from Galnet</h3>
+                  <h3 style={{ fontSize: '1.2rem' }}>More from Galnet</h3>
                   <ul>
                     {galnetNews.slice(1, 5).map((nextNewsItem, j) => (
-                      <li key={nextNewsItem.url} className='text-uppercase' style={{marginTop: '.5rem'}}><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>{nextNewsItem.title}</a> <small>{nextNewsItem.date}</small></li>
+                      <li key={nextNewsItem.url} className='text-uppercase' style={{ marginTop: '.5rem' }}><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>{nextNewsItem.title}</a> <small>{nextNewsItem.date}</small></li>
                     ))}
                   </ul>
                 </div>

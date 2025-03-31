@@ -23,7 +23,7 @@ export default ({
       <meta name='viewport' content='width=device-width' />
     </Head>
     <Loader visible={loading} text={loadingText} />
-    <div className={`${sidebar !== undefined ? 'layout__content-wrapper scrollable' : ''} ${className !== undefined ? className : '' }`}>
+    <div className={`${sidebar !== undefined ? 'layout__content-wrapper scrollable' : ''} ${className !== undefined ? className : ''}`}>
       {heading !== undefined && sidebar !== undefined &&
         <div className='layout__content-heading'>
           {heading}

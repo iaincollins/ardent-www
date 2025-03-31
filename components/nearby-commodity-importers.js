@@ -69,10 +69,11 @@ export default ({ commodity, rare }) => {
               key: 'systemName',
               align: 'right',
               className: 'is-hidden-mobile',
-              render: (v, r) => <>
-                <span style={{ opacity: 0.75 }}><Link href={`/system/${v}`}>{v}</Link></span>
-                <span style={{ fontSize: '.8rem', opacity: 0.5 }}> {r.distance.toLocaleString()} Ly</span>
-              </>
+              render: (v, r) =>
+                <>
+                  <span style={{ opacity: 0.75 }}><Link href={`/system/${v}`}>{v}</Link></span>
+                  <span style={{ fontSize: '.8rem', opacity: 0.5 }}> {r.distance.toLocaleString()} Ly</span>
+                </>
             },
             {
               title: 'Updated',

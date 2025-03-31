@@ -5,7 +5,7 @@ import About from 'components/about'
 import { NavigationContext } from 'lib/context'
 
 export default () => {
-  const [navigationPath, setNavigationPath] = useContext(NavigationContext)
+  const [, setNavigationPath] = useContext(NavigationContext)
   useEffect(() => {
     setNavigationPath([{ name: 'Home', path: '/' }, { name: 'About', path: '/about' }])
   }, [])

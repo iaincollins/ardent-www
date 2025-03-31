@@ -10,7 +10,7 @@ import { API_BASE_URL } from 'lib/consts'
 import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
 
-async function getExportsForCommodityBySystem(systemName, commodityName) {
+async function getExportsForCommodityBySystem (systemName, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}`)
   const exports = await res.json()
   if (!exports || exports.error) return [] // Handle system not found
@@ -110,7 +110,7 @@ export default ({ commodities }) => {
   )
 }
 
-function ExpandedRow({ r }) {
+function ExpandedRow ({ r }) {
   if (!r) return
 
   const [exports, setExports] = useState()

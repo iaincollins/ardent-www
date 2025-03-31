@@ -10,7 +10,7 @@ import commodityCategories from 'lib/commodities/commodity-categories.json'
 import { NavigationContext } from 'lib/context'
 
 export default function Page (props) {
-  const [navigationPath, setNavigationPath] = useContext(NavigationContext)
+  const [, setNavigationPath] = useContext(NavigationContext)
 
   const router = useRouter()
   const [commodities, setCommodities] = useState(props.commodities)
@@ -66,24 +66,26 @@ export default function Page (props) {
                 </h2>
               </div>
             </>}
-          {categories?.length === 1 && commodityCategories[categories[0]]?.description && <>
-            <div className='heading--with-underline'>
-              <h2 className='heading--with-icon'>
-                <i className='icon icarus-terminal-cargo' />
-                {categories}
-              </h2>
-            </div>
-            <p className='clear text-centerx' style={{ marginTop: 0, marginBottom: '.5rem' }}>
-              {commodityCategories[categories[0]].description}
-              {categories?.length === 1 && commodityCategories[categories[0]]?.whereToFind && <>
-                {' '}{commodityCategories[categories[0]]?.whereToFind}
-              </>}
-            </p>
-          </>}
+          {categories?.length === 1 && commodityCategories[categories[0]]?.description &&
+            <>
+              <div className='heading--with-underline'>
+                <h2 className='heading--with-icon'>
+                  <i className='icon icarus-terminal-cargo' />
+                  {categories}
+                </h2>
+              </div>
+              <p className='clear text-centerx' style={{ marginTop: 0, marginBottom: '.5rem' }}>
+                {commodityCategories[categories[0]].description}
+                {categories?.length === 1 && commodityCategories[categories[0]]?.whereToFind &&
+                  <>
+                    {' '}{commodityCategories[categories[0]]?.whereToFind}
+                  </>}
+              </p>
+            </>}
           {categories?.length > 1 &&
             <div className='menu-button-grid'>
               {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
-                <Link className='button' href={`/commodities/${category.toLowerCase()}`}>{category}</Link>
+                <Link key={`category-button__${category}`} className='button' href={`/commodities/${category.toLowerCase()}`}>{category}</Link>
               )}
             </div>}
           {categories?.length === 1 && categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
