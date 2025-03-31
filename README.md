@@ -6,9 +6,8 @@ Ardent provides trade and exploration data for the game [Elite Dangerous](https:
 
 It uses a live data feed from the [Elite: Dangerous Data Network](https://eddn.edcd.io) by the [Elite: Dangerous Community Developers](https://edcd.github.io/).
 
-These repositories combined make up Ardent :
+Related repositories:
 
-* https://github.com/iaincollins/ardent-www
 * https://github.com/iaincollins/ardent-api
 * https://github.com/iaincollins/ardent-collector
 * https://github.com/iaincollins/ardent-auth
