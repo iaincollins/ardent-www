@@ -28,7 +28,7 @@ export default () => {
         universalCartographics,
         shipyard,
         blackMarket
-      ] = await Promise.allSettled([
+      ] = await Promise.all([
         getNearestService(cmdrProfile.lastSystem.name, 'interstellar-factors'),
         getNearestService(cmdrProfile.lastSystem.name, 'universal-cartographics'),
         getNearestService(cmdrProfile.lastSystem.name, 'shipyard'),
@@ -63,7 +63,7 @@ export default () => {
           universalCartographics,
           shipyard,
           blackMarket
-        ] = await Promise.allSettled([
+        ] = await Promise.all([
           getNearestService(cmdrProfile.lastSystem.name, 'interstellar-factors'),
           getNearestService(cmdrProfile.lastSystem.name, 'universal-cartographics'),
           getNearestService(cmdrProfile.lastSystem.name, 'shipyard'),
