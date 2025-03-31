@@ -35,11 +35,13 @@
   left: 0;
   bottom: 0;
   right: 0;
-  background: linear-gradient(rgb(50, 50, 50) 50%, rgb(25, 25, 25) 50%);
   z-index: -10;
-  background-size: 100% 10px;
   pointer-events: none;
-  filter: blur(.15rem);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url('/images/background.jpg'), linear-gradient(rgb(30, 30, 30) 20%, rgb(15, 15, 15) 80%);
+  filter: contrast(.9) brightness(1.1);
 }
 
 .fx__overlay::after {

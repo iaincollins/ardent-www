@@ -140,7 +140,8 @@ export default () => {
               station.stationType !== 'MegaShip' &&
               station.stationType !== 'FleetCarrier' &&
               station.stationType !== 'StrongholdCarrier' &&
-              station.stationType !== null
+              station.stationType !== null &&
+              !station?.stationName?.includes(' Construction Site: ')
           ))
           setSettlementsInSystem(stations.filter(station => station.stationType === 'OnFootSettlement' || station.stationType === null))
           setFleetCarriersInSystem(

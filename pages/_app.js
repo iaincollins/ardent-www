@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import Head from 'next/head'
 import Header from 'components/header'
-import { Canvas, useFrame } from '@react-three/fiber'
+//import { Canvas, useFrame } from '@react-three/fiber'
 import { NavigationContext } from 'lib/context'
 import 'css/index.css'
 import 'public/fonts/icarus-terminal/icarus-terminal.css'
@@ -18,7 +18,7 @@ export default ({ Component, pageProps }) => {
         <meta property='og:image' content='https://ardent-industry.com/og-image.png' />
       </Head>
       <div className='layout__frame'>
-        <AnimatedBackground />
+        {/* <AnimatedBackground /> */}
         <div className='fx__background' />
         <NavigationContext.Provider value={[navigationPath, setNavigationPath]}>
           <Header />
@@ -31,6 +31,7 @@ export default ({ Component, pageProps }) => {
   )
 }
 
+/*
 function Sphere (props) {
   const ref1 = useRef()
   const ref2 = useRef()
@@ -107,3 +108,4 @@ function AnimatedBackground () {
     </div>
   )
 }
+*/

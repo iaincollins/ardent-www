@@ -144,7 +144,7 @@ export default (props) => {
                   <h3 style={{fontSize: '1.2rem' }}>More from Galnet</h3>
                   <ul>
                     {galnetNews.slice(1, 5).map((nextNewsItem, j) => (
-                      <li className='text-uppercase' style={{marginTop: '.5rem'}}><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>{nextNewsItem.title}</a> <small>{nextNewsItem.date}</small></li>
+                      <li key={nextNewsItem.url} className='text-uppercase' style={{marginTop: '.5rem'}}><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>{nextNewsItem.title}</a> <small>{nextNewsItem.date}</small></li>
                     ))}
                   </ul>
                 </div>
