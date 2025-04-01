@@ -49,22 +49,54 @@
   display: block;
 }
 
+.home h3 {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.home h2 {
+  margin-top: 1rem;
+}
+
 @media only screen and (min-width: 1280px) {
+
+  .home__sign-in-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20vh 1rem 0 1rem;
+    background: linear-gradient(to bottom,
+      transparent,
+      rgba(75,75,75,1) 5%,
+      transparent calc(100% - 10%),
+      transparent)
+  }
+
   .home__about {
-    float: right;
-    width: 17rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 25%;
+    padding-top: 1.5rem;
   }
 
   .home__cmdr {
-    float: left;
-    width: 17rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 25%;
   }
 
   .home__news-feed {
-    position: relative;
-    overflow: auto;
-    padding-left: .5rem;
-    padding-right: .5rem;
+    position: absolute;
+    top: 0;
+    left: calc(25% + 1rem);
+    right: calc(25% + 1rem);
+    bottom: 0;
   }
 
   .home__news-headline-image {

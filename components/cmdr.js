@@ -78,11 +78,10 @@ export default () => {
 
   return (
     <div className='fx__fade-in'>
-      <div style={{ marginBottom: '0rem' }} className='heading--with-underline'><h2>CMDR</h2></div>
       {signedIn === true &&
-        <div onClick={() => refreshCmdrProfile()}>
+        <>
           {cmdrProfile?.commander &&
-            <div>
+            <div onClick={() => refreshCmdrProfile()}>
               {cmdrProfile?.commander?.name &&
                 <p>
                   CMDR {cmdrProfile.commander.name}<br />
@@ -116,7 +115,7 @@ export default () => {
 
               {nearestServices &&
                 <>
-                  <div style={{ marginBottom: '0rem' }} className='heading--with-underline'><h2>Nearest</h2></div>
+                  <h3>Services</h3>
                   <div className='rc-table data-table data-table--striped data-table--interactive data-table--animated'>
                     <div className='rc-table-container'>
                       <table>
@@ -156,19 +155,19 @@ export default () => {
                     </div>
                   </div>
                 </>}
-              {csrfToken &&
-                <form method='POST' action={SIGN_OUT_URL} style={{ marginBottom: '1rem' }}>
-                  <input type='hidden' name='csrfToken' value={csrfToken} />
-                  <button className='button' style={{ display: 'block', width: '100%' }}>Sign out</button>
-                </form>}
             </div>}
-        </div>}
+          {csrfToken &&
+            <form id='signout' method='POST' action={SIGN_OUT_URL}>
+              <input type='hidden' name='csrfToken' value={csrfToken} />
+              <small style={{ paddingBottom: '1rem' }} onClick={() => document.getElementById('signout').submit()}>Sign out</small>
+            </form>}
+        </>}
       {signedIn === false &&
         <>
-          <div style={{ padding: '0 .5rem' }}>
-            <p>Sign in to access all features.</p>
+          <div className='home__sign-in-placeholder'>
+            <p className='text-center'>Sign in to access all features.</p>
             <form method='GET' action={SIGN_IN_URL}>
-              <button className='button' style={{ display: 'block', width: '100%' }}>Sign in</button>
+              <button className='button' style={{ display: 'block', width: '100%', fontSize: '1.25rem', lineHeight: '2.5rem' }}>Sign in</button>
             </form>
           </div>
         </>}
@@ -176,7 +175,7 @@ export default () => {
   )
 }
 
-async function getNearestService (systemName, service) {
+async function getNearestService(systemName, service) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
   return res.ok ? await res.json() : null
 }
