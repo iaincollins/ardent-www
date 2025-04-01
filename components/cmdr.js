@@ -159,7 +159,9 @@ export default () => {
           {csrfToken &&
             <form id='signout' method='POST' action={SIGN_OUT_URL}>
               <input type='hidden' name='csrfToken' value={csrfToken} />
-              <small style={{ paddingBottom: '1rem' }} onClick={() => document.getElementById('signout').submit()}>Sign out</small>
+              <p className='text-center'>
+                <small style={{ paddingBottom: '1rem' }} onClick={() => document.getElementById('signout').submit()}>Sign out</small>
+               </p>
             </form>}
         </>}
       {signedIn === false &&
