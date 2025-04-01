@@ -2,6 +2,7 @@ import { useEffect, useContext, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import Layout from 'components/layout'
+import Cmdr from 'components/cmdr'
 import { NavigationContext } from 'lib/context'
 import { API_BASE_URL } from 'lib/consts'
 import Markdown from 'react-markdown'
@@ -43,19 +44,18 @@ export default () => {
         <link rel='canonical' href='https://ardent-industry.com/about' />
       </Head>
       <div className='fx__fade-in'>
-        <div className='home__news-about'>
-          <p style={{ textAlign: 'center', margin: '.5rem 0 0 0' }}>
-            <small>
-              Ardent OS {Package.version} | <a href={API_BASE_URL} rel='noreferrer' target='_blank'>API {version?.version ?? '?.?.?'}</a>
-            </small>
-          </p>
+
+        <div className='home__cmdr'>
+          <Cmdr />
+        </div>
+
+        <div className='home__about'>
           <div className='heading--with-underline'>
             <h2 className='heading--with-icon text-uppercase'>
               <i className='icon icarus-terminal-economy' />
-              Data
+              Trade
             </h2>
           </div>
-
           <p className='counter'>
             <span className='counter__number'>{stats ? stats.systems.toLocaleString() : '…'}</span> Star Systems
           </p>
@@ -106,6 +106,11 @@ export default () => {
           <p>
             Real time commodity data sourced from the <Link target='_blank' href='https://eddn.edcd.io/' rel='noreferrer'>EDDN</Link> relay.
           </p>
+          <p style={{ textAlign: 'center', margin: '0 0 1rem 0' }}>
+            <small>
+              Ardent OS {Package.version} | <a href={API_BASE_URL} rel='noreferrer' target='_blank'>API {version?.version ?? '?.?.?'}</a>
+            </small>
+          </p>
           <h3 style={{ fontSize: '1rem', lineHeight: '1.2rem' }}>Ardent HQ</h3>
           <p style={{ backgroundColor: 'var(--color-text-inverted)', margin: 0, padding: '.5rem .25rem' }}>
             <Link href='/system/Puppis%20Sector%20GB-X%20b1-5' className='text-uppercase' style={{ border: 0 }}>
@@ -120,36 +125,36 @@ export default () => {
               <i className='icon icarus-terminal-fleet-carrier' />Ardent Pioneer (V9G-G7Z)
             </span>
           </p>
-          <p className='muted' style={{ fontSize: '.8rem' }}>
+          <p className='text-uppercase muted' style={{ fontSize: '.8rem' }}>
             Ardent Industry is a subsidiary of ICARUS Communications Corporation (ICC), creators of <Link target='_blank' href='https://github.com/iaincollins/icarus' rel='noreferrer'>ICARUS Terminal</Link>.
           </p>
         </div>
-        <div className='home__news-feed-heading'>
-          <h2 className='heading--with-icon text-uppercase'>
-            <i className='icon icarus-terminal-location-filled' />
-            Galnet News
-          </h2>
-        </div>
-        <div className='home__news-feed'>
-          {galnetNews && galnetNews.slice(0, 1).map((newsItem, i) => (
-            <div key={newsItem.url}>
-              <div className='home__news-article-body'>
-                <img src={newsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' />
-                <div className='home__news-article-text scrollable'>
-                  <h3 className='home__news-article-headline'>{newsItem.title}</h3>
-                  <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${newsItem.slug}`} rel='noreferrer'>Galnet News, {newsItem.date} </a></p>
-                  <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
-                  <h3 style={{ fontSize: '1.2rem' }}>More from Galnet</h3>
-                  <ul>
-                    {galnetNews.slice(1, 5).map((nextNewsItem, j) => (
-                      <li key={nextNewsItem.url} className='text-uppercase' style={{ marginTop: '.5rem' }}><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>{nextNewsItem.title}</a> <small>{nextNewsItem.date}</small></li>
-                    ))}
-                  </ul>
-                </div>
+      </div>
+
+      <div className='home__news-feed-heading fx__fade-in'>
+        <h2 className='heading text-uppercase'>
+          Galnet News
+        </h2>
+      </div>
+      <div className='home__news-feed fx__fade-in'>
+        {galnetNews && galnetNews.slice(0, 1).map((newsItem, i) => (
+          <div key={newsItem.url}>
+            <div className='home__news-article-body'>
+              <img src={newsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' />
+              <div className='home__news-article-text scrollable'>
+                <h3 className='home__news-article-headline'>{newsItem.title}</h3>
+                <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${newsItem.slug}`} rel='noreferrer'>Galnet {newsItem.date} </a></p>
+                <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
+                <h3 style={{ fontSize: '1.2rem' }}>More from Galnet</h3>
+                <ul>
+                  {galnetNews.slice(1, 5).map((nextNewsItem, j) => (
+                    <li key={nextNewsItem.url} className='text-uppercase' style={{ marginTop: '.5rem' }}><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>{nextNewsItem.title}</a> <small>{nextNewsItem.date}</small></li>
+                  ))}
+                </ul>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </Layout>
   )

@@ -41,11 +41,6 @@
     position: relative;
     top: -0.2rem;
   }
-
-  .home__news-about {
-    float: right;
-    width: 17rem;
-  }
 }
 
 @media only screen and (min-width: 1900px) {

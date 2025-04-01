@@ -85,46 +85,68 @@ export default () => {
       <div className='fx__fade-in'>
         {signedIn === true &&
           <>
-            <div style={{ marginBottom: '0rem' }} className='heading--with-underline'><h2>Signed in</h2></div>
+            <div style={{ marginBottom: '0rem' }} className='heading--with-underline'><h2>CMDR</h2></div>
             {cmdrProfile?.commander &&
-              <div style={{ padding: '0 1rem' }}>
-                {cmdrProfile?.commander?.name && <p>Welcome CMDR {cmdrProfile.commander.name}</p>}
-                {cmdrProfile?.commander?.credits && <p>Your credit balance is {cmdrProfile.commander.credits.toLocaleString()} CR.</p>}
-                {cmdrProfile?.lastSystem?.name && <p>You were last active in <Link href={`/system/${cmdrProfile.lastSystem.name}`}>{cmdrProfile.lastSystem.name}</Link>.</p>}
-                {cmdrProfile?.ship?.shipName && cmdrProfile?.ship?.shipID &&
-                  <p>Your current ship is <span className='text-uppercase'>{cmdrProfile.ship.shipName}</span> ({cmdrProfile.ship.shipID}).</p>}
-                {Object.keys(cmdrProfile?.ships)?.length > 1 &&
-                  <p>{Object.keys(cmdrProfile?.ships)?.length > 1 ? `You have a fleet of ${Object.keys(cmdrProfile?.ships)?.length} ships.` : ''}</p>}
-                {cmdrFleetCarrier?.name && cmdrFleetCarrier?.currentStarSystem && <p>Your Fleet Carrier {hexToAscii(cmdrFleetCarrier.name?.vanityName)} ({cmdrFleetCarrier.name?.callsign}) is currently located in <Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem}</Link>.</p>}
+              <div>
+                {cmdrProfile?.commander?.name &&
+                  <p>
+                    <i className='icarus-terminal-engineer' />CMDR {cmdrProfile.commander.name}<br />
+                    {cmdrProfile?.ship?.shipName && cmdrProfile?.ship?.shipID &&
+                      <span className='text-uppercase muted'>
+                        <i className='icarus-terminal-ship' />{cmdrProfile.ship.shipName} | {cmdrProfile.ship.shipID}
+                      </span>}
+                    {/* {Object.keys(cmdrProfile?.ships)?.length > 1 &&
+                      <small className='muted'>
+                        <br/>
+                        {Object.keys(cmdrProfile?.ships)?.length > 1 ? ` 1 of ${Object.keys(cmdrProfile?.ships)?.length} ships in fleet` : ''}
+                      </small>} */}
+                  </p>}
+                {cmdrProfile?.commander?.credits &&
+                  <p>
+                    <small>Credit balance</small><br />
+                    <i className='icarus-terminal-credits' />{cmdrProfile.commander.credits.toLocaleString()} CR
+                  </p>}
+                {cmdrProfile?.lastSystem?.name &&
+                  <p>
+                    <small>Location</small><br />
+                    <i className='icarus-terminal-location' /><Link href={`/system/${cmdrProfile.lastSystem.name}`}>{cmdrProfile.lastSystem.name} system</Link>
+                  </p>}
+
+                {cmdrFleetCarrier?.name && cmdrFleetCarrier?.currentStarSystem &&
+                  <p>
+                    <small>Fleet Carrier</small><br />
+                    <i className='icarus-terminal-fleet-carrier' />{hexToAscii(cmdrFleetCarrier.name?.vanityName)} {cmdrFleetCarrier.name?.callsign}<br />
+                    <i className='icarus-terminal-star' /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem} system</Link>
+                  </p>}
+
                 {nearestServices &&
                   <>
-                    <h2>Local Services</h2>
-                    <div className='rc-table data-table data-table--striped data-table--interactive data-table--animated' style={{ maxWidth: '80rem' }}>
+                    <div style={{ marginBottom: '0rem' }} className='heading--with-underline'><h2>Local Services</h2></div>
+                    <div className='rc-table data-table data-table--striped data-table--interactive data-table--animated'>
                       <div className='rc-table-container'>
                         <table>
                           <tbody className='rc-table-tbody'>
                             {Object.keys(nearestServices).map(service =>
                               <Fragment key={`nearest_service_${service}`}>
-                                <tr><th className='text-left' colSpan={2}>{service}</th></tr>
+                                <tr><th className='text-left'>{service}</th></tr>
                                 <tr>
-                                  <td>
+                                  <td style={{ paddingBottom: '1rem' }}>
                                     {nearestServices[service]?.filter(s => s.distance === 0).splice(0, 1).map(station =>
                                       <Fragment key={`in_system_service_${service}_${station}`}>
-                                        <small style={{ lineHeight: '1.5rem' }}>Current system</small>
+                                        <small style={{ lineHeight: '1.75rem' }}>In system</small>
                                         <StationIcon station={station}>
-                                          {station.stationName}<br />
-                                          {station.bodyName ? station.bodyName : ''}
+                                          {station.stationName}
+                                          {station.bodyName ? <><br />{station.bodyName}</> : ''}
                                           <small className='text-no-transform'> {station.distanceToArrival.toFixed().toLocaleString()} Ls</small>
                                         </StationIcon>
                                       </Fragment>)}
-                                  </td>
-                                  <td>
                                     {nearestServices[service]?.filter(s => s.distance > 0).splice(0, 1).map(station =>
                                       <Fragment key={`nearest_service_${service}_${station}`}>
-                                        <small style={{ lineHeight: '1.5rem' }}>Next nearest</small>
+                                        <small style={{ lineHeight: '1.75rem' }}>Next nearest</small>
                                         <span>
                                           <StationIcon station={station}>
-                                            {station.stationName}<br />
+                                            {station.stationName}
+                                            <br />
                                             <Link href={`/system/${station.systemName}`}>{station.bodyName ? station.bodyName : station.systemName}</Link>
                                             <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
                                           </StationIcon>
@@ -139,12 +161,12 @@ export default () => {
                       </div>
                     </div>
                   </>}
+                <button onClick={() => refreshCmdrProfile()} className='button'>Refresh</button>
                 {csrfToken &&
                   <form method='POST' action={SIGN_OUT_URL}>
                     <input type='hidden' name='csrfToken' value={csrfToken} />
                     <button className='button'>Sign out</button>
                   </form>}
-                <button onClick={() => refreshCmdrProfile()} className='button'>Refresh</button>
               </div>}
           </>}
         {signedIn === false &&

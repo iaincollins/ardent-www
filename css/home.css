@@ -17,7 +17,7 @@
   mask-repeat: no-repeat, no-repeat;
   object-fit: cover;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
   filter: contrast(.5) grayscale(1);
 }
 
@@ -40,71 +40,35 @@
   border-bottom: none;
 }
 
-
 .home__news-article-text p {
   font-size: 1.15rem;
 }
 
-@media only screen and (min-width: 768px) {
+.home__news-article-headline {
+  clip-path: none;
+  display: block;
+}
+
+@media only screen and (min-width: 1280px) {
+  .home__about {
+    float: right;
+    width: 17rem;
+  }
+
+  .home__cmdr {
+    float: left;
+    width: 17rem;
+  }
 
   .home__news-feed {
-    position: fixed;
-    bottom: 4.5rem !important;
-    top: 7.65rem !important;
-    left: 1.5rem !important;
-    width: calc(100% - 22rem);
-    padding: 0 .5rem .5rem .5rem;
-    background-color: rgba(0, 0, 0, .25);
-    overflow: hidden;
-  }
-
-  .home__news-feed:before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    bottom: 4.5rem !important;
-    top: 7.65rem !important;
-    left: 1.5rem !important;
-    width: calc(100% - 22rem);
-    padding: 0 .5rem .5rem .5rem;
-    background: var(--color-primary);
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2rem), calc(100% - 2rem) 100%, 0 100%, 0 0, .2rem .2rem, .2rem calc(100% - .2rem), calc(100% - 2rem - 0.08rem) calc(100% - .2rem), calc(100% - .2rem) calc(100% - 2rem - 0.08rem), calc(100% - .2rem) .2rem, .2rem .2rem);
-    z-index: 2;
-  }
-
-  .home__news-feed-heading {
-    position: fixed !important;
-    top: 5.2rem;
-    left: 1.5rem;
-    z-index: 2;
-  }
-
-  .home__news-article-text {
-    position: absolute;
-    z-index: 2;
-    top: .5rem;
-    bottom: 2.25rem;
-    left: .5rem;
-    right: .5rem;
-    padding: 0 .5rem;
-  }
-
-  .home__news-headline-image {
-    position: absolute;
-  }
-
-  .home__news-article-headline {
-    border-bottom-left-radius: 0;
     position: relative;
-    top: .1rem;
-    z-index: 2;
-    left: -.5rem;
+    overflow: auto;
+    padding-left: .5rem;
+    padding-right: .5rem;
   }
 
   .home__news-headline-image {
-    left: .2rem;
-    right: .2rem;
-    top: .2rem;
+    position: relative;
     mask-image: linear-gradient(to bottom,
         transparent,
         black 0rem,
@@ -116,9 +80,14 @@
     object-fit: cover;
     height: 100%;
     width: calc(100% - .4rem);
-    z-index: 1;
-    opacity: .25;
   }
 
+  .home__news-feed-heading {
+    margin-bottom: 1rem;
+    position: relative;
+    top: .5rem;
+    left: .5rem;
+    z-index: 1;
+  }
 }
 
