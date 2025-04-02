@@ -83,7 +83,7 @@ export default () => {
           {cmdrProfile?.commander &&
             <div onClick={() => refreshCmdrProfile()}>
               {cmdrProfile?.commander?.name &&
-                <p>
+                <p className='fx__fade-in'>
                   CMDR {cmdrProfile.commander.name}<br />
                   {cmdrProfile?.ship?.shipName && cmdrProfile?.ship?.shipID &&
                     <span className='text-uppercase muted'>
@@ -96,25 +96,25 @@ export default () => {
                       </small>} */}
                 </p>}
               {cmdrProfile?.commander?.credits &&
-                <p>
+                <p className='fx__fade-in'>
                   <small>Credit balance</small><br />
                   <i className='icarus-terminal-credits' />{cmdrProfile.commander.credits.toLocaleString()} CR
                 </p>}
               {cmdrProfile?.lastSystem?.name &&
-                <p>
+                <p className='fx__fade-in'>
                   <small>Location</small><br />
                   <i className='icarus-terminal-location' /><Link href={`/system/${cmdrProfile.lastSystem.name}`}>{cmdrProfile.lastSystem.name}</Link>
                 </p>}
 
               {cmdrFleetCarrier?.name && cmdrFleetCarrier?.currentStarSystem &&
-                <p>
+                <p className='fx__fade-in'>
                   <small>Fleet Carrier</small><br />
                   <i className='icarus-terminal-fleet-carrier' />{hexToAscii(cmdrFleetCarrier.name?.vanityName)} {cmdrFleetCarrier.name?.callsign}<br />
                   <i className='icarus-terminal-route' /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem}</Link>
                 </p>}
 
               {nearestServices &&
-                <>
+                <div className='fx__fade-in'>
                   <h3>Services</h3>
                   <div className='rc-table data-table data-table--striped data-table--interactive data-table--animated'>
                     <div className='rc-table-container'>
@@ -154,7 +154,7 @@ export default () => {
                       </table>
                     </div>
                   </div>
-                </>}
+                </div>}
             </div>}
           {csrfToken &&
             <form id='signout' method='POST' action={SIGN_OUT_URL}>
@@ -167,6 +167,7 @@ export default () => {
       {signedIn === false &&
         <>
           <div className='home__sign-in-placeholder'>
+            <p className='text-center'><small>Anonymous access protocol</small></p>
             <p className='text-center'>Sign in to access all features.</p>
             <form method='GET' action={SIGN_IN_URL}>
               <button className='button' style={{ display: 'block', width: '100%', fontSize: '1.25rem', lineHeight: '2.5rem' }}>Sign in</button>
