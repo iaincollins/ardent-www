@@ -70,7 +70,7 @@
     transparent);
 }
 
-@media only screen and (min-width: 1280px) {
+@media only screen and (min-width: 1024px) {
 
   .home__sign-in-placeholder {
     position: absolute;
