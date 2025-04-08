@@ -1,5 +1,6 @@
-import Loader from './loader'
 import Head from 'next/head'
+import Link from 'next/link'
+import Loader from './loader'
 
 const DEFAULT_TITLE = 'Ardent Industry – Trade & Exploration'
 const DEFAULT_DESCRIPTION = 'Ardent Industry provides trade and exploration data for the game Elite Dangerous'
@@ -12,7 +13,8 @@ export default ({
   children,
   sidebar = undefined,
   heading = undefined,
-  className = undefined
+  className = undefined,
+  navigation = undefined
 }) =>
   <>
     <Head>
@@ -29,15 +31,24 @@ export default ({
           {heading}
         </div>}
       {sidebar !== undefined &&
-        <div className='layout__content layout__content--left-sidebar scrollable'>
+        <div className={`layout__content layout__content--left-sidebar scrollable ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
           {sidebar}
         </div>}
-      <div className={`layout__content scrollable ${sidebar !== undefined ? 'layout__content--right' : ''}`}>
+      <div className={`layout__content scrollable ${sidebar !== undefined ? 'layout__content--right' : ''} ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
         {heading !== undefined && sidebar === undefined &&
           <div>
             {heading}
           </div>}
         {children}
       </div>
+      {navigation !== undefined &&
+        <div className='navigation-bar'>
+          {navigation.map(item =>
+            <Link key={item.url} href={item.url}><button className={`${item?.active === true ? '--active' : ''}`}>
+              <i className={`icon ${item.icon}`} />
+            </button>
+            </Link>
+          )}
+        </div>}
     </div>
   </>

@@ -192,11 +192,21 @@
     left: 25rem;
     right: 0;
     width: calc(100% - 25rem);
-    height: 22rem;
+    height: calc(100% - 1rem);
     margin: 0;
     zoom: 1;
     background: transparent;
     mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 10%, transparent 50%);
     z-index: 1;
   }
+
+  .system-map__info {
+    margin-top: 1rem;
+  }
+
+  /* .system-map__info {
+    position: absolute !important;
+    top: initial !important;
+    bottom: 1rem !important;
+  } */
 }

@@ -148,8 +148,8 @@
 .header__search-input input:hover,
 .header__search-input input:focus  {
   color: var(--color-text-inverted);
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
+  background-color: var(--color-primary-lightest);
+  border-color: var(--color-primary-lightest);
   outline: none;
   box-shadow: 0 0 1rem black, 0 0 2rem black;
 }

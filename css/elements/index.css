@@ -53,7 +53,7 @@ a:hover:not(.--no-hover) {
 h1,
 h2,
 h3,
-h4 {
+h4{
   text-transform: uppercase;
   position: relative;
   color: var(--color-text-inverted);
@@ -66,6 +66,15 @@ h4 {
   border-right: 0.01rem solid var(--color-primary);
   text-shadow: 0 0 .8rem rgba(0,0,0,.8);  
   display: inline-block;
+}
+
+h5 {
+  text-transform: uppercase;
+  font-family: "Jura", sans-serif;
+  color: var(--color-primary-dark);
+  font-size: 1rem;
+  padding: 0;
+  margin: .5rem 0;
 }
 
 h1:after {

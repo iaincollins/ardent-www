@@ -1,0 +1,39 @@
+.navigation-bar {
+  position: fixed; 
+  top: 6.05rem;
+  left: 1rem;
+  width: 3rem;
+}
+
+.navigation-bar button {
+  margin: 0 0 .25rem 0;
+  padding: 0;
+  border: none;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--color-primary-darkest);  
+  color: var(--color-primary);
+  position: relative;
+  opacity: 1;
+}
+
+.navigation-bar button:hover.--active,
+.navigation-bar button.--active {
+  box-shadow: .2rem 0 var(--color-primary-light), inset -.1rem 0 var(--color-primary-light);
+  background: transparent;
+  color: var(--color-text);
+}
+
+.navigation-bar button .icon {
+  font-size: 1.8rem;
+  position: absolute;
+  top: .55rem;
+  left: 0;
+  right: 0;
+}
+
+.navigation-bar button:hover {
+  color: var(--color-text-inverted);
+  background: var(--color-primary-light);
+}

@@ -128,7 +128,7 @@ function ExpandedRow ({ r }) {
     return (
       <>
         <p style={{ whiteSpace: 'normal', marginTop: '.5rem' }}>
-          Stock of <strong>{r.name}</strong> in <Link href={`/system/${r.systemName}`}>{r.systemName}</Link> ...
+          Stock of <strong>{r.name}</strong> in <Link href={`/system/${r.systemName.replaceAll(' ', '_')}`}>{r.systemName}</Link> ...
         </p>
         <div className='loading-bar loading-bar--table-row' />
       </>
@@ -138,7 +138,7 @@ function ExpandedRow ({ r }) {
   return (
     <>
       <p style={{ whiteSpace: 'normal', marginTop: '.5rem' }}>
-        Stock of <strong>{r.name}</strong> in <Link href={`/system/${r.systemName}`}>{r.systemName}</Link>
+        Stock of <strong>{r.name}</strong> in <Link href={`/system/${r.systemName.replaceAll(' ', '_')}`}>{r.systemName}</Link>
       </p>
       <Table
         className='data-table--mini data-table--striped scrollable'

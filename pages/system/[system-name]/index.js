@@ -1,22 +1,13 @@
 import path from 'path'
-import { useState, useEffect, Fragment, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import Head from 'next/head'
-import Table from 'rc-table'
-import Collapsible from 'react-collapsible'
-import { CollapsibleTrigger } from '../../../components/collapsible-trigger'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { timeBetweenTimestamps } from 'lib/utils/dates'
-// import { formatSystemSector } from 'lib/utils/system-sectors'
 import distance from 'lib/utils/distance'
 import animateTableEffect from 'lib/animate-table-effect'
 import Layout from 'components/layout'
-import LocalCommodityImporters from 'components/local-commodity-importers'
-import LocalCommodityExporters from 'components/local-commodity-exporters'
-import NearbyCommodityImporters from 'components/nearby-commodity-importers'
-import NearbyCommodityExporters from 'components/nearby-commodity-exporters'
-import StationIcon from 'components/station-icon'
+import SystemMap from 'components/system/system-map'
+import SystemTrade from 'components/system/system-trade'
+import SystemNearby from 'components/system/system-nearby'
 import getSystemExports from 'lib/system-exports'
 import getSystemImports from 'lib/system-imports'
 import listOfCommodities from 'lib/commodities/commodities.json'
@@ -25,8 +16,7 @@ import { NavigationContext } from 'lib/context'
 import {
   API_BASE_URL,
   SOL_COORDINATES,
-  COLONIA_COORDINATES,
-  NO_DEMAND_TEXT
+  COLONIA_COORDINATES
 } from 'lib/consts'
 
 // These are systems that actually exist in game but that are not "real" systems
@@ -40,8 +30,6 @@ const HIDDEN_SYSTEMS = [
   '8055311864530', // Training (Tutorial)
   '7780433924818' // Destination (Tutorial)
 ]
-
-const SYSTEM_MAP_POINT_PLOT_MULTIPLIER = 50
 
 // FIXME Ugh who wrote this 🗑️🔥
 
@@ -57,25 +45,21 @@ export default () => {
   const [importOrders, setImportOrders] = useState()
   const [exportOrders, setExportOrders] = useState()
   const [lastUpdatedAt, setLastUpdatedAt] = useState()
-  const [tabIndex, setTabIndex] = useState(0)
+  const [activeViewIndex, setActiveViewIndex] = useState(0)
   const [rareGoods, setRareGoods] = useState([])
 
-  const tabs = ['exports', 'imports', 'nearby']
+  const views = ['', 'exports', 'imports', 'nearby']
 
   useEffect(animateTableEffect)
 
   useEffect(() => {
     const basePath = path.basename(router.pathname)
-    setTabIndex(tabs.indexOf(basePath) === -1 ? 0 : tabs.indexOf(basePath))
+    setActiveViewIndex(views.indexOf(basePath) === -1 ? 0 : views.indexOf(basePath))
   }, [router.pathname])
-
-  const onSystemsRowClick = (record, index, event) => {
-    router.push(`/system/${record.systemName}/imports`)
-  }
 
   useEffect(() => {
     (async () => {
-      const systemName = router.query?.['system-name']?.trim()
+      const systemName = router.query?.['system-name']?.replaceAll('_', ' ')?.trim()
       if (!systemName) return
 
       setStationsInSystem(undefined)
@@ -222,484 +206,62 @@ export default () => {
       title={system ? `${system.systemName} - star system in Elite Dangerous` : null}
       description={system ? `Trade data for ${system.systemName} in Elite Dangerous` : null}
       heading={
-        <div className='heading--with-underline'>
+        <div className='heading--with-underline' style={{ marginBottom: 0 }}>
           <h2 className='heading--with-icon'>
-            <i className='icon icarus-terminal-system-orbits' />{system?.systemName}
+            <i className='icon icarus-terminal-star' />{system?.systemName}
           </h2>
         </div>
       }
+      navigation={[
+        {
+          name: 'Map',
+          icon: 'icarus-terminal-system-orbits',
+          url: `/system/${system?.systemName.replaceAll(' ', '_')}`,
+          active: views[activeViewIndex] === ''
+        },
+        {
+          name: 'Trade',
+          icon: 'icarus-terminal-cargo',
+          url: `/system/${system?.systemName.replaceAll(' ', '_')}/exports`,
+          active: (views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports')
+        },
+        {
+          name: 'Near',
+          icon: 'icarus-terminal-route',
+          url: `/system/${system?.systemName.replaceAll(' ', '_')}/nearby`,
+          active: (views[activeViewIndex] === 'nearby' || views[activeViewIndex] === 'nearby')
+        }
+      ]}
     >
       <Head>
-        <link rel='canonical' href={`https://ardent-industry.com/system/${system?.systemName}/${tabs[tabIndex]}`} />
+        <link rel='canonical' href={`https://ardent-industry.com/system/${system?.systemName}/${views[activeViewIndex]}`} />
       </Head>
       {system === null && <><h1>Error: Not found</h1><p className='text-large clear'>System not found.</p></>}
       {system &&
-        <div className='fx__fade-in'>
-          <div className='system-map'>
-            <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />
-            {nearbySystems && nearbySystems.map((nearbySystem, i) =>
-              <div
-                key={nearbySystem.systemAddress} className='system-map__point'
-                onClick={() => router.push(`/system/${nearbySystem.systemName}`)}
-                data-name={nearbySystem.systemName}
-                style={{
-                  animationDelay: `${i * 10}ms`,
-                  top: nearbySystem.systemZ > system.systemZ ? `calc(50% + ${(nearbySystem.systemZ - system.systemZ) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)` : `calc(50% - ${(system.systemZ - nearbySystem.systemZ) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)`, // Z
-                  left: nearbySystem.systemX > system.systemX ? `calc(50% + ${(nearbySystem.systemX - system.systemX) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)` : `calc(50% - ${(system.systemX - nearbySystem.systemX) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)`// X
-                }}
-              />
-            )}
-          </div>
-          <table className='properties-table' style={{ marginBottom: 0 }}>
-            <tbody>
-              <tr>
-                <th>Address</th>
-                <td><span className='fx__animated-text' data-fx-order='1'>{system.systemAddress}</span></td>
-              </tr>
-              <tr>
-                <th>Location</th>
-                <td><span className='fx__animated-text' data-fx-order='2'>{system.systemX}, {system.systemY}, {system.systemZ}</span></td>
-              </tr>
-              {/* <tr>
-                <th>Ardent sector</th>
-                <td><span className='fx__animated-text' data-fx-order='3'>{formatSystemSector(system.systemSector)}</span></td>
-              </tr> */}
-              <tr>
-                <th>Trade zone</th>
-                <td>
-                  <span className='fx__animated-text' data-fx-order='4'>
-                    {system.tradeZone}
-                    {system.tradeZoneLocation !== undefined && <small style={{ textTransform: 'none' }}><br />{system.tradeZoneLocation}</small>}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <th className='is-hidden-mobile'>Stations/Ports</th>
-                <td className={stationsInSystem?.length === 0 ? 'is-hidden-mobile' : ''}>
-                  {stationsInSystem?.length > 0 &&
-                    <span className='fx__fade-in'>
-                      <Collapsible
-                        trigger={<CollapsibleTrigger>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'station/port' : 'stations/ports'}</CollapsibleTrigger>}
-                        triggerWhenOpen={<CollapsibleTrigger open>{stationsInSystem.length} {stationsInSystem.length === 1 ? 'station/port' : 'stations/ports'}</CollapsibleTrigger>}
-                      >
-                        {stationsInSystem.map(station =>
-                          <Fragment key={`marketId_${station.marketId}`}>
-                            <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                              <div className='system__entity-name'>
-                                <StationIcon station={station} />
-                                {station.stationName}
-                              </div>
-                              <div className='system__entity-information'>
-                                {station.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                              </div>
-                            </div>
-                          </Fragment>
-                        )}
-                      </Collapsible>
-                    </span>}
-                  {stationsInSystem?.length === 0 && <span className='muted-2'>No Stations/Ports</span>}
-                  {stationsInSystem === undefined && <span className='muted'>...</span>}
-                </td>
-              </tr>
-              <tr>
-                <th className='is-hidden-mobile'>Settlements</th>
-                <td className={settlementsInSystem?.length === 0 ? 'is-hidden-mobile' : ''}>
-                  {settlementsInSystem?.length > 0 &&
-                    <span className='fx__fade-in'>
-                      <Collapsible
-                        trigger={<CollapsibleTrigger>{settlementsInSystem.length} {settlementsInSystem.length === 1 ? 'settlement' : 'settlements'}</CollapsibleTrigger>}
-                        triggerWhenOpen={<CollapsibleTrigger open>{settlementsInSystem.length} {settlementsInSystem.length === 1 ? 'settlement' : 'settlements'}</CollapsibleTrigger>}
-                      >
-                        {settlementsInSystem.map(station =>
-                          <Fragment key={`marketId_${station.marketId}`}>
-                            <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                              <div className='system__entity-name'>
-                                <StationIcon station={station} />
-                                {station.stationName}
-                              </div>
-                              <div className='system__entity-information'>
-                                {station.bodyName && <small><i className='icon icarus-terminal-planet' style={{ position: 'relative', top: '-.1rem' }} />{station.bodyName}</small>}
-                                {station.bodyName && station.distanceToArrival !== null && <small>{' ('}</small>}
-                                {station.distanceToArrival !== null && <small className='text-no-transform'>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                                {station.bodyName && station.distanceToArrival !== null && <small>)</small>}
-                              </div>
-                            </div>
-                          </Fragment>
-                        )}
-                      </Collapsible>
-                    </span>}
-                  {settlementsInSystem?.length === 0 && <span className='muted-2'>No Settlements</span>}
-                  {settlementsInSystem === undefined && <span className='muted'>...</span>}
-                </td>
-              </tr>
-              <tr>
-                <th className='is-hidden-mobile'>Megaships</th>
-                <td className={megashipsInSystem?.length === 0 ? 'is-hidden-mobile' : ''}>
-                  {megashipsInSystem?.length > 0 &&
-                    <span className='fx__fade-in'>
-                      <Collapsible
-                        trigger={<CollapsibleTrigger>{megashipsInSystem.length} {megashipsInSystem.length === 1 ? 'megaship' : 'megaships'}</CollapsibleTrigger>}
-                        triggerWhenOpen={<CollapsibleTrigger open>{megashipsInSystem.length} {megashipsInSystem.length === 1 ? 'megaship' : 'megaships'}</CollapsibleTrigger>}
-                      >
-                        {megashipsInSystem.map(station =>
-                          <Fragment key={`marketId_${station.marketId}`}>
-                            <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                              <div className='system__entity-name'>
-                                <StationIcon station={station} />
-                                {station.stationName}
-                              </div>
-                              <div className='system__entity-information'>
-                                {station.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                                {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
-                                {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
-                              </div>
-                            </div>
-                          </Fragment>
-                        )}
-                      </Collapsible>
-                    </span>}
-                  {megashipsInSystem?.length === 0 && <span className='muted-2'>No Megaships</span>}
-                  {megashipsInSystem === undefined && <span className='muted'>...</span>}
-                </td>
-              </tr>
-              <tr>
-                <th className='is-hidden-mobile'>Fleet Carriers</th>
-                <td className={fleetCarriersInSystem?.length === 0 ? 'is-hidden-mobile' : ''}>
-                  {fleetCarriersInSystem?.length > 0 &&
-                    <span className='fx__fade-in'>
-                      <Collapsible
-                        trigger={<CollapsibleTrigger>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'Fleet carrier' : 'Fleet carriers'}</CollapsibleTrigger>}
-                        triggerWhenOpen={<CollapsibleTrigger open>{fleetCarriersInSystem.length} {fleetCarriersInSystem.length === 1 ? 'Fleet carrier' : 'Fleet carriers'}</CollapsibleTrigger>}
-                      >
-                        {fleetCarriersInSystem.map(station =>
-                          <Fragment key={`marketId_${station.marketId}`}>
-                            <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                              <div className='system__entity-name'>
-                                <StationIcon stationType='FleetCarrier' />
-                                FC {station.stationName}
-                              </div>
-                              <div className='system__entity-information'>
-                                {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
-                                {station.distanceToArrival !== null && <small className='text-no-transform'> ({Math.round(station.distanceToArrival).toLocaleString()} Ls)</small>}
-                              </div>
-                            </div>
-                          </Fragment>
-                        )}
-                      </Collapsible>
-                    </span>}
-                  {fleetCarriersInSystem?.length === 0 && <span className='muted-2'>No Fleet Carriers</span>}
-                  {fleetCarriersInSystem === undefined && <span className='muted'>...</span>}
-                </td>
-              </tr>
-              <tr>
-                <th>Last update</th>
-                <td>
-                  {(system !== undefined && importOrders !== undefined && exportOrders !== undefined)
-                    ? `${timeBetweenTimestamps(lastUpdatedAt)} ago`
-                    : <span className='muted'>...</span>}
-                </td>
-              </tr>
-              {rareGoods.length > 0 &&
-                <tr>
-                  <th>Rare export</th>
-                  <td>
-                    {rareGoods.map(rare =>
-                      <span key={`rare_good_${rare.symbol}`} className='text-no-transform'>
-                        {rare.stationName} is the exclusive exporter of {rare.name}.
-                        {' '}
-                        {rare?.description}
-                        {rare?.limit && <> Export restrictions limit orders to {rare.limit}T at a time.</>}
-                      </span>)}
-                  </td>
-                </tr>}
-            </tbody>
-          </table>
-          <Tabs
-            selectedIndex={tabIndex}
-            onSelect={
-              (index) => {
-                router.push(`/system/${router.query['system-name']}/${tabs[index]}`)
-              }
-            }
-          >
-            <TabList>
-              <Tab>
-                <i style={{ lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative' }} className='icarus-terminal-cargo-export' />
-                <span className='is-hidden-mobile'>Exports</span>
-                {/* {exportOrders && <span className='tab-badge'>{exportOrders.length}</span>} */}
-              </Tab>
-              <Tab>
-                <i style={{ lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative' }} className='icarus-terminal-cargo-import' />
-                <span className='is-hidden-mobile'>Imports</span>
-                {/* {importOrders && <span className='tab-badge'>{importOrders.length}</span>} */}
-              </Tab>
-              <Tab>
-                <i style={{ lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative' }} className='icarus-terminal-route' />
-                <span className='is-hidden-mobile'>Nearby</span>
-              </Tab>
-            </TabList>
-            <TabPanel>
-              {!exportOrders && <div style={{ marginTop: '2rem' }} className='loading-bar loading-bar--tab' />}
-              {exportOrders &&
-                <Table
-                  className='data-table data-table--striped data-table--interactive data-table--animated'
-                  columns={[
-                    {
-                      title: `Commodities exported (${exportOrders.length})`,
-                      dataIndex: 'name',
-                      key: 'name',
-                      align: 'left',
-                      className: 'max-width-mobile',
-                      render: (v, r) =>
-                        <>
-                          <i className='icon icarus-terminal-cargo' />{v}<br />
-                          <div className='is-visible-mobile'>
-                            <small style={{ float: 'right' }}>{r.exportOrders.length === 1 ? '1 exporter ' : `${r.exportOrders.length} exporters`}</small>
-                          </div>
-                          <small>
-                            {r.category}
-                            {r?.rare === true && ', Rare'}
-                            {r?.producer === true && ' (Producer)'}
-                          </small>
-                          <div className='is-visible-mobile'>
-                            <table className='data-table--mini two-column-table data-table--compact'>
-                              <tbody style={{ textTransform: 'uppercase' }}>
-                                <tr>
-                                  <td><span className='data-table__label'>Total stock</span>{r.totalStock.toLocaleString()} T</td>
-                                  <td className='text-right'>
-                                    <span className='data-table__label'>Price</span>
-                                    {r.avgPrice.toLocaleString()} CR
-                                    <br />
-                                    {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
-                                    {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
-                          </div>
-                        </>
-                    },
-                    {
-                      title: 'Exporters',
-                      dataIndex: 'exportOrders',
-                      key: 'exportOrders',
-                      align: 'center',
-                      width: 100,
-                      className: 'is-hidden-mobile',
-                      render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.2rem', marginLeft: '.4rem' }} className='icarus-terminal-settlement muted' /></span>
-                    },
-                    {
-                      title: 'Updated',
-                      dataIndex: 'updatedAt',
-                      key: 'updatedAt',
-                      align: 'right',
-                      width: 150,
-                      className: 'is-hidden-mobile no-wrap',
-                      render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
-                    },
-                    {
-                      title: 'Total stock',
-                      dataIndex: 'totalStock',
-                      key: 'totalStock',
-                      align: 'right',
-                      width: 200,
-                      className: 'is-hidden-mobile no-wrap',
-                      render: (v) => <>{v.toLocaleString()} T</>
-                    },
-                    {
-                      title: 'Avg price',
-                      dataIndex: 'avgPrice',
-                      key: 'avgPrice',
-                      align: 'right',
-                      width: 150,
-                      className: 'is-hidden-mobile no-wrap',
-                      render: (v, r) =>
-                        <>
-                          {v.toLocaleString()} CR
-                          <br />
-                          {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
-                          {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
-                        </>
-                    }
-                  ]}
-                  data={exportOrders}
-                  rowKey={(r) => `system_exports_${r.systemAddress}_${r.symbol}`}
-                  expandable={{
-                    expandRowByClick: true,
-                    expandedRowRender: r =>
-                      <>
-                        <p style={{ marginTop: '.5rem' }}>
-                          Stock of <Link href={`/commodity/${r.symbol}/exporters?location=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name}</Link> in {r.systemName}
-                        </p>
-                        <LocalCommodityExporters
-                          commodityName={r.name}
-                          commoditySymbol={r.symbol}
-                          commodityOrders={r.exportOrders}
-                        />
-                        <Collapsible
-                          trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
-                          triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
-                        >
-                          <NearbyCommodityExporters commodity={r} />
-                        </Collapsible>
-                        <Collapsible
-                          trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
-                          triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
-                        >
-                          <NearbyCommodityImporters commodity={r} />
-                        </Collapsible>
-                      </>
-                  }}
-                />}
-            </TabPanel>
-            <TabPanel>
-              {!importOrders && <div style={{ marginTop: '2rem' }} className='loading-bar loading-bar--tab' />}
-              {importOrders &&
-                <Table
-                  className='data-table data-table--striped data-table--interactive data-table--animated'
-                  columns={[
-                    {
-                      title: `Commodities imported (${importOrders.length})`,
-                      dataIndex: 'name',
-                      key: 'name',
-                      align: 'left',
-                      className: 'max-width-mobile',
-                      render: (v, r) =>
-                        <>
-                          <i className='icon icarus-terminal-cargo' />{v}<br />
-                          <div className='is-visible-mobile'>
-                            <small style={{ float: 'right' }}>{r.importOrders.length === 1 ? '1 importer ' : `${r.importOrders.length} importers`}</small>
-                          </div>
-                          <small>
-                            {r.category}
-                            {r?.consumer === true && ' (Consumer)'}
-                          </small>
-                          <div className='is-visible-mobile'>
-                            <table className='data-table--mini data-table--compact two-column-table'>
-                              <tbody style={{ textTransform: 'uppercase' }}>
-                                <tr>
-                                  <td><span className='data-table__label'>Total demand</span>{r.totalDemand > 0 ? `${r.totalDemand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}</td>
-                                  <td className='text-right'>
-                                    <span className='data-table__label'>Price</span>
-                                    {r.avgPrice.toLocaleString()} CR
-                                    <br />
-                                    {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
-                                    {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
-                          </div>
-                        </>
-                    },
-                    {
-                      title: 'Importers',
-                      dataIndex: 'importOrders',
-                      key: 'importOrders',
-                      align: 'center',
-                      width: 100,
-                      className: 'is-hidden-mobile',
-                      render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.2rem', marginLeft: '.4rem' }} className='icarus-terminal-settlement muted' /></span>
-                    },
-                    {
-                      title: 'Updated',
-                      dataIndex: 'updatedAt',
-                      key: 'updatedAt',
-                      align: 'right',
-                      width: 150,
-                      className: 'is-hidden-mobile no-wrap',
-                      render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
-                    },
-                    {
-                      title: 'Total demand',
-                      dataIndex: 'totalDemand',
-                      key: 'totalDemand',
-                      align: 'right',
-                      width: 200,
-                      className: 'is-hidden-mobile no-wrap',
-                      render: (v) => <>{v > 0 ? `${v.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}</>
-                    },
-                    {
-                      title: 'Avg price',
-                      dataIndex: 'avgPrice',
-                      key: 'avgPrice',
-                      align: 'right',
-                      width: 150,
-                      className: 'is-hidden-mobile no-wrap',
-                      render: (v, r) =>
-                        <>
-                          {v.toLocaleString()} CR
-                          <br />
-                          {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
-                          {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
-                        </>
-                    }
-                  ]}
-                  data={importOrders}
-                  rowKey={(r) => `system_imports_${r.systemAddress}_${r.symbol}`}
-                  expandable={{
-                    expandRowByClick: true,
-                    expandedRowRender: r =>
-                      <>
-                        <p style={{ marginTop: '.5rem' }}>
-                          Demand for <Link href={`/commodity/${r.symbol}/importers?location=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name}</Link> in {r.systemName}
-                        </p>
-                        <LocalCommodityImporters
-                          commodityName={r.name}
-                          commoditySymbol={r.symbol}
-                          commodityOrders={r.importOrders}
-                        />
-                        <Collapsible
-                          trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
-                          triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
-                        >
-                          <NearbyCommodityExporters commodity={r} />
-                        </Collapsible>
-                        <Collapsible
-                          trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
-                          triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
-                        >
-                          <NearbyCommodityImporters commodity={r} />
-                        </Collapsible>
-                      </>
-                  }}
-                />}
-            </TabPanel>
-            <TabPanel>
-              {!nearbySystems && <div style={{ marginTop: '2rem' }} className='loading-bar loading-bar--tab' />}
-              {nearbySystems &&
-                <Table
-                  className='data-table data-table--striped data-table--interactive data-table--animated'
-                  columns={[
-                    {
-                      title: 'Nearby systems',
-                      dataIndex: 'systemName',
-                      key: 'systemName',
-                      align: 'left',
-                      render: (v) => <><i className='icon icarus-terminal-star' />{v}</>
-                    },
-                    {
-                      title: 'Dist.',
-                      dataIndex: 'distance',
-                      key: 'distance',
-                      align: 'right',
-                      className: 'no-wrap',
-                      render: (v) => v < 1
-                        ? '< 1 Ly'
-                        : <>{Math.floor(v).toLocaleString()} Ly</>
-                    }
-                  ]}
-                  data={nearbySystems}
-                  rowKey='systemAddress'
-                  onRow={(record, index) => ({
-                    onClick: onSystemsRowClick.bind(null, record, index)
-                  })}
-                />}
-            </TabPanel>
-          </Tabs>
-        </div>}
+        <>
+          {views[activeViewIndex] === '' &&
+            <SystemMap
+              system={system}
+              nearbySystems={nearbySystems}
+              stationsInSystem={stationsInSystem}
+              settlementsInSystem={settlementsInSystem}
+              megashipsInSystem={megashipsInSystem}
+              fleetCarriersInSystem={fleetCarriersInSystem}
+              importOrders={importOrders}
+              exportOrders={exportOrders}
+              lastUpdatedAt={lastUpdatedAt}
+            />}
+          {(views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports') &&
+            <SystemTrade
+              system={system}
+              importOrders={importOrders}
+              exportOrders={exportOrders}
+              rareGoods={rareGoods}
+              lastUpdatedAt={lastUpdatedAt}
+            />}
+          {views[activeViewIndex] === 'nearby' &&
+            <SystemNearby nearbySystems={nearbySystems} />}
+        </>}
     </Layout>
   )
 }

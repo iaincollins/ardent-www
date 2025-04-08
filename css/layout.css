@@ -65,3 +65,7 @@ mask-repeat: no-repeat, no-repeat;
   */
   /* scrollbar-gutter: stable; */
 }
+
+.layout__content--with-navigation {
+  left: 3.4rem;
+}

@@ -16,6 +16,7 @@
 @import url('components/sidebar.css');
 @import url('components/system-map.css');
 @import url('components/tabs.css');
+@import url('components/navigation-bar.css');
 
 @import url('responsive/desktop.css');
 @import url('responsive/mobile.css');
@@ -70,11 +71,11 @@ body::-webkit-scrollbar-thumb,
 }
 
 .scrollable::-webkit-scrollbar-thumb {
-  background: var(--color-primary-light);
+  background: var(--color-primary-lighter);
 }
 
 .scrollable::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-lighter);
+  background: var(--color-primary-lightest);
 }
 
 body::-webkit-scrollbar-thumb {

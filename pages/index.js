@@ -17,22 +17,22 @@ export default () => {
 
   useEffect(() => {
     setNavigationPath([{ name: 'Home', path: '/' }, { name: 'News', path: '/' }])
-      ; (async () => {
-        const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
-        const news = res.ok ? await res.json() : []
-        setGalnetNews(news)
-      })()
+    ; (async () => {
+      const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
+      const news = res.ok ? await res.json() : []
+      setGalnetNews(news)
+    })()
 
-      ; (async () => {
-        const res = await fetch(`${API_BASE_URL}/v1/stats`)
-        const stats = await res.json()
-        setStats(stats)
-      })()
-      ; (async () => {
-        const res = await fetch(`${API_BASE_URL}/v1/version`)
-        const version = await res.json()
-        setVersion(version)
-      })()
+    ; (async () => {
+      const res = await fetch(`${API_BASE_URL}/v1/stats`)
+      const stats = await res.json()
+      setStats(stats)
+    })()
+    ; (async () => {
+      const res = await fetch(`${API_BASE_URL}/v1/version`)
+      const version = await res.json()
+      setVersion(version)
+    })()
   }, [])
 
   return (

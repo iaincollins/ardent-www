@@ -10,11 +10,13 @@
   --color-text-inverted: hsl(0, 0%, 20%);
   --color-text-inverted-muted: hsla(0, 0%, 20%, .75);
 
-  --color-primary-lighter: hsl(0, 0%, 100%);
-  --color-primary-light: hsl(0, 0%, 95%);
-  --color-primary: hsl(0, 0%, 90%);
+  --color-primary-lightest: hsl(0, 0%, 100%);
+  --color-primary-lighter: hsl(0, 0%, 95%);
+  --color-primary-light: hsl(0, 0%, 90%);
+  --color-primary: hsl(0, 0%, 85%);
   --color-primary-dark: hsl(0, 0%, 60%);
   --color-primary-darker: hsl(0, 0%, 40%);
+  --color-primary-darkest: hsl(0, 0%, 30%);
 
   --color-window-scrollbar-thumb: rgba(250, 241, 228);
   --color-window-scrollbar-track: rgba(103, 100, 94);

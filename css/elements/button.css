@@ -59,7 +59,7 @@ a.button {
   position: absolute;
   inset: 0;
   clip-path: polygon(0 0,calc(100% - 1.00rem) 0,100% 1.00rem,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem));
-  background-color: var(--color-primary-light);
+  background-color: var(--color-primary-lightest);
 }
 
 .button .icon {

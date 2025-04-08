@@ -103,14 +103,14 @@ export default () => {
               {cmdrProfile?.lastSystem?.name &&
                 <p className='fx__fade-in'>
                   <small>Location</small><br />
-                  <i className='icarus-terminal-location' /><Link href={`/system/${cmdrProfile.lastSystem.name}`}>{cmdrProfile.lastSystem.name}</Link>
+                  <i className='icarus-terminal-location' /><Link href={`/system/${cmdrProfile.lastSystem.name.replaceAll(' ', '_')}`}>{cmdrProfile.lastSystem.name}</Link>
                 </p>}
 
               {cmdrFleetCarrier?.name && cmdrFleetCarrier?.currentStarSystem &&
                 <p className='fx__fade-in'>
                   <small>Fleet Carrier</small><br />
                   <i className='icarus-terminal-fleet-carrier' />{hexToAscii(cmdrFleetCarrier.name?.vanityName)} {cmdrFleetCarrier.name?.callsign}<br />
-                  <i className='icarus-terminal-route' /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem}`}>{cmdrFleetCarrier.currentStarSystem}</Link>
+                  <i className='icarus-terminal-route' /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem.replaceAll(' ', '_')}`}>{cmdrFleetCarrier.currentStarSystem}</Link>
                 </p>}
 
               {nearestServices &&
@@ -141,7 +141,7 @@ export default () => {
                                         <StationIcon station={station}>
                                           {station.stationName}
                                           <br />
-                                          <Link href={`/system/${station.systemName}`}>{station.bodyName ? station.bodyName : station.systemName}</Link>
+                                          <Link href={`/system/${station.systemName.replaceAll(' ', '_')}`}>{station.bodyName ? station.bodyName : station.systemName}</Link>
                                           <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
                                         </StationIcon>
                                       </span>
@@ -161,7 +161,7 @@ export default () => {
               <input type='hidden' name='csrfToken' value={csrfToken} />
               <p className='text-center'>
                 <small style={{ paddingBottom: '1rem' }} onClick={() => document.getElementById('signout').submit()}>Sign out</small>
-               </p>
+              </p>
             </form>}
         </>}
       {signedIn === false &&
@@ -178,7 +178,7 @@ export default () => {
   )
 }
 
-async function getNearestService(systemName, service) {
+async function getNearestService (systemName, service) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
   return res.ok ? await res.json() : null
 }
