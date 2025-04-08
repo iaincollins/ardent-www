@@ -124,19 +124,19 @@ export default () => {
                             <Fragment key={`nearest_service_${service}`}>
                               <tr><th className='text-left'>{service}</th></tr>
                               <tr>
-                                <td style={{ paddingBottom: '1rem' }}>
+                                <td style={{ paddingBottom: '1rem', paddingTop: 0 }}>
                                   {nearestServices[service]?.filter(s => s.distance === 0).splice(0, 1).map(station =>
                                     <Fragment key={`in_system_service_${service}_${station}`}>
-                                      <small style={{ lineHeight: '1.75rem' }}>In system</small>
+                                      <small style={{ lineHeight: '2rem' }}>In system</small>
                                       <StationIcon station={station}>
                                         {station.stationName}
                                         {station.bodyName ? <><br />{station.bodyName}</> : ''}
-                                        <small className='text-no-transform'> {station.distanceToArrival.toFixed().toLocaleString()} Ls</small>
+                                        <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>
                                       </StationIcon>
                                     </Fragment>)}
                                   {nearestServices[service]?.filter(s => s.distance > 0).splice(0, 1).map(station =>
                                     <Fragment key={`nearest_service_${service}_${station}`}>
-                                      <small style={{ lineHeight: '1.75rem' }}>Next nearest</small>
+                                      <small style={{ lineHeight: '2rem' }}>Next nearest</small>
                                       <span>
                                         <StationIcon station={station}>
                                           {station.stationName}

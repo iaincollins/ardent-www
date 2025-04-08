@@ -13,7 +13,7 @@ import NearbyCommodityExporters from 'components/nearby-commodity-exporters'
 import { NO_DEMAND_TEXT } from 'lib/consts'
 
 module.exports = ({
-  system,
+  systemName,
   importOrders,
   exportOrders,
   rareGoods,
@@ -23,28 +23,25 @@ module.exports = ({
 
   return (
     <div className='fx__fade-in'>
-      <p style={{ margin: '.5rem 0' }}>
-        <small>Trade data for {system.systemName} last updated {timeBetweenTimestamps(lastUpdatedAt)} ago</small>
-      </p>      
-      {rareGoods?.length > 0 && 
-        <h5>Rare Exports</h5>
-      }
+      <h5 style={{ margin: '.5rem' }}>Last update {timeBetweenTimestamps(lastUpdatedAt)} ago</h5>
+      {rareGoods?.length > 0 &&
+        <h5 style={{ margin: '.5rem' }}>Rare Goods Exports</h5>}
       {rareGoods?.length > 0 && rareGoods.map(rare =>
-        <p style={{ margin: '.5rem 0', fontSize: '.9rem' }} key={`rare_good_${rare.symbol}`} className='text-no-transform'>
+        <p style={{ margin: '.5rem', fontSize: '.9rem' }} key={`rare_good_${rare.symbol}`} className='text-no-transform'>
           {rare.stationName} is the exclusive exporter of {rare.name}.
           {' '}
           {rare?.description}
           {' '}
           {rare?.limit && <>Export restrictions limit orders to {rare.limit}T at a time.</>}
-        </p>)}      
-          
+        </p>)}
+
       <Tabs
         onSelect={
-        (index) => {
-          const view = (index === 1) ? 'imports' : 'exports'
-          router.push(`/system/${system.systemName.replaceAll(' ', '_')}/${view}`)
+          (index) => {
+            const view = (index === 1) ? 'imports' : 'exports'
+            router.push(`/system/${systemName.replaceAll(' ', '_')}/${view}`)
+          }
         }
-      }
       >
         <TabList>
           <Tab>
@@ -83,19 +80,19 @@ module.exports = ({
                       </small>
                       <div className='is-visible-mobile'>
                         <table className='data-table--mini two-column-table data-table--compact'>
-                        <tbody style={{ textTransform: 'uppercase' }}>
-                          <tr>
-                            <td><span className='data-table__label'>Total stock</span>{r.totalStock.toLocaleString()} T</td>
-                            <td className='text-right'>
-                              <span className='data-table__label'>Price</span>
-                              {r.avgPrice.toLocaleString()} CR
-                              <br />
-                              {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
-                              {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                          <tbody style={{ textTransform: 'uppercase' }}>
+                            <tr>
+                              <td><span className='data-table__label'>Total stock</span>{r.totalStock.toLocaleString()} T</td>
+                              <td className='text-right'>
+                                <span className='data-table__label'>Price</span>
+                                {r.avgPrice.toLocaleString()} CR
+                                <br />
+                                {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
+                                {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                         <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
                       </div>
                     </>
@@ -197,19 +194,19 @@ module.exports = ({
                       </small>
                       <div className='is-visible-mobile'>
                         <table className='data-table--mini data-table--compact two-column-table'>
-                        <tbody style={{ textTransform: 'uppercase' }}>
-                          <tr>
-                            <td><span className='data-table__label'>Total demand</span>{r.totalDemand > 0 ? `${r.totalDemand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}</td>
-                            <td className='text-right'>
-                              <span className='data-table__label'>Price</span>
-                              {r.avgPrice.toLocaleString()} CR
-                              <br />
-                              {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
-                              {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                          <tbody style={{ textTransform: 'uppercase' }}>
+                            <tr>
+                              <td><span className='data-table__label'>Total demand</span>{r.totalDemand > 0 ? `${r.totalDemand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}</td>
+                              <td className='text-right'>
+                                <span className='data-table__label'>Price</span>
+                                {r.avgPrice.toLocaleString()} CR
+                                <br />
+                                {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
+                                {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                         <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
                       </div>
                     </>

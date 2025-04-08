@@ -72,16 +72,16 @@ module.exports = ({
                   >
                     {stationsInSystem.map(station =>
                       <Fragment key={`marketId_${station.marketId}`}>
-                          <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                            <div className='system__entity-name'>
-                              <StationIcon station={station} />
-                              {station.stationName}
-                            </div>
-                            <div className='system__entity-information'>
-                              {station.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                            </div>
+                        <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                          <div className='system__entity-name'>
+                            <StationIcon station={station} />
+                            {station.stationName}
                           </div>
-                        </Fragment>
+                          <div className='system__entity-information'>
+                            {station.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                          </div>
+                        </div>
+                      </Fragment>
                     )}
                   </Collapsible>
                 </span>}
@@ -100,19 +100,19 @@ module.exports = ({
                   >
                     {settlementsInSystem.map(station =>
                       <Fragment key={`marketId_${station.marketId}`}>
-                          <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                            <div className='system__entity-name'>
-                              <StationIcon station={station} />
-                              {station.stationName}
-                            </div>
-                            <div className='system__entity-information'>
-                              {station.bodyName && <small><i className='icon icarus-terminal-planet' style={{ position: 'relative', top: '-.1rem' }} />{station.bodyName}</small>}
-                              {station.bodyName && station.distanceToArrival !== null && <small>{' ('}</small>}
-                              {station.distanceToArrival !== null && <small className='text-no-transform'>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                              {station.bodyName && station.distanceToArrival !== null && <small>)</small>}
-                            </div>
+                        <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                          <div className='system__entity-name'>
+                            <StationIcon station={station} />
+                            {station.stationName}
                           </div>
-                        </Fragment>
+                          <div className='system__entity-information'>
+                            {station.bodyName && <small><i className='icon icarus-terminal-planet' style={{ position: 'relative', top: '-.1rem' }} />{station.bodyName}</small>}
+                            {station.bodyName && station.distanceToArrival !== null && <small>{' ('}</small>}
+                            {station.distanceToArrival !== null && <small className='text-no-transform'>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                            {station.bodyName && station.distanceToArrival !== null && <small>)</small>}
+                          </div>
+                        </div>
+                      </Fragment>
                     )}
                   </Collapsible>
                 </span>}
@@ -131,18 +131,18 @@ module.exports = ({
                   >
                     {megashipsInSystem.map(station =>
                       <Fragment key={`marketId_${station.marketId}`}>
-                          <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                            <div className='system__entity-name'>
-                              <StationIcon station={station} />
-                              {station.stationName}
-                            </div>
-                            <div className='system__entity-information'>
-                              {station.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                              {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
-                              {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
-                            </div>
+                        <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                          <div className='system__entity-name'>
+                            <StationIcon station={station} />
+                            {station.stationName}
                           </div>
-                        </Fragment>
+                          <div className='system__entity-information'>
+                            {station.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                            {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
+                            {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
+                          </div>
+                        </div>
+                      </Fragment>
                     )}
                   </Collapsible>
                 </span>}
@@ -161,17 +161,17 @@ module.exports = ({
                   >
                     {fleetCarriersInSystem.map(station =>
                       <Fragment key={`marketId_${station.marketId}`}>
-                          <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
-                            <div className='system__entity-name'>
-                              <StationIcon stationType='FleetCarrier' />
-                              FC {station.stationName}
-                            </div>
-                            <div className='system__entity-information'>
-                              {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
-                              {station.distanceToArrival !== null && <small className='text-no-transform'> ({Math.round(station.distanceToArrival).toLocaleString()} Ls)</small>}
-                            </div>
+                        <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                          <div className='system__entity-name'>
+                            <StationIcon stationType='FleetCarrier' />
+                            FC {station.stationName}
                           </div>
-                        </Fragment>
+                          <div className='system__entity-information'>
+                            {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
+                            {station.distanceToArrival !== null && <small className='text-no-transform'> ({Math.round(station.distanceToArrival).toLocaleString()} Ls)</small>}
+                          </div>
+                        </div>
+                      </Fragment>
                     )}
                   </Collapsible>
                 </span>}

@@ -7,6 +7,7 @@ import animateTableEffect from 'lib/animate-table-effect'
 import Layout from 'components/layout'
 import SystemMap from 'components/system/system-map'
 import SystemTrade from 'components/system/system-trade'
+import SystemServices from 'components/system/system-services'
 import SystemNearby from 'components/system/system-nearby'
 import getSystemExports from 'lib/system-exports'
 import getSystemImports from 'lib/system-imports'
@@ -48,7 +49,7 @@ export default () => {
   const [activeViewIndex, setActiveViewIndex] = useState(0)
   const [rareGoods, setRareGoods] = useState([])
 
-  const views = ['', 'exports', 'imports', 'nearby']
+  const views = ['', 'exports', 'imports', 'services', 'nearby']
 
   useEffect(animateTableEffect)
 
@@ -206,16 +207,18 @@ export default () => {
       title={system ? `${system.systemName} - star system in Elite Dangerous` : null}
       description={system ? `Trade data for ${system.systemName} in Elite Dangerous` : null}
       heading={
-        <div className='heading--with-underline' style={{ marginBottom: 0 }}>
-          <h2 className='heading--with-icon'>
-            <i className='icon icarus-terminal-star' />{system?.systemName}
-          </h2>
-        </div>
+        system?.systemName
+          ? <div className='heading--with-underline' style={{ marginBottom: 0 }}>
+            <h2 className='heading--with-icon'>
+              <i className='icon icarus-terminal-star' />{system?.systemName} system
+            </h2>
+            </div>
+          : ''
       }
       navigation={[
         {
           name: 'Map',
-          icon: 'icarus-terminal-system-orbits',
+          icon: 'icarus-terminal-system-bodies',
           url: `/system/${system?.systemName.replaceAll(' ', '_')}`,
           active: views[activeViewIndex] === ''
         },
@@ -226,10 +229,16 @@ export default () => {
           active: (views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports')
         },
         {
-          name: 'Near',
+          name: 'Services',
+          icon: 'icarus-terminal-scan',
+          url: `/system/${system?.systemName.replaceAll(' ', '_')}/services`,
+          active: views[activeViewIndex] === 'services'
+        },
+        {
+          name: 'Nearby',
           icon: 'icarus-terminal-route',
           url: `/system/${system?.systemName.replaceAll(' ', '_')}/nearby`,
-          active: (views[activeViewIndex] === 'nearby' || views[activeViewIndex] === 'nearby')
+          active: views[activeViewIndex] === 'nearby'
         }
       ]}
     >
@@ -253,12 +262,14 @@ export default () => {
             />}
           {(views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports') &&
             <SystemTrade
-              system={system}
+              systemName={system.systemName}
               importOrders={importOrders}
               exportOrders={exportOrders}
               rareGoods={rareGoods}
               lastUpdatedAt={lastUpdatedAt}
             />}
+          {views[activeViewIndex] === 'services' &&
+            <SystemServices systemName={system.systemName} />}
           {views[activeViewIndex] === 'nearby' &&
             <SystemNearby nearbySystems={nearbySystems} />}
         </>}

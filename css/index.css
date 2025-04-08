@@ -189,7 +189,21 @@ table.two-column-table>tbody>tr>td,
 
 .commodity__price {
   opacity: 1;
+  background: var(--color-primary-dark);
+  border-radius: 2rem;
+  padding: 0 .25rem;
 }
+
+.commodity__price.text-positive {
+  background: var(--color-positive);
+  color: rgba(0,0,0,.6);
+}
+
+.commodity__price.text-negative {
+  background: var(--color-negative);
+  color: rgba(0,0,0,.6);
+}
+
 
 .rc-table-placeholder {
   text-transform: uppercase;
