@@ -10,10 +10,10 @@ export default () => {
   const [galnetNews, setGalnetNews] = useState()
   useEffect(() => {
     setNavigationPath([{ name: 'Home', path: '/' }, { name: 'News', path: '/news' }])
-    ;(async () => {
-      const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
-      if (res.ok) setGalnetNews(await res.json())
-    })()
+      ; (async () => {
+        const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
+        if (res.ok) setGalnetNews(await res.json())
+      })()
   }, [])
   return (
     <Layout
@@ -24,16 +24,22 @@ export default () => {
         <link rel='canonical' href='https://ardent-insight.com/about' />
       </Head>
       <div className='fx__fade-in'>
-        <div style={{ margin: 'auto', maxWidth: '60rem', paddingTop: '1rem' }}>
-          <h2>Latest News</h2>
-          <div className='clear' />
-          {galnetNews && galnetNews.map(newsItem => (
+        <div className='home__news-feed' style={{ left: '.5rem', right: '.5rem'}}>
+          <div className='heading--with-underline' style={{ marginBottom: 0 }}>
+            <h2 className='text-uppercase'>
+              Galnet News
+            </h2>
+          </div>
+          {galnetNews && galnetNews.map((newsItem, i) => (
             <div key={newsItem.url}>
-              <h3>{newsItem.title}</h3>
-              <img src={newsItem.image} width='100%' alt='News headline' />
-              <p className='muted'>{newsItem.date} :: <a href={newsItem.url}>Galnet News</a></p>
-              <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
-              <hr style={{ marginBottom: '1rem' }} />
+              <div className='home__news-article-body'>
+                <img src={newsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' />
+                <div className='home__news-article-text scrollable'>
+                  <h3 className='home__news-article-headline'>{newsItem.title}</h3>
+                  <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${newsItem.slug}`} rel='noreferrer'>Galnet {newsItem.date} </a></p>
+                  <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
+                </div>
+              </div>
             </div>
           ))}
         </div>

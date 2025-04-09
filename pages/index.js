@@ -16,7 +16,7 @@ export default () => {
   const [version, setVersion] = useState()
 
   useEffect(() => {
-    setNavigationPath([{ name: 'Home', path: '/' }, { name: 'News', path: '/' }])
+    setNavigationPath([{ name: 'Elite Dangerous Data', path: '/' }])
     ; (async () => {
       const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
       const news = res.ok ? await res.json() : []
@@ -100,10 +100,10 @@ export default () => {
               </h2>
             </div>
             <p style={{ marginTop: 0 }}>
-              Ardent Insight is the #1 leading platform for open trade data in the galaxy.
+              Ardent Insight is the #1 platform for open trade data in the galaxy.
             </p>
             <p>
-              Commodity prices and supply and demand intel provided by real time link to the <Link target='_blank' href='https://eddn.edcd.io/' rel='noreferrer'>EDDN</Link> relay.
+              Commodity prices and supply / demand data provided by real time link to the <Link target='_blank' href='https://eddn.edcd.io/' rel='noreferrer'>EDDN</Link> relay.
             </p>
             <h3>Ardent HQ</h3>
             <p style={{ backgroundColor: 'var(--color-text-inverted)', margin: 0, padding: '.5rem .25rem' }}>
@@ -139,10 +139,10 @@ export default () => {
                   <h3 className='home__news-article-headline'>{newsItem.title}</h3>
                   <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${newsItem.slug}`} rel='noreferrer'>Galnet {newsItem.date} </a></p>
                   <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
-                  <h3 style={{ fontSize: '1.2rem' }}>More from Galnet</h3>
-                  <ul>
+                  <h3 style={{ fontSize: '1.2rem' }}>Recent Galnet headlines</h3>
+                  <ul style={{margin: '1rem 0'}}>
                     {galnetNews.slice(1, 5).map((nextNewsItem, j) => (
-                      <li key={nextNewsItem.url} className='text-uppercase' style={{ marginTop: '.5rem' }}><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>{nextNewsItem.title}</a> <small>{nextNewsItem.date}</small></li>
+                      <li key={nextNewsItem.url} className='text-uppercase' style={{ marginTop: '.5rem' }}><Link href='/news' rel='noreferrer'>{nextNewsItem.title}</Link></li>
                     ))}
                   </ul>
                 </div>
