@@ -11,11 +11,11 @@ export default () => {
   }, [])
   return (
     <Layout
-      title='About Ardent Industry for Elite Dangerous'
-      description='Ardent Industry is companion software for the game Elite Dangerous.'
+      title='About Ardent Insight for Elite Dangerous'
+      description='Ardent Insight is companion software for the game Elite Dangerous.'
     >
       <Head>
-        <link rel='canonical' href='https://ardent-industry.com/about' />
+        <link rel='canonical' href='https://ardent-insight.com/about' />
       </Head>
       <div className='fx__fade-in'>
         <div className='heading--with-underline' style={{ marginBottom: 0 }}>

@@ -1,6 +1,6 @@
 # Ardent Website
 
-This is the website for [ardent-industry.com](https://ardent-industry.com)
+This is the website for [ardent-insight.com](https://ardent-insight.com)
 
 Ardent provides trade and exploration data for the game 
 [Elite Dangerous](https://www.elitedangerous.com/).

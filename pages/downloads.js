@@ -28,11 +28,11 @@ export default () => {
 
   return (
     <Layout
-      title='Downloads for Ardent Industry software'
-      description='Download bulk exports of the Elite Dangerous trade and system data from Ardent Industry.'
+      title='Downloads for Ardent Insight software'
+      description='Download bulk exports of the Elite Dangerous trade and system data from Ardent Insight.'
     >
       <Head>
-        <link rel='canonical' href='https://ardent-industry.com/downloads' />
+        <link rel='canonical' href='https://ardent-insight.com/downloads' />
       </Head>
       <div className='fx__fade-in'>
         <div className='heading--with-underline' style={{ marginBottom: 0 }}>
@@ -42,7 +42,7 @@ export default () => {
           </h2>
         </div>
         <p>
-          Source code and data for Ardent Industry.
+          Source code and data for Ardent Insight.
         </p>
         <p>
           <Link href='/about'>About this software.</Link>

@@ -37,11 +37,11 @@ export default () => {
 
   return (
     <Layout
-      title='Ardent Industry - Elite Dangerous'
-      description='Ardent Industry provides trade and exploration data for the game Elite Dangerous.'
+      title='Ardent Insight - Elite Dangerous'
+      description='Ardent Insight provides trade and exploration data for the game Elite Dangerous.'
     >
       <Head>
-        <link rel='canonical' href='https://ardent-industry.com/about' />
+        <link rel='canonical' href='https://ardent-insight.com/about' />
       </Head>
       <div className='home fx__fade-in scrollable'>
 
@@ -101,7 +101,7 @@ export default () => {
               </h2>
             </div>
             <p style={{ marginTop: 0 }}>
-              Ardent Industry is the leading provider of open trade data and market insights in the galaxy.
+              Ardent Insight is the leading provider of open trade data and market insights in the galaxy.
             </p>
             <p>
               Real time commodity data sourced from the <Link target='_blank' href='https://eddn.edcd.io/' rel='noreferrer'>EDDN</Link> relay.
@@ -121,7 +121,7 @@ export default () => {
               </span>
             </p>
             <p className='text-uppercase muted' style={{ fontSize: '.8rem' }}>
-              Ardent Industry is a subsidiary of ICARUS Communications Corporation (ICC), creators of <Link target='_blank' href='https://github.com/iaincollins/icarus' rel='noreferrer'>ICARUS Terminal</Link>.
+              Ardent Insight is a subsidiary of ICARUS Communications Corporation (ICC), creators of <Link target='_blank' href='https://github.com/iaincollins/icarus' rel='noreferrer'>ICARUS Terminal</Link>.
             </p>
           </div>
         </div>

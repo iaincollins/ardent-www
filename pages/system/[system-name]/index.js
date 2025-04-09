@@ -243,7 +243,7 @@ export default () => {
       ]}
     >
       <Head>
-        <link rel='canonical' href={`https://ardent-industry.com/system/${system?.systemName}/${views[activeViewIndex]}`} />
+        <link rel='canonical' href={`https://ardent-insight.com/system/${system?.systemName}/${views[activeViewIndex]}`} />
       </Head>
       {system === null && <><h1>Error: Not found</h1><p className='text-large clear'>System not found.</p></>}
       {system &&

@@ -104,7 +104,7 @@ export default () => {
       <div className='header__logo'>
         <Link href='/' className='--no-hover' style={{ border: 'none' }}>
           <h1>
-            Ardent <span className='is-hidden-mobile'>Industry</span>
+            Ardent <span className='is-hidden-mobile'>Insight</span>
           </h1>
         </Link>
         <ul className='breadcrumbs' style={{ position: 'relative', top: '-.5rem', left: '.6rem' }}>

@@ -53,7 +53,7 @@ export default function Page (props) {
       description={categories?.length === 1 ? `Where to buy and sell ${categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category => category)} in Elite Dangerous` : 'Where to buy and sell commodities in Elite Dangerous'}
     >
       <Head>
-        <link rel='canonical' href='https://ardent-industry.com/commodities' />
+        <link rel='canonical' href='https://ardent-insight.com/commodities' />
       </Head>
       {commodities && categories &&
         <div className='fx__fade-in'>

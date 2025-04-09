@@ -161,7 +161,7 @@ export default () => {
       }
     >
       <Head>
-        <link rel='canonical' href={`https://ardent-industry.com/commodity/${commodity?.symbol}${(tabIndex > 0) ? `/${TABS[tabIndex]}` : ''}`} />
+        <link rel='canonical' href={`https://ardent-insight.com/commodity/${commodity?.symbol}${(tabIndex > 0) ? `/${TABS[tabIndex]}` : ''}`} />
       </Head>
       {commodity === null && <><h1>Error: Not found</h1><p className='text-large clear'>Commodity not found.</p></>}
       {commodity &&
