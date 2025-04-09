@@ -40,9 +40,10 @@ export default ({ commodity, rare }) => {
               className: 'max-width-mobile',
               render: (v, r) =>
                 <>
-                  <StationIcon station={r} />
-                  {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                  {r.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                  <StationIcon station={r}>
+                    {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+                    {r.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                  </StationIcon>
                   <div className='is-visible-mobile'>
                     <span style={{ textTransform: 'none', opacity: 0.75, paddingLeft: '2rem' }}>
                       <Link href={`/system/${r.systemName.replaceAll(' ', '_')}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} Ly</span>

@@ -151,9 +151,10 @@ function ExpandedRow ({ r, rare }) {
             className: 'max-width-mobile',
             render: (v, r) =>
               <>
-                <StationIcon station={r} />
-                {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                <StationIcon station={r}>
+                  {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
+                  {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                </StationIcon>
                 <div className='is-visible-mobile'>
                   <table className='data-table--mini data-table--compact two-column-table'>
                     <tbody style={{ textTransform: 'uppercase' }}>

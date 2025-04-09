@@ -15,7 +15,7 @@
   text-shadow: 0 0 1rem rgba(0,0,0,.6);
   padding-top: .1rem;
   padding-bottom: .15rem;
-  padding-left: 3rem;
+  padding-left: 2.9rem;
   padding-right: .5rem;
   line-height: 2rem;
   font-weight: bold;
@@ -39,23 +39,23 @@
 
 .header__logo h1 .icon {
   position: absolute;
-  top: .3rem;
-  left: .3rem;
+  top: .25rem;
+  left: .25rem;
   display: inline-block;
   font-size: 2.5rem;
 }
 
 .header__logo h1 .icon:after {
   position: absolute;
-  top: -.8rem;
+  top: -.9rem;
   left: -.15rem;
   display: block;
   content: '';
   background: var(--color-primary);
   border-radius: 0 0 1rem 0;
   border-radius: 5rem;
-  width: 3rem;
-  height: 3rem;
+  width: 3.05rem;
+  height: 3.05rem;
   z-index: -1;
 }
 
