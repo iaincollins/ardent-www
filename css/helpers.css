@@ -39,6 +39,10 @@
   color: var(--color-negative);
 }
 
+.text-info {
+  color: var(--color-info);
+}
+
 .text-no-transform {
   text-transform: none;
 }

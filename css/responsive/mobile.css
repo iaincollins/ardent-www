@@ -49,14 +49,12 @@
     color: var(--color-text-inverted);
   }
 
-  .header__logo h1,
   .header__logo p {
     padding-left: 1.5rem;
   }
 
   .header__logo h1 {
     width: 8rem;
-    padding-left: 1rem;
     top: 0;
     font-size: 2rem !important;
     line-height: 2rem;

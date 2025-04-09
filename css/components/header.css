@@ -13,13 +13,13 @@
   margin: 0;
   text-align: right;
   text-shadow: 0 0 1rem rgba(0,0,0,.6);
-  padding-left: 1.25rem;
   padding-top: .1rem;
   padding-bottom: .15rem;
+  padding-left: 3rem;
+  padding-right: .5rem;
   line-height: 2rem;
   font-weight: bold;
   font-style: italic;
-  padding-right: .5rem;
   float: none;
   margin-right: 5rem;
 }
@@ -35,6 +35,28 @@
 .header__logo h1::before,
 .header__logo h1::after {
   background: var(--color-primary);
+}
+
+.header__logo h1 .icon {
+  position: absolute;
+  top: .3rem;
+  left: .3rem;
+  display: inline-block;
+  font-size: 2.5rem;
+}
+
+.header__logo h1 .icon:after {
+  position: absolute;
+  top: -.8rem;
+  left: -.15rem;
+  display: block;
+  content: '';
+  background: var(--color-primary);
+  border-radius: 0 0 1rem 0;
+  border-radius: 5rem;
+  width: 3rem;
+  height: 3rem;
+  z-index: -1;
 }
 
 .header__logo p {

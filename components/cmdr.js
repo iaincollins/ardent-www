@@ -167,10 +167,16 @@ export default () => {
       {signedIn === false &&
         <>
           <div className='home__sign-in-placeholder'>
-            <p className='text-center'><small>Anonymous access protocol</small></p>
-            <p className='text-center'>Sign in to access all features.</p>
+            <p className='text-center'>
+              <i style={{fontSize: '3rem'}} className='icarus-terminal-warning muted' />
+              <br/>
+              <small>Anonymous access protocol</small>
+            </p>
+            <p className='text-center'>Sign in to access all services</p>
             <form method='GET' action={SIGN_IN_URL}>
-              <button className='button' style={{ display: 'block', width: '100%', fontSize: '1.25rem', lineHeight: '2.5rem' }}>Sign in</button>
+              <button className='button' style={{ display: 'block', width: '100%', fontSize: '1.25rem', lineHeight: '2.5rem' }}>
+                Sign in
+              </button>
             </form>
           </div>
         </>}

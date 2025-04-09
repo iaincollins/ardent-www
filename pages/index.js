@@ -78,7 +78,7 @@ export default () => {
             <br />in the last 24 hours
           </p>
           <Link className='button' style={{ textAlign: 'center', display: 'block', padding: '.5rem', fontSize: '1.25rem', margin: '0 1rem' }} href='/commodity/advancedcatalysers'>
-            <i className='icon icarus-terminal-cargo' style={{ marginRight: '.5rem', fontSize: '1.25rem !important' }} />
+            <i className='icon icarus-terminal-cargo' style={{ marginRight: '.5rem', fontSize: '1.5rem !important' }} />
             Trade Data
             <i className='icon icarus-terminal-chevron-right' style={{ marginLeft: '.5rem', fontSize: '1.25rem !important' }} />
           </Link>
@@ -95,8 +95,7 @@ export default () => {
           </ul> */}
           <div className='is-hidden-mobile'>
             <div className='heading--with-underline'>
-              <h2 className='heading--with-icon text-uppercase'>
-                <i className='icon icarus-terminal-logo' />
+              <h2 className='text-uppercase'>
                 About
               </h2>
             </div>
@@ -128,8 +127,7 @@ export default () => {
 
         <div className='home__news-feed'>
           <div className='heading--with-underline' style={{ marginBottom: 0 }}>
-            <h2 className='heading--with-icon text-uppercase'>
-              <i className='icon icarus-terminal-economy' />
+            <h2 className='text-uppercase'>
               Galnet News
             </h2>
           </div>

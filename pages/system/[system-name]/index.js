@@ -210,7 +210,7 @@ export default () => {
         system?.systemName
           ? <div className='heading--with-underline' style={{ marginBottom: 0 }}>
             <h2 className='heading--with-icon'>
-              <i className='icon icarus-terminal-star' />{system?.systemName} system
+              <i className='icon icarus-terminal-system-orbits' />{system?.systemName}
             </h2>
             </div>
           : ''
