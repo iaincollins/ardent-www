@@ -27,8 +27,11 @@ module.exports = ({ stationType, station, children }) => {
   if (_stationType === 'FleetCarrier') icon = 'fleet-carrier'
   if (_stationType === 'CraterPort') icon = 'planetary-port'
   if (_stationType === 'CraterOutpost') icon = 'planetary-port'
-  if (_stationType === 'SurfaceStation') icon = 'planetary-port'
   if (_stationType === 'OnFootSettlement') icon = 'settlement'
+
+  // New stations/outposts that are not yet online are coming through as "Surface Stations",
+  // even though they are in sapce.
+  if (_stationType === 'SurfaceStation') icon = 'poi' 
 
   // No dedicated icons for these two types yet
   if (_stationType === 'PlanetaryConstructionDepot') icon = 'settlement'
