@@ -26,40 +26,8 @@ export default ({ toggle }) => {
       <p>
         ArdentOS v{Package.version} (<a href={API_BASE_URL} rel='noreferrer' target='_blank' className='muted'>API v{version?.version ?? '?.?.?'}</a>).
       </p>
-      {/* {stats &&
-        <>
-          <p>
-            Updated {stats.updatedInLast24Hours.toLocaleString()} times in the last 24 hours.
-          </p>
-          <ul className='clear'>
-            <li>
-              Star systems: {stats.systems.toLocaleString()}
-            </li>
-            <li>
-              Stations: {stats.stations.stations.toLocaleString()}<span className='muted'>*</span>
-            </li>
-            <li>
-              Fleet carriers: {stats.stations.carriers.toLocaleString()}
-            </li>
-            <li>
-              Trade orders: {stats.trade.tradeOrders.toLocaleString()}
-            </li>
-            <li>
-              Trade markets: {(stats.trade.stations + stats.trade.carriers).toLocaleString()}
-            </li>
-            <li>
-              Trade systems: {stats.trade.systems.toLocaleString()}
-            </li>
-            <li>
-              Points of interest: {stats.pointsOfInterest.toLocaleString()}
-            </li>
-          </ul>
-        </>}
       <p>
-        <span className='muted'>* Includes stations, outposts, ports, settlements and megaships</span>
-      </p> */}
-      <p>
-        Trade and exploration data for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>.
+        Open trade data and system intel for <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>.
       </p>
       <p>
         The data feed comes from <a href='https://eddn.edcd.io' rel='noreferrer' target='_blank'>EDDN</a>, which is run by <a href='https://edcd.github.io/' rel='noreferrer' target='_blank'>EDCD</a>.

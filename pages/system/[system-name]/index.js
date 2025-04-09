@@ -48,6 +48,7 @@ export default () => {
   const [lastUpdatedAt, setLastUpdatedAt] = useState()
   const [activeViewIndex, setActiveViewIndex] = useState(0)
   const [rareGoods, setRareGoods] = useState([])
+  const [nearestServices, setNearestServices] = useState()
 
   const views = ['', 'exports', 'imports', 'services', 'nearby']
 
@@ -187,6 +188,26 @@ export default () => {
         })()
 
         ; (async () => {
+          const [
+            interstellarFactors,
+            universalCartographics,
+            shipyard,
+            blackMarket
+          ] = await Promise.all([
+            getNearestService(systemName, 'interstellar-factors'),
+            getNearestService(systemName, 'universal-cartographics'),
+            getNearestService(systemName, 'shipyard'),
+            getNearestService(systemName, 'black-market')
+          ])
+          setNearestServices({
+            'Interstellar Factors': interstellarFactors,
+            'Universal Cartographics': universalCartographics,
+            Shipyard: shipyard,
+            'Black Market': blackMarket
+          })
+        })()
+        
+        ; (async () => {
           const nearbySystems = await getNearbySystems(systemName)
           nearbySystems.forEach(s => {
             s.distance = distance(
@@ -269,7 +290,7 @@ export default () => {
               lastUpdatedAt={lastUpdatedAt}
             />}
           {views[activeViewIndex] === 'services' &&
-            <SystemServices systemName={system.systemName} />}
+            <SystemServices nearestServices={nearestServices} />}
           {views[activeViewIndex] === 'nearby' &&
             <SystemNearby nearbySystems={nearbySystems} />}
         </>}
@@ -290,4 +311,9 @@ async function getStationsInSystem (systemName) {
 async function getNearbySystems (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=25`)
   return await res.json()
+}
+
+async function getNearestService (systemName, service) {
+  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
+  return res.ok ? await res.json() : null
 }

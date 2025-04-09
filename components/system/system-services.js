@@ -1,38 +1,13 @@
-import { useState, useEffect, Fragment } from 'react'
+import { Fragment } from 'react'
 import Link from 'next/link'
 import StationIcon from 'components/station-icon'
-import { API_BASE_URL } from 'lib/consts'
 
-module.exports = ({ systemName }) => {
-  const [nearestServices, setNearestServices] = useState()
-
-  useEffect(() => {
-    ; (async () => {
-      const [
-        interstellarFactors,
-        universalCartographics,
-        shipyard,
-        blackMarket
-      ] = await Promise.all([
-        getNearestService(systemName, 'interstellar-factors'),
-        getNearestService(systemName, 'universal-cartographics'),
-        getNearestService(systemName, 'shipyard'),
-        getNearestService(systemName, 'black-market')
-      ])
-      setNearestServices({
-        'Interstellar Factors': interstellarFactors,
-        'Universal Cartographics': universalCartographics,
-        Shipyard: shipyard,
-        'Black Market': blackMarket
-      })
-    })()
-  }, [systemName])
-
+module.exports = ({ nearestServices }) => {
   return (
     <div className='fx__fade-in'>
       {nearestServices &&
         <div className='fx__fade-in'>
-          <h5 style={{ margin: '.5rem' }}>Station Services</h5>
+          <p className='muted' style={{ margin: '.5rem' }}>Nearest station services</p>
           <div className='rc-table data-table data-table--striped data-table--interactive data-table--animated'>
             <div className='rc-table-container'>
               <table>
@@ -41,7 +16,7 @@ module.exports = ({ systemName }) => {
                     <Fragment key={`nearest_service_${service}`}>
                       <tr><th className='text-left'>{service}</th></tr>
                       <tr>
-                        <td style={{ paddingBottom: '1rem', paddingTop: 0 }}>
+                        <td style={{ paddingBottom: '1rem', paddingTop: 0, background: 'rgba(0,0,0,.25)' }}>
                           {nearestServices[service]?.filter(s => s.stationType !== 'FleetCarrier')?.filter(s => s.distance === 0)?.length > 0 &&
                             <small style={{ display: 'block', marginTop: '.5rem' }}>In system</small>}
                           {nearestServices[service]?.filter(s => s.stationType !== 'FleetCarrier')?.filter(s => s.distance === 0)?.map(station =>
@@ -93,9 +68,4 @@ module.exports = ({ systemName }) => {
         </div>}
     </div>
   )
-}
-
-async function getNearestService (systemName, service) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
-  return res.ok ? await res.json() : null
 }

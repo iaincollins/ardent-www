@@ -23,7 +23,7 @@ module.exports = ({
 
   return (
     <div className='fx__fade-in'>
-      <h5 style={{ margin: '.5rem' }}>Last update {timeBetweenTimestamps(lastUpdatedAt)} ago</h5>
+      <p className='muted' style={{ margin: '.5rem' }}>Last update {timeBetweenTimestamps(lastUpdatedAt)} ago</p>
       {rareGoods?.length > 0 &&
         <h5 style={{ margin: '.5rem' }}>Rare Goods Exports</h5>}
       {rareGoods?.length > 0 && rareGoods.map(rare =>

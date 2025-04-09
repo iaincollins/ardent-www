@@ -100,10 +100,10 @@ export default () => {
               </h2>
             </div>
             <p style={{ marginTop: 0 }}>
-              Ardent Insight is the leading provider of open trade data and market insights in the galaxy.
+              Ardent Insight is the #1 leading platform for open trade data in the galaxy.
             </p>
             <p>
-              Real time commodity data sourced from the <Link target='_blank' href='https://eddn.edcd.io/' rel='noreferrer'>EDDN</Link> relay.
+              Commodity prices and supply and demand intel provided by real time link to the <Link target='_blank' href='https://eddn.edcd.io/' rel='noreferrer'>EDDN</Link> relay.
             </p>
             <h3>Ardent HQ</h3>
             <p style={{ backgroundColor: 'var(--color-text-inverted)', margin: 0, padding: '.5rem .25rem' }}>
