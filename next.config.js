@@ -1,3 +1,17 @@
+const path = require('path')
+const fs = require('fs')
+
+// Valid config file locations
+const ARDENT_CONFIG_LOCATIONS = [
+  '/etc/ardent.config',
+  path.join(__dirname, '../ardent.config'),
+  path.join(__dirname, './ardent.config')
+]
+
+for (const path of ARDENT_CONFIG_LOCATIONS.reverse()) {
+  if (fs.existsSync(path)) require('dotenv').config({ path })
+}
+
 module.exports = {
   async rewrites () {
     return [
