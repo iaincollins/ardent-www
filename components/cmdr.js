@@ -10,14 +10,12 @@ import { loadCache, saveCache, deleteCache } from 'lib/cache'
 export default () => {
   const [signedIn, setSignedIn] = useState()
   const [csrfToken, setCsrfToken] = useState()
-  const [cmdrProfile, setCmdrProfile] = useState()
-  const [cmdrFleetCarrier, setCmdrFleetCarrier] = useState()
-  const [nearestServices, setNearestServices] = useState()
+  const [cmdrProfile, setCmdrProfile] = useState(loadCache('cmdrProfile'))
+  const [cmdrFleetCarrier, setCmdrFleetCarrier] = useState(loadCache('cmdrFleetCarrier'))
+  const [nearestServices, setNearestServices] = useState(loadCache('cmdrNearestServices'))
 
+  console.log(cmdrProfile)
   const updateNearestServices = async (_cmdrProfile) => {
-    let _nearestServices = loadCache('cmdrNearestServices')
-    if (_nearestServices) setNearestServices(_nearestServices)
-
     const [
       interstellarFactors,
       universalCartographics,
@@ -29,7 +27,7 @@ export default () => {
       getNearestService(_cmdrProfile.lastSystem.name, 'shipyard'),
       getNearestService(_cmdrProfile.lastSystem.name, 'black-market')
     ])
-    _nearestServices = {
+    const _nearestServices = {
       'Interstellar Factors': interstellarFactors,
       'Universal Cartographics': universalCartographics,
       Shipyard: shipyard,
@@ -40,9 +38,7 @@ export default () => {
   }
 
   const updateFleetCarrier = async () => {
-    let _fleetCarrier = loadCache('cmdrFleetCarrier')
-    if (_fleetCarrier) setNearestServices(_fleetCarrier)
-    _fleetCarrier = await getCmdrInfo('fleetcarrier')
+    const _fleetCarrier = await getCmdrInfo('fleetcarrier')
     setCmdrFleetCarrier(_fleetCarrier)
     saveCache('cmdrFleetCarrier', _fleetCarrier)
   }
@@ -57,9 +53,9 @@ export default () => {
     const _cmdrProfile = await getCmdrInfo('profile')
     const isSignedIn = !!(_cmdrProfile?.commander?.id)
     setSignedIn(isSignedIn)
-    if (isSignedIn) {
-      saveCache('cmdrProfile', _cmdrProfile)
+    if (isSignedIn) {      
       setCmdrProfile(_cmdrProfile)
+      saveCache('cmdrProfile', _cmdrProfile)
       updateFleetCarrier()
       updateNearestServices(_cmdrProfile)
     } else {
@@ -70,15 +66,12 @@ export default () => {
   useEffect(() => {
     ; (async () => {
       // If we can get a profile, they are signed in
-      let _cmdrProfile = loadCache('cmdrProfile')
-      if (_cmdrProfile) setCmdrProfile(_cmdrProfile)
-      _cmdrProfile = await getCmdrInfo('profile')
+      const _cmdrProfile = await getCmdrInfo('profile')
       const isSignedIn = !!(_cmdrProfile?.commander?.id)
       setSignedIn(isSignedIn)
       if (isSignedIn) {
-        saveCache('cmdrProfile', _cmdrProfile)
-        // Set Cmdr Profile
         setCmdrProfile(_cmdrProfile)
+        saveCache('cmdrProfile', _cmdrProfile)
         updateFleetCarrier()
         updateNearestServices(_cmdrProfile)
       } else {
@@ -95,7 +88,7 @@ export default () => {
           {cmdrProfile?.commander &&
             <div onClick={() => refreshCmdrProfile()}>
               {cmdrProfile?.commander?.name &&
-                <p className='fx__fade-in'>
+                <p>
                   CMDR {cmdrProfile.commander.name}<br />
                   {cmdrProfile?.ship?.shipName && cmdrProfile?.ship?.shipID &&
                     <span className='text-uppercase muted'>
@@ -107,8 +100,8 @@ export default () => {
                         {Object.keys(cmdrProfile?.ships)?.length > 1 ? ` 1 of ${Object.keys(cmdrProfile?.ships)?.length} ships in fleet` : ''}
                       </small>} */}
                 </p>}
-              {cmdrProfile?.commander?.credits &&
-                <p className='fx__fade-in'>
+              {cmdrProfile !== undefined &&
+                <p>
                   <small>Credit Balance</small><br />
                   <i className='icarus-terminal-credits' />{cmdrProfile.commander.credits.toLocaleString()} CR
                   {cmdrFleetCarrier?.balance && <>
@@ -116,17 +109,17 @@ export default () => {
                     <i className='icarus-terminal-credits' />{Number(cmdrFleetCarrier.balance).toLocaleString()} CR <small>(Carrier)</small>
                   </>}
                 </p>}
-              {cmdrProfile?.lastSystem?.name &&
-                <p className='fx__fade-in'>
+              {cmdrProfile !== undefined &&
+                <p>
                   <small>Current Location</small><br />
                   <i className='icarus-terminal-location' style={{ float: 'left' }} /><Link href={`/system/${cmdrProfile.lastSystem.name.replaceAll(' ', '_')}`}>{cmdrProfile.lastSystem.name}</Link>
                 </p>}
 
-              {cmdrFleetCarrier?.name && cmdrFleetCarrier?.currentStarSystem &&
-                <p className='fx__fade-in'>
+              {cmdrFleetCarrier !== undefined && cmdrFleetCarrier?.name &&
+                <p>
                   <small>Fleet Carrier</small><br />
                   <div style={{ fontSize: '.8rem' }}>
-                    <i className='icarus-terminal-fleet-carrier' style={{ float: 'left', marginRight: '.25rem' }} />{hexToAscii(cmdrFleetCarrier.name?.vanityName)} {cmdrFleetCarrier.name?.callsign}<br />
+                    <i className='icarus-terminal-fleet-carrier' style={{ float: 'left', marginRight: '.25rem' }} />{hexToAscii(cmdrFleetCarrier.name.vanityName)} {cmdrFleetCarrier.name.callsign}<br />
                     <i className='icarus-terminal-route' style={{ float: 'left', marginRight: '.25rem' }} /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem.replaceAll(' ', '_')}`}>{cmdrFleetCarrier.currentStarSystem}</Link><br />
                     <i className='icarus-terminal-cargo' style={{ float: 'left', marginRight: '.25rem' }} />{(25000 - cmdrFleetCarrier.capacity.freeSpace).toLocaleString()} / {(25000).toLocaleString()} T<br />
                     <i className='icarus-terminal-engineer' style={{ float: 'left', marginRight: '.25rem' }} />Crew: {cmdrFleetCarrier.capacity.crew.toLocaleString()}<br />

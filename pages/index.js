@@ -18,20 +18,32 @@ export default () => {
   useEffect(() => {
     setNavigationPath([{ name: 'Elite Dangerous Data', path: '/' }])
     ; (async () => {
-      const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
-      const news = res.ok ? await res.json() : []
-      setGalnetNews(news)
+      try {
+        const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
+        const news = await res.json()
+        setGalnetNews(news)
+      } catch (e) {
+        console.error(e)
+      }
     })()
 
     ; (async () => {
-      const res = await fetch(`${API_BASE_URL}/v1/stats`)
-      const stats = await res.json()
-      setStats(stats)
+      try {
+        const res = await fetch(`${API_BASE_URL}/v1/stats`)
+        const stats = await res.json()
+        setStats(stats)
+      } catch (e) {
+        console.error(e)
+      }
     })()
     ; (async () => {
-      const res = await fetch(`${API_BASE_URL}/v1/version`)
-      const version = await res.json()
-      setVersion(version)
+      try {
+        const res = await fetch(`${API_BASE_URL}/v1/version`)
+        const version = await res.json()
+        setVersion(version)
+      } catch (e) {
+        console.error(e)
+      }
     })()
   }, [])
 
