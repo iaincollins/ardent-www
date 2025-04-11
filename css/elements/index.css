@@ -105,7 +105,7 @@ h2 {
   position: relative;
   display: inline-block;
   border-bottom: .25rem solid var(--color-primary);
-  margin: .5rem 0 1rem 0;
+  margin: .5rem 0 0 0;
   width: 100%;
   max-width: 45rem;
   mask: linear-gradient(90deg, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 90%);

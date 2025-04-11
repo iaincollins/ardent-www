@@ -137,8 +137,8 @@ export default () => {
       }
 
       setNavigationPath([
-        { name: 'Commodities', path: '/commodities' },
-        { name: 'Trade Data', path: '/commodities' }
+        // { name: 'Commodities', path: '/commodities'},
+        { name: 'Trade Data', path: '/commodities', icon: 'icarus-terminal-cargo' }
       ])
 
       getImportsAndExports()

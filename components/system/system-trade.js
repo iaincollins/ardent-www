@@ -23,7 +23,10 @@ module.exports = ({
 
   return (
     <div className='fx__fade-in'>
-      <p className='muted' style={{ margin: '.5rem' }}>Last update {timeBetweenTimestamps(lastUpdatedAt)} ago</p>
+      <div className='heading--with-underline' style={{ marginTop: '.25rem' }}>
+        <h2>Local Commodities</h2>
+      </div>
+      <p className='muted'>Trade data for {systemName} last updated {timeBetweenTimestamps(lastUpdatedAt)} ago</p>
       {rareGoods?.length > 0 &&
         <h5 style={{ margin: '.5rem' }}>Rare Goods Exports</h5>}
       {rareGoods?.length > 0 && rareGoods.map(rare =>

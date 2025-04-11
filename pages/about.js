@@ -7,7 +7,10 @@ import { NavigationContext } from 'lib/context'
 export default () => {
   const [, setNavigationPath] = useContext(NavigationContext)
   useEffect(() => {
-    setNavigationPath([{ name: 'Home', path: '/' }, { name: 'About', path: '/about' }])
+    setNavigationPath([
+      // { name: 'Home', path: '/' },
+      { name: 'About Ardent Insight', path: '/about' }]
+    )
   }, [])
   return (
     <Layout
@@ -18,11 +21,6 @@ export default () => {
         <link rel='canonical' href='https://ardent-insight.com/about' />
       </Head>
       <div className='fx__fade-in'>
-        <div className='heading--with-underline' style={{ marginBottom: 0 }}>
-          <h2>
-            About this software
-          </h2>
-        </div>
         <div className='clear'>
           <About />
         </div>

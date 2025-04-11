@@ -140,7 +140,8 @@
   }
 
   .breadcrumbs {
-    zoom: .9;
+    zoom: .8;
+    padding-left: .25rem;
   }
 
   .breadcrumbs li:not(:last-child) {
@@ -206,7 +207,7 @@
   .layout__content--left-sidebar {
     display: block;
     position: relative;
-    top: -1rem;
+    top: -.5rem;
     padding-top: 1rem;
     padding-left: .1rem;
     padding-bottom: 1.5rem;

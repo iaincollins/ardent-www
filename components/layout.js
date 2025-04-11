@@ -26,19 +26,19 @@ export default ({
     </Head>
     <Loader visible={loading} text={loadingText} />
     <div className={`${sidebar !== undefined ? 'layout__content-wrapper scrollable' : ''} ${className !== undefined ? className : ''}`}>
-      {heading !== undefined && sidebar !== undefined &&
+      {/* {heading !== undefined && sidebar !== undefined &&
         <div className='layout__content-heading'>
           {heading}
-        </div>}
+        </div>} */}
       {sidebar !== undefined &&
         <div className={`layout__content layout__content--left-sidebar scrollable ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
           {sidebar}
         </div>}
       <div className={`layout__content scrollable ${sidebar !== undefined ? 'layout__content--right' : ''} ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
-        {heading !== undefined && sidebar === undefined &&
+        {/* {heading !== undefined && sidebar === undefined &&
           <div>
             {heading}
-          </div>}
+          </div>} */}
         {children}
       </div>
       {navigation !== undefined &&

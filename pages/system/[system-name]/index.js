@@ -111,8 +111,14 @@ export default () => {
 
         setNavigationPath(
           (system?.tradeZone)
-            ? [{ name: 'Systems', path: '/' }, { name: system.tradeZone, path: '/' }]
-            : [{ name: 'Systems', path: '/' }]
+            ? [
+                // { name: system.tradeZone, path: '/' },
+                { name: system.systemName, path: '/', icon: 'icarus-terminal-system-orbits' }
+              ]
+            : [
+              // { name: 'Systems', path: '/' },
+                { name: system.systemName, path: '/', icon: 'icarus-terminal-system-orbits' }
+              ]
         )
       } else {
         setSystem(undefined)
@@ -290,9 +296,9 @@ export default () => {
               lastUpdatedAt={lastUpdatedAt}
             />}
           {views[activeViewIndex] === 'services' &&
-            <SystemServices nearestServices={nearestServices} />}
+            <SystemServices systemName={system.systemName} nearestServices={nearestServices} />}
           {views[activeViewIndex] === 'nearby' &&
-            <SystemNearby nearbySystems={nearbySystems} />}
+            <SystemNearby systemName={system.systemName} nearbySystems={nearbySystems} />}
         </>}
     </Layout>
   )

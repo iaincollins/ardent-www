@@ -2,11 +2,12 @@
   list-style: none;
   padding: 0;
   margin: auto;
-  margin-top: .8rem;
+  margin-top: .5rem;
   margin-bottom: .8rem;
   overflow: hidden;
   pointer-events: none;
   white-space: nowrap;
+  zoom: 1.2;
 }
 
 .breadcrumbs li {
@@ -14,7 +15,7 @@
   position: relative;
   display: inline-block;
   background-color: var(--color-primary-darker);
-  text-shadow: 0 0 .7rem rgb(0, 0, 0);
+  text-shadow: 0 0 .5rem rgb(0, 0, 0);
   text-transform: uppercase;
   font-family: 'Jura';
   font-weight: bold;
@@ -36,12 +37,13 @@
 
 .breadcrumbs li .icon {
   line-height: .5rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   position: relative;
-  top: -0.1rem;
+  top: -.05rem;
   margin: 0;
   width: 1.5rem;
   display: inline-block;
+  text-shadow: 0 0 .7rem rgb(0, 0, 0, .5);
 }
 
 .breadcrumbs li:first-child {

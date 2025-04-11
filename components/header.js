@@ -65,7 +65,7 @@ export default () => {
       systemSearchResults.forEach(i => searchResults.push({
         icon: 'icarus-terminal-star',
         name: i.systemName,
-        path: `/system/${i.systemName}`
+        path: `/system/${i.systemName.replaceAll(' ', '_')}`
       }))
     }
     if (Array.isArray(stationSearchResults)) {
@@ -109,8 +109,12 @@ export default () => {
           </h1>
         </Link>
         <ul className='breadcrumbs' style={{ position: 'relative', top: '-.5rem', left: '.6rem' }}>
-          {navigationPath.map(({ name, path }) => (
-            <li key={`${name}:${path}`}><Link href={path}>{name}</Link></li>
+          {navigationPath.map(({ icon, name, path }, i) => (
+            <li key={`${name}:${path}`}>
+              {(i > 0 || navigationPath.length === 1)
+                ? <Link href={path}>{icon ? <i className={`${icon} icon`} /> : ''}{name}</Link>
+                : ''}
+            </li>
           ))}
         </ul>
       </div>

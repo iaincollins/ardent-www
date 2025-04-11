@@ -10,11 +10,14 @@ module.exports = ({ nearbySystems }) => {
 
   return (
     <div className='fx__fade-in'>
+      <div className='heading--with-underline' style={{ marginTop: '.25rem' }}>
+        <h2>Nearby Systems</h2>
+      </div>
       <Table
         className='data-table data-table--striped data-table--interactive data-table--animated'
         columns={[
           {
-            title: 'Nearby systems',
+            title: 'System Name',
             dataIndex: 'systemName',
             key: 'systemName',
             align: 'left',

@@ -16,13 +16,13 @@
     left: 15.25rem;
     bottom: 0;
     padding-top: 1rem;
-    top: 2.5rem;
+    top: 5rem;
   }
 
   .layout__content--left-sidebar {
     padding-top: 1rem;
     width: 15rem;
-    top: 3rem;
+    top: 5rem;
     left: -.5rem;
     bottom: 0;
     padding-left: .1rem;
@@ -32,7 +32,7 @@
 
   .layout__content-wrapper {
     position: absolute;
-    top: 5rem;
+    top: 0rem;
     bottom: 3.25rem;
     width: calc(100% - 1rem);
   }

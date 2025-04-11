@@ -23,6 +23,12 @@ module.exports = ({
 
   return (
     <div className='fx__fade-in'>
+      <div className='heading--with-underline' style={{ marginTop: '.2rem' }}>
+        <h2 className='heading--with-icon'>
+          <i className='icon icarus-terminal-system-orbits  ' />
+          {system.systemName} system
+        </h2>
+      </div>
       <div className='system-map'>
         <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />
         {nearbySystems && nearbySystems.map((nearbySystem, i) =>

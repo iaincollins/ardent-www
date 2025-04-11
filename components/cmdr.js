@@ -53,7 +53,7 @@ export default () => {
     const _cmdrProfile = await getCmdrInfo('profile')
     const isSignedIn = !!(_cmdrProfile?.commander?.id)
     setSignedIn(isSignedIn)
-    if (isSignedIn) {      
+    if (isSignedIn) {
       setCmdrProfile(_cmdrProfile)
       saveCache('cmdrProfile', _cmdrProfile)
       updateFleetCarrier()
@@ -104,10 +104,6 @@ export default () => {
                 <p>
                   <small>Credit Balance</small><br />
                   <i className='icarus-terminal-credits' />{cmdrProfile.commander.credits.toLocaleString()} CR
-                  {cmdrFleetCarrier?.balance && <>
-                    <br />
-                    <i className='icarus-terminal-credits' />{Number(cmdrFleetCarrier.balance).toLocaleString()} CR <small>(Carrier)</small>
-                  </>}
                 </p>}
               {cmdrProfile !== undefined &&
                 <p>
@@ -118,12 +114,13 @@ export default () => {
               {cmdrFleetCarrier !== undefined && cmdrFleetCarrier?.name &&
                 <p>
                   <small>Fleet Carrier</small><br />
-                  <div style={{ fontSize: '.8rem' }}>
+                  <div style={{ fontSize: '.85rem', lineHeight: '1.1rem' }}>
                     <i className='icarus-terminal-fleet-carrier' style={{ float: 'left', marginRight: '.25rem' }} />{hexToAscii(cmdrFleetCarrier.name.vanityName)} {cmdrFleetCarrier.name.callsign}<br />
-                    <i className='icarus-terminal-route' style={{ float: 'left', marginRight: '.25rem' }} /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem.replaceAll(' ', '_')}`}>{cmdrFleetCarrier.currentStarSystem}</Link><br />
+                    <i className='icarus-terminal-star' style={{ float: 'left', marginRight: '.25rem' }} /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem.replaceAll(' ', '_')}`}>{cmdrFleetCarrier.currentStarSystem}</Link><br />
+                    <i className='icarus-terminal-credits' />{Number(cmdrFleetCarrier.balance).toLocaleString()} CR<br />
                     <i className='icarus-terminal-cargo' style={{ float: 'left', marginRight: '.25rem' }} />{(25000 - cmdrFleetCarrier.capacity.freeSpace).toLocaleString()} / {(25000).toLocaleString()} T<br />
                     <i className='icarus-terminal-engineer' style={{ float: 'left', marginRight: '.25rem' }} />Crew: {cmdrFleetCarrier.capacity.crew.toLocaleString()}<br />
-                    <i className='icarus-terminal-ship' style={{ float: 'left', marginRight: '.25rem' }} />Docking: {cmdrFleetCarrier.dockingAccess.toUpperCase()}<br />
+                    <i className='icarus-terminal-ship' style={{ float: 'left', marginRight: '.25rem' }} />Docking: {cmdrFleetCarrier.dockingAccess}<br />
                   </div>
                 </p>}
 

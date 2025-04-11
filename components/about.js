@@ -10,14 +10,22 @@ export default ({ toggle }) => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch(`${API_BASE_URL}/v1/stats`)
-      const stats = await res.json()
-      setStats(stats)
+      try {
+        const res = await fetch(`${API_BASE_URL}/v1/stats`)
+        const stats = await res.json()
+        setStats(stats)
+      } catch (e) {
+        console.log(e)
+      }
     })()
     ; (async () => {
-      const res = await fetch(`${API_BASE_URL}/v1/version`)
-      const version = await res.json()
-      setVersion(version)
+      try {
+        const res = await fetch(`${API_BASE_URL}/v1/version`)
+        const version = await res.json()
+        setVersion(version)
+      } catch (e) {
+        console.log(e)
+      }
     })()
   }, [])
 
@@ -35,7 +43,9 @@ export default ({ toggle }) => {
       <p>
         Source code and data <Link href='/downloads' onClick={() => toggle && toggle(false)}>available for download</Link>.
       </p>
-      <h3>Legal</h3>
+      <div className='heading--with-underline'>
+        <h2>Legal</h2>
+      </div>
       <p className='clear'>
         Source published under GNU Affero General Public License.
       </p>

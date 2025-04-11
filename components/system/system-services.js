@@ -2,12 +2,15 @@ import { Fragment } from 'react'
 import Link from 'next/link'
 import StationIcon from 'components/station-icon'
 
-module.exports = ({ nearestServices }) => {
+module.exports = ({ systemName, nearestServices }) => {
   return (
     <div className='fx__fade-in'>
+      <div className='heading--with-underline' style={{ marginTop: '.25rem' }}>
+        <h2>Nearest Services</h2>
+      </div>
       {nearestServices &&
         <div className='fx__fade-in'>
-          <p className='muted' style={{ margin: '.5rem' }}>Nearest station services</p>
+          <p className='muted'>Station services in / closest to {systemName}</p>
           <div className='rc-table data-table data-table--striped data-table--interactive data-table--animated'>
             <div className='rc-table-container'>
               <table>

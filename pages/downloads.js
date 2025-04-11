@@ -18,11 +18,18 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      setNavigationPath([{ name: 'Home', path: '/' }, { name: 'Downloads', path: '/downloads' }])
-      const res = await fetch(`${API_BASE_URL}/v1/backup`)
-      const databases = (await res.json()).databases
-      databases.forEach(database => { database.description = databaseDescription?.[database.name] })
-      setDatabases(databases.reverse())
+      setNavigationPath([
+        // { name: 'Home', path: '/' },
+        { name: 'Downloads', path: '/downloads', icon: 'icarus-terminal-download' }]
+      )
+      try {
+        const res = await fetch(`${API_BASE_URL}/v1/backup`)
+        const databases = (await res.json()).databases
+        databases.forEach(database => { database.description = databaseDescription?.[database.name] })
+        setDatabases(databases.reverse())
+      } catch (e) {
+        console.log(e)
+      }
     })()
   }, [])
 
@@ -35,19 +42,15 @@ export default () => {
         <link rel='canonical' href='https://ardent-insight.com/downloads' />
       </Head>
       <div className='fx__fade-in'>
-        <div className='heading--with-underline' style={{ marginBottom: 0 }}>
-          <h2 className='heading--with-icon'>
-            <i className='icon icarus-terminal-download' />
-            Downloads
-          </h2>
-        </div>
         <p>
           Source code and data for Ardent Insight.
         </p>
         <p>
           <Link href='/about'>About this software.</Link>
         </p>
-        <h3>Source Code</h3>
+        <div className='heading--with-underline'>
+          <h2>Source Code</h2>
+        </div>
         <p>
           The software consists of three components; this website, a REST API and a service that processes the data stream from EDDN.
         </p>
@@ -57,24 +60,27 @@ export default () => {
           <li><a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector Source Code</a></li>
         </ul>
         <p />
-        <h3>Databases</h3>
+        <div className='heading--with-underline'>
+          <h2>Download Data</h2>
+        </div>
         <p>
-          Data downloads are compressed SQLite Database files, they are updated weekly on Thursdays from 07:00-09:00 UTC.
+          You can download data as compressed SQLite Database files.
+        </p>
+        <p>
+          They are updated weekly on Thursdays from 07:00-09:00 UTC.
         </p>
         <p>
           You may wish to avoid downloading these files during that time window as that's when the files may be updated.
         </p>
         <p>
-          To query for more recent data you can use the <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>REST API</a> at any time.
-        </p>
-        <p>
           Sources used to originally seed the databases include <a href='https://edsm.net' rel='noreferrer' target='_blank'>ESDM</a>,
           {' '}<a href='https://spansh.co.uk' rel='noreferrer' target='_blank'>Spansh</a>,
-          {' '}<a href='https://github.com/EDCD/EDDN' rel='noreferrer' target='_blank'>EDDN</a> and EDDB.io (discontinued).
+          {' '}<a href='https://github.com/EDCD/EDDN' rel='noreferrer' target='_blank'>EDDN</a> and EDDB.io (now offline).
         </p>
         {databases && databases.map(database =>
           <div key={database.name}>
             <h3>{database.name}</h3>
+
             <p>
               <em>{database.description}</em>
             </p>

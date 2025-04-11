@@ -16,7 +16,7 @@ export default () => {
   const [version, setVersion] = useState()
 
   useEffect(() => {
-    setNavigationPath([{ name: 'Elite Dangerous Data', path: '/' }])
+    setNavigationPath([{ name: 'Elite Dangerous News', path: '/' }])
     ; (async () => {
       try {
         const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
@@ -111,7 +111,7 @@ export default () => {
                 About
               </h2>
             </div>
-            <p style={{ marginTop: 0 }}>
+            <p>
               Ardent Insight is the #1 platform for open trade data in the galaxy.
             </p>
             <p>
