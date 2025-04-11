@@ -10,10 +10,10 @@ export default () => {
   const [galnetNews, setGalnetNews] = useState()
   useEffect(() => {
     setNavigationPath([{ name: 'Home', path: '/' }, { name: 'News', path: '/news' }])
-      ; (async () => {
-        const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
-        if (res.ok) setGalnetNews(await res.json())
-      })()
+    ; (async () => {
+      const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
+      if (res.ok) setGalnetNews(await res.json())
+    })()
   }, [])
   return (
     <Layout
@@ -24,7 +24,7 @@ export default () => {
         <link rel='canonical' href='https://ardent-insight.com/about' />
       </Head>
       <div className='fx__fade-in'>
-        <div className='home__news-feed' style={{ left: '.5rem', right: '.5rem'}}>
+        <div className='home__news-feed' style={{ left: '.5rem', right: '.5rem' }}>
           <div className='heading--with-underline' style={{ marginBottom: 0 }}>
             <h2 className='text-uppercase'>
               Galnet News

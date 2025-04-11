@@ -206,7 +206,7 @@ export default () => {
             'Black Market': blackMarket
           })
         })()
-        
+
         ; (async () => {
           const nearbySystems = await getNearbySystems(systemName)
           nearbySystems.forEach(s => {

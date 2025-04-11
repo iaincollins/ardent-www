@@ -5,6 +5,7 @@ import { getCmdrInfo } from 'lib/cmdr'
 import hexToAscii from 'lib/utils/hex-to-ascii'
 import StationIcon from 'components/station-icon'
 import { API_BASE_URL, SIGN_IN_URL, SIGN_OUT_URL } from 'lib/consts'
+import { loadCache, saveCache, deleteCache } from 'lib/cache'
 
 export default () => {
   const [signedIn, setSignedIn] = useState()
@@ -13,64 +14,75 @@ export default () => {
   const [cmdrFleetCarrier, setCmdrFleetCarrier] = useState()
   const [nearestServices, setNearestServices] = useState()
 
+  const updateNearestServices = async (_cmdrProfile) => {
+    let _nearestServices = loadCache('cmdrNearestServices')
+    if (_nearestServices) setNearestServices(_nearestServices)
+
+    const [
+      interstellarFactors,
+      universalCartographics,
+      shipyard,
+      blackMarket
+    ] = await Promise.all([
+      getNearestService(_cmdrProfile.lastSystem.name, 'interstellar-factors'),
+      getNearestService(_cmdrProfile.lastSystem.name, 'universal-cartographics'),
+      getNearestService(_cmdrProfile.lastSystem.name, 'shipyard'),
+      getNearestService(_cmdrProfile.lastSystem.name, 'black-market')
+    ])
+    _nearestServices = {
+      'Interstellar Factors': interstellarFactors,
+      'Universal Cartographics': universalCartographics,
+      Shipyard: shipyard,
+      'Black Market': blackMarket
+    }
+    setNearestServices(_nearestServices)
+    saveCache('cmdrNearestServices', _nearestServices)
+  }
+
+  const updateFleetCarrier = async () => {
+    let _fleetCarrier = loadCache('cmdrFleetCarrier')
+    if (_fleetCarrier) setNearestServices(_fleetCarrier)
+    _fleetCarrier = await getCmdrInfo('fleetcarrier')
+    setCmdrFleetCarrier(_fleetCarrier)
+    saveCache('cmdrFleetCarrier', _fleetCarrier)
+  }
+
+  function clearCmdrCache () {
+    deleteCache('cmdrProfile')
+    deleteCache('cmdrFleetCarrier')
+    deleteCache('cmdrNearestServices')
+  }
+
   const refreshCmdrProfile = async () => {
-    const cmdrProfile = await getCmdrInfo('profile')
-    const isSignedIn = !!(cmdrProfile?.commander?.id)
+    const _cmdrProfile = await getCmdrInfo('profile')
+    const isSignedIn = !!(_cmdrProfile?.commander?.id)
     setSignedIn(isSignedIn)
     if (isSignedIn) {
-      setCmdrProfile(cmdrProfile)
-      setCmdrFleetCarrier(await getCmdrInfo('fleetcarrier'))
-      const [
-        interstellarFactors,
-        universalCartographics,
-        shipyard,
-        blackMarket
-      ] = await Promise.all([
-        getNearestService(cmdrProfile.lastSystem.name, 'interstellar-factors'),
-        getNearestService(cmdrProfile.lastSystem.name, 'universal-cartographics'),
-        getNearestService(cmdrProfile.lastSystem.name, 'shipyard'),
-        getNearestService(cmdrProfile.lastSystem.name, 'black-market')
-      ])
-      setNearestServices({
-        'Interstellar Factors': interstellarFactors,
-        'Universal Cartographics': universalCartographics,
-        Shipyard: shipyard,
-        'Black Market': blackMarket
-      })
+      saveCache('cmdrProfile', _cmdrProfile)
+      setCmdrProfile(_cmdrProfile)
+      updateFleetCarrier()
+      updateNearestServices(_cmdrProfile)
+    } else {
+      clearCmdrCache()
     }
   }
 
   useEffect(() => {
     ; (async () => {
       // If we can get a profile, they are signed in
-      const cmdrProfile = await getCmdrInfo('profile')
-      const isSignedIn = !!(cmdrProfile?.commander?.id)
+      let _cmdrProfile = loadCache('cmdrProfile')
+      if (_cmdrProfile) setCmdrProfile(_cmdrProfile)
+      _cmdrProfile = await getCmdrInfo('profile')
+      const isSignedIn = !!(_cmdrProfile?.commander?.id)
       setSignedIn(isSignedIn)
       if (isSignedIn) {
+        saveCache('cmdrProfile', _cmdrProfile)
         // Set Cmdr Profile
-        setCmdrProfile(cmdrProfile)
-
-        // Check if the Cmdr has a Fleet Carrier
-        setCmdrFleetCarrier(await getCmdrInfo('fleetcarrier'))
-
-        // Get nearby services, based on current location
-        const [
-          interstellarFactors,
-          universalCartographics,
-          shipyard,
-          blackMarket
-        ] = await Promise.all([
-          getNearestService(cmdrProfile.lastSystem.name, 'interstellar-factors'),
-          getNearestService(cmdrProfile.lastSystem.name, 'universal-cartographics'),
-          getNearestService(cmdrProfile.lastSystem.name, 'shipyard'),
-          getNearestService(cmdrProfile.lastSystem.name, 'black-market')
-        ])
-        setNearestServices({
-          'Interstellar Factors': interstellarFactors,
-          'Universal Cartographics': universalCartographics,
-          Shipyard: shipyard,
-          'Black Market': blackMarket
-        })
+        setCmdrProfile(_cmdrProfile)
+        updateFleetCarrier()
+        updateNearestServices(_cmdrProfile)
+      } else {
+        clearCmdrCache()
       }
       setCsrfToken(await getCsrfToken())
     })()
@@ -97,20 +109,29 @@ export default () => {
                 </p>}
               {cmdrProfile?.commander?.credits &&
                 <p className='fx__fade-in'>
-                  <small>Credit balance</small><br />
+                  <small>Credit Balance</small><br />
                   <i className='icarus-terminal-credits' />{cmdrProfile.commander.credits.toLocaleString()} CR
+                  {cmdrFleetCarrier?.balance && <>
+                    <br />
+                    <i className='icarus-terminal-credits' />{Number(cmdrFleetCarrier.balance).toLocaleString()} CR <small>(Carrier)</small>
+                  </>}
                 </p>}
               {cmdrProfile?.lastSystem?.name &&
                 <p className='fx__fade-in'>
-                  <small>Location</small><br />
-                  <i className='icarus-terminal-location' /><Link href={`/system/${cmdrProfile.lastSystem.name.replaceAll(' ', '_')}`}>{cmdrProfile.lastSystem.name}</Link>
+                  <small>Current Location</small><br />
+                  <i className='icarus-terminal-location' style={{ float: 'left' }} /><Link href={`/system/${cmdrProfile.lastSystem.name.replaceAll(' ', '_')}`}>{cmdrProfile.lastSystem.name}</Link>
                 </p>}
 
               {cmdrFleetCarrier?.name && cmdrFleetCarrier?.currentStarSystem &&
                 <p className='fx__fade-in'>
                   <small>Fleet Carrier</small><br />
-                  <i className='icarus-terminal-fleet-carrier' />{hexToAscii(cmdrFleetCarrier.name?.vanityName)} {cmdrFleetCarrier.name?.callsign}<br />
-                  <i className='icarus-terminal-route' /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem.replaceAll(' ', '_')}`}>{cmdrFleetCarrier.currentStarSystem}</Link>
+                  <div style={{ fontSize: '.8rem' }}>
+                    <i className='icarus-terminal-fleet-carrier' style={{ float: 'left', marginRight: '.25rem' }} />{hexToAscii(cmdrFleetCarrier.name?.vanityName)} {cmdrFleetCarrier.name?.callsign}<br />
+                    <i className='icarus-terminal-route' style={{ float: 'left', marginRight: '.25rem' }} /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem.replaceAll(' ', '_')}`}>{cmdrFleetCarrier.currentStarSystem}</Link><br />
+                    <i className='icarus-terminal-cargo' style={{ float: 'left', marginRight: '.25rem' }} />{(25000 - cmdrFleetCarrier.capacity.freeSpace).toLocaleString()} / {(25000).toLocaleString()} T<br />
+                    <i className='icarus-terminal-engineer' style={{ float: 'left', marginRight: '.25rem' }} />Crew: {cmdrFleetCarrier.capacity.crew.toLocaleString()}<br />
+                    <i className='icarus-terminal-ship' style={{ float: 'left', marginRight: '.25rem' }} />Docking: {cmdrFleetCarrier.dockingAccess.toUpperCase()}<br />
+                  </div>
                 </p>}
 
               {nearestServices &&
@@ -168,8 +189,8 @@ export default () => {
         <>
           <div className='home__sign-in-placeholder'>
             <p className='text-center'>
-              <i style={{fontSize: '3rem'}} className='icarus-terminal-warning muted' />
-              <br/>
+              <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning muted' />
+              <br />
               <small>Anonymous access protocol</small>
             </p>
             <p className='text-center'>Sign in to access all services</p>
