@@ -15,12 +15,12 @@
     width: calc(100% - 16rem);
     left: 15.25rem;
     bottom: 0;
-    padding-top: 1rem;
+    padding-top: .75rem;
     top: 5rem;
   }
 
   .layout__content--left-sidebar {
-    padding-top: 1rem;
+    padding-top: .75rem;
     width: 15rem;
     top: 5rem;
     left: -.5rem;
