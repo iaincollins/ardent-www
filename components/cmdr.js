@@ -126,7 +126,7 @@ export default () => {
 
               {nearestServices &&
                 <div className='fx__fade-in'>
-                  <h3>Services</h3>
+                  <h3>Nearest services</h3>
                   <div className='rc-table data-table data-table--striped data-table--interactive data-table--animated'>
                     <div className='rc-table-container'>
                       <table>
@@ -135,7 +135,7 @@ export default () => {
                             <Fragment key={`nearest_service_${service}`}>
                               <tr><th className='text-left'>{service}</th></tr>
                               <tr>
-                                <td style={{ paddingBottom: '1rem', paddingTop: 0 }}>
+                                <td style={{ paddingBottom: '1rem', paddingTop: 0, background: 'transparent' }}>
                                   {nearestServices[service]?.filter(s => s.distance === 0).splice(0, 1).map(station =>
                                     <Fragment key={`in_system_service_${service}_${station}`}>
                                       <small style={{ lineHeight: '2rem' }}>In system</small>
