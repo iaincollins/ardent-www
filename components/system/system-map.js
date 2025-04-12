@@ -23,7 +23,7 @@ module.exports = ({
 
   return (
     <div className='fx__fade-in'>
-      <div className='heading--with-underline' style={{ marginTop: '.2rem' }}>
+      <div className='heading--with-underline'>
         <h2 className='heading--with-icon'>
           <i className='icon icarus-terminal-system-orbits  ' />
           {system.systemName} system
@@ -112,7 +112,11 @@ module.exports = ({
                             {station.stationName}
                           </div>
                           <div className='system__entity-information'>
-                            {station.bodyName && <small><i className='icon icarus-terminal-planet' style={{ position: 'relative', top: '-.1rem' }} />{station.bodyName}</small>}
+                            {station.bodyName && 
+                              <small>
+                                <i className='icon icarus-terminal-planet' style={{ position: 'relative', top: '-.1rem' }} />
+                                {station.bodyName.replace(new RegExp(`^${system.systemName}`), '')}
+                              </small>}
                             {station.bodyName && station.distanceToArrival !== null && <small>{' ('}</small>}
                             {station.distanceToArrival !== null && <small className='text-no-transform'>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
                             {station.bodyName && station.distanceToArrival !== null && <small>)</small>}
@@ -170,7 +174,7 @@ module.exports = ({
                         <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
                           <div className='system__entity-name'>
                             <StationIcon stationType='FleetCarrier' />
-                            FC {station.stationName}
+                            {station.stationName}
                           </div>
                           <div className='system__entity-information'>
                             {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}

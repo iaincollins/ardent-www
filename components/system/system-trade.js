@@ -23,7 +23,7 @@ module.exports = ({
 
   return (
     <div className='fx__fade-in'>
-      <div className='heading--with-underline' style={{ marginTop: '.25rem' }}>
+      <div className='heading--with-underline'>
         <h2>Local Commodities</h2>
       </div>
       <p className='muted'>Trade data for {systemName} last updated {timeBetweenTimestamps(lastUpdatedAt)} ago</p>

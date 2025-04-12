@@ -97,7 +97,6 @@ h2 {
   padding-right: 4rem;
   clip-path: polygon(0 0,calc(100% - 3.5rem) 0,100% 3.5rem,100% 100%,0 100%);
   position: relative;
-  top: .25rem;
   margin: 0;
 }
 
@@ -113,6 +112,9 @@ h2 {
 
 .heading--with-underline h2 {
   padding-bottom: 0;
+  padding-top: .1rem;
+  padding-left: .5rem;
+  border-radius: 0;
 }
 
 h3,
@@ -132,7 +134,7 @@ h2.heading--with-icon {
 
 h2.heading--with-icon .icon {
   position: absolute;
-  top: .05rem;
+  top: .2rem;
   left: .1rem;
   font-size: 1.75rem !important;
 }

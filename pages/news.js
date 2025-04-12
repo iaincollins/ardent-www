@@ -12,7 +12,7 @@ export default () => {
     setNavigationPath(
       [
         // { name: 'Home', path: '/' },
-        { name: 'Latest Galnet Headlines', path: '/news' }
+        { name: 'Galnet News', path: '/news' }
       ]
     )
     ; (async () => {
@@ -33,10 +33,10 @@ export default () => {
         <link rel='canonical' href='https://ardent-insight.com/about' />
       </Head>
       <div className='fx__fade-in'>
-        <div className='home__news-feed' style={{ left: '.5rem', right: '.5rem', maxWidth: '50rem', margin: '.5rem auto' }}>
+        <div className='home__news-feed' style={{ left: '.5rem', right: '.5rem', maxWidth: '50rem', margin: '1rem auto' }}>
           <div className='heading--with-underline' style={{ marginBottom: 0 }}>
             <h2 className='text-uppercase'>
-              Galnet News
+              Latest Headlines
             </h2>
           </div>
           {galnetNews && galnetNews.map((newsItem, i) => (

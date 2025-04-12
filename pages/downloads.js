@@ -43,10 +43,10 @@ export default () => {
       </Head>
       <div className='fx__fade-in'>
         <p>
-          Source code and data for Ardent Insight.
+          You can download the source code and data for Ardent Insight.
         </p>
         <p>
-          <Link href='/about'>About this software.</Link>
+          <Link href='/about'>About Ardent Insight</Link>
         </p>
         <div className='heading--with-underline'>
           <h2>Source Code</h2>
