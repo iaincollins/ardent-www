@@ -233,10 +233,10 @@ export default () => {
       <div className='news-ticker'>
         <div className='news-ticker__clock'>
           {dateTime !== undefined &&
-            <>
+            <div className='fx__fade-in'>
               <div className='news-ticker__clock-time'>{dateTime.time}</div>
               <div className='news-ticker__clock-date'>{dateTime.day} {dateTime.month} {dateTime.year}</div>
-            </>}
+            </div>}
         </div>
         {/* Ticker contents rendered twice to allow us to use CSS to make it appear to loop seemlessly */}
         {[...Array(2)].map((arr, i) =>
