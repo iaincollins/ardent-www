@@ -96,7 +96,7 @@ export default () => {
           </div>
           <p style={{ textAlign: 'center', margin: '0 0 1rem 0' }}>
             <small>
-              <i className='icarus-terminal-info' style={{position: 'relative', top: '-.15rem'}}/>
+              <i className='icarus-terminal-info' style={{position: 'relative', top: '-.1rem'}}/>
               <Link href='/about'>Ardent OS {Package.version} | API {version?.version ?? '?.?.?'}</Link>
             </small>
           </p>
@@ -122,7 +122,7 @@ export default () => {
             {stats ? stats.updatedInLast24Hours.toLocaleString() : '…'} updates
             <br />in the last 24 hours
           </p>
-          <Link className='button' style={{ textAlign: 'center', display: 'block', padding: '.5rem', fontSize: '1.25rem', margin: '0 1rem' }} href='/commodity/advancedcatalysers'>
+          <Link className='button' style={{ textAlign: 'center', display: 'block', padding: '.75rem .25rem', fontSize: '1.25rem', margin: '.5rem' }} href='/commodity/advancedcatalysers'>
             <i className='icon icarus-terminal-cargo' style={{ marginRight: '.5rem', fontSize: '1.5rem !important' }} />
             Trade Data
             <i className='icon icarus-terminal-chevron-right' style={{ marginLeft: '.5rem', fontSize: '1.25rem !important' }} />

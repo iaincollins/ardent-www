@@ -149,7 +149,7 @@
 
   .breadcrumbs {
     zoom: 1;
-    padding-left: .25rem;
+    padding-left: .1rem;
   }
 
   .breadcrumbs li:not(:last-child) {

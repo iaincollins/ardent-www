@@ -103,24 +103,24 @@ export default () => {
               {cmdrProfile !== undefined &&
                 <p>
                   <small>Credit Balance</small><br />
-                  <i className='icarus-terminal-credits' />{cmdrProfile.commander.credits.toLocaleString()} CR
+                  <i className='icarus-terminal-credits' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem'  }}  />{cmdrProfile.commander.credits.toLocaleString()} CR
                 </p>}
               {cmdrProfile !== undefined &&
                 <p>
                   <small>Current Location</small><br />
-                  <i className='icarus-terminal-location' style={{ float: 'left' }} /><Link href={`/system/${cmdrProfile.lastSystem.name.replaceAll(' ', '_')}`}>{cmdrProfile.lastSystem.name}</Link>
+                  <i className='icarus-terminal-location-filled' style={{ float: 'left', position: 'relative', top: '.15rem' }} /><Link href={`/system/${cmdrProfile.lastSystem.name.replaceAll(' ', '_')}`}>{cmdrProfile.lastSystem.name}</Link>
                 </p>}
 
               {cmdrFleetCarrier !== undefined && cmdrFleetCarrier?.name &&
                 <p>
                   <small>Fleet Carrier</small><br />
                   <span style={{ fontSize: '.85rem', lineHeight: '1.1rem' }}>
-                    <i className='icarus-terminal-fleet-carrier' style={{ float: 'left', marginRight: '.25rem' }} />{hexToAscii(cmdrFleetCarrier.name.vanityName)} {cmdrFleetCarrier.name.callsign}<br />
-                    <i className='icarus-terminal-star' style={{ float: 'left', marginRight: '.25rem' }} /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem.replaceAll(' ', '_')}`}>{cmdrFleetCarrier.currentStarSystem}</Link><br />
-                    <i className='icarus-terminal-credits' />{Number(cmdrFleetCarrier.balance).toLocaleString()} CR<br />
-                    <i className='icarus-terminal-cargo' style={{ float: 'left', marginRight: '.25rem' }} />{(25000 - cmdrFleetCarrier.capacity.freeSpace).toLocaleString()} / {(25000).toLocaleString()} T<br />
-                    <i className='icarus-terminal-engineer' style={{ float: 'left', marginRight: '.25rem' }} />Crew: {cmdrFleetCarrier.capacity.crew.toLocaleString()}<br />
-                    <i className='icarus-terminal-ship' style={{ float: 'left', marginRight: '.25rem' }} />Docking: {cmdrFleetCarrier.dockingAccess}<br />
+                    <i className='icarus-terminal-fleet-carrier' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem'  }} />{hexToAscii(cmdrFleetCarrier.name.vanityName)} {cmdrFleetCarrier.name.callsign}<br />
+                    <i className='icarus-terminal-star' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem'  }} /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem.replaceAll(' ', '_')}`}>{cmdrFleetCarrier.currentStarSystem}</Link><br />
+                    <i className='icarus-terminal-credits' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem'  }} />{Number(cmdrFleetCarrier.balance).toLocaleString()} CR<br />
+                    <i className='icarus-terminal-cargo' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem'  }} />{(25000 - cmdrFleetCarrier.capacity.freeSpace).toLocaleString()} / {(25000).toLocaleString()} T<br />
+                    <i className='icarus-terminal-engineer' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem' }} />Crew: {cmdrFleetCarrier.capacity.crew.toLocaleString()}<br />
+                    <i className='icarus-terminal-ship' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem'}} />Docking: <span style={{textTransform: 'capitalize' }}>{cmdrFleetCarrier.dockingAccess}</span><br />
                   </span>
                 </p>}
 
@@ -187,7 +187,7 @@ export default () => {
             </p>
             <p className='text-center'>Sign in to access all services</p>
             <form method='GET' action={SIGN_IN_URL}>
-              <button className='button' style={{ display: 'block', width: '100%', fontSize: '1.25rem', lineHeight: '2.5rem' }}>
+              <button className='button' style={{ display: 'block', width: '100%', padding: '.75rem .25rem', fontSize: '1.25rem', margin: '.5rem' }}>
                 Sign in
               </button>
             </form>

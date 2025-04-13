@@ -4,10 +4,10 @@
   bottom: .25rem;
   left: 0;
   overflow: hidden;
-  height: 2rem;
+  height: 1.9rem;
   max-width: 100%;
   background: rgba(100, 100, 100, .5);
-  border-top: .2rem solid var(--color-primary);
+  border-top: .25rem solid var(--color-primary);
   padding-top: .2rem;
   padding-bottom: .4rem;
   white-space: nowrap;
@@ -62,7 +62,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 6rem;
+  width: 5.5rem;
   padding: 0 .5rem;
   background: var(--color-primary);
   color: black;
@@ -73,12 +73,14 @@
 }
 
 .news-ticker__clock-time {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  text-shadow: 0 0 .5rem rgba(0, 0, 0, .5);
 }
 .news-ticker__clock-date {
   font-size: .9rem;
   text-transform: uppercase;
-  opacity: .5;
+  color: rgba(0, 0, 0, .5);
+  text-shadow: 0 0 .5rem rgba(0, 0, 0, .75);
 }
 
 @keyframes marquee {

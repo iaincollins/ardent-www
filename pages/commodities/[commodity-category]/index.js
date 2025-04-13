@@ -70,7 +70,7 @@ export default function Page (props) {
                   {categories}
                 </h2>
               </div>
-              <p className='clear text-centerx' style={{ marginTop: 0, marginBottom: '.5rem' }}>
+              <p className='clear' style={{ marginBottom: '.5rem' }}>
                 {commodityCategories[categories[0]].description}
                 {categories?.length === 1 && commodityCategories[categories[0]]?.whereToFind &&
                   <>
@@ -79,7 +79,7 @@ export default function Page (props) {
               </p>
             </>}
           {categories?.length > 1 &&
-            <div className='menu-button-grid'>
+            <div className='menu-button-grid' style={{ marginTop: '1rem' }}>
               {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
                 <Link key={`category-button__${category}`} className='button' href={`/commodities/${category.toLowerCase()}`}>{category}</Link>
               )}

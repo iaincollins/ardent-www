@@ -14,13 +14,14 @@
   padding: .25rem 0 .25rem 1.5rem;
   position: relative;
   display: inline-block;
-  background-color: var(--color-primary-darker);
+  background-color: var(--color-primary-dark);
   text-shadow: 0 0 .5rem rgb(0, 0, 0);
   text-transform: uppercase;
   font-family: 'Jura';
   font-weight: bold;
   pointer-events: all;
   margin: 0;
+  background: linear-gradient(to left, var(--color-primary-dark), var(--color-primary-darkest));
 }
 
 .breadcrumbs li a,
@@ -39,9 +40,9 @@
   line-height: .5rem;
   font-size: 1.1rem;
   position: relative;
-  top: -.1rem;
+  top: -.05rem;
   margin: 0;
-  width: 1.25rem;
+  width: 1.2rem;
   display: inline-block;
   left: -.25rem;
   text-shadow: 0 0 .7rem rgb(0, 0, 0, .5);
@@ -75,7 +76,7 @@
   height: 1.75rem;
   width: .75rem;
   left: 0;
-  background-color: var(--color-primary-darker);
+  background-color: var(--color-primary-dark);
 }
 
 .breadcrumbs li:not(:first-child):before {
@@ -88,7 +89,7 @@
   left: .1rem;
   transform: rotate(45deg);
   zoom: 1.25;
-  background-color: var(--color-primary-darker);
+  background-color: var(--color-primary-dark);
   border-top: .1rem solid rgba(0, 0, 0, .5);
   border-right: .1rem solid rgba(0, 0, 0, .5);
   z-index: 1;
@@ -113,5 +114,5 @@
 
 .breadcrumbs li:last-child:first-child a:after,
 .breadcrumbs li:last-child:first-child span:after {
-  background-color: var(--color-primary-darker);
+  background-color: var(--color-primary-dark);
 }

@@ -23,7 +23,7 @@
   box-shadow: .2rem 0 var(--color-primary-light), inset -.1rem 0 var(--color-primary-light);
   background: transparent;
   color: var(--color-text);
-  background: linear-gradient(to right, var(--color-primary-dark), var(--color-primary-darkest));
+  background: linear-gradient(to left, var(--color-primary-dark), var(--color-primary-darkest));
 }
 
 .navigation-bar button .icon {
@@ -32,9 +32,11 @@
   top: .55rem;
   left: 0;
   right: 0;
+  text-shadow: 0 0 .5rem rgba(0,0,0,.5);
 }
 
 .navigation-bar button:hover {
   color: var(--color-text-inverted);
   background: var(--color-primary-light);
+
 }

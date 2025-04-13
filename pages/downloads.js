@@ -8,7 +8,7 @@ import byteSize from 'byte-size'
 
 const databaseDescription = {
   'systems.db': 'Name and location of all star systems in the known galaxy',
-  'trade.db': 'Buy and sell commodity orders',
+  'trade.db': 'Buy and sell orders for commodities',
   'stations.db': 'Name and location of stations, outposts, ports, settlements, megaships and fleet carriers',
   'locations.db': 'Unusual locations and points of interest'
 }
@@ -43,7 +43,7 @@ export default () => {
           You can download the source code and data for Ardent Insight.
         </p>
         <p>
-          <Link href='/about'>About this software</Link>.
+          <Link href='/about'>More information about this software</Link>.
         </p>
         <div className='heading--with-underline'>
           <h2>Source Code</h2>
@@ -65,15 +65,10 @@ export default () => {
           You can download data as compressed SQLite Database files.
         </p>
         <p>
-          They are updated weekly on Thursdays from 07:00-09:00 UTC.
+          These downloads are updated weekly during the in-game maintenance window from 07:00-09:00 UTC on Thursdays.
         </p>
         <p>
-          You may wish to avoid downloading these files during that time window as that's when the files may be updated.
-        </p>
-        <p>
-          Sources used to originally seed the databases include <a href='https://edsm.net' rel='noreferrer' target='_blank'>ESDM</a>,
-          {' '}<a href='https://spansh.co.uk' rel='noreferrer' target='_blank'>Spansh</a>,
-          {' '}<a href='https://github.com/EDCD/EDDN' rel='noreferrer' target='_blank'>EDDN</a> and EDDB.io (now offline).
+          You may wish to avoid downloading these files during the maintenance window to avoid interruption when the downloads are updated.
         </p>
         {databases && databases.map(database =>
           <div key={database.name}>
