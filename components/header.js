@@ -6,6 +6,7 @@ import { getCommoditiesWithAvgPricing, listOfCommoditiesAsArray } from 'lib/comm
 import commodities from 'lib/commodities/commodities'
 import { NavigationContext } from 'lib/context'
 import { API_BASE_URL } from 'lib/consts'
+import { eliteDateTime } from 'lib/utils/dates'
 
 export default () => {
   const router = useRouter()
@@ -18,13 +19,21 @@ export default () => {
   const [stationSearchResults, setStationSearchResults] = useState()
   const [searchResults, setSearchResults] = useState()
   const [searchResultsVisible, setSearchResultsVisible] = useState(false)
+  const [dateTime, setDateTime] = useState()
 
   useEffect(() => {
     document.addEventListener('fullscreenchange', onFullScreenChangeHandler)
     return () => document.removeEventListener('click', onFullScreenChangeHandler)
-    function onFullScreenChangeHandler (event) {
+    function onFullScreenChangeHandler(event) {
       setFullScreenState(isFullScreen())
     }
+  }, [])
+
+  useEffect(() => {
+    const dateTimeInterval = setInterval(async () => {
+      setDateTime(eliteDateTime())
+    }, 1000)
+    return () => clearInterval(dateTimeInterval)
   }, [])
 
   const updateTicker = async () => {
@@ -86,7 +95,7 @@ export default () => {
     const onKeyDown = ({ key }) => {
       if (key === 'Enter') {
         if (document.activeElement?.id === 'header-search' ||
-            document.activeElement?.id === 'location') {
+          document.activeElement?.id === 'location') {
           document.activeElement.blur()
         } else {
           document.getElementById('header-search').focus()
@@ -166,17 +175,17 @@ export default () => {
                     }
                   })
 
-                  ; (matchingCommodities.length > 0)
-                    ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
-                    : setCommoditySearchResults(undefined)
+                    ; (matchingCommodities.length > 0)
+                      ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
+                      : setCommoditySearchResults(undefined)
                 } catch (e) { }
 
                 try {
                   const res = await fetch(`${API_BASE_URL}/v1/search/system/name/${searchText}`)
                   const matchingSystems = await res.json()
                     ; (matchingSystems.length > 0)
-                    ? setSystemSearchResults(matchingSystems.splice(0, 5))
-                    : setSystemSearchResults(undefined)
+                      ? setSystemSearchResults(matchingSystems.splice(0, 5))
+                      : setSystemSearchResults(undefined)
                 } catch (e) { }
               }}
               onKeyDown={(e) => {
@@ -214,14 +223,21 @@ export default () => {
             )}
           </div>
         </div>
-        <button aria-label='About' className='button' onClick={() => setAboutDialogVisible(!aboutDialogVisible)}>
+        {/* <button aria-label='About' className='button is-hidden-mobile' onClick={() => setAboutDialogVisible(!aboutDialogVisible)}>
           <i className='icon icarus-terminal-info' />
-        </button>
+        </button> */}
         <button aria-label='Toggle Fullscreen' className='button' onClick={() => toggleFullScreen()}>
           <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
         </button>
       </div>
       <div className='news-ticker'>
+        <div className='news-ticker__clock'>
+          {dateTime !== undefined &&
+            <>
+              <div className='news-ticker__clock-time'>{dateTime.time}</div>
+              <div className='news-ticker__clock-date'>{dateTime.day} {dateTime.month} {dateTime.year}</div>
+            </>}
+        </div>
         {/* Ticker contents rendered twice to allow us to use CSS to make it appear to loop seemlessly */}
         {[...Array(2)].map((arr, i) =>
           <span key={`news-ticker-${i}`} className={`news-ticker__ticker news-ticker__ticker--${i}`}>
@@ -278,7 +294,7 @@ export default () => {
   )
 }
 
-function isFullScreen () {
+function isFullScreen() {
   if (typeof document === 'undefined') return false
 
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
@@ -288,7 +304,7 @@ function isFullScreen () {
   }
 }
 
-async function toggleFullScreen () {
+async function toggleFullScreen() {
   if (isFullScreen()) {
     if (document.cancelFullScreen) {
       document.cancelFullScreen()

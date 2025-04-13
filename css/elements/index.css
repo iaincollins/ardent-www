@@ -53,7 +53,8 @@ a:hover:not(.--no-hover) {
 h1,
 h2,
 h3,
-h4{
+h4, 
+h5 {
   text-transform: uppercase;
   position: relative;
   color: var(--color-text-inverted);
@@ -69,8 +70,6 @@ h4{
 }
 
 h5 {
-  text-transform: uppercase;
-  font-family: "Jura", sans-serif;
   color: var(--color-primary-dark);
   font-size: 1rem;
   padding: 0;
@@ -91,18 +90,21 @@ h1:after {
 }
 
 h2 {
-  line-height: 2.2rem;
-  border-top-left-radius: .1rem;
-  border-bottom-left-radius: .1rem;
+  font-size: 1.5rem;
+  line-height: 2.2rem;;
   padding-right: 4rem;
   clip-path: polygon(0 0,calc(100% - 3.5rem) 0,100% 3.5rem,100% 100%,0 100%);
   position: relative;
   margin: 0;
+  padding-bottom: 0;
+  padding-top: .1rem;
+  padding-left: .5rem;
 }
 
 .heading--with-underline {
   position: relative;
   display: inline-block;
+  box-shadow: inset 0 -1px var(--color-primary);
   border-bottom: .25rem solid var(--color-primary);
   margin: .5rem 0 0 0;
   width: 100%;
@@ -110,21 +112,12 @@ h2 {
   mask: linear-gradient(90deg, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 90%);
 }
 
-.heading--with-underline h2 {
-  padding-bottom: 0;
-  padding-top: .1rem;
-  padding-left: .5rem;
-  border-radius: 0;
-}
-
 h3,
 .heading--table {
-  font-size: 1.7rem;
-  line-height: 2rem;
-  padding-right: 2rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding-right: 2.2rem;
   clip-path: polygon(0 0,calc(100% - 2.1rem) 0,100% 2.1rem,100% 100%,0 100%);
-  border-top-left-radius: .1rem;
-  border-bottom-left-radius: .1rem;
   margin: 0;
 }
 

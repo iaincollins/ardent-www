@@ -5,26 +5,35 @@
 
   h2,
   h3,
-  h4 {
+  h4,
+  h5 {
     display: inline-block;
     text-overflow: ellipsis;
     left: 0;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-    line-height: 1.75rem;
-    margin-right: 1rem;
+    border: 0;
     width: auto;
+    padding-left: 0;
+    padding-right: 0;
+    clip-path: none;
     background: none;
     color: var(--color-primary);
   }
 
-  h2.heading--with-icon {
-    padding-left: 1.8rem;
+  h2 {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
   }
 
-  h2.heading--with-icon .icon {
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+  }
+
+  .heading--with-icon {
+    padding-left: 2rem;
+  }
+
+  .heading--with-icon .icon {
     font-size: 1.25rem !important;
   }
 
@@ -34,7 +43,6 @@
     mask: none;
   }
 
-  h3,
   .heading--table {
     font-size: 1.25rem;
     line-height: 1.25rem;
@@ -140,7 +148,7 @@
   }
 
   .breadcrumbs {
-    zoom: .8;
+    zoom: 1;
     padding-left: .25rem;
   }
 
@@ -237,10 +245,6 @@
     width: calc(100% - 7rem);
   }
 
-  .home__news-feed-heading {
-    margin-bottom: 1rem;
-  }
-
   .counter {
     font-size: 1.1rem !important;
   }
@@ -249,4 +253,8 @@
     width: calc(50% - 1rem) !important;
   }
 
+  .home {
+    position: relative;
+    top: -1.5rem;
+  }
 }

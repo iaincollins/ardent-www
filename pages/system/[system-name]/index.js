@@ -109,17 +109,7 @@ export default () => {
         }
         setSystem(system)
 
-        setNavigationPath(
-          (system?.tradeZone)
-            ? [
-                // { name: system.tradeZone, path: '/' },
-                { name: system.systemName, path: '/', icon: 'icarus-terminal-system-orbits' }
-              ]
-            : [
-              // { name: 'Systems', path: '/' },
-                { name: system.systemName, path: '/', icon: 'icarus-terminal-system-orbits' }
-              ]
-        )
+        setNavigationPath([{ name: system.systemName, path: '/', icon: 'icarus-terminal-system-orbits' }])
       } else {
         setSystem(undefined)
       }

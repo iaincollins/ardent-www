@@ -47,11 +47,10 @@
 .home__news-article-headline {
   clip-path: none;
   display: block;
-}
-
-.home h3 {
-  font-size: 1rem;
-  line-height: 1.5rem;
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+  padding-top: .25rem;
+  padding-bottom: .25rem;
 }
 
 .home h2 {
@@ -118,7 +117,6 @@
     mask-repeat: no-repeat, no-repeat;
     object-fit: cover;
     height: 100%;
-    width: calc(100% - .4rem);
   }
 
   .home__news-feed-heading {

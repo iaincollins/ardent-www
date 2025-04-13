@@ -136,10 +136,7 @@ export default () => {
         setRareMarket(undefined)
       }
 
-      setNavigationPath([
-        // { name: 'Commodities', path: '/commodities'},
-        { name: 'Trade Data', path: '/commodities', icon: 'icarus-terminal-cargo' }
-      ])
+      setNavigationPath([{ name: 'Trade Data', path: '/commodities', icon: 'icarus-terminal-cargo' }])
 
       getImportsAndExports()
     })()

@@ -14,7 +14,6 @@ export default () => {
   const [cmdrFleetCarrier, setCmdrFleetCarrier] = useState(loadCache('cmdrFleetCarrier'))
   const [nearestServices, setNearestServices] = useState(loadCache('cmdrNearestServices'))
 
-  console.log(cmdrProfile)
   const updateNearestServices = async (_cmdrProfile) => {
     const [
       interstellarFactors,
@@ -64,6 +63,7 @@ export default () => {
   }
 
   useEffect(() => {
+    if (cmdrProfile !== undefined) setSignedIn(true)
     ; (async () => {
       // If we can get a profile, they are signed in
       const _cmdrProfile = await getCmdrInfo('profile')
@@ -114,19 +114,21 @@ export default () => {
               {cmdrFleetCarrier !== undefined && cmdrFleetCarrier?.name &&
                 <p>
                   <small>Fleet Carrier</small><br />
-                  <div style={{ fontSize: '.85rem', lineHeight: '1.1rem' }}>
+                  <span style={{ fontSize: '.85rem', lineHeight: '1.1rem' }}>
                     <i className='icarus-terminal-fleet-carrier' style={{ float: 'left', marginRight: '.25rem' }} />{hexToAscii(cmdrFleetCarrier.name.vanityName)} {cmdrFleetCarrier.name.callsign}<br />
                     <i className='icarus-terminal-star' style={{ float: 'left', marginRight: '.25rem' }} /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem.replaceAll(' ', '_')}`}>{cmdrFleetCarrier.currentStarSystem}</Link><br />
                     <i className='icarus-terminal-credits' />{Number(cmdrFleetCarrier.balance).toLocaleString()} CR<br />
                     <i className='icarus-terminal-cargo' style={{ float: 'left', marginRight: '.25rem' }} />{(25000 - cmdrFleetCarrier.capacity.freeSpace).toLocaleString()} / {(25000).toLocaleString()} T<br />
                     <i className='icarus-terminal-engineer' style={{ float: 'left', marginRight: '.25rem' }} />Crew: {cmdrFleetCarrier.capacity.crew.toLocaleString()}<br />
                     <i className='icarus-terminal-ship' style={{ float: 'left', marginRight: '.25rem' }} />Docking: {cmdrFleetCarrier.dockingAccess}<br />
-                  </div>
+                  </span>
                 </p>}
 
               {nearestServices &&
                 <div className='fx__fade-in'>
-                  <h3>Nearest services</h3>
+                  <div className='heading--with-underline'>
+                    <h3>Nearest services</h3>
+                  </div>
                   <div className='rc-table data-table data-table--striped data-table--interactive data-table--animated'>
                     <div className='rc-table-container'>
                       <table>

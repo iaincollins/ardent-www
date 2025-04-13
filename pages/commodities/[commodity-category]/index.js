@@ -37,11 +37,7 @@ export default function Page (props) {
       setCommodities(commodities_)
       setCategories(categories_)
 
-      setNavigationPath(
-        (categories_.length === 1)
-          ? [{ name: 'Home', path: '/' }, { name: 'Commodities', path: '/commodities' }]
-          : [{ name: 'Home', path: '/' }, { name: 'Commodities', path: '/commodities' }]
-      )
+      setNavigationPath([{ name: 'Commodities', path: '/commodities' }])
     })()
   }, [router.asPath])
 

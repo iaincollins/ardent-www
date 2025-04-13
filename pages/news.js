@@ -9,11 +9,7 @@ export default () => {
   const [, setNavigationPath] = useContext(NavigationContext)
   const [galnetNews, setGalnetNews] = useState()
   useEffect(() => {
-    setNavigationPath(
-      [
-        // { name: 'Home', path: '/' },
-        { name: 'Galnet News', path: '/news' }
-      ]
+    setNavigationPath([{ name: 'Galnet News', path: '/news' }]
     )
     ; (async () => {
       try {
@@ -33,14 +29,9 @@ export default () => {
         <link rel='canonical' href='https://ardent-insight.com/about' />
       </Head>
       <div className='fx__fade-in'>
-        <div className='home__news-feed' style={{ left: '.5rem', right: '.5rem', maxWidth: '50rem', margin: '1rem auto' }}>
-          <div className='heading--with-underline' style={{ marginBottom: 0 }}>
-            <h2 className='text-uppercase'>
-              Latest Headlines
-            </h2>
-          </div>
+        <div style={{ left: '.5rem', right: '.5rem', maxWidth: '50rem', marginLeft: 'auto', marginRight: 'auto'}}>
           {galnetNews && galnetNews.map((newsItem, i) => (
-            <div key={newsItem.url}>
+            <div key={newsItem.url} style={{marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '.2rem dashed var(--color-primary-darkest)'}}>
               <div className='home__news-article-body'>
                 <img src={newsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' />
                 <div className='home__news-article-text scrollable'>

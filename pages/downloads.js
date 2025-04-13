@@ -18,10 +18,7 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      setNavigationPath([
-        // { name: 'Home', path: '/' },
-        { name: 'Downloads', path: '/downloads', icon: 'icarus-terminal-download' }]
-      )
+      setNavigationPath([{ name: 'Downloads', path: '/downloads', icon: 'icarus-terminal-download' }])
       try {
         const res = await fetch(`${API_BASE_URL}/v1/backup`)
         const databases = (await res.json()).databases
@@ -46,7 +43,7 @@ export default () => {
           You can download the source code and data for Ardent Insight.
         </p>
         <p>
-          <Link href='/about'>About Ardent Insight</Link>
+          <Link href='/about'>About this software</Link>.
         </p>
         <div className='heading--with-underline'>
           <h2>Source Code</h2>
@@ -58,6 +55,7 @@ export default () => {
           <li><a href='https://github.com/iaincollins/ardent-www' rel='noreferrer' target='_blank'>Ardent Website Source Code</a></li>
           <li><a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>Ardent API Source Code</a></li>
           <li><a href='https://github.com/iaincollins/ardent-collector' rel='noreferrer' target='_blank'>Ardent Collector Source Code</a></li>
+          <li><a href='https://github.com/iaincollins/ardent-auth' rel='noreferrer' target='_blank'>Ardent Authentication Source Code</a></li>
         </ul>
         <p />
         <div className='heading--with-underline'>
