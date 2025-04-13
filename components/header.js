@@ -18,6 +18,7 @@ export default () => {
   const [systemSearchResults, setSystemSearchResults] = useState()
   const [stationSearchResults, setStationSearchResults] = useState()
   const [searchResults, setSearchResults] = useState()
+  const [hilightedSearchResult, setHilightedSearchResult] = useState()
   const [searchResultsVisible, setSearchResultsVisible] = useState(false)
   const [dateTime, setDateTime] = useState()
 
@@ -84,6 +85,7 @@ export default () => {
       }))
     }
     setSearchResults(searchResults)
+    setHilightedSearchResult(0)
     if (searchResults.length > 0) {
       setSearchResultsVisible(true)
     } else {
@@ -197,9 +199,19 @@ export default () => {
                       if (result.name.toLowerCase() === searchText) {
                         router.push(result.path)
                         setSearchResultsVisible(false)
+                        return
                       }
                     })
-                    // TODO Attempt to match against exact name of commodity or a system (do nothing if neither)
+                    router.push(searchResults[hilightedSearchResult].path)
+                    setSearchResultsVisible(false)                    
+                  }
+                } else if (e.key === 'ArrowDown') {
+                  if (hilightedSearchResult < searchResults.length - 1) {
+                    setHilightedSearchResult(hilightedSearchResult + 1)
+                  }
+                } else if (e.key === 'ArrowUp') {
+                  if (hilightedSearchResult - 1 >= 0) {
+                    setHilightedSearchResult(hilightedSearchResult - 1)
                   }
                 }
               }}
@@ -213,6 +225,8 @@ export default () => {
           >
             {searchResults?.length > 0 && searchResults.map((result, i) =>
               <p
+                onMouseEnter={() => {setHilightedSearchResult(i)}}
+                className={i === hilightedSearchResult ? 'header__search-result--highlighted' : undefined}
                 key={`${i}:${result.icon}:${result.name}`}
                 onMouseDown={() => {
                   router.push(result.path)

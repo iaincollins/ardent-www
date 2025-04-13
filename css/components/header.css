@@ -187,7 +187,7 @@
   top: 3rem;
   right: 1rem;
   height: auto;
-  max-height: 14rem;
+  max-height: 16rem;
   overflow: hidden;
   width: 100vw;
   max-width: 13rem;
@@ -237,7 +237,7 @@
   top: -.05rem;
 }
 
-.header__search-results p:hover {
+.header__search-result--highlighted {
   background-color: var(--color-primary);
   color: var(--color-text-inverted);
 }
