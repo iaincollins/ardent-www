@@ -21,9 +21,9 @@ module.exports = ({ systemName, nearestServices }) => {
                       <tr><th className='text-left'>{service}</th></tr>
                       <tr>
                         <td style={{ paddingBottom: '1rem', paddingTop: 0, background: 'rgba(0,0,0,.25)' }}>
-                          {nearestServices[service]?.filter(s => s.stationType !== 'FleetCarrier')?.filter(s => s.distance === 0)?.length > 0 &&
+                          {nearestServices[service]?.filter(s => s.stationType && s.stationType !== 'FleetCarrier')?.filter(s => s.distance === 0)?.length > 0 &&
                             <small style={{ display: 'block', marginTop: '.5rem' }}>In system</small>}
-                          {nearestServices[service]?.filter(s => s.stationType !== 'FleetCarrier')?.splice(0, 1)?.filter(s => s.distance === 0)?.map(station =>
+                          {nearestServices[service]?.filter(s => s.stationType && s.stationType !== 'FleetCarrier')?.splice(0, 1)?.filter(s => s.distance === 0)?.map(station =>
                             <Fragment key={`in_system_service_${service}_${station}`}>
                               <p style={{ margin: '.5rem 0 0 0' }}>
                                 <StationIcon station={station}>
@@ -33,9 +33,9 @@ module.exports = ({ systemName, nearestServices }) => {
                                 </StationIcon>
                               </p>
                             </Fragment>)}
-                          {nearestServices[service]?.filter(s => s.stationType !== 'FleetCarrier').filter(s => s.distance > 0)?.length > 0 &&
+                          {nearestServices[service]?.filter(s => s.stationType && s.stationType !== 'FleetCarrier').filter(s => s.distance > 0)?.length > 0 &&
                             <small style={{ display: 'block', marginTop: '.5rem' }}>Next nearest</small>}
-                          {nearestServices[service]?.filter(s => s.stationType !== 'FleetCarrier')?.filter(s => s.distance > 0)?.splice(0, 1)?.map(station =>
+                          {nearestServices[service]?.filter(s => s.stationType && s.stationType !== 'FleetCarrier')?.filter(s => s.distance > 0)?.splice(0, 1)?.map(station =>
                             <Fragment key={`nearest_service_${service}_${station}`}>
                               <p style={{ margin: '.5rem 0 0 0' }}>
                                 <StationIcon station={station}>
@@ -48,7 +48,7 @@ module.exports = ({ systemName, nearestServices }) => {
                             </Fragment>)}
                           {nearestServices[service]?.filter(s => s.stationType === 'FleetCarrier')?.length > 0 &&
                             <small style={{ display: 'block', marginTop: '.5rem' }}>Nearest Carriers</small>}
-                          {nearestServices[service]?.filter(s => s.stationType === 'FleetCarrier')?.splice(0, 3)?.map(station =>
+                          {nearestServices[service]?.filter(s => s.stationType === 'FleetCarrier')?.sort((a, b) => b?.updatedAt?.localeCompare(a?.updatedAt))?.splice(0, 3)?.map(station =>
                             <Fragment key={`nearest_service_${service}_${station}`}>
                               <p style={{ margin: '.5rem 0 0 0' }}>
                                 <StationIcon station={station}>

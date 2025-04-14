@@ -4,15 +4,14 @@
   overflow: hidden;
   position: absolute;
   top: 0;
-  left: 0%;
-  width: 100%;
+  left: -3rem;
+  width: calc(100% + 3rem);
   height: calc(100vh - 8.5rem);
   min-height: 20rem;
   zoom: 1;
   font-size: 2rem;
   line-height: 2rem;
   font-family: 'Jura';
-  /* background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0)); */
   mask-image: linear-gradient(to bottom,
       transparent,
       black 30%,
@@ -72,9 +71,12 @@
 
 .system-map__station-info {
   position: relative;
-  margin-top: .5rem;
+  margin-top: 0rem;
+  padding-top: .75rem;
+  min-height: 6rem;
   left: .25rem;
   width: auto;
+  overflow: auto;
 }
 
 .system-map__station-info p {
@@ -84,7 +86,8 @@
   margin-bottom: .25rem;
   margin-right: 1rem;
   display: inline-block;
-  font-size: 1.25rem;
+  font-size: 1rem;
+  text-shadow: 0 0 .5rem black;
 }
 
 .system-map__station-info p:last-child {
@@ -94,6 +97,7 @@
 .system-map__station-info .icon {
   position: relative;
   top: -.1rem;
+  font-size: 1.25rem;
 }
 
 .system-map__system-summary {
@@ -105,10 +109,14 @@
   font-size: 1rem;
   margin: 0;
   clear: both;
+  text-shadow: 0 0 .5rem black;
 }
 
 .system-map__system-summary p small {
   font-size: .9rem;
+  opacity: 1;
+  color: var(--color-primary-dark);
+  text-shadow: 0 0 .5rem black;
 }
 
 .system-map__info table .Collapsible {
