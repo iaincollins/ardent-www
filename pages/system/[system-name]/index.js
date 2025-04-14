@@ -117,15 +117,23 @@ export default () => {
       if (system) {
         ; (async () => {
           const stations = await getStationsInSystem(systemName)
-          setStationsInSystem(stations.filter(
-            station => station.stationType !== 'OnFootSettlement' &&
+          setStationsInSystem(
+            stations
+            .filter(
+              station => station.stationType !== 'OnFootSettlement' &&
               station.stationType !== 'MegaShip' &&
               station.stationType !== 'FleetCarrier' &&
               station.stationType !== 'StrongholdCarrier' &&
               station.stationType !== null &&
               !station?.stationName?.includes(' Construction Site: ')
-          ))
-          setSettlementsInSystem(stations.filter(station => station.stationType === 'OnFootSettlement' || station.stationType === null))
+            )
+            .sort((a, b) => a?.stationName.localeCompare(b?.stationName))
+          )
+          setSettlementsInSystem(
+            stations
+            .filter(station => station.stationType === 'OnFootSettlement' || station.stationType === null)
+            .sort((a, b) => a?.stationName.localeCompare(b?.stationName))
+          )
           setFleetCarriersInSystem(
             stations
               .filter(station => station.stationType === 'FleetCarrier')

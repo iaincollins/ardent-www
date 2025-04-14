@@ -78,10 +78,9 @@ module.exports = ({
                   >
                     {stationsInSystem.map(station =>
                       <Fragment key={`marketId_${station.marketId}`}>
-                        <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                        <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }}>
                           <div className='system__entity-name'>
-                            <StationIcon station={station} />
-                            {station.stationName}
+                            <StationIcon station={station}>{station.stationName}</StationIcon>
                           </div>
                           <div className='system__entity-information'>
                             {station.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
@@ -106,10 +105,9 @@ module.exports = ({
                   >
                     {settlementsInSystem.map(station =>
                       <Fragment key={`marketId_${station.marketId}`}>
-                        <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                        <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }}>
                           <div className='system__entity-name'>
-                            <StationIcon station={station} />
-                            {station.stationName}
+                            <StationIcon station={station}>{station.stationName}</StationIcon>
                           </div>
                           <div className='system__entity-information'>
                             {station.bodyName && 
@@ -117,9 +115,7 @@ module.exports = ({
                                 <i className='icon icarus-terminal-planet' style={{ position: 'relative', top: '-.1rem' }} />
                                 {station.bodyName.replace(new RegExp(`^${system.systemName}`), '')}
                               </small>}
-                            {station.bodyName && station.distanceToArrival !== null && <small>{' ('}</small>}
-                            {station.distanceToArrival !== null && <small className='text-no-transform'>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                            {station.bodyName && station.distanceToArrival !== null && <small>)</small>}
+                            {station.distanceToArrival !== null && <small className='text-no-transform'>, {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
                           </div>
                         </div>
                       </Fragment>
@@ -141,16 +137,13 @@ module.exports = ({
                   >
                     {megashipsInSystem.map(station =>
                       <Fragment key={`marketId_${station.marketId}`}>
-                        <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                        <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }}>
                           <div className='system__entity-name'>
-                            <StationIcon station={station} />
-                            {station.stationName}
+                            <StationIcon station={station}>{station.stationName}</StationIcon>
                           </div>
                           <div className='system__entity-information'>
-                            {station.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                            {station.updatedAt && station.distanceToArrival !== null && <small>{' // '}</small>}
-                            {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
-                          </div>
+                            {station.distanceToArrival !== null && <small className='text-no-transform'>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                            {station.updatedAt && <small><span className='muted'>, </span>{timeBetweenTimestamps(station.updatedAt)}</small>}                          </div>
                         </div>
                       </Fragment>
                     )}
@@ -171,14 +164,13 @@ module.exports = ({
                   >
                     {fleetCarriersInSystem.map(station =>
                       <Fragment key={`marketId_${station.marketId}`}>
-                        <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }} className='muted'>
+                        <div style={{ margin: '.4rem 0 .1rem 0', paddingLeft: '.8rem' }}>
                           <div className='system__entity-name'>
-                            <StationIcon stationType='FleetCarrier' />
-                            {station.stationName}
+                            <StationIcon station={station}>{station.stationName}</StationIcon>
                           </div>
                           <div className='system__entity-information'>
-                            {station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)}</small>}
-                            {station.distanceToArrival !== null && <small className='text-no-transform'> ({Math.round(station.distanceToArrival).toLocaleString()} Ls)</small>}
+                            {station.distanceToArrival !== null && <small className='text-no-transform'>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                            {station.updatedAt && <small><span className='muted'>, </span>{timeBetweenTimestamps(station.updatedAt)}</small>}
                           </div>
                         </div>
                       </Fragment>

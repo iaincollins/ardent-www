@@ -28,16 +28,27 @@ module.exports = ({
       </div>
       <p className='muted'>Trade data for {systemName} last updated {timeBetweenTimestamps(lastUpdatedAt)} ago</p>
       {rareGoods?.length > 0 &&
-        <h5 style={{ margin: '.5rem' }}>Rare Goods Exports</h5>}
-      {rareGoods?.length > 0 && rareGoods.map(rare =>
-        <p style={{ margin: '.5rem', fontSize: '.9rem' }} key={`rare_good_${rare.symbol}`} className='text-no-transform'>
-          {rare.stationName} is the exclusive exporter of {rare.name}.
-          {' '}
-          {rare?.description}
-          {' '}
-          {rare?.limit && <>Export restrictions limit orders to {rare.limit}T at a time.</>}
-        </p>)}
-
+        <div style={{ marginBottom: '1rem' }}>
+          {rareGoods.map(rare =>
+            <Collapsible
+              key={`rare_good_${rare.symbol}`}
+              trigger={<p style={{margin: '.25rem 0', display: 'inline-block'}}><CollapsibleTrigger>Rare — {rare.name}</CollapsibleTrigger></p>}
+              triggerWhenOpen={<p style={{margin: '.25rem 0', display: 'inline-block'}}><CollapsibleTrigger open>Rare — {rare.name}</CollapsibleTrigger></p>}
+            >
+              <div style={{padding: '0 1rem'}}>
+                <p>
+                  {rare.stationName} is the exclusive exporter of {rare.name}.
+                </p>
+                <p>
+                  {rare?.description}
+                </p>
+                <p>
+                  {rare?.limit && <>Export restrictions limit orders to {rare.limit} T at a time.</>}
+                </p>
+              </div>
+            </Collapsible>
+          )}
+        </div>}
       <Tabs
         onSelect={
           (index) => {
