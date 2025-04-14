@@ -6,6 +6,7 @@ import distance from 'lib/utils/distance'
 import animateTableEffect from 'lib/animate-table-effect'
 import Layout from 'components/layout'
 import SystemMap from 'components/system/system-map'
+import SystemList from 'components/system/system-list'
 import SystemTrade from 'components/system/system-trade'
 import SystemServices from 'components/system/system-services'
 import SystemNearby from 'components/system/system-nearby'
@@ -50,7 +51,7 @@ export default () => {
   const [rareGoods, setRareGoods] = useState([])
   const [nearestServices, setNearestServices] = useState()
 
-  const views = ['', 'exports', 'imports', 'services', 'nearby']
+  const views = ['', 'list', 'exports', 'imports', 'services', 'nearby']
 
   useEffect(animateTableEffect)
 
@@ -83,7 +84,7 @@ export default () => {
         if (distance(systemCoordinates, SOL_COORDINATES) <= 200) {
           system.tradeZone = 'Core Systems'
           if (system.systemName === 'Sol') {
-            system.tradeZoneLocation = 'The centre of the Core Systems'
+            system.tradeZoneLocation = 'Centre of the Core Systems'
           } else {
             system.tradeZoneLocation = <>{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
           }
@@ -93,7 +94,7 @@ export default () => {
         } else if (distance(systemCoordinates, COLONIA_COORDINATES) <= 100) {
           system.tradeZone = 'Colonia Region'
           if (system.systemName === 'Colonia') {
-            system.tradeZoneLocation = `The Colonia Region is ${distance(systemCoordinates, SOL_COORDINATES)} Ly from the Core Systems`
+            system.tradeZoneLocation = `${distance(systemCoordinates, SOL_COORDINATES)} Ly from the Core Systems`
           } else {
             system.tradeZoneLocation = <>{distance(systemCoordinates, COLONIA_COORDINATES)} Ly from Colonia</>
           }
@@ -119,14 +120,14 @@ export default () => {
           const stations = await getStationsInSystem(systemName)
           setStationsInSystem(
             stations
-            .filter(
-              station => station.stationType !== 'OnFootSettlement' &&
-              station.stationType !== 'MegaShip' &&
-              station.stationType !== 'FleetCarrier' &&
-              station.stationType !== 'StrongholdCarrier' &&
-              station.stationType !== null &&
-              !station?.stationName?.includes(' Construction Site: ')
-            )
+            // .filter( station => 
+            //   station.stationType !== 'OnFootSettlement' &&
+            //   station.stationType !== 'MegaShip' &&
+            //   station.stationType !== 'FleetCarrier' &&
+            //   station.stationType !== 'StrongholdCarrier' &&
+            //   station.stationType !== null &&
+            //   !station?.stationName?.includes(' Construction Site: ')
+            // )
             .sort((a, b) => a?.distanceToArrival - b?.distanceToArrival)
           )
           setSettlementsInSystem(
@@ -248,6 +249,12 @@ export default () => {
           active: views[activeViewIndex] === ''
         },
         {
+          name: 'List',
+          icon: 'icarus-terminal-table-index',
+          url: `/system/${system?.systemName.replaceAll(' ', '_')}/list`,
+          active: views[activeViewIndex] === 'list'
+        },
+        {
           name: 'Trade',
           icon: 'icarus-terminal-cargo',
           url: `/system/${system?.systemName.replaceAll(' ', '_')}/exports`,
@@ -285,6 +292,8 @@ export default () => {
               exportOrders={exportOrders}
               lastUpdatedAt={lastUpdatedAt}
             />}
+          {views[activeViewIndex] === 'list' &&
+            <SystemList stationsInSystem={stationsInSystem} />}
           {(views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports') &&
             <SystemTrade
               systemName={system.systemName}

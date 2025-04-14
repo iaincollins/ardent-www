@@ -195,15 +195,19 @@ export default () => {
                   e.preventDefault()
                   const searchText = e.target.value.trim().toLowerCase()
                   if (searchResults?.length > 0) {
+                    let exactMatchFound = false
                     searchResults.forEach(result => {
                       if (result.name.toLowerCase() === searchText) {
+                        console.log('EXACT MATCH', searchText)
                         router.push(result.path)
                         setSearchResultsVisible(false)
-                        return
+                        exactMatchFound = true
                       }
                     })
-                    router.push(searchResults[hilightedSearchResult].path)
-                    setSearchResultsVisible(false)                    
+                    if (!exactMatchFound) {
+                      router.push(searchResults[hilightedSearchResult].path)
+                      setSearchResultsVisible(false)
+                    }
                   }
                 } else if (e.key === 'ArrowDown') {
                   if (hilightedSearchResult < searchResults.length - 1) {

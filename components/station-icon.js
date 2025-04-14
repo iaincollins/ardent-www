@@ -19,7 +19,7 @@ module.exports = ({ stationType, station, children }) => {
 
   if (_stationType === 'Orbis') icon = 'orbis-starport'
   if (_stationType === 'Coriolis') icon = 'coriolis-starport'
-  if (_stationType === 'Ocellus') icon = 'orbis-starport'
+  if (_stationType === 'Ocellus') icon = 'ocellus-starport'
   if (_stationType === 'AsteroidBase') icon = 'asteroid-base'
   if (_stationType === 'Outpost') icon = 'outpost'
   if (_stationType === 'MegaShip') icon = 'megaship'

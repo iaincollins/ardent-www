@@ -24,7 +24,7 @@ module.exports = ({ nearbySystems }) => {
             render: (v) => <><i className='icon icarus-terminal-star' />{v}</>
           },
           {
-            title: 'Dist.',
+            title: 'Distance',
             dataIndex: 'distance',
             key: 'distance',
             align: 'right',

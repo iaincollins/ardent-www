@@ -1,19 +1,18 @@
 .system-map {
-  height: 20rem;
   width: calc(100% - 2.6rem);
   display: block;
-  padding: .5rem;
   overflow: hidden;
-  position: relative;
-  top: -2rem;
-  left: -15%;
-  width: 115%;
-  margin-bottom: -4rem;
+  position: absolute;
+  top: 0;
+  left: 0%;
+  width: 100%;
+  height: calc(100vh - 8.5rem);
+  min-height: 30rem;
   zoom: 1;
   font-size: 2rem;
   line-height: 2rem;
   font-family: 'Jura';
-  background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0));
+  /* background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0)); */
   mask-image: linear-gradient(to bottom,
       transparent,
       black 30%,
@@ -22,6 +21,7 @@
   mask-size: 100% 100%, 1rem 100%;
   mask-position: 0 0, 100% 0;
   mask-repeat: no-repeat, no-repeat;
+  margin: 0;
 }
 
 .system-map:before {
@@ -34,14 +34,87 @@
   position: absolute;
   height: 100%;
   width: 100%;
-  opacity: .8;
-  background-image: url(/images/grid.svg);
+  opacity: .075;
   background-image: linear-gradient(var(--color-primary) .1rem, transparent .1rem), linear-gradient(90deg, var(--color-primary) .1rem, transparent .1rem);
-  background: transparent;
-  background-size: 2rem 2rem;
+  Xbackground-image: url(/images/grid.svg);
+  background-size: 3rem 3rem;
   background-position: center;
   pointer-events: all;
 }
+
+.system-map__info {
+  position: absolute;
+  top: 0;
+  left: .5rem;
+  width: 100%;
+  height: calc(100vh - 9.5rem);
+  min-height: 30rem;
+  pointer-events: none;
+}
+
+.system-map__location {
+  position: absolute;
+  top: initial;
+  bottom: 1rem;
+  left: 0;
+  margin: 0;
+  width: auto;
+}
+
+.system-map__location > table {
+  top: initial;
+  margin: 0;
+}
+
+.system-map__location > table th {
+  width: 5rem !important;
+}
+
+.system-map__station-info {
+  position: relative;
+  margin-top: .5rem;
+  left: .25rem;
+  width: auto;
+}
+
+.system-map__station-info p {
+  float: left;
+  padding: 0;
+  margin: 0;
+  margin-bottom: .25rem;
+  margin-right: 1rem;
+  display: inline-block;
+  font-size: 1.25rem;
+}
+
+.system-map__station-info p:last-child {
+  margin-bottom: 0;
+}
+
+.system-map__station-info .icon {
+  position: relative;
+  top: -.1rem;
+}
+
+.system-map__system-summary {
+  display: block;
+  clear: both;
+  float: left;
+}
+.system-map__system-summary p {
+  font-size: 1rem;
+  margin: 0;
+  clear: both;
+}
+
+.system-map__system-summary p small {
+  font-size: .9rem;
+}
+
+.system-map__info table .Collapsible {
+  pointer-events: all;
+}
+
 
 .system-map__point {
   position: absolute;
@@ -84,9 +157,9 @@
   height: .6rem;
   width: .6rem;
   border-radius: 1rem;
-  background: var(--color-primary-light);
+  background: var(--color-primary-lightest);
   content: '';
-  box-shadow: 0 0 .1rem .1rem var(--color-primary-lighter), 0 0 1rem .1rem var(--color-primary-lighter), 0 0 .5rem .2rem var(--color-primary);;
+  box-shadow: 0 0 .1rem .1rem var(--color-primary-lighter), 0 0 1rem .1rem var(--color-primary-lighter), 0 0 .5rem .1rem var(--color-primary);
 }
 
 .system-map__point:after {
@@ -164,7 +237,7 @@
   width: 1rem !important;
   border-color: transparent;
   z-index: 3;
-  box-shadow: 0 0 .4rem .2rem var(--color-primary-lightest), 0 0 2rem .5rem var(--color-primary), 0 0 4rem 1rem var(--color-primary);
+  box-shadow: 0 0 .4rem .2rem var(--color-primary-lightest), 0 0 2rem .5rem var(--color-primary), 0 0 4rem .7rem var(--color-primary);
 }
 
 .system-map__point--highlighted:hover {}
@@ -175,12 +248,17 @@
   left: .2rem;
   z-index: 2;
   opacity: 1 !important;
-  zoom: 1.1 !important;
-  font-size: .9rem;
+  zoom: 1.2 !important;
   line-height: 1rem;
   font-weight: bold;
   color: var(--color-primary-darkest);
   background: var(--color-primary-lightest);
+}
+
+
+.system-map__info {
+  position: absolute;
+  margin-top: 1rem;
 }
 
 @media only screen and (min-width: 1024px) {
@@ -188,7 +266,7 @@
     filter: blur(0);
   }
 
-  .system-map {
+  /* .system-map {
     position: absolute;
     top: 0;
     left: 25rem;
@@ -200,15 +278,5 @@
     background: transparent;
     mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 10%, transparent 50%);
     z-index: 1;
-  }
-
-  .system-map__info {
-    margin-top: 1rem;
-  }
-
-  /* .system-map__info {
-    position: absolute !important;
-    top: initial !important;
-    bottom: 1rem !important;
   } */
 }

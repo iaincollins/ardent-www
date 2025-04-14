@@ -7,7 +7,7 @@ module.exports = ({ systemName, nearestServices }) => {
   return (
     <div className='fx__fade-in'>
       <div className='heading--with-underline'>
-        <h2>Nearest Services</h2>
+        <h2>Services</h2>
       </div>
       {nearestServices &&
         <div className='fx__fade-in'>
