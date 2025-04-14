@@ -127,17 +127,17 @@ export default () => {
               station.stationType !== null &&
               !station?.stationName?.includes(' Construction Site: ')
             )
-            .sort((a, b) => a?.stationName.localeCompare(b?.stationName))
+            .sort((a, b) => a?.distanceToArrival - b?.distanceToArrival)
           )
           setSettlementsInSystem(
             stations
             .filter(station => station.stationType === 'OnFootSettlement' || station.stationType === null)
-            .sort((a, b) => a?.stationName.localeCompare(b?.stationName))
+            .sort((a, b) => a?.distanceToArrival - b?.distanceToArrival)
           )
           setFleetCarriersInSystem(
             stations
               .filter(station => station.stationType === 'FleetCarrier')
-              .sort((a, b) => b?.updatedAt.localeCompare(a?.updatedAt))
+              .sort((a, b) => a?.distanceToArrival - b?.distanceToArrival)
           )
           setMegashipsInSystem(stations.filter(station => (station.stationType === 'MegaShip' || station.stationType === 'StrongholdCarrier')))
 

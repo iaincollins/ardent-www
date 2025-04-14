@@ -110,12 +110,13 @@ module.exports = ({
                             <StationIcon station={station}>{station.stationName}</StationIcon>
                           </div>
                           <div className='system__entity-information'>
-                            {station.bodyName && 
+                            {station.distanceToArrival !== null && <small className='text-no-transform'>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                            {station.bodyName && station.distanceToArrival !== null && <small>, </small>}
+                            {station.bodyName &&
                               <small>
-                                <i className='icon icarus-terminal-planet' style={{ position: 'relative', top: '-.1rem' }} />
+                                <i className='icon icarus-terminal-planet' style={{ position: 'relative', top: '-.1rem', margin: 0 }} />
                                 {station.bodyName.replace(new RegExp(`^${system.systemName}`), '')}
                               </small>}
-                            {station.distanceToArrival !== null && <small className='text-no-transform'>, {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
                           </div>
                         </div>
                       </Fragment>
@@ -143,7 +144,8 @@ module.exports = ({
                           </div>
                           <div className='system__entity-information'>
                             {station.distanceToArrival !== null && <small className='text-no-transform'>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                            {station.updatedAt && <small><span className='muted'>, </span>{timeBetweenTimestamps(station.updatedAt)}</small>}                          </div>
+                            {station.updatedAt && <small><span className='muted'>, </span>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
+                          </div>
                         </div>
                       </Fragment>
                     )}
@@ -170,7 +172,7 @@ module.exports = ({
                           </div>
                           <div className='system__entity-information'>
                             {station.distanceToArrival !== null && <small className='text-no-transform'>{Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                            {station.updatedAt && <small><span className='muted'>, </span>{timeBetweenTimestamps(station.updatedAt)}</small>}
+                            {station.updatedAt && <small><span className='muted'>, </span>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                           </div>
                         </div>
                       </Fragment>
