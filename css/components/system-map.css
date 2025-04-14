@@ -7,7 +7,7 @@
   left: 0%;
   width: 100%;
   height: calc(100vh - 8.5rem);
-  min-height: 30rem;
+  min-height: 20rem;
   zoom: 1;
   font-size: 2rem;
   line-height: 2rem;
@@ -48,7 +48,7 @@
   left: .5rem;
   width: 100%;
   height: calc(100vh - 9.5rem);
-  min-height: 30rem;
+  min-height: 20rem;
   pointer-events: none;
 }
 

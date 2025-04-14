@@ -6,6 +6,7 @@ import hexToAscii from 'lib/utils/hex-to-ascii'
 import StationIcon from 'components/station-icon'
 import { API_BASE_URL, SIGN_IN_URL, SIGN_OUT_URL } from 'lib/consts'
 import { loadCache, saveCache, deleteCache } from 'lib/cache'
+import { timeBetweenTimestamps } from 'lib/utils/dates'
 
 export default () => {
   const [signedIn, setSignedIn] = useState()
@@ -42,7 +43,7 @@ export default () => {
     saveCache('cmdrFleetCarrier', _fleetCarrier)
   }
 
-  function clearCmdrCache () {
+  function clearCmdrCache() {
     deleteCache('cmdrProfile')
     deleteCache('cmdrFleetCarrier')
     deleteCache('cmdrNearestServices')
@@ -64,21 +65,21 @@ export default () => {
 
   useEffect(() => {
     if (cmdrProfile !== undefined) setSignedIn(true)
-    ; (async () => {
-      // If we can get a profile, they are signed in
-      const _cmdrProfile = await getCmdrInfo('profile')
-      const isSignedIn = !!(_cmdrProfile?.commander?.id)
-      setSignedIn(isSignedIn)
-      if (isSignedIn) {
-        setCmdrProfile(_cmdrProfile)
-        saveCache('cmdrProfile', _cmdrProfile)
-        updateFleetCarrier()
-        updateNearestServices(_cmdrProfile)
-      } else {
-        clearCmdrCache()
-      }
-      setCsrfToken(await getCsrfToken())
-    })()
+      ; (async () => {
+        // If we can get a profile, they are signed in
+        const _cmdrProfile = await getCmdrInfo('profile')
+        const isSignedIn = !!(_cmdrProfile?.commander?.id)
+        setSignedIn(isSignedIn)
+        if (isSignedIn) {
+          setCmdrProfile(_cmdrProfile)
+          saveCache('cmdrProfile', _cmdrProfile)
+          updateFleetCarrier()
+          updateNearestServices(_cmdrProfile)
+        } else {
+          clearCmdrCache()
+        }
+        setCsrfToken(await getCsrfToken())
+      })()
   }, [])
 
   return (
@@ -103,7 +104,7 @@ export default () => {
               {cmdrProfile !== undefined &&
                 <p>
                   <small>Credit Balance</small><br />
-                  <i className='icarus-terminal-credits' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem'  }}  />{cmdrProfile.commander.credits.toLocaleString()} CR
+                  <i className='icarus-terminal-credits' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem' }} />{cmdrProfile.commander.credits.toLocaleString()} CR
                 </p>}
               {cmdrProfile !== undefined &&
                 <p>
@@ -115,12 +116,12 @@ export default () => {
                 <p>
                   <small>Fleet Carrier</small><br />
                   <span style={{ fontSize: '.85rem', lineHeight: '1.1rem' }}>
-                    <i className='icarus-terminal-fleet-carrier' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem'  }} />{hexToAscii(cmdrFleetCarrier.name.vanityName)} {cmdrFleetCarrier.name.callsign}<br />
-                    <i className='icarus-terminal-star' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem'  }} /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem.replaceAll(' ', '_')}`}>{cmdrFleetCarrier.currentStarSystem}</Link><br />
-                    <i className='icarus-terminal-credits' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem'  }} />{Number(cmdrFleetCarrier.balance).toLocaleString()} CR<br />
-                    <i className='icarus-terminal-cargo' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem'  }} />{(25000 - cmdrFleetCarrier.capacity.freeSpace).toLocaleString()} / {(25000).toLocaleString()} T<br />
+                    <i className='icarus-terminal-fleet-carrier' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem' }} />{hexToAscii(cmdrFleetCarrier.name.vanityName)} {cmdrFleetCarrier.name.callsign}<br />
+                    <i className='icarus-terminal-star' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem' }} /><Link href={`/system/${cmdrFleetCarrier.currentStarSystem.replaceAll(' ', '_')}`}>{cmdrFleetCarrier.currentStarSystem}</Link><br />
+                    <i className='icarus-terminal-credits' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem' }} />{Number(cmdrFleetCarrier.balance).toLocaleString()} CR<br />
+                    <i className='icarus-terminal-cargo' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem' }} />{(25000 - cmdrFleetCarrier.capacity.freeSpace).toLocaleString()} / {(25000).toLocaleString()} T<br />
                     <i className='icarus-terminal-engineer' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem' }} />Crew: {cmdrFleetCarrier.capacity.crew.toLocaleString()}<br />
-                    <i className='icarus-terminal-ship' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem'}} />Docking: <span style={{textTransform: 'capitalize' }}>{cmdrFleetCarrier.dockingAccess}</span><br />
+                    <i className='icarus-terminal-ship' style={{ float: 'left', marginRight: '.25rem', position: 'relative', top: '.15rem' }} />Docking: <span style={{ textTransform: 'capitalize' }}>{cmdrFleetCarrier.dockingAccess}</span><br />
                   </span>
                 </p>}
 
@@ -137,28 +138,51 @@ export default () => {
                             <Fragment key={`nearest_service_${service}`}>
                               <tr><th className='text-left'>{service}</th></tr>
                               <tr>
-                                <td style={{ paddingBottom: '1rem', paddingTop: 0, background: 'transparent' }}>
-                                  {nearestServices[service]?.filter(s => s.distance === 0).splice(0, 1).map(station =>
+                                <td style={{ paddingBottom: '1rem', paddingTop: 0, background: 'rgba(0,0,0,.25)' }}>
+                                  {nearestServices[service]?.filter(s => s.stationType !== 'FleetCarrier')?.filter(s => s.distance === 0)?.length > 0 &&
+                                    <small style={{ display: 'block', marginTop: '.5rem' }}>In system</small>}
+                                  {nearestServices[service]?.filter(s => s.stationType !== 'FleetCarrier')?.splice(0, 1)?.filter(s => s.distance === 0)?.map(station =>
                                     <Fragment key={`in_system_service_${service}_${station}`}>
-                                      <small style={{ lineHeight: '2rem' }}>In system</small>
-                                      <StationIcon station={station}>
-                                        {station.stationName}
-                                        {station.bodyName ? <><br />{station.bodyName}</> : ''}
-                                        <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>
-                                      </StationIcon>
+                                      <p style={{ margin: '.5rem 0 0 0' }}>
+                                        <StationIcon station={station}>
+                                          {station.stationName}
+                                          {station.bodyName ? <><br /><span className='muted' style={{ fontSize: '.9rem' }}>{station.bodyName}</span></> : ''}
+                                          <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>
+                                        </StationIcon>
+                                      </p>
                                     </Fragment>)}
-                                  {nearestServices[service]?.filter(s => s.distance > 0).splice(0, 1).map(station =>
+                                  {nearestServices[service]?.filter(s => s.stationType !== 'FleetCarrier').filter(s => s.distance > 0)?.length > 0 &&
+                                    <small style={{ display: 'block', marginTop: '.5rem' }}>Next nearest</small>}
+                                  {nearestServices[service]?.filter(s => s.stationType !== 'FleetCarrier')?.filter(s => s.distance > 0)?.splice(0, 1)?.map(station =>
                                     <Fragment key={`nearest_service_${service}_${station}`}>
-                                      <small style={{ lineHeight: '2rem' }}>Next nearest</small>
-                                      <span>
+                                      <p style={{ margin: '.5rem 0 0 0' }}>
                                         <StationIcon station={station}>
                                           {station.stationName}
                                           <br />
-                                          <Link href={`/system/${station.systemName.replaceAll(' ', '_')}`}>{station.bodyName ? station.bodyName : station.systemName}</Link>
+                                          <Link className='muted' style={{ fontSize: '.9rem' }} href={`/system/${station.systemName.replaceAll(' ', '_')}`}>{station.bodyName ? station.bodyName : station.systemName}</Link>
                                           <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
                                         </StationIcon>
-                                      </span>
+                                      </p>
                                     </Fragment>)}
+                                  {nearestServices[service]?.filter(s => s.stationType !== 'FleetCarrier').filter(s => s.distance > 0)?.length === 0 &&
+                                    <>
+                                      {nearestServices[service]?.filter(s => s.stationType === 'FleetCarrier')?.length > 0 &&
+                                        <small style={{ display: 'block', marginTop: '.5rem' }}>Nearest Carriers</small>}
+                                      {nearestServices[service]?.filter(s => s.stationType === 'FleetCarrier')?.splice(0, 3)?.map(station =>
+                                        <Fragment key={`nearest_service_${service}_${station}`}>
+                                          <p style={{ margin: '.5rem 0 0 0' }}>
+                                            <StationIcon station={station}>
+                                              {station.stationName}
+                                              <br />
+                                              <Link className='muted' style={{ fontSize: '.9rem' }} href={`/system/${station.systemName.replaceAll(' ', '_')}`}>{station.bodyName ? station.bodyName : station.systemName}</Link>
+                                              {station.distance > 0
+                                                ? <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
+                                                : <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                                              <br />{station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
+                                            </StationIcon>
+                                          </p>
+                                        </Fragment>)}
+                                    </>}
                                 </td>
                               </tr>
                             </Fragment>
@@ -197,7 +221,7 @@ export default () => {
   )
 }
 
-async function getNearestService (systemName, service) {
+async function getNearestService(systemName, service) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
   return res.ok ? await res.json() : null
 }

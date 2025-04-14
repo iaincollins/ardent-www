@@ -26,7 +26,7 @@ module.exports = ({
       <div className='heading--with-underline'>
         <h2>Commodities</h2>
       </div>
-      <p className='muted'>Trade data for {systemName} last updated {timeBetweenTimestamps(lastUpdatedAt)} ago</p>
+      <p className='muted'>Last update {timeBetweenTimestamps(lastUpdatedAt)} ago</p>
       {rareGoods?.length > 0 &&
         <div style={{ marginBottom: '1rem' }}>
           {rareGoods.map(rare =>

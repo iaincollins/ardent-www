@@ -28,7 +28,7 @@ module.exports = ({
                 <div className='is-visible-mobile'>
                   {r.bodyName &&
                     <small>
-                      <i className='icarus-terminal-planet' />{' '} {r.bodyName}
+                      <i className='icarus-terminal-planet' style={{position: 'relative', top: '-.1rem'}}/>{' '} {r.bodyName}
                       <br />
                     </small>}
                   <small>{timeBetweenTimestamps(r.updatedAt)}</small>
@@ -45,7 +45,7 @@ module.exports = ({
               <>
                 {v &&
                   <small>
-                    <i className='icarus-terminal-planet' /> {v}
+                    <i className='icarus-terminal-planet' style={{position: 'relative', top: '-.1rem'}}/> {v}
                   </small>}
               </>
           },

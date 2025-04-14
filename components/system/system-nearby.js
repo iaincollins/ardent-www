@@ -11,7 +11,7 @@ module.exports = ({ nearbySystems }) => {
   return (
     <div className='fx__fade-in'>
       <div className='heading--with-underline'>
-        <h2>Nearby Systems</h2>
+        <h2>Nearest Systems</h2>
       </div>
       <Table
         className='data-table data-table--striped data-table--interactive data-table--animated'
