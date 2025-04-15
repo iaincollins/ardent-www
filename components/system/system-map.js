@@ -1,24 +1,24 @@
 import { useRouter } from 'next/router'
 import { formatSystemSector } from 'lib/utils/system-sectors'
+import { timeBetweenTimestamps } from 'lib/utils/dates'
 
 const SYSTEM_MAP_POINT_PLOT_MULTIPLIER = 50
 
 module.exports = ({
   system,
+  systemStatus,
   nearbySystems,
   stationsInSystem,
   settlementsInSystem,
   megashipsInSystem,
   fleetCarriersInSystem,
-  importOrders,
-  exportOrders,
   lastUpdatedAt
 }) => {
   const router = useRouter()
 
   return (
     <div className='fx__fade-in'>
-      <div className='heading--with-underline'>
+      <div className='heading--with-underline' style={{ zIndex: 3}}>
         <h2 className='heading--with-icon'>
           <i className='icon icarus-terminal-system-orbits  ' />
           {system.systemName} system
@@ -45,10 +45,29 @@ module.exports = ({
           <p className='fx__fade-in'><i className='icon icarus-terminal-fleet-carrier' /> {fleetCarriersInSystem.length}</p>}
         {stationsInSystem !== undefined &&
           <div className='system-map__system-summary'>
-            <p><span className='fx__animated-text' data-fx-order='2'>
-              {system.tradeZone}
-              {system.tradeZoneLocation !== undefined && <small style={{ textTransform: 'none' }}><br />{system.tradeZoneLocation}</small>}
-            </span>
+            <p>
+              <span className='fx__animated-text' data-fx-order='1'>
+                {system.tradeZone}
+                {system.tradeZoneLocation !== undefined && <small style={{ textTransform: 'none' }}><br />{system.tradeZoneLocation}</small>}
+              </span>
+              {systemStatus &&
+                <span style={{ display: 'block', fontSize: '.9rem', lineHeight: '1.1rem', marginTop: '.5rem' }}>
+                  {systemStatus.allegiance && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='1'>Allegiance: {systemStatus.allegiance}</span>}
+                  {systemStatus.government && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='2'>Government: {systemStatus.government}</span>}
+                  {systemStatus.population && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='2'>Population: {systemStatus.population.toLocaleString()}</span>}
+                  {systemStatus.economy.primary &&
+                    <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='3'>
+                      Economy: {systemStatus.economy.primary}
+                      {systemStatus.economy.secondary && <>, {systemStatus.economy.secondary}</>}
+                    </span>}
+                  {systemStatus.faction && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='3'>Controlled by: {systemStatus.faction}</span>}
+                  {systemStatus.security && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='4'>Security: {systemStatus.security}</span>}
+                  {/*
+                  {systemStatus.state && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='4'>State: {systemStatus.state}</span>}
+                  {lastUpdatedAt && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='5'>Last update: {timeBetweenTimestamps(lastUpdatedAt)} ago</span>}
+                  */}
+                  <span style={{ display: 'block' }} className='fx__animated-text muted' data-fx-order='5'>Telemetry: EDSM</span>
+                </span>}
             </p>
           </div>
         }
@@ -74,15 +93,15 @@ module.exports = ({
             <tbody>
               <tr>
                 <th>Address</th>
-                <td><span className='fx__animated-text' data-fx-order='1'>{system.systemAddress}</span></td>
+                <td><span className='fx__animated-text' data-fx-order='3'>{system.systemAddress}</span></td>
               </tr>
               <tr>
                 <th>Location</th>
-                <td><span className='fx__animated-text' data-fx-order='2'>{system.systemX}, {system.systemY}, {system.systemZ}</span></td>
+                <td><span className='fx__animated-text' data-fx-order='4'>{system.systemX}, {system.systemY}, {system.systemZ}</span></td>
               </tr>
               <tr>
                 <th>Sector</th>
-                <td><span className='fx__animated-text' data-fx-order='3'>{formatSystemSector(system.systemSector)}</span></td>
+                <td><span className='fx__animated-text' data-fx-order='5'>{formatSystemSector(system.systemSector)}</span></td>
               </tr>
             </tbody>
           </table>

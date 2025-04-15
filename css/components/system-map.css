@@ -7,7 +7,7 @@
   left: -3rem;
   width: calc(100% + 3rem);
   height: calc(100vh - 8.5rem);
-  min-height: 20rem;
+  min-height: 26rem;
   zoom: 1;
   font-size: 2rem;
   line-height: 2rem;
@@ -44,11 +44,13 @@
 .system-map__info {
   position: absolute;
   top: 0;
-  left: .5rem;
+  left: 0;
   width: 100%;
-  height: calc(100vh - 9.5rem);
-  min-height: 20rem;
+  height: calc(100vh - 10rem);
+  min-height: 26rem;
   pointer-events: none;
+  background: linear-gradient(to right, rgba(20,20,20,1), transparent 30%);
+  z-index: 2;
 }
 
 .system-map__location {
@@ -70,13 +72,18 @@
 }
 
 .system-map__station-info {
-  position: relative;
-  margin-top: 0rem;
-  padding-top: .75rem;
-  min-height: 6rem;
-  left: .25rem;
+  position: absolute;
+  top: 4.3rem;
+  left: 0;
+  padding: .25rem;
   width: auto;
+  display: inline-block;
   overflow: auto;
+  overflow-x: hidden;
+  xbackground: linear-gradient(to bottom, rgba(40,40,40.8), rgba(20,20,20,.4) 99%);
+  xbackground: rgba(20,20,20,.5);
+  z-index: 3;
+  pointer-events: none;
 }
 
 .system-map__station-info p {

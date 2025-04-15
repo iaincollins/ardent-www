@@ -12,7 +12,6 @@ module.exports = ({
 
   useEffect(() => {
     if (bodiesInSystem && stationsInSystem) {
-      console.log('stationsInSystem', stationsInSystem)
       const _objectsInSystem = parseBodiesAndStations(bodiesInSystem, stationsInSystem)
       setObjectsInSystem(_objectsInSystem)
     }

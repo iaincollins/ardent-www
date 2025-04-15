@@ -51,6 +51,7 @@ export default () => {
   const [rareGoods, setRareGoods] = useState([])
   const [nearestServices, setNearestServices] = useState()
   const [bodiesInSystem, setBodiesInSystem] = useState()
+  const [systemStatus, setSystemStatus] = useState()
 
   const views = ['', 'list', 'exports', 'imports', 'services', 'nearby']
 
@@ -74,6 +75,9 @@ export default () => {
       setImportOrders(undefined)
       setExportOrders(undefined)
       setLastUpdatedAt(undefined)
+      setBodiesInSystem(undefined)
+      setSystemStatus(undefined)
+      setNearestServices(undefined)
 
       let mostRecentUpdatedAt
 
@@ -227,6 +231,8 @@ export default () => {
         ; (async () => {
           const _bodiesInSystem = await getBodiesInSystem(systemName)
           setBodiesInSystem(_bodiesInSystem)
+          const _systemStatus = await getSystemStatus(systemName)
+          setSystemStatus(_systemStatus)
         })()
       }
     })()
@@ -289,6 +295,7 @@ export default () => {
           {views[activeViewIndex] === '' &&
             <SystemMap
               system={system}
+              systemStatus={systemStatus}
               nearbySystems={nearbySystems}
               stationsInSystem={stationsInSystem}
               settlementsInSystem={settlementsInSystem}
@@ -341,3 +348,9 @@ async function getBodiesInSystem (systemName) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/bodies`)
   return await res.json()
 }
+
+async function getSystemStatus (systemName) {
+  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/status`)
+  return await res.json()
+}
+
