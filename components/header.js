@@ -196,14 +196,14 @@ export default () => {
                   const searchText = e.target.value.trim().toLowerCase()
                   if (searchResults?.length > 0) {
                     let exactMatchFound = false
-                    searchResults.forEach(result => {
+                    for (const result of searchResults) {
                       if (result.name.toLowerCase() === searchText) {
-                        router.push(result.path)
                         setSearchResultsVisible(false)
                         exactMatchFound = true
+                        router.push(result.path)
                       }
-                    })
-                    if (!exactMatchFound) {
+                    }
+                    if (exactMatchFound !== true) {
                       router.push(searchResults[hilightedSearchResult].path)
                       setSearchResultsVisible(false)
                     }

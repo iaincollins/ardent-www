@@ -6,8 +6,8 @@
   top: 0;
   left: -3rem;
   width: calc(100% + 3rem);
-  height: calc(100vh - 8.5rem);
-  min-height: 26rem;
+  height: calc(100vh - 10.5rem);
+  min-height: 25rem;
   zoom: 1;
   font-size: 2rem;
   line-height: 2rem;
@@ -41,25 +41,21 @@
   pointer-events: all;
 }
 
+
 .system-map__info {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 10rem);
-  min-height: 26rem;
-  pointer-events: none;
-  background: linear-gradient(to right, rgba(20,20,20,1), transparent 30%);
-  z-index: 2;
+  right: 1rem;
+  bottom: 0rem;
+}
+
+.system-map__info table .Collapsible {
+  pointer-events: all;
 }
 
 .system-map__location {
-  position: absolute;
-  top: initial;
-  bottom: 1rem;
-  left: 0;
-  margin: 0;
-  width: auto;
+  opacity: .75;
+  z-index: 4;
+  font-size: .8rem;
 }
 
 .system-map__location > table {
@@ -69,24 +65,24 @@
 
 .system-map__location > table th {
   width: 5rem !important;
+  font-size: .8rem !important;
 }
 
-.system-map__station-info {
-  position: absolute;
-  top: 4.3rem;
+.system-map__system-info {
+  position: relative;
+  top: 0;
   left: 0;
-  padding: .25rem;
+  height: calc(100vh - 10.5rem);
+  min-height: 25rem;
+  background: linear-gradient(to right, rgba(20,20,20,1), transparent 50%);
   width: auto;
-  display: inline-block;
   overflow: auto;
   overflow-x: hidden;
-  xbackground: linear-gradient(to bottom, rgba(40,40,40.8), rgba(20,20,20,.4) 99%);
-  xbackground: rgba(20,20,20,.5);
   z-index: 3;
   pointer-events: none;
 }
 
-.system-map__station-info p {
+.system-map__system-info p {
   float: left;
   padding: 0;
   margin: 0;
@@ -97,37 +93,31 @@
   text-shadow: 0 0 .5rem black;
 }
 
-.system-map__station-info p:last-child {
+.system-map__system-info p:last-child {
   margin-bottom: 0;
 }
 
-.system-map__station-info .icon {
+.system-map__system-info p > .icon {
   position: relative;
   top: -.1rem;
   font-size: 1.25rem;
 }
 
-.system-map__system-summary {
+.system-map__system-status {
   display: block;
   clear: both;
   float: left;
 }
-.system-map__system-summary p {
+.system-map__system-status p {
   font-size: 1rem;
   margin: 0;
   clear: both;
-  text-shadow: 0 0 .5rem black;
+  padding: 0 .25rem;
 }
 
-.system-map__system-summary p small {
-  font-size: .9rem;
-  opacity: 1;
-  color: var(--color-primary-dark);
-  text-shadow: 0 0 .5rem black;
-}
-
-.system-map__info table .Collapsible {
-  pointer-events: all;
+.system-map__system-status p small {
+  font-size: .8rem;
+  color: var(--color-primary);
 }
 
 
@@ -191,7 +181,7 @@
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.4rem), calc(100% - 0.4rem) 100%, 0 100%);
   border-radius: .2rem;
 }
-
+x
 .system-map__point:hover {
   opacity: 1 !important;
   z-index: 10;
@@ -268,12 +258,6 @@
   font-weight: bold;
   color: var(--color-primary-darkest);
   background: var(--color-primary-lightest);
-}
-
-
-.system-map__info {
-  position: absolute;
-  margin-top: 1rem;
 }
 
 @media only screen and (min-width: 1024px) {
