@@ -15,7 +15,7 @@ export default ({ toggle }) => {
         const stats = await res.json()
         setStats(stats)
       } catch (e) {
-        console.log(e)
+        console.error(e)
       }
     })()
       ; (async () => {
@@ -24,7 +24,7 @@ export default ({ toggle }) => {
           const version = await res.json()
           setVersion(version)
         } catch (e) {
-          console.log(e)
+          console.error(e)
         }
       })()
   }, [])

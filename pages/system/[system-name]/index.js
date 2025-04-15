@@ -50,6 +50,7 @@ export default () => {
   const [activeViewIndex, setActiveViewIndex] = useState(0)
   const [rareGoods, setRareGoods] = useState([])
   const [nearestServices, setNearestServices] = useState()
+  const [bodiesInSystem, setBodiesInSystem] = useState()
 
   const views = ['', 'list', 'exports', 'imports', 'services', 'nearby']
 
@@ -222,6 +223,11 @@ export default () => {
           })
           setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)))
         })()
+
+        ; (async () => {
+          const _bodiesInSystem = await getBodiesInSystem(systemName)
+          setBodiesInSystem(_bodiesInSystem)
+        })()
       }
     })()
   }, [router.query['system-name']])
@@ -293,7 +299,7 @@ export default () => {
               lastUpdatedAt={lastUpdatedAt}
             />}
           {views[activeViewIndex] === 'list' &&
-            <SystemList stationsInSystem={stationsInSystem} />}
+            <SystemList bodiesInSystem={bodiesInSystem} stationsInSystem={stationsInSystem} />}
           {(views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports') &&
             <SystemTrade
               systemName={system.systemName}
@@ -329,4 +335,9 @@ async function getNearbySystems (systemName) {
 async function getNearestService (systemName, service) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
   return res.ok ? await res.json() : null
+}
+
+async function getBodiesInSystem (systemName) {
+  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/bodies`)
+  return await res.json()
 }

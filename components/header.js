@@ -198,7 +198,6 @@ export default () => {
                     let exactMatchFound = false
                     searchResults.forEach(result => {
                       if (result.name.toLowerCase() === searchText) {
-                        console.log('EXACT MATCH', searchText)
                         router.push(result.path)
                         setSearchResultsVisible(false)
                         exactMatchFound = true

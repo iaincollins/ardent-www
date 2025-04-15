@@ -25,7 +25,7 @@ export default () => {
         databases.forEach(database => { database.description = databaseDescription?.[database.name] })
         setDatabases(databases.reverse())
       } catch (e) {
-        console.log(e)
+        console.error(e)
       }
     })()
   }, [])
