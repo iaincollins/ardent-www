@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
-import { formatSystemSector } from 'lib/utils/system-sectors'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
+import factionStates from 'lib/utils/faction-states'
 
 const SYSTEM_MAP_POINT_PLOT_MULTIPLIER = 50
 
@@ -45,35 +45,81 @@ module.exports = ({
           {fleetCarriersInSystem?.length > 0 &&
             <p className='fx__fade-in'><i className='icon icarus-terminal-fleet-carrier' /> {fleetCarriersInSystem.length}</p>}
         </div>
-        {stationsInSystem !== undefined &&
-          <div className='system-map__system-status'>
+
+        {stationsInSystem !== undefined && system !== undefined &&
+          <div className='system-map__location'>
             <p>
-              <span className='fx__animated-text' data-fx-order='1'>
+              <small className='fx__animated-text' data-fx-order='1'>
+                {system.systemX}, {system.systemY}, {system.systemZ}
+              </small>
+              <br />
+              <small className='fx__animated-text' data-fx-order='2'>
                 {system.tradeZone}
-                {system.tradeZoneLocation !== undefined && <small style={{ textTransform: 'none' }}><br />{system.tradeZoneLocation}</small>}
-              </span>
-              {systemStatus &&
-                <span style={{ display: 'block', fontSize: '.9rem', lineHeight: '1.2rem', marginTop: '.5rem' }}>
-                  {systemStatus.allegiance && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='2'><small>Allegiance</small> {systemStatus.allegiance}</span>}
-                  {systemStatus.faction && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='2'><small>Faction</small> {systemStatus.faction}</span>}
-                  {systemStatus.government && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='3'><small>Government</small> {systemStatus.government}</span>}
-                  {systemStatus?.population > 0 && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='3'><small>Population</small> {systemStatus.population.toLocaleString()}</span>}
-                  {systemStatus.economy.primary && systemStatus.economy.primary !== 'None' &&
-                    <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='4'>
-                      <small>Economy</small> {systemStatus.economy.primary}
-                      {systemStatus.economy.secondary && systemStatus.economy.secondary !== 'None' && <>, {systemStatus.economy.secondary}</>}
-                    </span>}
-
-                  {systemStatus.security && systemStatus.security !== 'Anarchy' && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='4'><small>Security</small> {systemStatus.security}</span>}
-                  {/*
-                  {systemStatus.state && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='4'>State: {systemStatus.state}</span>}
-                  {lastUpdatedAt && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='5'>Last update: {timeBetweenTimestamps(lastUpdatedAt)} ago</span>}
-                  */}
-                </span>}
+              </small>
+              {system.tradeZoneLocation !== undefined &&
+                <>
+                  <br />
+                  <small className='fx__animated-text' data-fx-order='3'>
+                    {system.tradeZoneLocation}
+                  </small>
+                </>}
             </p>
+          </div>}
 
-          </div>
-        }
+        {systemStatus &&
+          <div className='system-map__system-status'>
+
+            {systemStatus.faction &&
+              <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='4'>
+                <i className='icon icarus-terminal-system-authority' />
+                {systemStatus.faction}
+              </span>}
+
+            {systemStatus.government &&
+              <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='5'>
+                <i className='icon icarus-terminal-power' />
+                {systemStatus.allegiance}
+                {(systemStatus.allegiance || systemStatus.government) && ' '}
+                {systemStatus.government}
+                {(systemStatus.allegiance || systemStatus.government) && ' Government'}
+              </span>}
+
+            {systemStatus.economy.primary && systemStatus.economy.primary !== 'None' &&
+              <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='6'>
+                <i className='icon icarus-terminal-trending-up-chart' />
+                {systemStatus.economy.primary}
+                {systemStatus.economy.secondary && systemStatus.economy.secondary !== 'None' && <> &amp; {systemStatus.economy.secondary}</>}
+                {' '}Economy
+              </span>}
+
+            {systemStatus?.population > 0 &&
+              <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='7'>
+                <i className='icon icarus-terminal-engineer' />
+                Population {systemStatus.population.toLocaleString()}
+              </span>}
+
+              {systemStatus.security && systemStatus.security !== 'Anarchy' && 
+              <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='8'>
+                <i className='icon icarus-terminal-shield' />
+                {systemStatus.security} Security
+              </span>}
+
+            {systemStatus.state && systemStatus.state !== 'None' &&
+              <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='9'>
+                <i className='icon icarus-terminal-warning' />
+                {factionStates?.[systemStatus.state.replaceAll(' ', '').toLowerCase()]?.description !== undefined
+                  ? factionStates[systemStatus.state.replaceAll(' ', '').toLowerCase()].description
+                  : systemStatus.state
+                }
+                <small> {timeBetweenTimestamps(lastUpdatedAt)} ago</small>
+              </span>}
+
+              <span style={{ display: 'block' }} className='fx__fade-in'>
+                <small>Telemetry from EDSM.NET</small>
+              </span>
+
+          </div>}
+
       </div>
       <div className='system-map'>
         <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />
@@ -89,28 +135,6 @@ module.exports = ({
             }}
           />
         )}
-      </div>
-      <div className='system-map__info'>
-        {system !== undefined &&
-          <div className='system-map__location'>
-            <table className='properties-table'>
-              <tbody>
-                <tr>
-                  <th>Address</th>
-                  <td><span className='fx__animated-text' data-fx-order='3'>{system.systemAddress}</span></td>
-                </tr>
-                <tr>
-                  <th>Location</th>
-                  <td><span className='fx__animated-text' data-fx-order='4'>{system.systemX}, {system.systemY}, {system.systemZ}</span></td>
-                </tr>
-                <tr>
-                  <th>Sector</th>
-                  <td><span className='fx__animated-text' data-fx-order='5'>{formatSystemSector(system.systemSector)}</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        }
       </div>
     </div>
 

@@ -125,20 +125,20 @@ export default () => {
           const stations = await getStationsInSystem(systemName)
           setStationsInSystem(
             stations
-            // .filter( station => 
-            //   station.stationType !== 'OnFootSettlement' &&
-            //   station.stationType !== 'MegaShip' &&
-            //   station.stationType !== 'FleetCarrier' &&
-            //   station.stationType !== 'StrongholdCarrier' &&
-            //   station.stationType !== null &&
-            //   !station?.stationName?.includes(' Construction Site: ')
-            // )
-            .sort((a, b) => a?.distanceToArrival - b?.distanceToArrival)
+              // .filter( station => 
+              //   station.stationType !== 'OnFootSettlement' &&
+              //   station.stationType !== 'MegaShip' &&
+              //   station.stationType !== 'FleetCarrier' &&
+              //   station.stationType !== 'StrongholdCarrier' &&
+              //   station.stationType !== null &&
+              //   !station?.stationName?.includes(' Construction Site: ')
+              // )
+              .sort((a, b) => a?.distanceToArrival - b?.distanceToArrival)
           )
           setSettlementsInSystem(
             stations
-            .filter(station => station.stationType === 'OnFootSettlement' || station.stationType === null)
-            .sort((a, b) => a?.distanceToArrival - b?.distanceToArrival)
+              .filter(station => station.stationType === 'OnFootSettlement' || station.stationType === null)
+              .sort((a, b) => a?.distanceToArrival - b?.distanceToArrival)
           )
           setFleetCarriersInSystem(
             stations
@@ -160,80 +160,80 @@ export default () => {
           setRareGoods(rareItems)
         })()
 
-        ; (async () => {
-          let importOrders = await getSystemImports(systemName)
-          importOrders.forEach((order, i) => {
-            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-              mostRecentUpdatedAt = order.updatedAt
-            }
-            // Enrich order data with commodity metadata
-            if (listOfCommodities[order.symbol]) {
-              importOrders[i] = {
-                ...listOfCommodities[order.symbol],
-                ...order
+          ; (async () => {
+            let importOrders = await getSystemImports(systemName)
+            importOrders.forEach((order, i) => {
+              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+                mostRecentUpdatedAt = order.updatedAt
               }
-            }
-          })
-          importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
-          setImportOrders(importOrders)
-          setLastUpdatedAt(mostRecentUpdatedAt)
-        })()
-
-        ; (async () => {
-          const exportOrders = await getSystemExports(systemName)
-          exportOrders.forEach((order, i) => {
-            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-              mostRecentUpdatedAt = order.updatedAt
-            }
-            // Enrich order data with commodity metadata
-            if (listOfCommodities[order.symbol]) {
-              exportOrders[i] = {
-                ...listOfCommodities[order.symbol],
-                ...order
+              // Enrich order data with commodity metadata
+              if (listOfCommodities[order.symbol]) {
+                importOrders[i] = {
+                  ...listOfCommodities[order.symbol],
+                  ...order
+                }
               }
-            }
-          })
-          setExportOrders(exportOrders)
-          setLastUpdatedAt(mostRecentUpdatedAt)
-        })()
+            })
+            importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
+            setImportOrders(importOrders)
+            setLastUpdatedAt(mostRecentUpdatedAt)
+          })()
 
-        ; (async () => {
-          const [
-            interstellarFactors,
-            universalCartographics,
-            shipyard,
-            blackMarket
-          ] = await Promise.all([
-            getNearestService(systemName, 'interstellar-factors'),
-            getNearestService(systemName, 'universal-cartographics'),
-            getNearestService(systemName, 'shipyard'),
-            getNearestService(systemName, 'black-market')
-          ])
-          setNearestServices({
-            'Interstellar Factors': interstellarFactors,
-            'Universal Cartographics': universalCartographics,
-            Shipyard: shipyard,
-            'Black Market': blackMarket
-          })
-        })()
+          ; (async () => {
+            const exportOrders = await getSystemExports(systemName)
+            exportOrders.forEach((order, i) => {
+              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+                mostRecentUpdatedAt = order.updatedAt
+              }
+              // Enrich order data with commodity metadata
+              if (listOfCommodities[order.symbol]) {
+                exportOrders[i] = {
+                  ...listOfCommodities[order.symbol],
+                  ...order
+                }
+              }
+            })
+            setExportOrders(exportOrders)
+            setLastUpdatedAt(mostRecentUpdatedAt)
+          })()
 
-        ; (async () => {
-          const nearbySystems = await getNearbySystems(systemName)
-          nearbySystems.forEach(s => {
-            s.distance = distance(
-              [system.systemX, system.systemY, system.systemZ],
-              [s.systemX, s.systemY, s.systemZ]
-            )
-          })
-          setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)))
-        })()
+          ; (async () => {
+            const [
+              interstellarFactors,
+              universalCartographics,
+              shipyard,
+              blackMarket
+            ] = await Promise.all([
+              getNearestService(systemName, 'interstellar-factors'),
+              getNearestService(systemName, 'universal-cartographics'),
+              getNearestService(systemName, 'shipyard'),
+              getNearestService(systemName, 'black-market')
+            ])
+            setNearestServices({
+              'Interstellar Factors': interstellarFactors,
+              'Universal Cartographics': universalCartographics,
+              Shipyard: shipyard,
+              'Black Market': blackMarket
+            })
+          })()
 
-        ; (async () => {
-          const _bodiesInSystem = await getBodiesInSystem(systemName)
-          setBodiesInSystem(_bodiesInSystem)
-          const _systemStatus = await getSystemStatus(systemName)
-          setSystemStatus(_systemStatus)
-        })()
+          ; (async () => {
+            const nearbySystems = await getNearbySystems(systemName)
+            nearbySystems.forEach(s => {
+              s.distance = distance(
+                [system.systemX, system.systemY, system.systemZ],
+                [s.systemX, s.systemY, s.systemZ]
+              )
+            })
+            setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)))
+          })()
+
+          ; (async () => {
+            const _bodiesInSystem = await getBodiesInSystem(systemName)
+            setBodiesInSystem(_bodiesInSystem)
+            const _systemStatus = await getSystemStatus(systemName)
+            setSystemStatus(_systemStatus)
+          })()
       }
     })()
   }, [router.query['system-name']])
@@ -250,7 +250,7 @@ export default () => {
             <h2 className='heading--with-icon'>
               <i className='icon icarus-terminal-system-orbits' />{system?.systemName}
             </h2>
-            </div>
+          </div>
           : ''
       }
       navigation={[
@@ -324,33 +324,57 @@ export default () => {
   )
 }
 
-async function getSystem (systemName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}`)
-  return (res.status === 200) ? await res.json() : null
+async function getSystem(systemName) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}`)
+    return (res.status === 200) ? await res.json() : null
+  } catch (e) {
+    console.error(e)
+  }
 }
 
-async function getStationsInSystem (systemName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/stations`)
-  return (res.status === 200) ? await res.json() : null
+async function getStationsInSystem(systemName) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/stations`)
+    return (res.status === 200) ? await res.json() : null
+  } catch (e) {
+    console.error(e)
+  }
 }
 
-async function getNearbySystems (systemName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=25`)
-  return await res.json()
+async function getNearbySystems(systemName) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=25`)
+    return await res.json()
+  } catch (e) {
+    console.error(e)
+  }
 }
 
-async function getNearestService (systemName, service) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
-  return res.ok ? await res.json() : null
+async function getNearestService(systemName, service) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
+    return res.ok ? await res.json() : null
+  } catch (e) {
+    console.error(e)
+  }
 }
 
-async function getBodiesInSystem (systemName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/bodies`)
-  return await res.json()
+async function getBodiesInSystem(systemName) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/bodies`)
+    return await res.json()
+  } catch (e) {
+    console.error(e)
+  }
 }
 
-async function getSystemStatus (systemName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/status`)
-  return await res.json()
+async function getSystemStatus(systemName) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/status`)
+    return await res.json()
+  } catch (e) {
+    console.error(e)
+  }
 }
 

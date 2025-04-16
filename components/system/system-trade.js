@@ -26,16 +26,16 @@ module.exports = ({
       <div className='heading--with-underline'>
         <h2>Commodities</h2>
       </div>
-      <p className='muted'>Last update {timeBetweenTimestamps(lastUpdatedAt)} ago</p>
+      <p className='muted'>Last update to local market data {timeBetweenTimestamps(lastUpdatedAt)} ago</p>
       {rareGoods?.length > 0 &&
         <div style={{ marginBottom: '1rem' }}>
           {rareGoods.map(rare =>
             <Collapsible
               key={`rare_good_${rare.symbol}`}
-              trigger={<p style={{margin: '.25rem 0', display: 'inline-block'}}><CollapsibleTrigger>Rare — {rare.name}</CollapsibleTrigger></p>}
-              triggerWhenOpen={<p style={{margin: '.25rem 0', display: 'inline-block'}}><CollapsibleTrigger open>Rare — {rare.name}</CollapsibleTrigger></p>}
+              trigger={<p style={{margin: '.25rem 0', display: 'inline-block'}}><CollapsibleTrigger>Rare Export — {rare.name}</CollapsibleTrigger></p>}
+              triggerWhenOpen={<p style={{margin: '.25rem 0', display: 'inline-block'}}><CollapsibleTrigger open>Rare Export — {rare.name}</CollapsibleTrigger></p>}
             >
-              <div style={{padding: '0 1rem'}}>
+              <div style={{padding: '0 1rem', opacity: .7}}>
                 <p>
                   {rare.stationName} is the exclusive exporter of {rare.name}.
                 </p>

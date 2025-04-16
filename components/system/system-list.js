@@ -77,12 +77,14 @@ function SystemObjects({ objects, depth = 0 }) {
               {systemObject?.bodyType === 'Star' && <i style={{ position: 'relative', top: '-.1rem' }} className='station-icon icarus-terminal-star' />}
               {systemObject?.bodyType === 'Planet' && <i style={{ position: 'relative', top: '-.1rem' }} className={`station-icon icarus-terminal-${planetIcon}`} />}
               {systemObject?.bodyType !== undefined && systemObject.bodyName}
-              {systemObject?.stationType !== undefined && <><StationIcon station={systemObject} />{systemObject.stationName}</>}
-              <div className='is-visible-mobile'>
-                {systemObject?.updatedAt !== undefined && <small>{timeBetweenTimestamps(systemObject.updatedAt)}</small>}
-                {systemObject?.updatedAt !== undefined && systemObject?.distanceToArrival !== undefined && <br />}
-                {systemObject?.distanceToArrival !== undefined > 0 && <small>{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls</small>}
-              </div>
+              {systemObject?.stationType !== undefined && <>
+                <StationIcon station={systemObject} />
+                {systemObject.stationName}
+                {systemObject?.distanceToArrival !== undefined > 0 &&
+                  <small className='is-visible-mobile'>
+                    {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls
+                  </small>}
+              </>}
             </div>
           </td>
           <td style={{ textAlign: 'right' }} className='is-hidden-mobile'>
