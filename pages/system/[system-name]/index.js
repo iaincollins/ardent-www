@@ -91,15 +91,15 @@ export default () => {
           if (system.systemName === 'Sol') {
             system.tradeZoneLocation = 'Centre of the Core Systems'
           } else {
-            system.tradeZoneLocation = <>{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
+            system.tradeZoneLocation = <>{distance(systemCoordinates, SOL_COORDINATES)} ly from Sol</>
           }
         } else if (distance(systemCoordinates, SOL_COORDINATES) <= 400) {
           system.tradeZone = 'Core Periphery'
-          system.tradeZoneLocation = <>{distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol</>
+          system.tradeZoneLocation = <>{distance(systemCoordinates, SOL_COORDINATES)} ly from Sol</>
         } else if (distance(systemCoordinates, COLONIA_COORDINATES) <= 100) {
           system.tradeZone = 'Colonia Region'
           if (system.systemName === 'Colonia') {
-            system.tradeZoneLocation = `${distance(systemCoordinates, SOL_COORDINATES)} Ly from the Core Systems`
+            system.tradeZoneLocation = `${distance(systemCoordinates, SOL_COORDINATES)} ly from the Core Systems`
           } else {
             system.tradeZoneLocation = <>{distance(systemCoordinates, COLONIA_COORDINATES)} Ly from Colonia</>
           }
@@ -107,9 +107,9 @@ export default () => {
           system.tradeZone = 'Deep Space'
           system.tradeZoneLocation = (
             <>
-              {`${distance(systemCoordinates, SOL_COORDINATES)} Ly from Sol`}
+              {`${distance(systemCoordinates, SOL_COORDINATES)} ly from Sol`}
               <br />
-              {`${distance(systemCoordinates, COLONIA_COORDINATES)} Ly from Colonia`}
+              {`${distance(systemCoordinates, COLONIA_COORDINATES)} ly from Colonia`}
             </>
           )
         }
@@ -242,8 +242,8 @@ export default () => {
     <Layout
       loading={system === undefined}
       loadingText='Loading system data'
-      title={system ? `${system.systemName} - star system in Elite Dangerous` : null}
-      description={system ? `Trade data for ${system.systemName} in Elite Dangerous` : null}
+      title={system ? `${system.systemName} system` : null}
+      description={system ? `Data for the system ${system.systemName} in Elite Dangerous` : null}
       heading={
         system?.systemName
           ? <div className='heading--with-underline' style={{ marginBottom: 0 }}>

@@ -46,7 +46,7 @@ export default ({ commodity, rare }) => {
                   </StationIcon>
                   <div className='is-visible-mobile'>
                     <span style={{ textTransform: 'none', opacity: 0.75, paddingLeft: '2rem' }}>
-                      <Link href={`/system/${r.systemName.replaceAll(' ', '_')}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} Ly</span>
+                      <Link href={`/system/${r.systemName.replaceAll(' ', '_')}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} ly</span>
                     </span>
                     <table className='data-table--mini data-table--compact two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>
@@ -73,7 +73,7 @@ export default ({ commodity, rare }) => {
               render: (v, r) =>
                 <>
                   <span style={{ opacity: 0.75 }}><Link href={`/system/${v.replaceAll(' ', '_')}`}>{v}</Link></span>
-                  <span style={{ fontSize: '.8rem', opacity: 0.5 }}> {r.distance.toLocaleString()} Ly</span>
+                  <span style={{ fontSize: '.8rem', opacity: 0.5 }}> {r.distance.toLocaleString()} ly</span>
                 </>
             },
             {

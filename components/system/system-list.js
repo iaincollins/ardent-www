@@ -78,17 +78,19 @@ function SystemObjects({ objects, depth = 0 }) {
               {systemObject?.bodyType === 'Planet' && <i style={{ position: 'relative', top: '-.1rem' }} className={`station-icon icarus-terminal-${planetIcon}`} />}
               {systemObject?.bodyType !== undefined && systemObject.bodyName}
               {systemObject?.stationType !== undefined && <>
-                <StationIcon station={systemObject} />
+                <StationIcon station={systemObject}>
                 {systemObject.stationName}
                 {systemObject?.distanceToArrival !== undefined > 0 &&
-                  <small className='is-visible-mobile'>
+                  <small className='is-visible-mobile text-no-transform'>
                     {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls
+                    {systemObject?.updatedAt !== undefined && <><br/>Updated {timeBetweenTimestamps(systemObject.updatedAt)} ago</>}
                   </small>}
+                </StationIcon>
               </>}
             </div>
           </td>
           <td style={{ textAlign: 'right' }} className='is-hidden-mobile'>
-            {systemObject?.updatedAt !== undefined && <small>{timeBetweenTimestamps(systemObject.updatedAt)}</small>}
+            {systemObject?.updatedAt !== undefined && <span className='text-no-transform' style={{opacity: .5}}>{timeBetweenTimestamps(systemObject.updatedAt)}</span>}
           </td>
           <td style={{ textAlign: 'right' }} className='is-hidden-mobile'>
             {systemObject?.distanceToArrival !== undefined > 0 && <>{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls</>}

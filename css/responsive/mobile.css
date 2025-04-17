@@ -262,4 +262,13 @@
     position: relative;
     top: -1.5rem;
   }
+
+  .system-map__system-status {
+    font-size: .8rem;
+  }
+
+  .system-map__system-status small {
+    font-size: .6rem;
+  }
+  
 }

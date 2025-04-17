@@ -33,7 +33,7 @@ export default () => {
   return (
     <Layout
       title='Downloads for Ardent Insight software'
-      description='Download bulk exports of the Elite Dangerous trade and system data from Ardent Insight.'
+      description='Download bulk exports of data for the game Elite Dangerous from Ardent Insight'
     >
       <Head>
         <link rel='canonical' href='https://ardent-insight.com/downloads' />

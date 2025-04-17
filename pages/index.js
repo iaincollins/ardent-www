@@ -50,7 +50,7 @@ export default () => {
   return (
     <Layout
       title='Ardent Insight - Elite Dangerous'
-      description='Ardent Insight provides trade and exploration data for the game Elite Dangerous.'
+      description='Ardent Insight is companion software for the game Elite Dangerous'
     >
       <Head>
         <link rel='canonical' href='https://ardent-insight.com/about' />

@@ -30,8 +30,8 @@ module.exports = ({ nearbySystems }) => {
             align: 'right',
             className: 'no-wrap',
             render: (v) => v < 1
-              ? '< 1 Ly'
-              : <>{Math.floor(v).toLocaleString()} Ly</>
+              ? '< 1 ly'
+              : <>{Math.floor(v).toLocaleString()} ly</>
           }
         ]}
         data={nearbySystems}

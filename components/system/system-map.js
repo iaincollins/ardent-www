@@ -53,13 +53,13 @@ module.exports = ({
                 {system.systemX}, {system.systemY}, {system.systemZ}
               </small>
               <br />
-              <small className='fx__animated-text' data-fx-order='2'>
+              <small style={{opacity: 1}} className='fx__animated-text' data-fx-order='2'>
                 {system.tradeZone}
               </small>
               {system.tradeZoneLocation !== undefined &&
                 <>
                   <br />
-                  <small className='fx__animated-text' data-fx-order='3'>
+                  <small className='fx__animated-text text-no-transform' data-fx-order='3'>
                     {system.tradeZoneLocation}
                   </small>
                 </>}

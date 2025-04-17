@@ -45,7 +45,6 @@
   pointer-events: all;
 }
 
-
 .system-map__info {
   position: absolute;
   right: 1rem;
@@ -60,9 +59,9 @@
   display: block;
   clear: both;
   float: left;
+  padding: 0 .25rem;
+  line-height: 1rem;
 }
-
-
 
 .system-map__system-info {
   position: relative;
@@ -101,16 +100,12 @@
   position: absolute;
   bottom: 0;
   left: 0;
-}
-.system-map__system-status p {
-  font-size: 1rem;
-  margin: 0;
-  clear: both;
   padding: 0 .25rem;
+  font-size: 1rem;
 }
 
-.system-map__system-status span {
-  font-size: 1rem;
+.system-map__system-status small {
+  font-size: .8rem;
 }
 
 .system-map__system-status .icon {
