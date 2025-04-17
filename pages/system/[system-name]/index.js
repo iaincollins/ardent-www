@@ -161,40 +161,13 @@ export default () => {
         })()
 
           ; (async () => {
-            let importOrders = await getSystemImports(systemName)
-            importOrders.forEach((order, i) => {
-              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-                mostRecentUpdatedAt = order.updatedAt
-              }
-              // Enrich order data with commodity metadata
-              if (listOfCommodities[order.symbol]) {
-                importOrders[i] = {
-                  ...listOfCommodities[order.symbol],
-                  ...order
-                }
-              }
-            })
-            importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
-            setImportOrders(importOrders)
-            setLastUpdatedAt(mostRecentUpdatedAt)
+            const _systemStatus = await getSystemStatus(systemName)
+            setSystemStatus(_systemStatus)
           })()
 
           ; (async () => {
-            const exportOrders = await getSystemExports(systemName)
-            exportOrders.forEach((order, i) => {
-              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-                mostRecentUpdatedAt = order.updatedAt
-              }
-              // Enrich order data with commodity metadata
-              if (listOfCommodities[order.symbol]) {
-                exportOrders[i] = {
-                  ...listOfCommodities[order.symbol],
-                  ...order
-                }
-              }
-            })
-            setExportOrders(exportOrders)
-            setLastUpdatedAt(mostRecentUpdatedAt)
+            const _bodiesInSystem = await getBodiesInSystem(systemName)
+            setBodiesInSystem(_bodiesInSystem)
           })()
 
           ; (async () => {
@@ -229,10 +202,40 @@ export default () => {
           })()
 
           ; (async () => {
-            const _bodiesInSystem = await getBodiesInSystem(systemName)
-            setBodiesInSystem(_bodiesInSystem)
-            const _systemStatus = await getSystemStatus(systemName)
-            setSystemStatus(_systemStatus)
+            let importOrders = await getSystemImports(systemName)
+            importOrders.forEach((order, i) => {
+              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+                mostRecentUpdatedAt = order.updatedAt
+              }
+              // Enrich order data with commodity metadata
+              if (listOfCommodities[order.symbol]) {
+                importOrders[i] = {
+                  ...listOfCommodities[order.symbol],
+                  ...order
+                }
+              }
+            })
+            importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
+            setImportOrders(importOrders)
+            setLastUpdatedAt(mostRecentUpdatedAt)
+          })()
+
+          ; (async () => {
+            const exportOrders = await getSystemExports(systemName)
+            exportOrders.forEach((order, i) => {
+              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+                mostRecentUpdatedAt = order.updatedAt
+              }
+              // Enrich order data with commodity metadata
+              if (listOfCommodities[order.symbol]) {
+                exportOrders[i] = {
+                  ...listOfCommodities[order.symbol],
+                  ...order
+                }
+              }
+            })
+            setExportOrders(exportOrders)
+            setLastUpdatedAt(mostRecentUpdatedAt)
           })()
       }
     })()
