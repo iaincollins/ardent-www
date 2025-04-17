@@ -5,6 +5,7 @@ import { parseBodiesAndStations } from 'lib/utils/sytem-map-utils'
 
 
 module.exports = ({
+  system,
   bodiesInSystem,
   stationsInSystem,
 }) => {

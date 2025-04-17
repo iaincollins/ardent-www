@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      setNavigationPath([{ name: 'Downloads', path: '/downloads', icon: 'icarus-terminal-download' }])
+      setNavigationPath([{ name: 'DOWNLOADS', path: '/downloads', icon: 'icarus-terminal-download' }])
       try {
         const res = await fetch(`${API_BASE_URL}/v1/backup`)
         const databases = (await res.json()).databases

@@ -251,7 +251,7 @@ export default () => {
         system?.systemName
           ? <div className='heading--with-underline' style={{ marginBottom: 0 }}>
             <h2 className='heading--with-icon'>
-              <i className='icon icarus-terminal-system-orbits' />{system?.systemName}
+              <i className='icon icarus-terminal-system-orbits' /><span className='text-no-transform'>{system?.systemName}</span>
             </h2>
           </div>
           : ''
@@ -309,7 +309,7 @@ export default () => {
               lastUpdatedAt={lastUpdatedAt}
             />}
           {views[activeViewIndex] === 'list' &&
-            <SystemList bodiesInSystem={bodiesInSystem} stationsInSystem={stationsInSystem} />}
+            <SystemList system={system} bodiesInSystem={bodiesInSystem} stationsInSystem={stationsInSystem} />}
           {(views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports') &&
             <SystemTrade
               systemName={system.systemName}

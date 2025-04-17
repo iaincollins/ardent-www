@@ -16,7 +16,6 @@
   display: inline-block;
   background-color: var(--color-primary-dark);
   text-shadow: 0 0 .5rem rgb(0, 0, 0);
-  text-transform: uppercase;
   font-family: 'Jura';
   font-weight: bold;
   pointer-events: all;

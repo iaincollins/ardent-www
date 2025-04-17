@@ -22,7 +22,7 @@ module.exports = ({
         <div className='heading--with-underline'>
           <h2 className='heading--with-icon'>
             <i className='icon icarus-terminal-system-orbits' />
-            {system.systemName} system
+            <span className='text-no-transform'>{system.systemName} System</span>
           </h2>
         </div>
         <div style={{ paddingTop: '.5rem' }}>
