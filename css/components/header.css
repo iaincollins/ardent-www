@@ -177,7 +177,7 @@
 }
 
 .header__search-input input:focus {
-  width: 12rem;
+  width: 18rem;
   padding-left: 2rem;
 }
 
@@ -187,10 +187,11 @@
   top: 3rem;
   right: 1rem;
   height: auto;
-  max-height: 16rem;
   overflow: hidden;
+  /* overflow-y: auto; */
   width: 100vw;
-  max-width: 13rem;
+  max-height: calc(100vh - 7rem);
+  max-width: 18rem;
   border: .2rem solid var(--color-primary);
   background-color: rgba(0,0,0,.5);
   backdrop-filter: blur(1rem);

@@ -53,8 +53,10 @@
   height: 2.2rem;
 }
 
-.news-ticker__ticker-item-price-difference small {
+.news-ticker__ticker-item-price-difference small,
+.news-ticker__ticker-item-price-difference .commodity__price {
   line-height: .8rem;
+  font-weight: bold;
 }
 
 .news-ticker__clock {

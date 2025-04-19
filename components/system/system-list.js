@@ -3,7 +3,6 @@ import StationIcon from 'components/station-icon'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import { parseBodiesAndStations } from 'lib/utils/sytem-map-utils'
 
-
 module.exports = ({
   system,
   bodiesInSystem,
@@ -13,7 +12,7 @@ module.exports = ({
 
   useEffect(() => {
     if (bodiesInSystem && stationsInSystem) {
-      const _objectsInSystem = parseBodiesAndStations(bodiesInSystem, stationsInSystem)
+      const _objectsInSystem = parseBodiesAndStations(bodiesInSystem, stationsInSystem, system)
       setObjectsInSystem(_objectsInSystem)
     }
   }, [bodiesInSystem, stationsInSystem])

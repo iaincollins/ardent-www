@@ -75,6 +75,7 @@ export default () => {
       systemSearchResults.forEach(i => searchResults.push({
         icon: 'icarus-terminal-star',
         name: i.systemName,
+        description: `${i.systemX}, ${i.systemY}, ${i.systemZ}`,
         path: `/system/${i.systemName.replaceAll(' ', '_')}`
       }))
     }
@@ -236,6 +237,10 @@ export default () => {
                   setSearchResultsVisible(false)
                 }}
               ><i className={result.icon} />{result.name}
+                {result.description !== undefined && 
+                  <div style={{marginLeft: '1rem', lineHeight: '.6rem', overflow: 'hidden', marginBottom: '.25rem'}}>
+                    <small style={{fontSize: '.8rem'}}>{result.description}</small>
+                  </div>}
               </p>
             )}
           </div>
@@ -280,13 +285,13 @@ export default () => {
                 <span className='news-ticker__ticker-item-price-difference'>
                   {item.avgSellPrice !== 0 && item.demandBracket === 3 &&
                     <>
-                      {item.sellPrice > item.avgSellPrice && <small className='text-positive'>AVG Profit</small>}
-                      {item.sellPrice < item.avgSellPrice && <small className='text-negative'>AVG Loss</small>}
+                      {item.sellPrice > item.avgSellPrice && <small className='text-positive'>Profit</small>}
+                      {item.sellPrice < item.avgSellPrice && <small className='text-negative'>Loss</small>}
                     </>}
                   {item.avgBuyPrice !== 0 && item.stockBracket === 3 &&
                     <>
-                      {item.buyPrice > item.avgBuyPrice && <small className='text-negative'>AVG Loss</small>}
-                      {item.buyPrice < item.avgBuyPrice && <small className='text-positive'>AVG Profit</small>}
+                      {item.buyPrice > item.avgBuyPrice && <small className='text-negative'>Loss</small>}
+                      {item.buyPrice < item.avgBuyPrice && <small className='text-positive'>Profit</small>}
                     </>}
                   <br />
                   {item.demandBracket === 3 && item.avgSellPrice !== 0 &&
