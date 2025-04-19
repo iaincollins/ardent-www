@@ -20,10 +20,12 @@ module.exports = ({
 
   return (
     <div className='fx__fade-in'>
-      <div className='heading--with-underline'>
-        <h2>Locations</h2>
-      </div>
-
+        <div className='heading--with-underline'>
+          <h2 className='heading--with-icon'>
+            <i className='icon icarus-terminal-system-orbits' />
+            <span className='text-no-transform'>{system.systemName} System</span>
+          </h2>
+        </div>
       <div className='rc-table data-table data-table--striped Xdata-table--interactive data-table--animated'>
         <div className='rc-table-container'>
           <div className='rc-table-content'>
@@ -35,7 +37,7 @@ module.exports = ({
               </colgroup>
               <thead className='rc-table-thead'>
                 <tr>
-                  <th className='max-width-mobile' style={{ textAlign: 'left' }}>Name</th>
+                  <th className='max-width-mobile' style={{ textAlign: 'left' }}>Location</th>
                   <th className='is-hidden-mobile' style={{ textAlign: 'right' }}>Updated</th>
                   <th className='is-hidden-mobile' style={{ textAlign: 'right' }}>Distance</th>
                 </tr>
@@ -60,9 +62,9 @@ function SystemObjects({ objects, depth = 0 }) {
       const isAtmospheric = systemObject?.atmosphereComposition && !systemObject?.subType?.toLowerCase()?.includes('gas giant')
       if (isLandable) {
         if (isAtmospheric) {
-          planetIcon = 'planet-atmosphere-landable'
+          planetIcon = 'planet-atmosphere-landable text-info'
         } else {
-          planetIcon = 'planet-landable'
+          planetIcon = 'planet-landable text-info'
         }
       } else if (isAtmospheric) {
         planetIcon = 'planet-atmosphere'

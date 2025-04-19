@@ -34,8 +34,8 @@ module.exports = ({ stationType, station, children }) => {
   if (_stationType === 'SurfaceStation') icon = 'poi'
 
   // No dedicated icons for these two types yet
-  if (_stationType === 'PlanetaryConstructionDepot') icon = 'settlement'
-  if (_stationType === 'SpaceConstructionDepot') icon = 'megaship'
+  if (_stationType === 'PlanetaryConstructionDepot') icon = 'poi-empty'
+  if (_stationType === 'SpaceConstructionDepot') icon = 'poi-empty'
 
   if (children) {
     return (

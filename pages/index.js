@@ -16,7 +16,7 @@ export default () => {
   const [version, setVersion] = useState()
 
   useEffect(() => {
-    setNavigationPath([{ name: `WELCOME CMDR`, path: '/' }])
+    setNavigationPath([{ name: `Welcome CMDR`, path: '/' }])
       ; (async () => {
         try {
           const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
@@ -166,7 +166,7 @@ export default () => {
           </div>
           <p style={{ backgroundColor: 'var(--color-text-inverted)', margin: 0, padding: '.5rem .25rem' }}>
             <span className='text-uppercase'>
-              <i className='icon icarus-terminal-fleet-carrier' />Ardent Pioneer (V9G-G7Z)
+              <i className='icon icarus-terminal-fleet-carrier' />Ardent Pioneer V9G-G7Z
             </span>
           </p>
         </div>

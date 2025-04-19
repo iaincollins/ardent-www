@@ -45,7 +45,7 @@ export default ({ toggle }) => {
       <p>
         Sources used to seed the databases include <a href='https://edsm.net' rel='noreferrer' target='_blank'>ESDM</a>,
         {' '}<a href='https://spansh.co.uk' rel='noreferrer' target='_blank'>Spansh</a>,
-        {' '}<a href='https://github.com/EDCD/EDDN' rel='noreferrer' target='_blank'>EDDN</a> and EDDB.io (now offline).
+        {' '}and EDDB.io.
       </p>
       <p>
         Source code and data are <Link href='/downloads' onClick={() => toggle && toggle(false)}>available for download</Link>.

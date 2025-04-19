@@ -7,7 +7,7 @@ import { NavigationContext } from 'lib/context'
 export default () => {
   const [, setNavigationPath] = useContext(NavigationContext)
   useEffect(() => {
-    setNavigationPath([{ name: 'ABOUT ARDENT', path: '/about' }])
+    setNavigationPath([{ name: 'About this software', path: '/about' }])
   }, [])
   return (
     <Layout

@@ -55,7 +55,6 @@ h2,
 h3,
 h4, 
 h5 {
-  text-transform: uppercase;
   position: relative;
   color: var(--color-text-inverted);
   font-family: "Jura", sans-serif;
@@ -74,6 +73,13 @@ h5 {
   font-size: 1rem;
   padding: 0;
   margin: .5rem 0;
+}
+
+h1,
+h3,
+h4, 
+h5 {
+  text-transform: uppercase;
 }
 
 h1:after {
