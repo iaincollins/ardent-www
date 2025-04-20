@@ -212,6 +212,7 @@ table.two-column-table>tbody>tr>td,
   text-shadow: none;
 }
 
+.system-object-icon,
 .station-icon {
   position: relative;
   display: inline-block;
