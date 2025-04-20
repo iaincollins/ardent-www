@@ -27,10 +27,13 @@ module.exports = ({
           </h2>
         </div>
 
+        {(stationsInSystem === undefined || bodiesInSystem === undefined) &&
+            <div className='loading-bar' style={{ position: 'relative', margin: '0 0 .5rem 0', top: 0, height: '1.6rem' }}/>
+          }
+
         
-            <div style={{ paddingTop: '.5rem' }}>
-            {stationsInSystem !== undefined && bodiesInSystem !== undefined &&
-          <>
+        {stationsInSystem !== undefined && bodiesInSystem !== undefined &&
+            <div className='system-map__system-objects'>
               {bodiesInSystem?.filter(b => b.bodyType == 'Star')?.length > 0 &&
                 <p className='fx__fade-in'><i className='icon icarus-terminal-star' /> {bodiesInSystem?.filter(b => b.bodyType === 'Star')?.length}</p>}
               {bodiesInSystem?.filter(b => b.bodyType == 'Planet')?.length > 0 &&
@@ -55,37 +58,37 @@ module.exports = ({
                 <p className='fx__fade-in'><i className='icon icarus-terminal-megaship' /> {megashipsInSystem.length}</p>}
               {fleetCarriersInSystem?.length > 0 &&
                 <p className='fx__fade-in'><i className='icon icarus-terminal-fleet-carrier' /> {fleetCarriersInSystem.length}</p>}
-                  </>
-        }
-
             </div>
+          }
+
+        {system !== undefined &&
+          <div className='system-map__location'>
+            <p>
+              <small className='fx__animated-text' data-fx-order='1'>
+                <span className='muted'>Address</span>  {system.systemAddress}
+              </small>
+              <br />
+              <small className='fx__animated-text' data-fx-order='1'>
+                <span className='muted'>Coordinates</span> {system.systemX}, {system.systemY}, {system.systemZ}
+              </small>
+              <br />
+              <small style={{ opacity: 1 }} className='fx__animated-text' data-fx-order='2'>
+                <span className='muted'>Location</span> {system.tradeZone}
+              </small>
+              {system.tradeZoneLocation !== undefined &&
+                <>
+                  <br />
+                  <small className='fx__animated-text text-no-transform' data-fx-order='3'>
+                    {system.tradeZoneLocation}
+                  </small>
+                </>}
+            </p>
+          </div>}
+
+          
 
 
-        
-{system !== undefined && 
-            <div className='system-map__location'>
-              <p>
-                <small className='fx__animated-text' data-fx-order='1'>
-                  <span className='muted'>Address</span>  {system.systemAddress}
-                </small>
-                <br />
-                <small className='fx__animated-text' data-fx-order='1'>
-                  <span className='muted'>Coordinates</span> {system.systemX}, {system.systemY}, {system.systemZ}
-                </small>
-                <br />
-                <small style={{ opacity: 1 }} className='fx__animated-text' data-fx-order='2'>
-                  <span className='muted'>Location</span> {system.tradeZone}
-                </small>
-                {system.tradeZoneLocation !== undefined &&
-                  <>
-                    <br />
-                    <small className='fx__animated-text text-no-transform' data-fx-order='3'>
-                      {system.tradeZoneLocation}
-                    </small>
-                  </>}
-              </p>
-            </div>}
-            
+
         {systemStatus &&
           <div className='system-map__system-status'>
 

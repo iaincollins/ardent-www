@@ -66,10 +66,7 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      if (system !== undefined && 
-          bodiesInSystem !== undefined &&
-          stationsInSystem !== undefined &&
-          systemStatus !== undefined) {
+      if (system !== undefined && systemStatus !== undefined) {
             setLoading(false)
           }
     })()

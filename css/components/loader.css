@@ -15,6 +15,7 @@
   pointer-events: none;
   text-align: center;
   opacity: 0;
+  filter: drop-shadow(0 0 0 rgba(0, 0, 0, 1)) drop-shadow(0 0 2rem rgba(255, 255, 255, .5));
 }
 
 .loader__text {

@@ -42,6 +42,12 @@ module.exports = ({
                 </tr>
               </thead>
               <tbody className='rc-table-tbody'>
+                {objectsInSystem === undefined && 
+                    <tr>
+                        <td colSpan={3} style={{padding: 0}}>
+                          <div className='loading-bar loading-bar--table-row' />
+                        </td>
+                    </tr>}
                 <SystemObjects objects={objectsInSystem} />
               </tbody>
             </table>

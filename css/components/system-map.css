@@ -55,12 +55,19 @@
   pointer-events: all;
 }
 
+.system-map__system-objects,
 .system-map__location {
   display: block;
   clear: both;
-  float: left;
   padding: 0 .25rem;
+}
+
+.system-map__location {
   line-height: 1rem;
+}
+
+.system-map__system-objects {
+  margin-top: .5rem;
 }
 
 .system-map__system-info {
