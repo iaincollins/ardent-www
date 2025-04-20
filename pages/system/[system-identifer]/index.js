@@ -168,12 +168,12 @@ export default () => {
 
         ; (async () => {
           const _systemStatus = await getSystemStatus(system.systemAddress)
-          setSystemStatus(_systemStatus)
+          setSystemStatus(_systemStatus ?? [])
         })()
 
         ; (async () => {
           const _bodiesInSystem = await getBodiesInSystem(system.systemAddress)
-          setBodiesInSystem(_bodiesInSystem)
+          setBodiesInSystem(_bodiesInSystem ?? [])
         })()
 
         ; (async () => {
@@ -264,7 +264,18 @@ export default () => {
         })()
       } else {
         setLoading(false)
-        setSystem(undefined)
+        setSystem(null)
+        setStationsInSystem(null)
+        setSettlementsInSystem(null)
+        setFleetCarriersInSystem(null)
+        setMegashipsInSystem(null)
+        setNearbySystems(null)
+        setImportOrders(null)
+        setExportOrders(null)
+        setLastUpdatedAt(null)
+        setBodiesInSystem(null)
+        setSystemStatus(null)
+        setNearestServices(null)
       }
     })()
   }, [router.query['system-identifer']])

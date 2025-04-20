@@ -28,45 +28,44 @@ module.exports = ({
         </div>
 
         {(stationsInSystem === undefined || bodiesInSystem === undefined) &&
-            <div className='loading-bar' style={{ position: 'relative', margin: '0 0 .5rem 0', top: 0, height: '1.6rem' }}/>
-          }
+          <div className='loading-bar' style={{ position: 'relative', margin: '0 0 .5rem 0', top: 0, height: '1.6rem' }} />
+        }
 
-        
         {stationsInSystem !== undefined && bodiesInSystem !== undefined &&
-            <div className='system-map__system-objects'>
-              {bodiesInSystem?.length === 0 && stationsInSystem?.length === 0 &&
+          <div className='system-map__system-objects'>
+            {bodiesInSystem?.length === 0 && stationsInSystem?.length === 0 &&
               <p className='fx__fade-in text-blink-slow'>
-                <i className='icarus-terminal-warning muted' style={{fontSize: '1.25rem'}}/>
+                <i className='icarus-terminal-warning muted' style={{ fontSize: '1.25rem' }} />
                 <small>
                   System not scanned
                 </small>
               </p>}
-              {bodiesInSystem?.filter(b => b.bodyType == 'Star')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-star' /> {bodiesInSystem?.filter(b => b.bodyType === 'Star')?.length}</p>}
-              {bodiesInSystem?.filter(b => b.bodyType == 'Planet')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-planet' /> {bodiesInSystem?.filter(b => b.bodyType === 'Planet')?.length}</p>}
-              {/* {bodiesInSystem?.filter(b => b.isLandable)?.length > 0 &&
+            {bodiesInSystem?.filter(b => b.bodyType == 'Star')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-star' /> {bodiesInSystem?.filter(b => b.bodyType === 'Star')?.length}</p>}
+            {bodiesInSystem?.filter(b => b.bodyType == 'Planet')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-planet' /> {bodiesInSystem?.filter(b => b.bodyType === 'Planet')?.length}</p>}
+            {/* {bodiesInSystem?.filter(b => b.isLandable)?.length > 0 &&
             <p className='fx__fade-in'><i className='icon icarus-terminal-planet-landable' /> {bodiesInSystem?.filter(b => b.isLandable)?.length}</p>} */}
-              {stationsInSystem?.filter(s => s.stationType == 'Orbis')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-orbis-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Orbis')?.length}</p>}
-              {stationsInSystem?.filter(s => s.stationType == 'Coriolis')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-coriolis-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Coriolis')?.length}</p>}
-              {stationsInSystem?.filter(s => s.stationType == 'Ocellus')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-ocellus-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Ocellus')?.length}</p>}
-              {stationsInSystem?.filter(s => s.stationType == 'AsteroidBase')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-asteroid-base' /> {stationsInSystem?.filter(s => s.stationType === 'AsteroidBase')?.length}</p>}
-              {stationsInSystem?.filter(s => s.stationType == 'Outpost')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-outpost' /> {stationsInSystem?.filter(s => s.stationType === 'Outpost')?.length}</p>}
-              {stationsInSystem?.filter(s => (s.stationType == 'CraterPort' || s.stationType == 'CraterOutpost'))?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-planetary-port' /> {stationsInSystem?.filter(s => (s.stationType == 'CraterPort' || s.stationType == 'CraterOutpost'))?.length}</p>}
-              {settlementsInSystem?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-settlement' /> {settlementsInSystem.length}</p>}
-              {megashipsInSystem?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-megaship' /> {megashipsInSystem.length}</p>}
-              {fleetCarriersInSystem?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-fleet-carrier' /> {fleetCarriersInSystem.length}</p>}
-            </div>
-          }
+            {stationsInSystem?.filter(s => s.stationType == 'Orbis')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-orbis-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Orbis')?.length}</p>}
+            {stationsInSystem?.filter(s => s.stationType == 'Coriolis')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-coriolis-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Coriolis')?.length}</p>}
+            {stationsInSystem?.filter(s => s.stationType == 'Ocellus')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-ocellus-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Ocellus')?.length}</p>}
+            {stationsInSystem?.filter(s => s.stationType == 'AsteroidBase')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-asteroid-base' /> {stationsInSystem?.filter(s => s.stationType === 'AsteroidBase')?.length}</p>}
+            {stationsInSystem?.filter(s => s.stationType == 'Outpost')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-outpost' /> {stationsInSystem?.filter(s => s.stationType === 'Outpost')?.length}</p>}
+            {stationsInSystem?.filter(s => (s.stationType == 'CraterPort' || s.stationType == 'CraterOutpost'))?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-planetary-port' /> {stationsInSystem?.filter(s => (s.stationType == 'CraterPort' || s.stationType == 'CraterOutpost'))?.length}</p>}
+            {settlementsInSystem?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-settlement' /> {settlementsInSystem.length}</p>}
+            {megashipsInSystem?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-megaship' /> {megashipsInSystem.length}</p>}
+            {fleetCarriersInSystem?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-fleet-carrier' /> {fleetCarriersInSystem.length}</p>}
+          </div>
+        }
 
         {system !== undefined &&
           <div className='system-map__location'>
@@ -92,11 +91,7 @@ module.exports = ({
             </p>
           </div>}
 
-          
-
-
-
-        {systemStatus &&
+        {systemStatus !== undefined && systemStatus !== null &&
           <div className='system-map__system-status'>
 
             {systemStatus.faction &&
@@ -114,7 +109,7 @@ module.exports = ({
                 {(systemStatus.allegiance || systemStatus.government) && ' Government'}
               </span>}
 
-            {systemStatus.economy.primary && systemStatus.economy.primary !== 'None' &&
+            {systemStatus.economy && systemStatus.economy.primary && systemStatus.economy.primary !== 'None' &&
               <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='6'>
                 <i className='icon icarus-terminal-trending-up-chart' />
                 {systemStatus.economy.primary}

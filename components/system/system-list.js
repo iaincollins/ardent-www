@@ -12,7 +12,7 @@ module.exports = ({
   const [objectsInSystem, setObjectsInSystem] = useState()
 
   useEffect(() => {
-    if (bodiesInSystem && stationsInSystem) {
+    if (bodiesInSystem !== undefined && stationsInSystem !== undefined) {
       const _objectsInSystem = parseBodiesAndStations(bodiesInSystem, stationsInSystem, system)
       setObjectsInSystem(_objectsInSystem)
     }
@@ -46,7 +46,7 @@ module.exports = ({
                 {objectsInSystem === undefined &&
                   <tr>
                     <td colSpan={3} style={{ padding: 0 }}>
-                      <div className='loading-bar loading-bar--table-row' />
+                      <div className='loading-bar' style={{margin: 0}}/>
                     </td>
                   </tr>}
                 {objectsInSystem !== undefined && objectsInSystem?.length === 0 &&
