@@ -48,7 +48,7 @@ jobs:
       uses: easingthemes/ssh-deploy@main
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        ARGS: "-rlgoDzvc -i"
+        ARGS: "-rlgoDzvc -i --delete"
         SOURCE: "./"
         REMOTE_HOST: ${{ vars.DEPLOY_HOST }}
         REMOTE_USER: ${{ vars.DEPLOY_USER }}
@@ -62,9 +62,10 @@ jobs:
           npm install --omit=dev 
           npm run build
           cd ..
+          pm2 stop "${{ env.SERVICE_NAME }}"
           mv "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}" "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}.tmp" || :
           mv "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}-${{ env.GIT_SHA_SHORT}}" "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}"
-          pm2 restart "${{ env.SERVICE_NAME }}" --log-date-format="YYYY-MM-DD HH:mm Z"
+          pm2 start "${{ env.SERVICE_NAME }}" --log-date-format="YYYY-MM-DD HH:mm Z"
           pm2 save
           rm -rf "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}.tmp"
           echo $RSYNC_STDOUT
