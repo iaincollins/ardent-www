@@ -8,22 +8,22 @@ import { API_BASE_URL, NO_DEMAND_TEXT } from 'lib/consts'
 
 const MAX_ROWS_TO_DISPLAY = 10
 
-async function getNearbyImportersOfCommodity (systemName, commodityName) {
-  const url = `${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}/nearby/imports`
+async function getNearbyImportersOfCommodity (systemIdentifer, commodityName) {
+  const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+  const url = `${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/commodity/name/${commodityName}/nearby/imports`
   const res = await fetch(url)
   return await res.json()
 }
 
 export default ({ commodity, rare }) => {
   const [nearbyImporters, setNearbyImporters] = useState()
-
   useEffect(() => {
     (async () => {
       setNearbyImporters(
-        (await getNearbyImportersOfCommodity(commodity.systemName, commodity.symbol)).slice(0, MAX_ROWS_TO_DISPLAY)
+        (await getNearbyImportersOfCommodity(commodity.systemAddress, commodity.symbol)).slice(0, MAX_ROWS_TO_DISPLAY)
       )
     })()
-  }, [commodity.commodityName, commodity.systemName])
+  }, [commodity.commodityName, commodity.systemAddress])
 
   return (
     <>

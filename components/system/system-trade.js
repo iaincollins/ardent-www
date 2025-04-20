@@ -13,7 +13,7 @@ import NearbyCommodityExporters from 'components/nearby-commodity-exporters'
 import { NO_DEMAND_TEXT } from 'lib/consts'
 
 module.exports = ({
-  systemName,
+  system,
   importOrders,
   exportOrders,
   rareGoods,
@@ -26,16 +26,16 @@ module.exports = ({
       <div className='heading--with-underline'>
         <h2>Commodities</h2>
       </div>
-      <p className='muted'>{systemName} trade data last updated {timeBetweenTimestamps(lastUpdatedAt)} ago</p>
+      <p className='muted'>{system.systemName} trade data last updated {timeBetweenTimestamps(lastUpdatedAt)} ago</p>
       {rareGoods?.length > 0 &&
         <div style={{ marginBottom: '1rem' }}>
           {rareGoods.map(rare =>
             <Collapsible
               key={`rare_good_${rare.symbol}`}
-              trigger={<p style={{margin: '.25rem 0', display: 'inline-block'}}><CollapsibleTrigger>Rare Export — {rare.name}</CollapsibleTrigger></p>}
-              triggerWhenOpen={<p style={{margin: '.25rem 0', display: 'inline-block'}}><CollapsibleTrigger open>Rare Export — {rare.name}</CollapsibleTrigger></p>}
+              trigger={<p style={{ margin: '.25rem 0', display: 'inline-block' }}><CollapsibleTrigger>Rare Export — {rare.name}</CollapsibleTrigger></p>}
+              triggerWhenOpen={<p style={{ margin: '.25rem 0', display: 'inline-block' }}><CollapsibleTrigger open>Rare Export — {rare.name}</CollapsibleTrigger></p>}
             >
-              <div style={{padding: '0 1rem', opacity: .7}}>
+              <div style={{ padding: '0 1rem', opacity: 0.7 }}>
                 <p>
                   {rare.stationName} is the exclusive exporter of {rare.name}.
                 </p>
@@ -53,7 +53,7 @@ module.exports = ({
         onSelect={
           (index) => {
             const view = (index === 1) ? 'imports' : 'exports'
-            router.push(`/system/${systemName.replaceAll(' ', '_')}/${view}`)
+            router.push(`/system/${system.systemName.replaceAll(' ', '_')}/${view}`)
           }
         }
       >
@@ -164,6 +164,7 @@ module.exports = ({
                       Stock of <Link href={`/commodity/${r.symbol}/exporters?location=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name}</Link> in {r.systemName}
                     </p>
                     <LocalCommodityExporters
+                      system={system}
                       commodityName={r.name}
                       commoditySymbol={r.symbol}
                       commodityOrders={r.exportOrders}
@@ -172,13 +173,13 @@ module.exports = ({
                       trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                       triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                     >
-                      <NearbyCommodityExporters commodity={r} />
+                      <NearbyCommodityExporters system={system} commodity={r} />
                     </Collapsible>
                     <Collapsible
                       trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                       triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                     >
-                      <NearbyCommodityImporters commodity={r} />
+                      <NearbyCommodityImporters system={system} commodity={r} />
                     </Collapsible>
                   </>
               }}

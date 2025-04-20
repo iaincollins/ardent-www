@@ -16,35 +16,35 @@ export default () => {
   const [version, setVersion] = useState()
 
   useEffect(() => {
-    setNavigationPath([{ name: `Welcome CMDR`, path: '/' }])
-      ; (async () => {
-        try {
-          const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
-          const news = await res.json()
-          setGalnetNews(news)
-        } catch (e) {
-          console.error(e)
-        }
-      })()
+    setNavigationPath([{ name: 'Welcome CMDR', path: '/' }])
+    ; (async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
+        const news = await res.json()
+        setGalnetNews(news)
+      } catch (e) {
+        console.error(e)
+      }
+    })()
 
-      ; (async () => {
-        try {
-          const res = await fetch(`${API_BASE_URL}/v1/stats`)
-          const stats = await res.json()
-          setStats(stats)
-        } catch (e) {
-          console.error(e)
-        }
-      })()
-      ; (async () => {
-        try {
-          const res = await fetch(`${API_BASE_URL}/v1/version`)
-          const version = await res.json()
-          setVersion(version)
-        } catch (e) {
-          console.error(e)
-        }
-      })()
+    ; (async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/v1/stats`)
+        const stats = await res.json()
+        setStats(stats)
+      } catch (e) {
+        console.error(e)
+      }
+    })()
+    ; (async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/v1/version`)
+        const version = await res.json()
+        setVersion(version)
+      } catch (e) {
+        console.error(e)
+      }
+    })()
   }, [])
 
   return (
@@ -96,7 +96,7 @@ export default () => {
           </div>
           <p style={{ textAlign: 'center', margin: '0 0 1rem 0' }}>
             <small>
-              <i className='icarus-terminal-info' style={{position: 'relative', top: '-.1rem'}}/>
+              <i className='icarus-terminal-info' style={{ position: 'relative', top: '-.1rem' }} />
               <Link href='/about'>Ardent OS {Package.version} | API {version?.version ?? '?.?.?'}</Link>
             </small>
           </p>
@@ -140,7 +140,7 @@ export default () => {
             )}
           </ul> */}
 
-          <div className='heading--with-underline' style={{marginTop: '1.5rem'}}>
+          <div className='heading--with-underline' style={{ marginTop: '1.5rem' }}>
             <h3 className='text-uppercase'>Ardent Insight</h3>
           </div>
           <p>

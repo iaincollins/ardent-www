@@ -3,7 +3,7 @@ import Link from 'next/link'
 import StationIcon from 'components/station-icon'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 
-module.exports = ({ systemName, nearestServices }) => {
+module.exports = ({ system, nearestServices }) => {
   return (
     <div className='fx__fade-in'>
       <div className='heading--with-underline'>
@@ -11,7 +11,7 @@ module.exports = ({ systemName, nearestServices }) => {
       </div>
       {nearestServices &&
         <div className='fx__fade-in'>
-          <p className='muted'>Station services in {systemName} and nearest populated systems</p>
+          <p className='muted'>Station services in {system.systemName} and nearest populated systems</p>
           <div className='rc-table data-table data-table--striped data-table--interactive data-table--animated'>
             <div className='rc-table-container'>
               <table>
@@ -58,7 +58,7 @@ module.exports = ({ systemName, nearestServices }) => {
                                   {station.distance > 0
                                     ? <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
                                     : <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
-                                    <br/>{station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
+                                  <br />{station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                                 </StationIcon>
                               </p>
                             </Fragment>)}

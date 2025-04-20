@@ -49,16 +49,16 @@ module.exports = ({
         {stationsInSystem !== undefined && system !== undefined &&
           <div className='system-map__location'>
             <p>
-            <small className='fx__animated-text' data-fx-order='1'>
-            <span className='muted'>Address</span>  {system.systemAddress}
+              <small className='fx__animated-text' data-fx-order='1'>
+                <span className='muted'>Address</span>  {system.systemAddress}
               </small>
               <br />
               <small className='fx__animated-text' data-fx-order='1'>
                 <span className='muted'>Coordinates</span> {system.systemX}, {system.systemY}, {system.systemZ}
               </small>
               <br />
-              <small style={{opacity: 1}} className='fx__animated-text' data-fx-order='2'>
-              <span className='muted'>Location</span> {system.tradeZone}
+              <small style={{ opacity: 1 }} className='fx__animated-text' data-fx-order='2'>
+                <span className='muted'>Location</span> {system.tradeZone}
               </small>
               {system.tradeZoneLocation !== undefined &&
                 <>
@@ -102,7 +102,7 @@ module.exports = ({
                 Population {systemStatus.population.toLocaleString()}
               </span>}
 
-              {systemStatus.security && systemStatus.security !== 'Anarchy' && 
+            {systemStatus.security && systemStatus.security !== 'Anarchy' &&
               <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='8'>
                 <i className='icon icarus-terminal-shield' />
                 {systemStatus.security} Security
@@ -113,14 +113,13 @@ module.exports = ({
                 <i className='icon icarus-terminal-warning' />
                 {factionStates?.[systemStatus.state.replaceAll(' ', '').toLowerCase()]?.description !== undefined
                   ? factionStates[systemStatus.state.replaceAll(' ', '').toLowerCase()].description
-                  : systemStatus.state
-                }
+                  : systemStatus.state}
                 <small> {timeBetweenTimestamps(lastUpdatedAt)} ago</small>
               </span>}
 
-              <span style={{ display: 'block' }} className='fx__fade-in'>
-                <small>Telemetry from EDSM.NET</small>
-              </span>
+            <span style={{ display: 'block' }} className='fx__fade-in'>
+              <small>Telemetry from EDSM.NET</small>
+            </span>
 
           </div>}
 

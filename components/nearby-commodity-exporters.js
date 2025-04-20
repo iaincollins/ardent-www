@@ -8,22 +8,22 @@ import { API_BASE_URL } from 'lib/consts'
 
 const MAX_ROWS_TO_DISPLAY = 10
 
-async function getNearbyExportersOfCommodity (systemName, commodityName) {
-  const url = `${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}/nearby/exports`
+async function getNearbyExportersOfCommodity (systemIdentifer, commodityName) {
+  const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+  const url = `${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/commodity/name/${commodityName}/nearby/exports`
   const res = await fetch(url)
   return await res.json()
 }
 
 export default ({ commodity }) => {
   const [nearbyExporters, setNearbyExporters] = useState()
-
   useEffect(() => {
     (async () => {
       setNearbyExporters(
-        (await getNearbyExportersOfCommodity(commodity.systemName, commodity.symbol)).slice(0, MAX_ROWS_TO_DISPLAY)
+        (await getNearbyExportersOfCommodity(commodity.systemAddress, commodity.symbol))?.slice(0, MAX_ROWS_TO_DISPLAY) ?? []
       )
     })()
-  }, [commodity.commodityName, commodity.systemName])
+  }, [commodity.commodityName, commodity.systemAddress])
 
   return (
     <>

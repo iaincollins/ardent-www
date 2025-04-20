@@ -43,7 +43,7 @@ export default () => {
     saveCache('cmdrFleetCarrier', _fleetCarrier)
   }
 
-  function clearCmdrCache() {
+  function clearCmdrCache () {
     deleteCache('cmdrProfile')
     deleteCache('cmdrFleetCarrier')
     deleteCache('cmdrNearestServices')
@@ -65,21 +65,21 @@ export default () => {
 
   useEffect(() => {
     if (cmdrProfile !== undefined) setSignedIn(true)
-      ; (async () => {
-        // If we can get a profile, they are signed in
-        const _cmdrProfile = await getCmdrInfo('profile')
-        const isSignedIn = !!(_cmdrProfile?.commander?.id)
-        setSignedIn(isSignedIn)
-        if (isSignedIn) {
-          setCmdrProfile(_cmdrProfile)
-          saveCache('cmdrProfile', _cmdrProfile)
-          updateFleetCarrier()
-          updateNearestServices(_cmdrProfile)
-        } else {
-          clearCmdrCache()
-        }
-        setCsrfToken(await getCsrfToken())
-      })()
+    ; (async () => {
+      // If we can get a profile, they are signed in
+      const _cmdrProfile = await getCmdrInfo('profile')
+      const isSignedIn = !!(_cmdrProfile?.commander?.id)
+      setSignedIn(isSignedIn)
+      if (isSignedIn) {
+        setCmdrProfile(_cmdrProfile)
+        saveCache('cmdrProfile', _cmdrProfile)
+        updateFleetCarrier()
+        updateNearestServices(_cmdrProfile)
+      } else {
+        clearCmdrCache()
+      }
+      setCsrfToken(await getCsrfToken())
+    })()
   }, [])
 
   return (
@@ -221,7 +221,7 @@ export default () => {
   )
 }
 
-async function getNearestService(systemName, service) {
+async function getNearestService (systemName, service) {
   const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
   return res.ok ? await res.json() : null
 }

@@ -18,15 +18,15 @@ export default ({ toggle }) => {
         console.error(e)
       }
     })()
-      ; (async () => {
-        try {
-          const res = await fetch(`${API_BASE_URL}/v1/version`)
-          const version = await res.json()
-          setVersion(version)
-        } catch (e) {
-          console.error(e)
-        }
-      })()
+    ; (async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/v1/version`)
+        const version = await res.json()
+        setVersion(version)
+      } catch (e) {
+        console.error(e)
+      }
+    })()
   }, [])
 
   return (

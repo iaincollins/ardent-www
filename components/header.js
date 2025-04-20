@@ -25,7 +25,7 @@ export default () => {
   useEffect(() => {
     document.addEventListener('fullscreenchange', onFullScreenChangeHandler)
     return () => document.removeEventListener('click', onFullScreenChangeHandler)
-    function onFullScreenChangeHandler(event) {
+    function onFullScreenChangeHandler (event) {
       setFullScreenState(isFullScreen())
     }
   }, [])
@@ -38,21 +38,25 @@ export default () => {
   }, [])
 
   const updateTicker = async () => {
-    const res = await fetch(`${API_BASE_URL}/v1/news/commodities`)
-    const ticker = await res.json()
-    const latestCommodityData = await getCommoditiesWithAvgPricing()
+    try {
+      const res = await fetch(`${API_BASE_URL}/v1/news/commodities`)
+      const ticker = await res.json()
+      const latestCommodityData = await getCommoditiesWithAvgPricing()
 
-    const newTickerItems = []
-    ticker.forEach((item, i) => {
-      const metadataForCommodity = latestCommodityData.find(el => el.symbol.toLowerCase() === item.commodityName.toLowerCase())
-      if (metadataForCommodity) {
-        newTickerItems.push({
-          ...metadataForCommodity,
-          ...item
-        })
-      }
-    })
-    setNewsTicker(newTickerItems)
+      const newTickerItems = []
+      ticker.forEach((item, i) => {
+        const metadataForCommodity = latestCommodityData.find(el => el.symbol.toLowerCase() === item.commodityName.toLowerCase())
+        if (metadataForCommodity) {
+          newTickerItems.push({
+            ...metadataForCommodity,
+            ...item
+          })
+        }
+      })
+      setNewsTicker(newTickerItems)
+    } catch (e) {
+      console.error(e)
+    }
   }
   useEffect(() => {
     updateTicker()
@@ -76,7 +80,9 @@ export default () => {
         icon: 'icarus-terminal-star',
         name: i.systemName,
         description: `${i.systemX}, ${i.systemY}, ${i.systemZ}`,
-        path: `/system/${i.systemName.replaceAll(' ', '_')}`
+        path: (i?.ambiguous !== undefined || i?._useSystemAddress === true)
+          ? `/system/${i.systemAddress}`
+          : `/system/${i.systemName.replaceAll(' ', '_')}`
       }))
     }
     if (Array.isArray(stationSearchResults)) {
@@ -178,17 +184,42 @@ export default () => {
                     }
                   })
 
-                    ; (matchingCommodities.length > 0)
-                      ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
-                      : setCommoditySearchResults(undefined)
+                  ; (matchingCommodities.length > 0)
+                    ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
+                    : setCommoditySearchResults(undefined)
                 } catch (e) { }
 
                 try {
-                  const res = await fetch(`${API_BASE_URL}/v1/search/system/name/${searchText}`)
-                  const matchingSystems = await res.json()
-                    ; (matchingSystems.length > 0)
-                      ? setSystemSearchResults(matchingSystems.splice(0, 5))
-                      : setSystemSearchResults(undefined)
+                  let matchingSystems = []
+
+                  try {
+                    const res = await fetch(`${API_BASE_URL}/v1/search/system/name/${searchText}`)
+                    matchingSystems = await res.json()
+                  } catch (e) {
+                    console.error(e)
+                  }
+
+                  // If the search text looks like it MIGHT be a system address,
+                  // check to see if there is a matching system address and if it
+                  // is, make it the first suggestion
+                  if (searchText?.length > 3 && Number.isInteger(parseInt(searchText))) {
+                    try {
+                      const systemByAddressRes = await fetch(`${API_BASE_URL}/v1/system/address/${searchText}`)
+                      const systemByAddress = await systemByAddressRes.json()
+                      if (systemByAddressRes.ok && systemByAddress.systemName) {
+                        matchingSystems.unshift({
+                          ...systemByAddress,
+                          _useSystemAddress: true
+                        })
+                      }
+                    } catch (e) {
+                      console.error(e)
+                    }
+                  }
+
+                  ; (matchingSystems.length > 0)
+                    ? setSystemSearchResults(matchingSystems.splice(0, 5))
+                    : setSystemSearchResults(undefined)
                 } catch (e) { }
               }}
               onKeyDown={(e) => {
@@ -229,7 +260,7 @@ export default () => {
           >
             {searchResults?.length > 0 && searchResults.map((result, i) =>
               <p
-                onMouseEnter={() => {setHilightedSearchResult(i)}}
+                onMouseEnter={() => { setHilightedSearchResult(i) }}
                 className={i === hilightedSearchResult ? 'header__search-result--highlighted' : undefined}
                 key={`${i}:${result.icon}:${result.name}`}
                 onMouseDown={() => {
@@ -237,9 +268,9 @@ export default () => {
                   setSearchResultsVisible(false)
                 }}
               ><i className={result.icon} />{result.name}
-                {result.description !== undefined && 
-                  <div style={{marginLeft: '1rem', lineHeight: '.6rem', overflow: 'hidden', marginBottom: '.25rem'}}>
-                    <small style={{fontSize: '.8rem'}}>{result.description}</small>
+                {result.description !== undefined &&
+                  <div style={{ marginLeft: '1rem', lineHeight: '.6rem', overflow: 'hidden', marginBottom: '.25rem' }}>
+                    <small style={{ fontSize: '.8rem' }}>{result.description}</small>
                   </div>}
               </p>
             )}
@@ -316,7 +347,7 @@ export default () => {
   )
 }
 
-function isFullScreen() {
+function isFullScreen () {
   if (typeof document === 'undefined') return false
 
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
@@ -326,7 +357,7 @@ function isFullScreen() {
   }
 }
 
-async function toggleFullScreen() {
+async function toggleFullScreen () {
   if (isFullScreen()) {
     if (document.cancelFullScreen) {
       document.cancelFullScreen()

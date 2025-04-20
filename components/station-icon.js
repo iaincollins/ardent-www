@@ -39,10 +39,10 @@ module.exports = ({ stationType, station, children }) => {
 
   if (children) {
     return (
-      <div style={{ position: 'relative', paddingLeft: '2rem' }}>
+      <span style={{ position: 'relative', paddingLeft: '2rem', display: 'inline-block' }}>
         <i style={{ position: 'absolute', left: 0, top: '.1rem' }} className={`station-icon icarus-terminal-${icon}`} />
         {children}
-      </div>
+      </span>
     )
   } else {
     return <i className={`station-icon icarus-terminal-${icon}`} />

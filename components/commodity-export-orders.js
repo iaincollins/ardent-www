@@ -10,8 +10,9 @@ import { API_BASE_URL } from 'lib/consts'
 import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
 
-async function getExportsForCommodityBySystem (systemName, commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/commodity/name/${commodityName}`)
+async function getExportsForCommodityBySystem (systemIdentifer, commodityName) {
+  const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+  const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/commodity/name/${commodityName}`)
   const exports = await res.json()
   if (!exports || exports.error) return [] // Handle system not found
   return exports.filter(c => c.stock > 0)

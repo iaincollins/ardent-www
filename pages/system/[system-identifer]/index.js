@@ -64,8 +64,8 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      const systemName = router.query?.['system-name']?.replaceAll('_', ' ')?.trim()
-      if (!systemName) return
+      const systemIdentifer = router.query?.['system-identifer']?.replaceAll('_', ' ')?.trim()
+      if (!systemIdentifer) return
 
       setStationsInSystem(undefined)
       setSettlementsInSystem(undefined)
@@ -81,7 +81,7 @@ export default () => {
 
       let mostRecentUpdatedAt
 
-      const system = await getSystem(systemName)
+      const system = await getSystem(systemIdentifer)
       if (system) {
         mostRecentUpdatedAt = system.updatedAt
         setLastUpdatedAt(mostRecentUpdatedAt)
@@ -116,23 +116,19 @@ export default () => {
         setSystem(system)
 
         setNavigationPath([{ name: system.systemName, path: '/', icon: 'icarus-terminal-system-orbits' }])
-      } else {
-        setSystem(undefined)
-      }
 
-      if (system) {
         ; (async () => {
-          const stations = await getStationsInSystem(systemName)
+          const stations = await getStationsInSystem(system.systemAddress)
           setStationsInSystem(
             stations
-              // .filter( station => 
-              //   station.stationType !== 'OnFootSettlement' &&
-              //   station.stationType !== 'MegaShip' &&
-              //   station.stationType !== 'FleetCarrier' &&
-              //   station.stationType !== 'StrongholdCarrier' &&
-              //   station.stationType !== null &&
-              //   !station?.stationName?.includes(' Construction Site: ')
-              // )
+            // .filter( station =>
+            //   station.stationType !== 'OnFootSettlement' &&
+            //   station.stationType !== 'MegaShip' &&
+            //   station.stationType !== 'FleetCarrier' &&
+            //   station.stationType !== 'StrongholdCarrier' &&
+            //   station.stationType !== null &&
+            //   !station?.stationName?.includes(' Construction Site: ')
+            // )
               .sort((a, b) => a?.distanceToArrival - b?.distanceToArrival)
           )
           setSettlementsInSystem(
@@ -160,86 +156,113 @@ export default () => {
           setRareGoods(rareItems)
         })()
 
-          ; (async () => {
-            const _systemStatus = await getSystemStatus(systemName)
-            setSystemStatus(_systemStatus)
-          })()
+        ; (async () => {
+          const _systemStatus = await getSystemStatus(system.systemAddress)
+          setSystemStatus(_systemStatus)
+        })()
 
-          ; (async () => {
-            const _bodiesInSystem = await getBodiesInSystem(systemName)
-            setBodiesInSystem(_bodiesInSystem)
-          })()
+        ; (async () => {
+          const _bodiesInSystem = await getBodiesInSystem(system.systemAddress)
+          setBodiesInSystem(_bodiesInSystem)
+        })()
 
-          ; (async () => {
-            const [
-              interstellarFactors,
-              universalCartographics,
-              shipyard,
-              blackMarket
-            ] = await Promise.all([
-              getNearestService(systemName, 'interstellar-factors'),
-              getNearestService(systemName, 'universal-cartographics'),
-              getNearestService(systemName, 'shipyard'),
-              getNearestService(systemName, 'black-market')
-            ])
-            setNearestServices({
-              'Interstellar Factors': interstellarFactors,
-              'Universal Cartographics': universalCartographics,
-              Shipyard: shipyard,
-              'Black Market': blackMarket
-            })
-          })()
+        ; (async () => {
+          const [
+            interstellarFactors,
+            universalCartographics,
+            shipyard,
+            blackMarket
+          ] = await Promise.all([
+            getNearestService(system.systemAddress, 'interstellar-factors'),
+            getNearestService(system.systemAddress, 'universal-cartographics'),
+            getNearestService(system.systemAddress, 'shipyard'),
+            getNearestService(system.systemAddress, 'black-market')
+          ])
+          setNearestServices({
+            'Interstellar Factors': interstellarFactors,
+            'Universal Cartographics': universalCartographics,
+            Shipyard: shipyard,
+            'Black Market': blackMarket
+          })
+        })()
 
-          ; (async () => {
-            const nearbySystems = await getNearbySystems(systemName)
-            nearbySystems.forEach(s => {
-              s.distance = distance(
-                [system.systemX, system.systemY, system.systemZ],
-                [s.systemX, s.systemY, s.systemZ]
-              )
-            })
-            setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)))
-          })()
+        ; (async () => {
+          const nearbySystems = await getNearbySystems(system.systemAddress)
+          nearbySystems.forEach(s => {
+            s.distance = distance(
+              [system.systemX, system.systemY, system.systemZ],
+              [s.systemX, s.systemY, s.systemZ]
+            )
+          })
+          setNearbySystems(nearbySystems.filter(s => !HIDDEN_SYSTEMS.includes(`${s.systemAddress}`)))
+        })()
 
-          ; (async () => {
-            let importOrders = await getSystemImports(systemName)
-            importOrders.forEach((order, i) => {
-              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-                mostRecentUpdatedAt = order.updatedAt
+        ; (async () => {
+          let importOrders = await getSystemImports(system.systemAddress)
+          importOrders.forEach((order, i) => {
+            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+              mostRecentUpdatedAt = order.updatedAt
+            }
+            // Enrich order data with commodity metadata
+            if (listOfCommodities[order.symbol]) {
+              importOrders[i] = {
+                ...listOfCommodities[order.symbol],
+                ...order
               }
-              // Enrich order data with commodity metadata
-              if (listOfCommodities[order.symbol]) {
-                importOrders[i] = {
-                  ...listOfCommodities[order.symbol],
-                  ...order
-                }
-              }
-            })
-            importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
-            setImportOrders(importOrders)
-            setLastUpdatedAt(mostRecentUpdatedAt)
-          })()
+            }
+          })
+          importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
+          setImportOrders(importOrders)
+          setLastUpdatedAt(mostRecentUpdatedAt)
+        })()
 
-          ; (async () => {
-            const exportOrders = await getSystemExports(systemName)
-            exportOrders.forEach((order, i) => {
-              if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-                mostRecentUpdatedAt = order.updatedAt
+        ; (async () => {
+          let importOrders = await getSystemImports(system.systemAddress)
+          importOrders.forEach((order, i) => {
+            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+              mostRecentUpdatedAt = order.updatedAt
+            }
+            // Enrich order data with commodity metadata
+            if (listOfCommodities[order.symbol]) {
+              importOrders[i] = {
+                ...listOfCommodities[order.symbol],
+                ...order
               }
-              // Enrich order data with commodity metadata
-              if (listOfCommodities[order.symbol]) {
-                exportOrders[i] = {
-                  ...listOfCommodities[order.symbol],
-                  ...order
-                }
+            }
+          })
+          importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
+          setImportOrders(importOrders)
+          setLastUpdatedAt(mostRecentUpdatedAt)
+        })()
+
+        ; (async () => {
+          const exportOrders = await getSystemExports(system.systemAddress)
+          exportOrders.forEach((order, i) => {
+            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
+              mostRecentUpdatedAt = order.updatedAt
+            }
+            // Enrich order data with commodity metadata
+            if (listOfCommodities[order.symbol]) {
+              exportOrders[i] = {
+                ...listOfCommodities[order.symbol],
+                ...order
               }
-            })
-            setExportOrders(exportOrders)
-            setLastUpdatedAt(mostRecentUpdatedAt)
-          })()
+            }
+          })
+          setExportOrders(exportOrders)
+          setLastUpdatedAt(mostRecentUpdatedAt)
+        })()
+      } else {
+        setSystem(undefined)
       }
     })()
-  }, [router.query['system-name']])
+  }, [router.query['system-identifer']])
+
+  // If a numeric system ID was specified, use that for links, otherwise, if it
+  // looks like a name, keep using that so the URL format doesn't change.
+  const systemViewBaseUrl = (Number.isInteger(parseInt(router?.query['system-identifer'])))
+    ? `/system/${system?.systemAddress}`
+    : `/system/${system?.systemName.replaceAll(' ', '_')}`
 
   return (
     <Layout
@@ -260,31 +283,31 @@ export default () => {
         {
           name: 'Map',
           icon: 'icarus-terminal-system-bodies',
-          url: `/system/${system?.systemName.replaceAll(' ', '_')}`,
+          url: systemViewBaseUrl,
           active: views[activeViewIndex] === ''
         },
         {
           name: 'List',
           icon: 'icarus-terminal-table-index',
-          url: `/system/${system?.systemName.replaceAll(' ', '_')}/list`,
+          url: `${systemViewBaseUrl}/list`,
           active: views[activeViewIndex] === 'list'
         },
         {
           name: 'Trade',
           icon: 'icarus-terminal-cargo',
-          url: `/system/${system?.systemName.replaceAll(' ', '_')}/exports`,
+          url: `${systemViewBaseUrl}/exports`,
           active: (views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports')
         },
         {
           name: 'Services',
           icon: 'icarus-terminal-scan',
-          url: `/system/${system?.systemName.replaceAll(' ', '_')}/services`,
+          url: `${systemViewBaseUrl}/services`,
           active: views[activeViewIndex] === 'services'
         },
         {
           name: 'Nearby',
           icon: 'icarus-terminal-route',
-          url: `/system/${system?.systemName.replaceAll(' ', '_')}/nearby`,
+          url: `${systemViewBaseUrl}/nearby`,
           active: views[activeViewIndex] === 'nearby'
         }
       ]}
@@ -312,72 +335,77 @@ export default () => {
             <SystemList system={system} bodiesInSystem={bodiesInSystem} stationsInSystem={stationsInSystem} />}
           {(views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports') &&
             <SystemTrade
-              systemName={system.systemName}
+              system={system}
               importOrders={importOrders}
               exportOrders={exportOrders}
               rareGoods={rareGoods}
               lastUpdatedAt={lastUpdatedAt}
             />}
           {views[activeViewIndex] === 'services' &&
-            <SystemServices systemName={system.systemName} nearestServices={nearestServices} />}
+            <SystemServices system={system} nearestServices={nearestServices} />}
           {views[activeViewIndex] === 'nearby' &&
-            <SystemNearby systemName={system.systemName} nearbySystems={nearbySystems} />}
+            <SystemNearby system={system} nearbySystems={nearbySystems} />}
         </>}
     </Layout>
   )
 }
 
-async function getSystem(systemName) {
+async function getSystem (systemIdentifer) {
   try {
-    const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}`)
+    const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+    const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}`)
     return (res.status === 200) ? await res.json() : null
   } catch (e) {
     console.error(e)
   }
 }
 
-async function getStationsInSystem(systemName) {
+async function getStationsInSystem (systemIdentifer) {
   try {
-    const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/stations`)
+    const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+    const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/stations`)
     return (res.status === 200) ? await res.json() : null
   } catch (e) {
     console.error(e)
   }
 }
 
-async function getNearbySystems(systemName) {
+async function getNearbySystems (systemIdentifer) {
   try {
-    const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearby?maxDistance=25`)
+    const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+    const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/nearby?maxDistance=25`)
     return await res.json()
   } catch (e) {
     console.error(e)
   }
 }
 
-async function getNearestService(systemName, service) {
+async function getNearestService (systemIdentifer, service) {
   try {
-    const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
+    const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+    const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/nearest/${service}?minLandingPadSize=3`)
     return res.ok ? await res.json() : null
   } catch (e) {
     console.error(e)
   }
 }
 
-async function getBodiesInSystem(systemName) {
+async function getBodiesInSystem (systemIdentifer) {
   try {
-    const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/bodies`)
+    const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+    const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/bodies`)
     return await res.json()
   } catch (e) {
     console.error(e)
   }
 }
 
-async function getSystemStatus(systemName) {
+async function getSystemStatus (systemIdentifer) {
   try {
-    const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/status`)
+    const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+    const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/status`)
     return await res.json()
   } catch (e) {
     console.error(e)
   }
 }
-

@@ -284,7 +284,7 @@ const CommodityInfo = ({ commodity, rareMarket }) => {
   if (!commodity) return
 
   return (
-    <div style={{paddingTop: '.5rem'}}>
+    <div style={{ paddingTop: '.5rem' }}>
       <CommodityTabOptions />
       <div className='fx__fade-in' style={{ padding: '0 .1rem' }}>
         <p className='fx__animated-text text-uppercase' data-fx-order='3' style={{ marginBottom: 0, fontSize: '.9rem' }}>
