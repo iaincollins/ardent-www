@@ -8,9 +8,8 @@ import { API_BASE_URL } from 'lib/consts'
 
 const MAX_ROWS_TO_DISPLAY = 10
 
-async function getNearbyExportersOfCommodity (systemIdentifer, commodityName) {
-  const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
-  const url = `${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/commodity/name/${commodityName}/nearby/exports`
+async function getNearbyExportersOfCommodity (systemAddress, commodityName) {
+  const url = `${API_BASE_URL}/v1/system/address/${systemAddress}/commodity/name/${commodityName}/nearby/exports`
   const res = await fetch(url)
   return await res.json()
 }

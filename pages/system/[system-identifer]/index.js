@@ -14,6 +14,7 @@ import getSystemExports from 'lib/system-exports'
 import getSystemImports from 'lib/system-imports'
 import listOfCommodities from 'lib/commodities/commodities.json'
 import { NavigationContext } from 'lib/context'
+import systemIdentiferIsSystemAddress from 'lib/utils/system-identifer-is-system-address'
 
 import {
   API_BASE_URL,
@@ -327,6 +328,7 @@ export default () => {
               settlementsInSystem={settlementsInSystem}
               megashipsInSystem={megashipsInSystem}
               fleetCarriersInSystem={fleetCarriersInSystem}
+              bodiesInSystem={bodiesInSystem}
               importOrders={importOrders}
               exportOrders={exportOrders}
               lastUpdatedAt={lastUpdatedAt}
@@ -352,7 +354,7 @@ export default () => {
 
 async function getSystem (systemIdentifer) {
   try {
-    const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+    const systemIdentiferType = systemIdentiferIsSystemAddress(systemIdentifer) ? 'address' : 'name'
     const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}`)
     return (res.status === 200) ? await res.json() : null
   } catch (e) {
@@ -362,7 +364,7 @@ async function getSystem (systemIdentifer) {
 
 async function getStationsInSystem (systemIdentifer) {
   try {
-    const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+    const systemIdentiferType = systemIdentiferIsSystemAddress(systemIdentifer) ? 'address' : 'name'
     const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/stations`)
     return (res.status === 200) ? await res.json() : null
   } catch (e) {
@@ -372,7 +374,7 @@ async function getStationsInSystem (systemIdentifer) {
 
 async function getNearbySystems (systemIdentifer) {
   try {
-    const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+    const systemIdentiferType = systemIdentiferIsSystemAddress(systemIdentifer) ? 'address' : 'name'
     const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/nearby?maxDistance=25`)
     return await res.json()
   } catch (e) {
@@ -382,7 +384,7 @@ async function getNearbySystems (systemIdentifer) {
 
 async function getNearestService (systemIdentifer, service) {
   try {
-    const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+    const systemIdentiferType = systemIdentiferIsSystemAddress(systemIdentifer) ? 'address' : 'name'
     const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/nearest/${service}?minLandingPadSize=3`)
     return res.ok ? await res.json() : null
   } catch (e) {
@@ -392,7 +394,7 @@ async function getNearestService (systemIdentifer, service) {
 
 async function getBodiesInSystem (systemIdentifer) {
   try {
-    const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+    const systemIdentiferType = systemIdentiferIsSystemAddress(systemIdentifer) ? 'address' : 'name'
     const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/bodies`)
     return await res.json()
   } catch (e) {
@@ -402,7 +404,7 @@ async function getBodiesInSystem (systemIdentifer) {
 
 async function getSystemStatus (systemIdentifer) {
   try {
-    const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
+    const systemIdentiferType = systemIdentiferIsSystemAddress(systemIdentifer) ? 'address' : 'name'
     const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/status`)
     return await res.json()
   } catch (e) {

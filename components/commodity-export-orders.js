@@ -9,10 +9,10 @@ import StationIcon from './station-icon'
 import { API_BASE_URL } from 'lib/consts'
 import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
+import systemIdentiferIsSystemAddress from 'lib/utils/system-identifer-is-system-address'
 
-async function getExportsForCommodityBySystem (systemIdentifer, commodityName) {
-  const systemIdentiferType = Number.isInteger(parseInt(systemIdentifer)) ? 'address' : 'name'
-  const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/commodity/name/${commodityName}`)
+async function getExportsForCommodityBySystem (systemAddress, commodityName) {
+  const res = await fetch(`${API_BASE_URL}/v1/system/address/${systemAddress}/commodity/name/${commodityName}`)
   const exports = await res.json()
   if (!exports || exports.error) return [] // Handle system not found
   return exports.filter(c => c.stock > 0)
@@ -118,9 +118,7 @@ function ExpandedRow ({ r }) {
 
   useEffect(() => {
     (async () => {
-      const commodityName = r.symbol
-      const systemName = r.systemName
-      const exports = await getExportsForCommodityBySystem(systemName, commodityName)
+      const exports = await getExportsForCommodityBySystem(r.systemAddress, r.symbol)
       setExports(exports)
     })()
   }, [r.commodityName])

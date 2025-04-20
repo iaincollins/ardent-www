@@ -12,6 +12,7 @@ module.exports = ({
   settlementsInSystem,
   megashipsInSystem,
   fleetCarriersInSystem,
+  bodiesInSystem,
   lastUpdatedAt
 }) => {
   const router = useRouter()
@@ -26,6 +27,12 @@ module.exports = ({
           </h2>
         </div>
         <div style={{ paddingTop: '.5rem' }}>
+          {bodiesInSystem?.filter(b => b.bodyType == 'Star')?.length > 0 &&
+            <p className='fx__fade-in'><i className='icon icarus-terminal-star' /> {bodiesInSystem?.filter(b => b.bodyType === 'Star')?.length}</p>}
+          {bodiesInSystem?.filter(b => b.bodyType == 'Planet')?.length > 0 &&
+            <p className='fx__fade-in'><i className='icon icarus-terminal-planet' /> {bodiesInSystem?.filter(b => b.bodyType === 'Planet')?.length}</p>}
+          {/* {bodiesInSystem?.filter(b => b.isLandable)?.length > 0 &&
+            <p className='fx__fade-in'><i className='icon icarus-terminal-planet-landable' /> {bodiesInSystem?.filter(b => b.isLandable)?.length}</p>} */}
           {stationsInSystem?.filter(s => s.stationType == 'Orbis')?.length > 0 &&
             <p className='fx__fade-in'><i className='icon icarus-terminal-orbis-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Orbis')?.length}</p>}
           {stationsInSystem?.filter(s => s.stationType == 'Coriolis')?.length > 0 &&
