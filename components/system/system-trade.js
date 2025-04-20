@@ -156,6 +156,7 @@ module.exports = ({
               ]}
               data={exportOrders}
               rowKey={(r) => `system_exports_${r.systemAddress}_${r.symbol}`}
+              emptyText={<span className='muted'>No exported commodities</span>}
               expandable={{
                 expandRowByClick: true,
                 expandedRowRender: r =>
@@ -271,6 +272,7 @@ module.exports = ({
               ]}
               data={importOrders}
               rowKey={(r) => `system_imports_${r.systemAddress}_${r.symbol}`}
+              emptyText={<span className='muted'>No imported commodities</span>}
               expandable={{
                 expandRowByClick: true,
                 expandedRowRender: r =>

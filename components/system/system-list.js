@@ -42,12 +42,19 @@ module.exports = ({
                 </tr>
               </thead>
               <tbody className='rc-table-tbody'>
-                {objectsInSystem === undefined && 
-                    <tr>
-                        <td colSpan={3} style={{padding: 0}}>
-                          <div className='loading-bar loading-bar--table-row' />
-                        </td>
-                    </tr>}
+                {objectsInSystem === undefined &&
+                  <tr>
+                    <td colSpan={3} style={{ padding: 0 }}>
+                      <div className='loading-bar loading-bar--table-row' />
+                    </td>
+                  </tr>}
+                {objectsInSystem !== undefined && objectsInSystem?.length === 0 &&
+                  <tr>
+                    <td colSpan={3} className='text-uppercase muted'>
+                       No location data
+                    </td>
+                  </tr>}
+
                 <SystemObjects objects={objectsInSystem} />
               </tbody>
             </table>
@@ -58,7 +65,7 @@ module.exports = ({
   )
 }
 
-function SystemObjects ({ objects, depth = 0 }) {
+function SystemObjects({ objects, depth = 0 }) {
   return objects?.map((systemObject, i) => {
     let planetIcon = 'planet'
     if (systemObject?.bodyType === 'Planet') {

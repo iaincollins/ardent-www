@@ -34,6 +34,13 @@ module.exports = ({
         
         {stationsInSystem !== undefined && bodiesInSystem !== undefined &&
             <div className='system-map__system-objects'>
+              {bodiesInSystem?.length === 0 && stationsInSystem?.length === 0 &&
+              <p className='fx__fade-in text-blink-slow'>
+                <i className='icarus-terminal-warning muted' style={{fontSize: '1.25rem'}}/>
+                <small>
+                  System not scanned
+                </small>
+              </p>}
               {bodiesInSystem?.filter(b => b.bodyType == 'Star')?.length > 0 &&
                 <p className='fx__fade-in'><i className='icon icarus-terminal-star' /> {bodiesInSystem?.filter(b => b.bodyType === 'Star')?.length}</p>}
               {bodiesInSystem?.filter(b => b.bodyType == 'Planet')?.length > 0 &&

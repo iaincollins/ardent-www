@@ -59,6 +59,22 @@
   text-align: right;
 }
 
+.text-blink-slow {
+  animation: text-blink-animation .75s ease-in-out infinite;
+}
+
+.text-blink {
+  animation: text-blink-animation .5s ease-in-out infinite;
+}
+
+.text-blink-fast {
+  animation: text-blink-animation .25s ease-in-out infinite;
+}
+
+@keyframes text-blink-animation {
+  50% { opacity: 10%; }
+}
+
 .flip-vertical {
   transform: rotateX(180deg);
 }
