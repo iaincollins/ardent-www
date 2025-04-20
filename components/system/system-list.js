@@ -70,7 +70,7 @@ function SystemObjects({ objects, depth = 0 }) {
     return (
       <Fragment key={`object-in-system-row-${depth}-${i}-${systemObject?.stationType ?? systemObject?.bodyType}-${systemObject?.stationName ?? systemObject?.bodyName}`}>
         <tr className='rc-table-row rc-table-row-level-0 --visible'>
-          <td className='max-width-mobile'>
+          <td className='max-width-mobile' style={{paddingLeft: '.25rem'}}>
             <div style={{ display: 'inline-block', paddingLeft: `${depth}rem` }}>
               {systemObject?.bodyType === 'Null' && <>✕— </>}
               {(systemObject?.bodyType === 'Planet' || systemObject?.bodyType === 'Star') && 
@@ -78,6 +78,12 @@ function SystemObjects({ objects, depth = 0 }) {
                   {systemObject.bodyName}
                   {systemObject?.subType !== undefined && systemObject?.subType !== null &&
                     <small><br/>{systemObject.subType}</small>}
+                  {systemObject?.distanceToArrival !== undefined > 0 &&
+                    <small className='is-visible-mobile text-no-transform'>
+                      {systemObject?.subType !== undefined && systemObject?.subType !== null && ', '}
+                      {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls
+                      {systemObject?.updatedAt !== undefined && <><br />Updated {timeBetweenTimestamps(systemObject.updatedAt)} ago</>}
+                    </small>}
                   </SystemObjectIcon>}
               {systemObject?.stationType !== undefined && <>
                 <StationIcon station={systemObject}>
@@ -93,6 +99,7 @@ function SystemObjects({ objects, depth = 0 }) {
                   {systemObject?.primaryEconomy == 'Fleet Carrier' && <small><br/>Fleet Carrier</small>}
                   {systemObject?.distanceToArrival !== undefined > 0 &&
                     <small className='is-visible-mobile text-no-transform'>
+                       {systemObject?.primaryEconomy !== undefined && systemObject?.primaryEconomy !== 'Fleet Carrier' && ', '}
                       {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls
                       {systemObject?.updatedAt !== undefined && <><br />Updated {timeBetweenTimestamps(systemObject.updatedAt)} ago</>}
                     </small>}
