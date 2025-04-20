@@ -39,6 +39,7 @@ const HIDDEN_SYSTEMS = [
 export default () => {
   const router = useRouter()
   const [, setNavigationPath] = useContext(NavigationContext)
+  const [loading, setLoading] = useState(true)
   const [system, setSystem] = useState()
   const [stationsInSystem, setStationsInSystem] = useState()
   const [settlementsInSystem, setSettlementsInSystem] = useState()
@@ -65,6 +66,18 @@ export default () => {
 
   useEffect(() => {
     (async () => {
+      if (system !== undefined && 
+          bodiesInSystem !== undefined &&
+          stationsInSystem !== undefined &&
+          systemStatus !== undefined) {
+            setLoading(false)
+          }
+    })()
+  })
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true)
       const systemIdentifer = router.query?.['system-identifer']?.replaceAll('_', ' ')?.trim()
       if (!systemIdentifer) return
 
@@ -117,7 +130,6 @@ export default () => {
         setSystem(system)
 
         setNavigationPath([{ name: system.systemName, path: '/', icon: 'icarus-terminal-system-orbits' }])
-
         ; (async () => {
           const stations = await getStationsInSystem(system.systemAddress)
           setStationsInSystem(
@@ -254,6 +266,7 @@ export default () => {
           setLastUpdatedAt(mostRecentUpdatedAt)
         })()
       } else {
+        setLoading(false)
         setSystem(undefined)
       }
     })()
@@ -267,7 +280,7 @@ export default () => {
 
   return (
     <Layout
-      loading={system === undefined}
+      loading={loading}
       loadingText='Loading system data'
       title={system ? `${system.systemName} system` : null}
       description={system ? `Data for the system ${system.systemName} in Elite Dangerous` : null}

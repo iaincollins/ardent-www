@@ -1,6 +1,6 @@
 .system-map,
 .system-map__system-info {
-  height: calc(100vh - 10.5rem);
+  height: calc(100dvh - 10.5rem);
   min-height: 22rem;
 }
 
