@@ -55,7 +55,6 @@ module.exports = ({
                        No location data
                     </td>
                   </tr>}
-
                 <SystemObjects objects={objectsInSystem} />
               </tbody>
             </table>
@@ -74,15 +73,24 @@ function SystemObjects({ objects, depth = 0 }) {
           <td className='max-width-mobile'>
             <div style={{ display: 'inline-block', paddingLeft: `${depth}rem` }}>
               {systemObject?.bodyType === 'Null' && <>✕— </>}
-              {systemObject?.bodyType === 'Star' && 
-                <>
-                <i style={{ position: 'relative', top: '-.1rem' }} className='station-icon icarus-terminal-star' />
-                {systemObject.bodyName}
-                </>}
-              {systemObject?.bodyType === 'Planet' && <SystemObjectIcon systemObject={systemObject}>{systemObject.bodyName}</SystemObjectIcon>}
+              {(systemObject?.bodyType === 'Planet' || systemObject?.bodyType === 'Star') && 
+                <SystemObjectIcon systemObject={systemObject}>
+                  {systemObject.bodyName}
+                  {systemObject?.subType !== undefined && systemObject?.subType !== null &&
+                    <small><br/>{systemObject.subType}</small>}
+                  </SystemObjectIcon>}
               {systemObject?.stationType !== undefined && <>
                 <StationIcon station={systemObject}>
                   {systemObject.stationName}
+                  {systemObject?.primaryEconomy !== undefined && systemObject?.primaryEconomy !== 'Fleet Carrier' &&
+                    <small>
+                      <br/>
+                      {systemObject?.primaryEconomy !== undefined && systemObject?.primaryEconomy !== 'Fleet Carrier' &&
+                        <> {systemObject.primaryEconomy}</>}
+                      {systemObject?.secondaryEconomy !== undefined && systemObject?.secondaryEconomy !== null &&
+                        <>, {systemObject.secondaryEconomy}</>}
+                    </small>}
+                  {systemObject?.primaryEconomy == 'Fleet Carrier' && <small><br/>Fleet Carrier</small>}
                   {systemObject?.distanceToArrival !== undefined > 0 &&
                     <small className='is-visible-mobile text-no-transform'>
                       {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls

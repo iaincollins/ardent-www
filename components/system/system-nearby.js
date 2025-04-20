@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import Table from 'rc-table'
+import SystemObjectIcon from 'components/system-object-icon'
 
 module.exports = ({ nearbySystems }) => {
   const router = useRouter()
@@ -21,14 +22,17 @@ module.exports = ({ nearbySystems }) => {
             dataIndex: 'systemName',
             key: 'systemName',
             align: 'left',
-            render: (v) => <><i className='icon icarus-terminal-star' />{v}</>
+            render: (v, r) => <SystemObjectIcon type='Star'>
+              {v}
+              <small className='is-visible-mobile text-no-transform'> {r?.distance < 1 ? '< 1 ly' : <>{Math.floor(r.distance).toLocaleString()} ly</>}</small>
+            </SystemObjectIcon>
           },
           {
             title: 'Distance',
             dataIndex: 'distance',
             key: 'distance',
             align: 'right',
-            className: 'no-wrap',
+            className: 'no-wrap is-hidden-mobile',
             render: (v) => v < 1
               ? '< 1 ly'
               : <>{Math.floor(v).toLocaleString()} ly</>

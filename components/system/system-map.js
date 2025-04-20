@@ -28,7 +28,7 @@ module.exports = ({
         </div>
 
         {(stationsInSystem === undefined || bodiesInSystem === undefined) &&
-          <div className='loading-bar' style={{ position: 'relative', margin: '0 0 .5rem 0', top: 0, height: '1.6rem' }} />
+          <div className='loading-bar' style={{ position: 'relative', margin: '0 0 .5rem 0', top: 0, height: '1.75rem' }} />
         }
 
         {stationsInSystem !== undefined && bodiesInSystem !== undefined &&
