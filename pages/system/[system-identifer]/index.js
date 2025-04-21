@@ -340,7 +340,17 @@ export default () => {
       <Head>
         <link rel='canonical' href={`https://ardent-insight.com/system/${system?.systemName}/${views[activeViewIndex]}`} />
       </Head>
-      {system === null && <><h1>Error: Not found</h1><p className='text-large clear'>System not found.</p></>}
+      {system === null && <>
+        <div className='heading--with-underline'>
+          <h2 className='heading--with-icon'>
+            <i className='icon icarus-terminal-warning' />
+            <span className='text-no-transform'>System not found</span>
+          </h2>
+        </div>
+        <div className='error__text text-blink-slow text-large muted'>
+          System not found
+        </div>
+      </>}
       {system &&
         <>
           {views[activeViewIndex] === '' &&

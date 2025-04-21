@@ -266,3 +266,23 @@ table.two-column-table>tbody>tr>td,
   display: inline-block;
   text-align: right;
 }
+
+.error__text {
+  position: fixed;
+  top: calc(50dvh - 2rem);
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: .5s ease-in-out;
+  z-index: 3000;
+  pointer-events: none;
+  text-align: center;
+  text-shadow: 0 0 .5rem #000, 0 0 1rem #000;
+  font-family: 'Jura';
+  font-synthesis: weight;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 4dvw;
+}
