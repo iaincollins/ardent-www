@@ -44,9 +44,10 @@ export default ({
       {navigation !== undefined &&
         <div className='navigation-bar'>
           {navigation.map(item =>
-            <Link key={item.url} href={item.url}><button className={`${item?.active === true ? '--active' : ''}`}>
-              <i className={`icon ${item.icon}`} />
-            </button>
+            <Link key={item.url} href={item.url}>
+              <button className={`${item?.active === true ? '--active' : ''}`} data-name={item.name}>
+                <i className={`icon ${item.icon}`} />
+              </button>
             </Link>
           )}
         </div>}

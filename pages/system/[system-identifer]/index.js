@@ -312,13 +312,13 @@ export default () => {
           active: views[activeViewIndex] === ''
         },
         {
-          name: 'List',
+          name: 'Locations',
           icon: 'icarus-terminal-table-index',
           url: `${systemViewBaseUrl}/list`,
           active: views[activeViewIndex] === 'list'
         },
         {
-          name: 'Trade',
+          name: 'Commodities',
           icon: 'icarus-terminal-cargo',
           url: `${systemViewBaseUrl}/exports`,
           active: (views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports')

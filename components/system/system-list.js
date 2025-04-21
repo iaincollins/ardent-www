@@ -61,6 +61,9 @@ module.exports = ({
           </div>
         </div>
       </div>
+      <p className='text-center' style={{marginBottom: 0}}>
+        <small className='text-center'>Station orbital locations are approximate based on the latest available telemetry</small>
+      </p>
     </div>
   )
 }
