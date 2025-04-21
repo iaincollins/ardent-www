@@ -63,12 +63,14 @@
 }
 
 .system-map__location {
+  position: relative;
+  top: -.25rem;
   line-height: 1rem;
 }
 
 .system-map__system-objects {
   margin-top: .6rem;
-  min-height: 1.6rem;
+  min-height: 1.8rem;
 }
 
 .system-map__system-info {
@@ -102,6 +104,8 @@
   position: relative;
   top: -.1rem;
   font-size: 1.25rem;
+  height: 1.5rem;
+  display: inline-block;
 }
 
 .system-map__system-status {

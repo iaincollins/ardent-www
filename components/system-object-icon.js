@@ -11,6 +11,9 @@ module.exports = ({ systemObject, type, children }) => {
     if (systemObject.rings)
       icon = 'planet-ringed'
 
+    if (systemObject.terraformingState && systemObject.terraformingState !== 'Not terraformable' && systemObject.terraformingState !== 'Terraformed')
+      icon = 'planet-terraformable'
+
     if (systemObject.atmosphereComposition && !systemObject?.subType?.toLowerCase()?.includes('gas giant'))
       icon = 'planet-atmosphere'
 
@@ -22,9 +25,6 @@ module.exports = ({ systemObject, type, children }) => {
 
     if (systemObject?.subType?.toLowerCase()?.includes('water world') || systemObject?.subType?.toLowerCase()?.includes('water giant'))
       icon = 'planet-water-world'
-
-    if (systemObject.atmosphereComposition && !systemObject?.subType?.toLowerCase()?.includes('gas giant'))
-      icon = 'planet-atmosphere'
 
     if (systemObject?.subType?.toLowerCase()?.includes('gas giant'))
       icon = 'planet-gas-giant'
@@ -40,10 +40,6 @@ module.exports = ({ systemObject, type, children }) => {
 
     if (systemObject?.subType?.toLowerCase() === 'earth-like world')
       icon = 'planet-earthlike'
-
-    if (systemObject.terraformingState && systemObject.terraformingState !== 'Not terraformable' && systemObject.terraformingState !== 'Terraformed')
-      icon = 'planet-terraformable'
-
 
     if (systemObject?.isLandable) {
       if (systemObject?.atmosphereComposition && !systemObject?.subType?.toLowerCase()?.includes('gas giant')) {

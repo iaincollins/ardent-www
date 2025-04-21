@@ -18,7 +18,7 @@ module.exports = ({ nearbySystems }) => {
         className='data-table data-table--striped data-table--interactive data-table--animated'
         columns={[
           {
-            title: 'System Name',
+            title: 'System',
             dataIndex: 'systemName',
             key: 'systemName',
             align: 'left',
@@ -39,6 +39,7 @@ module.exports = ({ nearbySystems }) => {
           }
         ]}
         data={nearbySystems}
+        emptyText={<span className='muted'>No nearby systems found</span>}
         rowKey='systemAddress'
         onRow={(record, index) => ({
           onClick: onSystemsRowClick.bind(null, record, index)

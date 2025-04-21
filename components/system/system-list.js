@@ -93,7 +93,7 @@ function SystemObjects({ objects, depth = 0 }) {
                       <br/>
                       {systemObject?.primaryEconomy !== undefined && systemObject?.primaryEconomy !== 'Fleet Carrier' &&
                         <> {systemObject.primaryEconomy}</>}
-                      {systemObject?.secondaryEconomy !== undefined && systemObject?.secondaryEconomy !== null &&
+                      {systemObject?.secondaryEconomy !== undefined && systemObject?.secondaryEconomy !== null && systemObject?.secondaryEconomy !== systemObject?.primaryEconomy &&
                         <>, {systemObject.secondaryEconomy}</>}
                     </small>}
                   {systemObject?.primaryEconomy == 'Fleet Carrier' && <small><br/>Fleet Carrier</small>}

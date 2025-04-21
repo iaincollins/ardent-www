@@ -19,7 +19,8 @@ import systemIdentiferIsSystemAddress from 'lib/utils/system-identifer-is-system
 import {
   API_BASE_URL,
   SOL_COORDINATES,
-  COLONIA_COORDINATES
+  COLONIA_COORDINATES,
+  GALACTIC_CENTER_COORDINATES
 } from 'lib/consts'
 
 // These are systems that actually exist in game but that are not "real" systems
@@ -102,17 +103,17 @@ export default () => {
           if (system.systemName === 'Sol') {
             system.tradeZoneLocation = 'Centre of the Core Systems'
           } else {
-            system.tradeZoneLocation = <>{distance(systemCoordinates, SOL_COORDINATES)} ly from Sol</>
+            system.tradeZoneLocation = `${distance(systemCoordinates, SOL_COORDINATES)} ly from Sol`
           }
         } else if (distance(systemCoordinates, SOL_COORDINATES) <= 400) {
           system.tradeZone = 'Core Periphery'
-          system.tradeZoneLocation = <>{distance(systemCoordinates, SOL_COORDINATES)} ly from Sol</>
+          system.tradeZoneLocation = `${distance(systemCoordinates, SOL_COORDINATES)} ly from Sol`
         } else if (distance(systemCoordinates, COLONIA_COORDINATES) <= 100) {
           system.tradeZone = 'Colonia Region'
           if (system.systemName === 'Colonia') {
             system.tradeZoneLocation = `${distance(systemCoordinates, SOL_COORDINATES)} ly from the Core Systems`
           } else {
-            system.tradeZoneLocation = <>{distance(systemCoordinates, COLONIA_COORDINATES)} Ly from Colonia</>
+            system.tradeZoneLocation = `${distance(systemCoordinates, COLONIA_COORDINATES)} ly from Colonia`
           }
         } else {
           system.tradeZone = 'Deep Space'
@@ -121,6 +122,8 @@ export default () => {
               {`${distance(systemCoordinates, SOL_COORDINATES)} ly from Sol`}
               <br />
               {`${distance(systemCoordinates, COLONIA_COORDINATES)} ly from Colonia`}
+              <br />
+              {`${distance(systemCoordinates, GALACTIC_CENTER_COORDINATES)} ly from Sagittarius A*`}
             </>
           )
         }
@@ -359,6 +362,7 @@ export default () => {
           {(views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports') &&
             <SystemTrade
               system={system}
+              stationsInSystem={stationsInSystem}
               importOrders={importOrders}
               exportOrders={exportOrders}
               rareGoods={rareGoods}
