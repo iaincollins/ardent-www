@@ -269,20 +269,27 @@ table.two-column-table>tbody>tr>td,
 
 .error__text {
   position: fixed;
-  top: calc(50dvh - 2rem);
+  top: calc(50vh - 1rem);
   left: 0;
-  width: 100%;
-  display: flex;
+  width: calc(100% - 5rem);
+  padding: 1rem 1rem;
+  /* display: flex;
   flex-direction: column;
   align-items: center;
-  transition: .5s ease-in-out;
   z-index: 3000;
-  pointer-events: none;
+  pointer-events: none; */
   text-align: center;
-  text-shadow: 0 0 .5rem #000, 0 0 1rem #000;
   font-family: 'Jura';
-  font-synthesis: weight;
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 4dvw;
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+  background: linear-gradient(to right, transparent 30%, rgba(0,0,0,.25) 40%, transparent 70%);
+  z-index: 100;
+}
+
+.error__text .icon {
+  font-size: 1.5rem;
+  position: relative;
+  top: -.1rem;
 }

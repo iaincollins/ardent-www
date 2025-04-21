@@ -164,27 +164,32 @@
     width: auto;
     position: fixed;
     top: 1.5rem;
-    left: 1rem;
+    left: 1.5rem;
     right: 2rem;
     z-index: 10;
+    height: 2rem;
+    padding-left: 2.5rem;
+    box-shadow: 0 0 1rem black, 0 0 2rem black;
   }
 
   .header__search:focus-within .icon {
     position: fixed;
-    top: 2.1rem;
-    left: 1.5rem;
+    top: 2.4rem;
+    font-size: 1.5rem;
+    left: 2rem;
     z-index: 11;
   }
 
   .header__search:focus-within .header__search-results {
     position: fixed;
     display: block;
-    top: 2rem;
-    left: 2rem;
+    top: 1.9rem;
+    left: 2.5rem;
     right: 2rem;
     width: calc(100vw - 6rem);
     max-width: none;
     padding-top: 2.5rem;
+    box-shadow: 0 0 1rem black, 0 0 5rem black;
   }
 
   .header__search:focus-within .header__search-results p {

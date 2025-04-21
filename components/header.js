@@ -25,7 +25,7 @@ export default () => {
   useEffect(() => {
     document.addEventListener('fullscreenchange', onFullScreenChangeHandler)
     return () => document.removeEventListener('click', onFullScreenChangeHandler)
-    function onFullScreenChangeHandler (event) {
+    function onFullScreenChangeHandler(event) {
       setFullScreenState(isFullScreen())
     }
   }, [])
@@ -137,11 +137,7 @@ export default () => {
         </ul>
       </div>
       <div className='header__navigation' style={{ display: 'block' }}>
-        {/*
-        <button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button>
-        <button aria-label='Map' className='button'><i className='icon icarus-terminal-system-orbits' /></button>
-        */}
-        <div className='header__search' style={{ xdisplay: 'none' }}>
+        <div className='header__search'>
           <label className='header__search-input' aria-label='Search' onClick={() => document.getElementById('header-search').focus()}>
             <i className='icon icarus-terminal-search' />
             <input
@@ -156,6 +152,7 @@ export default () => {
                 setCommoditySearchResults(undefined)
                 setSystemSearchResults(undefined)
               }}
+              onMouseEnter={(e) => document.getElementById('header-search').focus()}
               onChange={async (e) => {
                 const searchText = e.target.value.trim()
 
@@ -184,9 +181,9 @@ export default () => {
                     }
                   })
 
-                  ; (matchingCommodities.length > 0)
-                    ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
-                    : setCommoditySearchResults(undefined)
+                    ; (matchingCommodities.length > 0)
+                      ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
+                      : setCommoditySearchResults(undefined)
                 } catch (e) { }
 
                 try {
@@ -248,6 +245,8 @@ export default () => {
                   if (hilightedSearchResult - 1 >= 0) {
                     setHilightedSearchResult(hilightedSearchResult - 1)
                   }
+                } else if (e.key === 'Escape') {
+                  document.activeElement.blur()
                 }
               }}
             />
@@ -276,9 +275,8 @@ export default () => {
             )}
           </div>
         </div>
-        {/* <button aria-label='About' className='button is-hidden-mobile' onClick={() => setAboutDialogVisible(!aboutDialogVisible)}>
-          <i className='icon icarus-terminal-info' />
-        </button> */}
+        <Link href='/' className='xis-hidden-mobile'><button aria-label='Home' className='button'><i className='icon icarus-terminal-home' /></button></Link>
+        <Link href='/commodity/advancedcatalysers' className='is-hidden-mobile'><button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button></Link>
         <button aria-label='Toggle Fullscreen' className='button' onClick={() => toggleFullScreen()}>
           <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
         </button>
@@ -347,7 +345,7 @@ export default () => {
   )
 }
 
-function isFullScreen () {
+function isFullScreen() {
   if (typeof document === 'undefined') return false
 
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
@@ -357,7 +355,7 @@ function isFullScreen () {
   }
 }
 
-async function toggleFullScreen () {
+async function toggleFullScreen() {
   if (isFullScreen()) {
     if (document.cancelFullScreen) {
       document.cancelFullScreen()

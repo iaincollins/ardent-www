@@ -110,7 +110,7 @@ function SystemObjects({ objects, depth = 0 }) {
               </>}
             </div>
           </td>
-          <td style={{ textAlign: 'right' }} className='is-hidden-mobile'>
+          <td style={{ textAlign: 'right', fontSize: '0.9rem' }} className='is-hidden-mobile'>
             {systemObject?.updatedAt !== undefined && <span className='text-no-transform' style={{ opacity: 0.5 }}>{timeBetweenTimestamps(systemObject.updatedAt)}</span>}
           </td>
           <td style={{ textAlign: 'right' }} className='is-hidden-mobile'>

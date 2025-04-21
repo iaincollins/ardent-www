@@ -124,7 +124,7 @@ module.exports = ({
                   align: 'center',
                   width: 100,
                   className: 'is-hidden-mobile',
-                  render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.2rem', marginLeft: '.4rem' }} className='icarus-terminal-settlement muted' /></span>
+                  render: (v) => <span>{v.length === 1 ? '1' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.1rem', opacity: .5}} className='icarus-terminal-cargo-export' /></span>
                 },
                 {
                   title: 'Updated',
@@ -133,7 +133,7 @@ module.exports = ({
                   align: 'right',
                   width: 150,
                   className: 'is-hidden-mobile no-wrap',
-                  render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
+                  render: (v) => <span style={{ opacity: 0.5, fontSize: '0.9rem' }}>{timeBetweenTimestamps(v)}</span>
                 },
                 {
                   title: 'Total stock',
@@ -240,7 +240,7 @@ module.exports = ({
                   align: 'center',
                   width: 100,
                   className: 'is-hidden-mobile',
-                  render: (v) => <span className='muted'>{v.length === 1 ? '1 ' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.2rem', marginLeft: '.4rem' }} className='icarus-terminal-settlement muted' /></span>
+                  render: (v) => <span>{v.length === 1 ? '1' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.1rem', opacity: .5 }} className='icarus-terminal-cargo-import' /></span>
                 },
                 {
                   title: 'Updated',
@@ -249,7 +249,7 @@ module.exports = ({
                   align: 'right',
                   width: 150,
                   className: 'is-hidden-mobile no-wrap',
-                  render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
+                  render: (v) => <span style={{ opacity: 0.5, fontSize: '0.9rem' }}>{timeBetweenTimestamps(v)}</span>
                 },
                 {
                   title: 'Total demand',

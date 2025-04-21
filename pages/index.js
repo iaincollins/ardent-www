@@ -124,7 +124,7 @@ export default () => {
           </p>
           <Link className='button' style={{ textAlign: 'center', display: 'block', padding: '.75rem .25rem', fontSize: '1.25rem', margin: '.5rem' }} href='/commodity/advancedcatalysers'>
             <i className='icon icarus-terminal-cargo' style={{ marginRight: '.5rem', fontSize: '1.5rem !important' }} />
-            Trade Data
+            Commodities
             <i className='icon icarus-terminal-chevron-right' style={{ marginLeft: '.5rem', fontSize: '1.25rem !important' }} />
           </Link>
 

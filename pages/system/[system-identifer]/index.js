@@ -347,8 +347,9 @@ export default () => {
             <span className='text-no-transform'>System not found</span>
           </h2>
         </div>
-        <div className='error__text text-blink-slow text-large muted'>
-          System not found
+        <div className='error__text' style={{left: '3rem'}}>
+          <i className='icon icarus-terminal-warning' />
+          <span className='text-blink-slow muted'>System not found</span>
         </div>
       </>}
       {system &&
