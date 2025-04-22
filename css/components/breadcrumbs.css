@@ -21,6 +21,7 @@
   pointer-events: all;
   margin: 0;
   background: linear-gradient(to left, var(--color-primary-dark) 1rem, var(--color-primary-darkest));
+  background: linear-gradient(to left, var(--color-primary-darkest) 1rem, #222);
 }
 
 .breadcrumbs li > a,
@@ -120,5 +121,5 @@
 
 .breadcrumbs li:last-child:first-child a:after,
 .breadcrumbs li:last-child:first-child span:after {
-  background-color: var(--color-primary-dark);
+  background-color: var(--color-primary-darkest);
 }

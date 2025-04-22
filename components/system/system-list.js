@@ -99,10 +99,10 @@ function SystemObjects({ objects, depth = 0 }) {
                       {systemObject?.secondaryEconomy !== undefined && systemObject?.secondaryEconomy !== null && systemObject?.secondaryEconomy !== systemObject?.primaryEconomy &&
                         <>, {systemObject.secondaryEconomy}</>}
                     </small>}
-                  {systemObject?.primaryEconomy == 'Fleet Carrier' && <small><br/>Fleet Carrier</small>}
+                  {(systemObject?.primaryEconomy === 'Fleet Carrier' || systemObject?.fleetCarrier !== undefined) && <small><br/>Fleet Carrier</small>}
                   {systemObject?.distanceToArrival !== undefined > 0 &&
                     <small className='is-visible-mobile text-no-transform'>
-                       {systemObject?.primaryEconomy !== undefined && systemObject?.primaryEconomy !== 'Fleet Carrier' && ', '}
+                      {(systemObject?.primaryEconomy !== undefined || (systemObject?.primaryEconomy === 'Fleet Carrier' || systemObject?.fleetCarrier !== undefined))  && ', '}
                       {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls
                       {systemObject?.updatedAt !== undefined && <><br />Updated {timeBetweenTimestamps(systemObject.updatedAt)} ago</>}
                     </small>}
