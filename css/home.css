@@ -49,8 +49,7 @@
   display: block;
   font-size: 1.5rem;
   line-height: 1.75rem;
-  padding-top: .25rem;
-  padding-bottom: .25rem;
+  padding: .25rem .5rem;
 }
 
 .home h2 {

@@ -20,7 +20,7 @@
 
 .navigation-bar button:hover.--active,
 .navigation-bar button.--active {
-  box-shadow: .1rem 0 var(--color-primary-light), inset -.1rem 0 var(--color-primary-light);
+  box-shadow: .1rem 0 var(--color-primary-lightest), inset -.1rem 0 var(--color-primary-lightest);
   background: transparent;
   color: var(--color-text);
   background: linear-gradient(to left, var(--color-primary-dark), var(--color-primary-darkest));
@@ -37,7 +37,7 @@
 
 .navigation-bar button:hover {
   color: var(--color-text-inverted);
-  background: var(--color-primary-light);
+  background: var(--color-primary-lightest);
 }
 
 .navigation-bar button:before {

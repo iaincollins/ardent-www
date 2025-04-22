@@ -130,7 +130,7 @@ export default () => {
           {navigationPath.map(({ icon, name, path }, i) => (
             <li key={`${name}:${path}`}>
               {(i > 0 || navigationPath.length === 1)
-                ? <Link href={path}>{icon ? <i className={`${icon} icon`} /> : ''}{name}</Link>
+                ? <Link href={path}>{icon ? <i className={`${icon} icon`} /> : ''}<span>{name}</span></Link>
                 : ''}
             </li>
           ))}
@@ -275,9 +275,9 @@ export default () => {
             )}
           </div>
         </div>
-        <Link href='/' className='xis-hidden-mobile'><button aria-label='Home' className='button'><i className='icon icarus-terminal-home' /></button></Link>
-        <Link href='/commodity/advancedcatalysers' className='is-hidden-mobile'><button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button></Link>
-        <button aria-label='Toggle Fullscreen' className='button' onClick={() => toggleFullScreen()}>
+        <Link href='/' className='--no-hover'><button aria-label='Home' className='button'><i className='icon icarus-terminal-home' /></button></Link>
+        <Link href='/commodity/advancedcatalysers' className='--no-hover'><button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button></Link>
+        <button aria-label='Toggle Fullscreen' className='button --no-hover' onClick={() => toggleFullScreen()}>
           <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
         </button>
       </div>

@@ -103,6 +103,8 @@ export default () => {
 
   useEffect(() => {
     ; (async () => {
+      setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
+
       const commodityName = router.query?.['commodity-name']
       if (!commodityName) return
 
@@ -135,8 +137,6 @@ export default () => {
       } else {
         setRareMarket(undefined)
       }
-
-      setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
 
       getImportsAndExports()
     })()
@@ -287,7 +287,7 @@ const CommodityInfo = ({ commodity, rareMarket }) => {
     <div style={{ paddingTop: '.5rem' }}>
       <CommodityTabOptions />
       <div className='fx__fade-in' style={{ padding: '0 .1rem' }}>
-        <p className='fx__animated-text text-uppercase' data-fx-order='3' style={{ marginBottom: 0, fontSize: '.9rem' }}>
+        <p className='fx__animated-text text-uppercase' data-fx-order='3' style={{ marginBottom: '.25rem', fontSize: '.9rem' }}>
           <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>{commodity?.rare ? <span className='text-uppercase muted'>, Rare</span> : undefined}
         </p>
         <p className='text-no-transform muted' style={{ fontSize: '.8rem', marginTop: '.1rem' }}>

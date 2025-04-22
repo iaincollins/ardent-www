@@ -24,6 +24,8 @@ export default function Page (props) {
 
   useEffect(() => {
     (async () => {
+      setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
+
       const commodities_ = commodities ?? await getCommoditiesWithAvgPricing()
 
       const filterByCategory = (router.query?.['commodity-category'])
@@ -36,8 +38,6 @@ export default function Page (props) {
 
       setCommodities(commodities_)
       setCategories(categories_)
-
-      setNavigationPath([{ name: 'COMMODITIES', path: '/commodities' }])
     })()
   }, [router.asPath])
 
@@ -79,7 +79,7 @@ export default function Page (props) {
               </p>
             </>}
           {categories?.length > 1 &&
-            <div className='menu-button-grid' style={{ marginTop: '1rem' }}>
+            <div className='menu-button-grid' style={{ marginTop: '.5rem' }}>
               {categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category =>
                 <Link key={`category-button__${category}`} className='button' href={`/commodities/${category.toLowerCase()}`}>{category}</Link>
               )}

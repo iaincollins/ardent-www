@@ -125,7 +125,8 @@
 
 .header__navigation .button:hover {
   background: var(--color-primary-lightest);
-  border-color: var(--color-primary);
+  border-color: var(--color-primary-lightest);
+  filter: none;
 }
 
 .header__navigation .button .icon {
@@ -133,6 +134,10 @@
   line-height: 1.25rem !important;
   top: -.125rem;
   position: relative;
+}
+
+.header__navigation .button:hover .icon {
+  text-shadow: 0 0 .25rem rgba(30,30,30,.8);
 }
 
 .header__search {

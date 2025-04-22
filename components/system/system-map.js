@@ -29,12 +29,12 @@ module.exports = ({
 
         <div className='system-map__system-objects'>
           {(stationsInSystem === undefined || bodiesInSystem === undefined) &&
-            <p className='loading-bar' style={{ position: 'relative', top: '-.5rem', height: '1.75rem' }} />
+            <p className='loading-bar' style={{ position: 'relative', top: '.25rem', top: '-.25rem', height: '1.75rem' }} />
           }
           {stationsInSystem !== undefined && bodiesInSystem !== undefined && <>
             {bodiesInSystem?.length === 0 && stationsInSystem?.length === 0 &&
               <p className='fx__fade-in text-blink-slow' style={{ height: '1.75rem' }}>
-                <i className='icon icarus-terminal-warning muted' style={{ fontSize: '1.25rem' }} />
+                <i className='icon icarus-terminal-warning muted' style={{ position: 'relative', top: '.1rem', fontSize: '1.25rem' }} />
                 <small>
                   System not scanned
                 </small>

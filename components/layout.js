@@ -12,7 +12,6 @@ export default ({
   loadingText,
   children,
   sidebar = undefined,
-  heading = undefined,
   className = undefined,
   navigation = undefined
 }) =>
@@ -26,25 +25,17 @@ export default ({
     </Head>
     <Loader visible={loading} text={loadingText} />
     <div className={`${sidebar !== undefined ? 'layout__content-wrapper scrollable' : ''} ${className !== undefined ? className : ''}`}>
-      {/* {heading !== undefined && sidebar !== undefined &&
-        <div className='layout__content-heading'>
-          {heading}
-        </div>} */}
       {sidebar !== undefined &&
         <div className={`layout__content layout__content--left-sidebar scrollable ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
           {sidebar}
         </div>}
       <div className={`layout__content scrollable ${sidebar !== undefined ? 'layout__content--right' : ''} ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
-        {/* {heading !== undefined && sidebar === undefined &&
-          <div>
-            {heading}
-          </div>} */}
         {children}
       </div>
       {navigation !== undefined &&
         <div className='navigation-bar'>
           {navigation.map(item =>
-            <Link key={item.url} href={item.url}>
+            <Link key={item.url} href={item.url} className='--no-hover'>
               <button className={`${item?.active === true ? '--active' : ''}`} data-name={item.name}>
                 <i className={`icon ${item.icon}`} />
               </button>

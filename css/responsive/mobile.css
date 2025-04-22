@@ -24,23 +24,34 @@
     line-height: 1.5rem;
   }
 
-  h3 {
-    font-size: 1.25rem;
-    line-height: 1.25rem;
+  h3,
+  h4,
+  h5 {
+    font-size: 1rem;
+    line-height: 1.15rem;
   }
 
-  .heading--with-icon {
+  h2.heading--with-icon {
     padding-left: 2rem;
   }
 
-  .heading--with-icon .icon {
+  h2.heading--with-icon .icon {
     font-size: 1.25rem !important;
   }
 
   .heading--with-underline {
-    padding-bottom: .5rem;
-    mask: linear-gradient(90deg, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0) 100%);
+    border-bottom-width: .15rem;
     mask: none;
+  }
+
+  .heading--with-underline h2 {
+    margin-bottom: .4rem;
+  }
+
+  .heading--with-underline h3,
+  .heading--with-underline h4,
+  .heading--with-underline h5 {
+    margin-bottom: .25rem;
   }
 
   .heading--table {
@@ -151,13 +162,21 @@
     zoom: 1;
     padding-left: .1rem;
   }
-
-  .breadcrumbs li:not(:last-child) {
-    display: none;
+  
+  .breadcrumbs > li > a > span {
+    display: inline-block;
+    position: relative;
+    top: .2rem;
+    max-width: 10rem !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .header__search input {
     transition: 0s !important;
+    background: transparent;
+    border-color: transparent;
+    margin-right: 0;
   }
 
   .header__search input:focus {
@@ -170,6 +189,7 @@
     height: 2rem;
     padding-left: 2.5rem;
     box-shadow: 0 0 1rem black, 0 0 2rem black;
+    animation: fx__fade-in-animation .25s ease-in-out;
   }
 
   .header__search:focus-within .icon {
@@ -178,6 +198,7 @@
     font-size: 1.5rem;
     left: 2rem;
     z-index: 11;
+    animation: fx__fade-in-animation .25s ease-in-out;
   }
 
   .header__search:focus-within .header__search-results {
@@ -195,6 +216,13 @@
   .header__search:focus-within .header__search-results p {
     line-height: 2rem;
     font-size: 1.1rem;
+  }
+  
+  .header__navigation .button {
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
   }
 
   .layout__content-wrapper {

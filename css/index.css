@@ -259,6 +259,7 @@ table.two-column-table>tbody>tr>td,
 
 .counter__number {
   background-color: var(--color-text-inverted);
+  background: linear-gradient(to right, var(--color-primary-darkest), var(--color-text-inverted));
   color: var(--color-primary);
   padding: .25rem .5rem;
   border-radius: 2rem 0 0 2rem;
