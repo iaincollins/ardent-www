@@ -53,7 +53,7 @@
   black 1.25rem,
   black calc(100% - 1.25rem),
   transparent), linear-gradient(black, black);
-mask-size: 100% 100%, .75rem 100%;
+mask-size: 100% 100%, 16px 100%; /* The 16px here matches the width of the scrollbars, so the mask doesn't overlap them */
 mask-position: 0 0, 100% 0;
 mask-repeat: no-repeat, no-repeat;
   /*

@@ -9,10 +9,10 @@ export default () =>
       </h2>
     </div>
     <p className='clear'>
-      The requested resource could not be found.
+      Unable to find requested information.
     </p>
     <p className='clear'>
-      If you require assistance, please contact the helpdesk on Raxxla.
+      If you require assistance, please contact the Raxxla Helpdesk.
     </p>
     <div className='error__text' style={{ left: '3rem' }}>
       <i className='icon icarus-terminal-warning' />

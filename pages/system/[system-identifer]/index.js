@@ -295,15 +295,6 @@ export default () => {
       loadingText='Loading system data'
       title={system ? `${system.systemName} system` : null}
       description={system ? `Data for the system ${system.systemName} in Elite Dangerous` : null}
-      heading={
-        system?.systemName
-          ? <div className='heading--with-underline' style={{ marginBottom: 0 }}>
-            <h2 className='heading--with-icon'>
-              <i className='icon icarus-terminal-system-orbits' /><span className='text-no-transform'>{system?.systemName}</span>
-            </h2>
-          </div>
-          : ''
-      }
       navigation={[
         {
           name: 'Map',

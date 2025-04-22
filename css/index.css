@@ -269,16 +269,11 @@ table.two-column-table>tbody>tr>td,
 }
 
 .error__text {
-  position: fixed;
-  top: calc(50vh - 1rem);
-  left: 0;
-  width: calc(100% - 5rem);
-  padding: 1rem 1rem;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 3000;
-  pointer-events: none; */
+  position: absolute;
+  top: 50%;
+  left: 0 !important;
+  width: 100%;
+  display: block;
   text-align: center;
   font-family: 'Jura';
   font-weight: bold;
@@ -287,6 +282,7 @@ table.two-column-table>tbody>tr>td,
   line-height: 1.25rem;
   background: linear-gradient(to right, transparent 30%, rgba(0,0,0,.25) 40%, transparent 70%);
   z-index: 100;
+  padding: 1rem 0;
 }
 
 .error__text .icon {
