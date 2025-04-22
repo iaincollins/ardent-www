@@ -20,7 +20,7 @@
   font-weight: bold;
   pointer-events: all;
   margin: 0;
-  background: linear-gradient(to left, var(--color-primary-dark), var(--color-primary-darkest));
+  background: linear-gradient(to left, var(--color-primary-dark) 1rem, var(--color-primary-darkest));
 }
 
 .breadcrumbs li > a,
