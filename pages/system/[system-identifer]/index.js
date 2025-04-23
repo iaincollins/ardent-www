@@ -67,18 +67,18 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      if (system !== undefined && systemStatus !== undefined) {
-            setLoading(false)
-          }
+      if (system !== undefined) {
+        setLoading(false)
+      }
     })()
   })
 
   useEffect(() => {
     (async () => {
+      setNavigationPath([{ name: '…', path: '/', icon: 'icarus-terminal-system-orbits' }])
       setLoading(true)
-      const systemIdentifer = router.query?.['system-identifer']?.replaceAll('_', ' ')?.trim()
-      if (!systemIdentifer) return
 
+      setSystem(undefined)
       setStationsInSystem(undefined)
       setSettlementsInSystem(undefined)
       setFleetCarriersInSystem(undefined)
@@ -90,6 +90,9 @@ export default () => {
       setBodiesInSystem(undefined)
       setSystemStatus(undefined)
       setNearestServices(undefined)
+      
+      const systemIdentifer = router.query?.['system-identifer']?.replaceAll('_', ' ')?.trim()
+      if (!systemIdentifer) return
 
       let mostRecentUpdatedAt
 

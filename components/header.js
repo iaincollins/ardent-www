@@ -152,7 +152,7 @@ export default () => {
                 setCommoditySearchResults(undefined)
                 setSystemSearchResults(undefined)
               }}
-              onMouseEnter={(e) => document.getElementById('header-search').focus()}
+              // onMouseEnter={(e) => document.getElementById('header-search').focus()}
               onChange={async (e) => {
                 const searchText = e.target.value.trim()
 

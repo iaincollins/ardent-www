@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import factionStates from 'lib/utils/faction-states'
+import distance from 'lib/utils/distance'
 
 const SYSTEM_MAP_POINT_PLOT_MULTIPLIER = 50
 
@@ -148,14 +149,17 @@ module.exports = ({
 
       </div>
       <div className='system-map'>
-        <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />
+        <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />  
+        {system && nearbySystems === undefined && <div className='system-map__scanner'/>}
+        {/* <div className={`system-map__scanner${(!system || nearbySystems !== undefined) ? '--stopped' : ''}`}/> */}
         {nearbySystems && nearbySystems.map((nearbySystem, i) =>
           <div
-            key={nearbySystem.systemAddress} className='system-map__point'
+            key={nearbySystem.systemAddress}
+            className='system-map__point'
             onClick={() => router.push(`/system/${nearbySystem.systemName.replaceAll(' ', '_')}`)}
             data-name={nearbySystem.systemName}
             style={{
-              animationDelay: `${i * 10}ms`,
+              // animationDelay: `${distance([nearbySystem.systemX, nearbySystem.systemY, nearbySystem.systemZ],[system.systemX, system.systemY, system.systemZ]) * 1000}ms`,
               top: nearbySystem.systemZ > system.systemZ ? `calc(50% + ${(nearbySystem.systemZ - system.systemZ) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)` : `calc(50% - ${(system.systemZ - nearbySystem.systemZ) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)`, // Z
               left: nearbySystem.systemX > system.systemX ? `calc(50% + ${(nearbySystem.systemX - system.systemX) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)` : `calc(50% - ${(system.systemX - nearbySystem.systemX) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)`// X
             }}

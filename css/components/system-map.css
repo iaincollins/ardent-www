@@ -125,9 +125,42 @@
   top: -.1rem;
 }
 
+.system-map__scanner,
+.system-map__scanner--stopped {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  display: block;
+  border-radius: 100rem;
+  aspect-ratio: 1;
+  animation: system-map__scanner-animation 2s ease-in-out infinite;
+  background: radial-gradient(transparent 30%, var(--color-primary-darker) 70%);
+  pointer-events: none;
+}
+
+.system-map__scanner--stopped {
+  animation-iteration-count: 1;
+}
+
+@keyframes system-map__scanner-animation {
+  from {
+    visibility: visible;
+    opacity: 1;
+    width: 0vw;
+  }
+
+  to {
+    visibility: visible;
+    opacity: 0;
+    width: 100vw;
+  }
+}
+
 .system-map__point {
   position: absolute;
-  opacity: 0;
+  opacity: 1;
   animation: system-map__point-fade-in-animation .5s ease-in-out;
   animation-fill-mode: forwards;
   filter: blur(.025rem);
@@ -185,7 +218,7 @@
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.4rem), calc(100% - 0.4rem) 100%, 0 100%);
   border-radius: .2rem;
 }
-x
+
 .system-map__point:hover {
   opacity: 1 !important;
   z-index: 10;

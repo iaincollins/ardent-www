@@ -1,8 +1,6 @@
 
 .loading-bar {
   height: 1rem;
-  background-color: #444;
-  background: linear-gradient(to right, transparent, var(--color-primary-darkest), transparent);
   width: 100%;
   overflow: hidden;
   margin: .5rem 0;

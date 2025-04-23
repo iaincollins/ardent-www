@@ -8,6 +8,18 @@ import { API_BASE_URL, SIGN_IN_URL, SIGN_OUT_URL } from 'lib/consts'
 import { loadCache, saveCache, deleteCache } from 'lib/cache'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 
+const SERVICE_STATION_TYPES = [
+  'Coriolis',
+  'Ocellus',
+  'Orbis',
+  'AsteroidBase',
+  'Outpost',
+  'MegaShip',
+  'StrongholdCarrier',
+  'CraterPort',
+  'CraterOutpost',
+]
+
 export default () => {
   const [signedIn, setSignedIn] = useState()
   const [csrfToken, setCsrfToken] = useState()
@@ -139,9 +151,9 @@ export default () => {
                               <tr><th className='text-left'>{service}</th></tr>
                               <tr>
                                 <td style={{ paddingBottom: '1rem', paddingTop: 0, background: 'rgba(0,0,0,.25)' }}>
-                                  {nearestServices[service]?.filter(s => s.stationType && s.stationType !== 'FleetCarrier')?.filter(s => s.distance === 0)?.length > 0 &&
-                                    <small style={{ display: 'block', marginTop: '.5rem' }}>In system</small>}
-                                  {nearestServices[service]?.filter(s => s.stationType && s.stationType !== 'FleetCarrier')?.splice(0, 1)?.filter(s => s.distance === 0)?.map(station =>
+                                  {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.filter(s => s.distance === 0)?.length > 0 &&
+                                    <small style={{ display: 'block', marginTop: '.5rem' }}>Station in system</small>}
+                                  {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.splice(0, 1)?.filter(s => s.distance === 0)?.map(station =>
                                     <Fragment key={`in_system_service_${service}_${station}`}>
                                       <p style={{ margin: '.5rem 0 0 0' }}>
                                         <StationIcon station={station}>
@@ -151,15 +163,15 @@ export default () => {
                                         </StationIcon>
                                       </p>
                                     </Fragment>)}
-                                  {nearestServices[service]?.filter(s => s.stationType && s.stationType !== 'FleetCarrier').filter(s => s.distance > 0)?.length > 0 &&
-                                    <small style={{ display: 'block', marginTop: '.5rem' }}>Next nearest system</small>}
-                                  {nearestServices[service]?.filter(s => s.stationType && s.stationType !== 'FleetCarrier')?.filter(s => s.distance > 0)?.splice(0, 1)?.map(station =>
+                                  {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType)).filter(s => s.distance > 0)?.length > 0 &&
+                                    <small style={{ display: 'block', marginTop: '.5rem' }}>Nearest station</small>}
+                                  {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.filter(s => s.distance > 0)?.splice(0, 1)?.map(station =>
                                     <Fragment key={`nearest_service_${service}_${station.stationName}`}>
                                       <p style={{ margin: '.5rem 0 0 0' }}>
                                         <StationIcon station={station}>
                                           {station.stationName}
                                           <br />
-                                          <Link className='muted' style={{ fontSize: '.9rem' }} href={`/system/${station.systemName.replaceAll(' ', '_')}`}>{station.bodyName ? station.bodyName : station.systemName}</Link>
+                                          <Link className='muted' style={{ fontSize: '.9rem' }} href={`/system/${station.systemName.replaceAll(' ', '_')}`}>{station.systemName}</Link>
                                           <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
                                         </StationIcon>
                                       </p>
@@ -174,10 +186,8 @@ export default () => {
                                             <StationIcon station={station}>
                                               {station.stationName}
                                               <br />
-                                              <Link className='muted' style={{ fontSize: '.9rem' }} href={`/system/${station.systemName.replaceAll(' ', '_')}`}>{station.bodyName ? station.bodyName : station.systemName}</Link>
-                                              {station.distance > 0
-                                                ? <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
-                                                : <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>}
+                                              <Link className='muted' style={{ fontSize: '.9rem' }} href={`/system/${station.systemName.replaceAll(' ', '_')}`}>{station.systemName}</Link>
+                                              <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
                                               <br />{station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                                             </StationIcon>
                                           </p>
