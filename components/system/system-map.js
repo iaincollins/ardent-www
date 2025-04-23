@@ -1,7 +1,9 @@
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import factionStates from 'lib/utils/faction-states'
 import distance from 'lib/utils/distance'
+import { scanSystemSound } from 'lib/sounds'
 
 const SYSTEM_MAP_POINT_PLOT_MULTIPLIER = 50
 
@@ -17,6 +19,10 @@ module.exports = ({
   lastUpdatedAt
 }) => {
   const router = useRouter()
+
+  useEffect(() => {
+    scanSystemSound()
+  }, [])
 
   return (
     <div className='fx__fade-in' style={{ position: 'relative' }}>
@@ -150,8 +156,8 @@ module.exports = ({
       </div>
       <div className='system-map'>
         <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />  
-        {system && nearbySystems === undefined && <div className='system-map__scanner'/>}
-        {/* <div className={`system-map__scanner${(!system || nearbySystems !== undefined) ? '--stopped' : ''}`}/> */}
+        {/* {system && nearbySystems === undefined && <div className='system-map__scanner'/>} */}
+        <div className={`system-map__scanner${(!system || nearbySystems !== undefined) ? '--stopped' : ''}`}/> 
         {nearbySystems && nearbySystems.map((nearbySystem, i) =>
           <div
             key={nearbySystem.systemAddress}

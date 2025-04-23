@@ -45,8 +45,8 @@ module.exports = ({ system, nearestServices }) => {
                               triggerWhenOpen={<p className='muted text-uppercase' style={{ display: 'block', margin: '.5rem 0 0 0' }}><CollapsibleTrigger open><span style={{ fontSize: '.8rem' }}>Stations in system</span></CollapsibleTrigger></p>}
                             >
                               {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.filter(s => s.distance === 0)?.map(station =>
-                                <Fragment key={`in_system_service_${service}_${station}`}>
-                                  <p style={{ padding: '.25rem .25rem 0 .25rem', display: 'inline-block' }}>
+                                <Fragment key={`in_system_service_${service}_${station.marketId}`}>
+                                  <p style={{ padding: '.25rem .25rem 0 .25rem', marginBottom: '.25rem', display: 'inline-block' }}>
                                     <StationIcon station={station}>
                                       {station.stationName}
                                       <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>
@@ -58,12 +58,12 @@ module.exports = ({ system, nearestServices }) => {
                           {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType)).filter(s => s.distance > 0)?.length > 0 &&
                             <Collapsible
                               open
-                              trigger={<p className='muted text-uppercase' style={{ display: 'block', margin: '.5rem 0 0 0' }}><CollapsibleTrigger><span style={{ fontSize: '.8rem' }}>Nearest stations</span></CollapsibleTrigger></p>}
-                              triggerWhenOpen={<p className='muted text-uppercase' style={{ display: 'block', margin: '.5rem 0 0 0' }}><CollapsibleTrigger open><span style={{ fontSize: '.8rem' }}>Nearest stations</span></CollapsibleTrigger></p>}
+                              trigger={<p className='muted text-uppercase' style={{ display: 'block', margin: '.5rem 0 0 0' }}><CollapsibleTrigger><span style={{ fontSize: '.8rem' }}>Next nearest stations</span></CollapsibleTrigger></p>}
+                              triggerWhenOpen={<p className='muted text-uppercase' style={{ display: 'block', margin: '.5rem 0 0 0' }}><CollapsibleTrigger open><span style={{ fontSize: '.8rem' }}>Next nearest stations</span></CollapsibleTrigger></p>}
                             >
                               {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.filter(s => s.distance > 0)?.splice(0, 5)?.map(station =>
-                                <Fragment key={`nearest_service_${service}_${station.stationName}`}>
-                                  <p style={{ padding: '.25rem .25rem 0 .25rem', display: 'inline-block' }}>
+                                <Fragment key={`nearest_service_${service}_${station.marketId}`}>
+                                  <p style={{ padding: '.25rem .25rem 0 .25rem', marginBottom: '.25rem', display: 'inline-block' }}>
                                     <StationIcon station={station}>
                                       {station.stationName}
                                       <br />
@@ -80,8 +80,8 @@ module.exports = ({ system, nearestServices }) => {
                               triggerWhenOpen={<p className='muted text-uppercase' style={{ display: 'block', margin: '.5rem 0 0 0' }}><CollapsibleTrigger open><span style={{ fontSize: '.8rem' }}>Nearest Fleet Carriers</span></CollapsibleTrigger></p>}
                             >
                               {nearestServices[service]?.filter(s => s.stationType === 'FleetCarrier')?.sort((a, b) => b?.updatedAt?.localeCompare(a?.updatedAt))?.splice(0, 5)?.map(station =>
-                                <Fragment key={`nearest_service_${service}_${station.stationName}`}>
-                                  <p style={{ padding: '.25rem .25rem 0 .25rem', display: 'inline-block' }}>
+                                <Fragment key={`nearest_service_${service}_${station.marketId}`}>
+                                  <p style={{ padding: '.25rem .25rem 0 .25rem', marginBottom: '.25rem', display: 'inline-block' }}>
                                     <StationIcon station={station}>
                                       {station.stationName}
                                       <br />

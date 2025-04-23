@@ -12,6 +12,7 @@ import listOfCommodities from 'lib/commodities/commodities.json'
 import animateTableEffect from 'lib/animate-table-effect'
 import { NavigationContext } from 'lib/context'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
+import { playLoadingSound } from 'lib/sounds'
 
 import {
   API_BASE_URL,
@@ -50,6 +51,8 @@ export default () => {
   }, [router.pathname])
 
   async function getImportsAndExports () {
+    playLoadingSound()
+
     // Can't reliably get this from the the route.query object
     const commodityName = window.location.pathname.split('/')[2]
     if (!commodityName) return

@@ -15,6 +15,7 @@ import getSystemImports from 'lib/system-imports'
 import listOfCommodities from 'lib/commodities/commodities.json'
 import { NavigationContext } from 'lib/context'
 import systemIdentiferIsSystemAddress from 'lib/utils/system-identifer-is-system-address'
+import { playLoadingSound } from 'lib/sounds'
 
 import {
   API_BASE_URL,
@@ -60,23 +61,22 @@ export default () => {
 
   useEffect(animateTableEffect)
 
-  useEffect(() => {
+  useEffect(() => 
+  {
     const basePath = path.basename(router.pathname)
     setActiveViewIndex(views.indexOf(basePath) === -1 ? 0 : views.indexOf(basePath))
+    playLoadingSound()
   }, [router.pathname])
 
   useEffect(() => {
-    (async () => {
-      if (system !== undefined) {
-        setLoading(false)
-      }
-    })()
+    if (system !== undefined) setLoading(false)
   })
 
   useEffect(() => {
     (async () => {
       setNavigationPath([{ name: '…', path: '/', icon: 'icarus-terminal-system-orbits' }])
       setLoading(true)
+      setTimeout(playLoadingSound, 1500)
 
       setSystem(undefined)
       setStationsInSystem(undefined)
@@ -96,31 +96,31 @@ export default () => {
 
       let mostRecentUpdatedAt
 
-      const system = await getSystem(systemIdentifer)
-      if (system) {
-        mostRecentUpdatedAt = system.updatedAt
+      const _system = await getSystem(systemIdentifer)
+      if (_system) {
+        mostRecentUpdatedAt = _system.updatedAt
         setLastUpdatedAt(mostRecentUpdatedAt)
-        const systemCoordinates = [system.systemX, system.systemY, system.systemZ]
+        const systemCoordinates = [_system.systemX, _system.systemY, _system.systemZ]
         if (distance(systemCoordinates, SOL_COORDINATES) <= 200) {
-          system.tradeZone = 'Core Systems'
-          if (system.systemName === 'Sol') {
-            system.tradeZoneLocation = 'Centre of the Core Systems'
+          _system.tradeZone = 'Core Systems'
+          if (_system.systemName === 'Sol') {
+            _system.tradeZoneLocation = 'Centre of the Core Systems'
           } else {
-            system.tradeZoneLocation = `${distance(systemCoordinates, SOL_COORDINATES)} ly from Sol`
+            _system.tradeZoneLocation = `${distance(systemCoordinates, SOL_COORDINATES)} ly from Sol`
           }
         } else if (distance(systemCoordinates, SOL_COORDINATES) <= 400) {
-          system.tradeZone = 'Core Periphery'
-          system.tradeZoneLocation = `${distance(systemCoordinates, SOL_COORDINATES)} ly from Sol`
+          _system.tradeZone = 'Core Periphery'
+          _system.tradeZoneLocation = `${distance(systemCoordinates, SOL_COORDINATES)} ly from Sol`
         } else if (distance(systemCoordinates, COLONIA_COORDINATES) <= 100) {
-          system.tradeZone = 'Colonia Region'
-          if (system.systemName === 'Colonia') {
-            system.tradeZoneLocation = `${distance(systemCoordinates, SOL_COORDINATES)} ly from the Core Systems`
+          _system.tradeZone = 'Colonia Region'
+          if (_system.systemName === 'Colonia') {
+            _system.tradeZoneLocation = `${distance(systemCoordinates, SOL_COORDINATES)} ly from the Core Systems`
           } else {
-            system.tradeZoneLocation = `${distance(systemCoordinates, COLONIA_COORDINATES)} ly from Colonia`
+            _system.tradeZoneLocation = `${distance(systemCoordinates, COLONIA_COORDINATES)} ly from Colonia`
           }
         } else {
-          system.tradeZone = 'Deep Space'
-          system.tradeZoneLocation = (
+          _system.tradeZone = 'Deep Space'
+          _system.tradeZoneLocation = (
             <>
               {`${distance(systemCoordinates, SOL_COORDINATES)} ly from Sol`}
               <br />
@@ -130,11 +130,11 @@ export default () => {
             </>
           )
         }
-        setSystem(system)
+        setSystem(_system)
 
-        setNavigationPath([{ name: system.systemName, path: '/', icon: 'icarus-terminal-system-orbits' }])
+        setNavigationPath([{ name: _system.systemName, path: '/', icon: 'icarus-terminal-system-orbits' }])
         ; (async () => {
-          const stations = await getStationsInSystem(system.systemAddress)
+          const stations = await getStationsInSystem(_system.systemAddress)
           setStationsInSystem(
             stations
             // .filter( station =>
@@ -173,12 +173,12 @@ export default () => {
         })()
 
         ; (async () => {
-          const _systemStatus = await getSystemStatus(system.systemAddress)
+          const _systemStatus = await getSystemStatus(_system.systemAddress)
           setSystemStatus(_systemStatus ?? [])
         })()
 
         ; (async () => {
-          const _bodiesInSystem = await getBodiesInSystem(system.systemAddress)
+          const _bodiesInSystem = await getBodiesInSystem(_system.systemAddress)
           setBodiesInSystem(_bodiesInSystem ?? [])
         })()
 
@@ -189,10 +189,10 @@ export default () => {
             shipyard,
             blackMarket
           ] = await Promise.all([
-            getNearestService(system.systemAddress, 'interstellar-factors'),
-            getNearestService(system.systemAddress, 'universal-cartographics'),
-            getNearestService(system.systemAddress, 'shipyard'),
-            getNearestService(system.systemAddress, 'black-market')
+            getNearestService(_system.systemAddress, 'interstellar-factors'),
+            getNearestService(_system.systemAddress, 'universal-cartographics'),
+            getNearestService(_system.systemAddress, 'shipyard'),
+            getNearestService(_system.systemAddress, 'black-market')
           ])
           setNearestServices({
             'Interstellar Factors': interstellarFactors,
@@ -203,10 +203,10 @@ export default () => {
         })()
 
         ; (async () => {
-          const nearbySystems = await getNearbySystems(system.systemAddress)
+          const nearbySystems = await getNearbySystems(_system.systemAddress)
           nearbySystems.forEach(s => {
             s.distance = distance(
-              [system.systemX, system.systemY, system.systemZ],
+              [_system.systemX, _system.systemY, _system.systemZ],
               [s.systemX, s.systemY, s.systemZ]
             )
           })
@@ -214,7 +214,7 @@ export default () => {
         })()
 
         ; (async () => {
-          let importOrders = await getSystemImports(system.systemAddress)
+          let importOrders = await getSystemImports(_system.systemAddress)
           importOrders.forEach((order, i) => {
             if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
               mostRecentUpdatedAt = order.updatedAt
@@ -233,7 +233,7 @@ export default () => {
         })()
 
         ; (async () => {
-          let importOrders = await getSystemImports(system.systemAddress)
+          let importOrders = await getSystemImports(_system.systemAddress)
           importOrders.forEach((order, i) => {
             if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
               mostRecentUpdatedAt = order.updatedAt
@@ -252,7 +252,7 @@ export default () => {
         })()
 
         ; (async () => {
-          const exportOrders = await getSystemExports(system.systemAddress)
+          const exportOrders = await getSystemExports(_system.systemAddress)
           exportOrders.forEach((order, i) => {
             if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
               mostRecentUpdatedAt = order.updatedAt
@@ -296,6 +296,7 @@ export default () => {
     <Layout
       loading={loading}
       loadingText='Loading system data'
+      loadingSound={false}
       title={system ? `${system.systemName} system` : null}
       description={system ? `Data for the system ${system.systemName} in Elite Dangerous` : null}
       navigation={[

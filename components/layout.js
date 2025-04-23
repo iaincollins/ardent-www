@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Loader from './loader'
+import { useEffect } from 'react'
+import { playLoadingSound } from 'lib/sounds'
 
 const DEFAULT_TITLE = 'Ardent Insight – Trade & Exploration'
 const DEFAULT_DESCRIPTION = 'Ardent Insight provides trade and exploration data for the game Elite Dangerous'
@@ -10,11 +12,20 @@ export default ({
   description = DEFAULT_DESCRIPTION,
   loading = false,
   loadingText,
+  loadingSound = true,
   children,
   sidebar = undefined,
   className = undefined,
   navigation = undefined
-}) =>
+}) => {
+
+  useEffect(() => {
+    ;(() => {
+      if (loadingSound === true) playLoadingSound()
+    })()
+  }, [])
+
+  return (
   <>
     <Head>
       <title>{title ?? DEFAULT_TITLE}</title>
@@ -43,4 +54,5 @@ export default ({
           )}
         </div>}
     </div>
-  </>
+  </>)
+}

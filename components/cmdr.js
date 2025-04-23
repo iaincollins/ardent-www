@@ -164,7 +164,7 @@ export default () => {
                                       </p>
                                     </Fragment>)}
                                   {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType)).filter(s => s.distance > 0)?.length > 0 &&
-                                    <small style={{ display: 'block', marginTop: '.5rem' }}>Nearest station</small>}
+                                    <small style={{ display: 'block', marginTop: '.5rem' }}>Next nearest station</small>}
                                   {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.filter(s => s.distance > 0)?.splice(0, 1)?.map(station =>
                                     <Fragment key={`nearest_service_${service}_${station.stationName}`}>
                                       <p style={{ margin: '.5rem 0 0 0' }}>

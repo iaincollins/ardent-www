@@ -8,6 +8,7 @@ import { getCommoditiesWithAvgPricing } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 import { NavigationContext } from 'lib/context'
+import { playLoadingSound } from 'lib/sounds'
 
 export default function Page (props) {
   const [, setNavigationPath] = useContext(NavigationContext)
@@ -38,6 +39,7 @@ export default function Page (props) {
 
       setCommodities(commodities_)
       setCategories(categories_)
+      playLoadingSound()
     })()
   }, [router.asPath])
 

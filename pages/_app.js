@@ -1,13 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect , useState } from 'react'
 import Head from 'next/head'
 import Header from 'components/header'
 // import { Canvas, useFrame } from '@react-three/fiber'
 import { NavigationContext } from 'lib/context'
 import 'css/index.css'
 import 'public/fonts/icarus-terminal/icarus-terminal.css'
+import { playLoadingSound } from 'lib/sounds'
+
+function handleOnClick (e) {
+  try {
+    if (e.target.nodeName === 'TD' &&
+        e.target.className.includes('rc-table-cell-row-hover') &&
+        e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className.includes('data-table--interactive')
+        ) {
+      playLoadingSound()
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
 
 export default ({ Component, pageProps }) => {
   const [navigationPath, setNavigationPath] = useState([])
+  useEffect(() => {
+    document.body.addEventListener('click', handleOnClick);
+    return () => {
+      document.body.removeEventListener('click', handleOnClick);
+    }
+  }, []);
   return (
     <>
       <Head>

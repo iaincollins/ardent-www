@@ -17,6 +17,7 @@ export default () => {
 
   useEffect(() => {
     setNavigationPath([{ name: 'Welcome CMDR', path: '/' }])
+
     ; (async () => {
       try {
         const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
