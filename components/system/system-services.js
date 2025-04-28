@@ -38,6 +38,10 @@ module.exports = ({ system, nearestServices }) => {
                       <tr><th className='text-left'>{service}</th></tr>
                       <tr>
                         <td style={{ paddingBottom: '1rem', paddingTop: 0, background: 'rgba(0,0,0,.25)' }}>
+                          {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.filter(s => s.distance === 0)?.length === 0 && 
+                            <p>
+                              <small><i className='icon icarus-terminal-warning' style={{position: 'relative', top: '.25rem'}}/>No known {service} in system</small>
+                            </p>}
                           {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.filter(s => s.distance === 0)?.length > 0 &&
                             <Collapsible
                               open
@@ -48,8 +52,9 @@ module.exports = ({ system, nearestServices }) => {
                                 <Fragment key={`in_system_service_${service}_${station.marketId}`}>
                                   <p style={{ padding: '.25rem .25rem 0 .25rem', marginBottom: '.25rem', display: 'inline-block' }}>
                                     <StationIcon station={station}>
-                                      {station.stationName}
+                                      {station.stationName} 
                                       <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>
+                                      <br />{station.updatedAt && <small className='text-no-transform'>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                                     </StationIcon>
                                   </p>
                                 </Fragment>)}
@@ -69,6 +74,7 @@ module.exports = ({ system, nearestServices }) => {
                                       <br />
                                       <Link className='muted' style={{ fontSize: '.9rem' }} href={`/system/${station.systemName.replaceAll(' ', '_')}`}>{station.systemName}</Link>
                                       <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
+                                      <br />{station.updatedAt && <small className='text-no-transform'>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                                     </StationIcon>
                                   </p>
                                 </Fragment>)}
@@ -87,7 +93,7 @@ module.exports = ({ system, nearestServices }) => {
                                       <br />
                                       <Link className='muted' style={{ fontSize: '.9rem' }} href={`/system/${station.systemName.replaceAll(' ', '_')}`}>{station.systemName}</Link>
                                       <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
-                                      <br />{station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
+                                      <br />{station.updatedAt && <small className='text-no-transform'>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                                     </StationIcon>
                                   </p>
                                 </Fragment>)}

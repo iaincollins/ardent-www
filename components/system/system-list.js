@@ -46,13 +46,13 @@ module.exports = ({
                 {objectsInSystem === undefined &&
                   <tr>
                     <td colSpan={3} style={{ padding: 0 }}>
-                      <div className='loading-bar' style={{margin: 0}}/>
+                      <div className='loading-bar' style={{ margin: 0 }} />
                     </td>
                   </tr>}
                 {objectsInSystem !== undefined && objectsInSystem?.length === 0 &&
                   <tr>
                     <td colSpan={3} className='text-uppercase muted'>
-                       No location data
+                      No location data
                     </td>
                   </tr>}
                 <SystemObjects objects={objectsInSystem} />
@@ -61,7 +61,7 @@ module.exports = ({
           </div>
         </div>
       </div>
-      <p className='text-center' style={{marginBottom: 0}}>
+      <p className='text-center' style={{ marginBottom: 0 }}>
         <small className='text-center'>Station orbital locations are approximate based on the latest available telemetry</small>
       </p>
     </div>
@@ -73,38 +73,43 @@ function SystemObjects({ objects, depth = 0 }) {
     return (
       <Fragment key={`object-in-system-row-${depth}-${i}-${systemObject?.stationType ?? systemObject?.bodyType}-${systemObject?.stationName ?? systemObject?.bodyName}`}>
         <tr className='rc-table-row rc-table-row-level-0 --visible'>
-          <td className='max-width-mobile' style={{paddingLeft: '.25rem'}}>
+          <td className='max-width-mobile' style={{ paddingLeft: '.25rem' }}>
             <div style={{ display: 'inline-block', paddingLeft: `${depth}rem` }}>
               {systemObject?.bodyType === 'Null' && <>✕— </>}
-              {(systemObject?.bodyType === 'Planet' || systemObject?.bodyType === 'Star') && 
+              {(systemObject?.bodyType === 'Planet' || systemObject?.bodyType === 'Star') &&
                 <SystemObjectIcon systemObject={systemObject}>
                   {systemObject.bodyName}
-                  {systemObject?.subType !== undefined && systemObject?.subType !== null &&
-                    <small><br/>{systemObject.subType}</small>}
                   {systemObject?.distanceToArrival !== undefined > 0 &&
                     <small className='is-visible-mobile text-no-transform'>
-                      {systemObject?.subType !== undefined && systemObject?.subType !== null && ', '}
                       {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls
-                      {systemObject?.updatedAt !== undefined && <><br />Updated {timeBetweenTimestamps(systemObject.updatedAt)} ago</>}
                     </small>}
-                  </SystemObjectIcon>}
+                  {systemObject?.subType !== undefined && systemObject?.subType !== null &&
+                    <small><br />{systemObject.subType}</small>}
+                  {systemObject?.updatedAt !== undefined &&
+                    <small className='is-visible-mobile text-no-transform'>
+                      <br />{timeBetweenTimestamps(systemObject.updatedAt)} ago
+                    </small>}
+                </SystemObjectIcon>}
               {systemObject?.stationType !== undefined && <>
                 <StationIcon station={systemObject}>
                   {systemObject.stationName}
-                  {systemObject?.primaryEconomy !== undefined && systemObject?.primaryEconomy !== 'Fleet Carrier' &&
-                    <small>
-                      <br/>
-                      {systemObject?.primaryEconomy !== undefined && systemObject?.primaryEconomy !== 'Fleet Carrier' &&
-                        <> {systemObject.primaryEconomy}</>}
-                      {systemObject?.secondaryEconomy !== undefined && systemObject?.secondaryEconomy !== null && systemObject?.secondaryEconomy !== systemObject?.primaryEconomy &&
-                        <>, {systemObject.secondaryEconomy}</>}
-                    </small>}
-                  {(systemObject?.primaryEconomy === 'Fleet Carrier' || systemObject?.fleetCarrier !== undefined) && <small><br/>Fleet Carrier</small>}
                   {systemObject?.distanceToArrival !== undefined > 0 &&
                     <small className='is-visible-mobile text-no-transform'>
-                      {(systemObject?.primaryEconomy !== undefined || (systemObject?.primaryEconomy === 'Fleet Carrier' || systemObject?.fleetCarrier !== undefined))  && ', '}
                       {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls
-                      {systemObject?.updatedAt !== undefined && <><br />Updated {timeBetweenTimestamps(systemObject.updatedAt)} ago</>}
+                    </small>}
+                  <small>
+                    <br />
+                    {systemObject?.primaryEconomy !== undefined && systemObject?.primaryEconomy !== null &&
+                      <>
+                        {systemObject.primaryEconomy}
+                        {systemObject?.secondaryEconomy !== undefined && systemObject?.secondaryEconomy !== null && systemObject?.secondaryEconomy !== systemObject?.primaryEconomy &&
+                          <>, {systemObject.secondaryEconomy}</>}
+                      </>}
+                    {systemObject?.stationType === 'FleetCarrier' && 'Fleet Carrier'}
+                  </small>
+                  {systemObject?.updatedAt !== undefined &&
+                    <small className='is-visible-mobile text-no-transform'>
+                      <br />{timeBetweenTimestamps(systemObject.updatedAt)} ago
                     </small>}
                 </StationIcon>
               </>}

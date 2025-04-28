@@ -38,7 +38,12 @@ module.exports = ({
           {(stationsInSystem === undefined || bodiesInSystem === undefined) &&
             <p className='loading-bar' style={{ position: 'relative', top: '.25rem', top: '-.25rem', height: '1.75rem' }} />
           }
-          {stationsInSystem !== undefined && bodiesInSystem !== undefined && <>
+          {bodiesInSystem !== undefined && 
+            stationsInSystem !== undefined && 
+            settlementsInSystem !== undefined && 
+            megashipsInSystem !== undefined && 
+            fleetCarriersInSystem !== undefined && 
+            <>
             {bodiesInSystem?.length === 0 && stationsInSystem?.length === 0 &&
               <p className='fx__fade-in text-blink-slow' style={{ height: '1.75rem' }}>
                 <i className='icon icarus-terminal-warning muted' style={{ position: 'relative', top: '.1rem', fontSize: '1.25rem' }} />
@@ -46,32 +51,30 @@ module.exports = ({
                   System not scanned
                 </small>
               </p>}
-            {system?.systemName !== 'HIP 10160' && <>
-              {bodiesInSystem?.filter(b => b.bodyType === 'Star')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-star' /> {bodiesInSystem?.filter(b => b.bodyType === 'Star')?.length}</p>}
-              {bodiesInSystem?.filter(b => b.bodyType === 'Planet')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-planet' /> {bodiesInSystem?.filter(b => b.bodyType === 'Planet')?.length}</p>}
-              {stationsInSystem?.filter(s => s.stationType === 'Orbis')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-orbis-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Orbis')?.length}</p>}
-              {stationsInSystem?.filter(s => s.stationType === 'Coriolis')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-coriolis-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Coriolis')?.length}</p>}
-              {stationsInSystem?.filter(s => s.stationType === 'Ocellus')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-ocellus-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Ocellus')?.length}</p>}
-              {stationsInSystem?.filter(s => s.stationType === 'AsteroidBase')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-asteroid-base' /> {stationsInSystem?.filter(s => s.stationType === 'AsteroidBase')?.length}</p>}
-              {stationsInSystem?.filter(s => s.stationType === 'Outpost')?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-outpost' /> {stationsInSystem?.filter(s => s.stationType === 'Outpost')?.length}</p>}
-              {stationsInSystem?.filter(s => (s.stationType === 'CraterPort' || s.stationType === 'CraterOutpost'))?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-planetary-port' /> {stationsInSystem?.filter(s => (s.stationType === 'CraterPort' || s.stationType === 'CraterOutpost'))?.length}</p>}
-              {settlementsInSystem?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-settlement' /> {settlementsInSystem.length}</p>}
-              {megashipsInSystem?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-megaship' /> {megashipsInSystem.length}</p>}
-              {fleetCarriersInSystem?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-fleet-carrier' /> {fleetCarriersInSystem.length}</p>}
-              {stationsInSystem?.filter(s => (s.stationType === 'PlanetaryConstructionDepot' || s.stationType === 'SpaceConstructionDepot' || s.stationType === 'SurfaceStation'))?.length > 0 &&
-                <p className='fx__fade-in'><i className='icon icarus-terminal-poi-empty' /> {stationsInSystem.filter(s => (s.stationType === 'PlanetaryConstructionDepot' || s.stationType === 'SpaceConstructionDepot' || s.stationType === 'SurfaceStation')).length}</p>}
-            </>}
+            {bodiesInSystem?.filter(b => b.bodyType === 'Star')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-star' /> {bodiesInSystem?.filter(b => b.bodyType === 'Star')?.length}</p>}
+            {bodiesInSystem?.filter(b => b.bodyType === 'Planet')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-planet' /> {bodiesInSystem?.filter(b => b.bodyType === 'Planet')?.length}</p>}
+            {stationsInSystem?.filter(s => s.stationType === 'Orbis')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-orbis-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Orbis')?.length}</p>}
+            {stationsInSystem?.filter(s => s.stationType === 'Coriolis')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-coriolis-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Coriolis')?.length}</p>}
+            {stationsInSystem?.filter(s => s.stationType === 'Ocellus')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-ocellus-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Ocellus')?.length}</p>}
+            {stationsInSystem?.filter(s => s.stationType === 'AsteroidBase')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-asteroid-base' /> {stationsInSystem?.filter(s => s.stationType === 'AsteroidBase')?.length}</p>}
+            {stationsInSystem?.filter(s => s.stationType === 'Outpost')?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-outpost' /> {stationsInSystem?.filter(s => s.stationType === 'Outpost')?.length}</p>}
+            {stationsInSystem?.filter(s => (s.stationType === 'CraterPort' || s.stationType === 'CraterOutpost'))?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-planetary-port' /> {stationsInSystem?.filter(s => (s.stationType === 'CraterPort' || s.stationType === 'CraterOutpost'))?.length}</p>}
+            {settlementsInSystem?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-settlement' /> {settlementsInSystem.length}</p>}
+            {megashipsInSystem?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-megaship' /> {megashipsInSystem.length}</p>}
+            {fleetCarriersInSystem?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-fleet-carrier' /> {fleetCarriersInSystem.length}</p>}
+            {stationsInSystem?.filter(s => (s.stationType === 'PlanetaryConstructionDepot' || s.stationType === 'SpaceConstructionDepot' || s.stationType === 'SurfaceStation'))?.length > 0 &&
+              <p className='fx__fade-in'><i className='icon icarus-terminal-poi-empty' /> {stationsInSystem.filter(s => (s.stationType === 'PlanetaryConstructionDepot' || s.stationType === 'SpaceConstructionDepot' || s.stationType === 'SurfaceStation')).length}</p>}
           </>
           }
         </div>
@@ -155,9 +158,9 @@ module.exports = ({
 
       </div>
       <div className='system-map'>
-        <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />  
+        <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />
         {/* {system && nearbySystems === undefined && <div className='system-map__scanner'/>} */}
-        <div className={`system-map__scanner${(!system || nearbySystems !== undefined) ? '--stopped' : ''}`}/> 
+        <div className={`system-map__scanner${(!system || nearbySystems !== undefined) ? '--stopped' : ''}`} />
         {nearbySystems && nearbySystems.map((nearbySystem, i) =>
           <div
             key={nearbySystem.systemAddress}
