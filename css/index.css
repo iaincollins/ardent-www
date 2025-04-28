@@ -185,7 +185,7 @@ table.two-column-table>tbody>tr>td,
   opacity: 1;
   background: var(--color-primary-dark);
   border-radius: 2rem;
-  padding: 0 .25rem .075rem .25rem;
+  padding: 0 .5rem .075rem .5rem;
 }
 
 .commodity__price.text-positive {

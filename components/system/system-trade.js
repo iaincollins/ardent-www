@@ -108,8 +108,8 @@ module.exports = ({
                                 <span className='data-table__label'>Price</span>
                                 {r.avgPrice.toLocaleString()} CR
                                 <br />
-                                {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
-                                {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
+                                {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-negative'>-{(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
+                                {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-positive'>+{(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
                               </td>
                             </tr>
                           </tbody>
@@ -156,8 +156,8 @@ module.exports = ({
                     <>
                       {v.toLocaleString()} CR
                       <br />
-                      {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
-                      {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
+                      {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-negative'>-{(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
+                      {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-positive'>+{(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
                     </>
                 }
               ]}
@@ -224,8 +224,8 @@ module.exports = ({
                                 <span className='data-table__label'>Price</span>
                                 {r.avgPrice.toLocaleString()} CR
                                 <br />
-                                {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
-                                {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
+                                {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-positive'>+{(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
+                                {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-negative'>-{(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
                               </td>
                             </tr>
                           </tbody>
@@ -272,8 +272,8 @@ module.exports = ({
                     <>
                       {v.toLocaleString()} CR
                       <br />
-                      {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-positive'>+ {(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
-                      {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-negative'>- {(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
+                      {r.galacticAvgPrice > 0 && r.avgPrice > r.galacticAvgPrice && <small className='commodity__price text-positive'>+{(r.avgPrice - r.galacticAvgPrice).toLocaleString()} CR</small>}
+                      {r.avgPrice < r.galacticAvgPrice && <small className='commodity__price text-negative'>-{(r.galacticAvgPrice - r.avgPrice).toLocaleString()} CR</small>}
                     </>
                 }
               ]}

@@ -20,14 +20,23 @@ export default () => {
   const [searchResults, setSearchResults] = useState()
   const [hilightedSearchResult, setHilightedSearchResult] = useState()
   const [searchResultsVisible, setSearchResultsVisible] = useState(false)
+  const [menuVisible, setMenuVisible] = useState(false)
   const [dateTime, setDateTime] = useState()
 
+  const toggleMenu = () => setMenuVisible(!menuVisible)
+
   useEffect(() => {
+    const onFullScreenChangeHandler = (event) => setFullScreenState(isFullScreen())
     document.addEventListener('fullscreenchange', onFullScreenChangeHandler)
-    return () => document.removeEventListener('click', onFullScreenChangeHandler)
-    function onFullScreenChangeHandler(event) {
-      setFullScreenState(isFullScreen())
+    return () => document.removeEventListener('fullscreenchange', onFullScreenChangeHandler)
+  }, [])
+
+  useEffect(() => {
+    const hideMenuHandler = (event) => {
+      if (event?.target?.id !== 'header-menu-toggle') setMenuVisible(false)
     }
+    document.addEventListener('click', hideMenuHandler)
+    return () => document.removeEventListener('click', hideMenuHandler)
   }, [])
 
   useEffect(() => {
@@ -276,10 +285,22 @@ export default () => {
           </div>
         </div>
         <Link href='/' className='--no-hover'><button aria-label='Home' className='button'><i className='icon icarus-terminal-home' /></button></Link>
-        <Link href='/commodity/advancedcatalysers' className='--no-hover'><button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button></Link>
-        <button aria-label='Toggle Fullscreen' className='button --no-hover' onClick={() => toggleFullScreen()}>
+        <Link href='/commodity/advancedcatalysers' className='--no-hover is-hidden-mobile'><button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button></Link>
+        <button aria-label='Toggle Fullscreen' className='button --no-hover is-hidden-mobile' onClick={() => toggleFullScreen()}>
           <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
         </button>
+        <button id='header-menu-toggle' aria-label='Menu' className={`button header__menu-button is-visible-mobile ${menuVisible ? '--active' : ''}`} onClick={() => toggleMenu()}>
+          <i className={`icon icarus-terminal-chevron-${menuVisible ? 'up' : 'down'}`} />
+        </button>
+        <div className='header__menu is-visible-mobile' style={{visibility: menuVisible ? 'visible' : 'hidden' }}>
+          <Link href='/commodity/advancedcatalysers' className='--no-hover'><button aria-label='Commodities' className='header__menu-item'>
+            <i className='icon icarus-terminal-cargo' /> Commodities
+            </button></Link>
+          <br/>
+          <button aria-label='Toggle Fullscreen' className='--no-hover header__menu-item' onClick={() => toggleFullScreen()}>
+            <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} /> Fullscreen
+          </button>
+        </div>
       </div>
       <div className='news-ticker'>
         <div className='news-ticker__clock'>
@@ -314,24 +335,24 @@ export default () => {
                 <span className='news-ticker__ticker-item-price-difference'>
                   {item.avgSellPrice !== 0 && item.demandBracket === 3 &&
                     <>
-                      {item.sellPrice > item.avgSellPrice && <small className='text-positive'>Profit</small>}
-                      {item.sellPrice < item.avgSellPrice && <small className='text-negative'>Loss</small>}
+                      {item.sellPrice > item.avgSellPrice && <small className='muted'>Avg profit</small>}
+                      {item.sellPrice < item.avgSellPrice && <small className='muted'>Avg Loss</small>}
                     </>}
                   {item.avgBuyPrice !== 0 && item.stockBracket === 3 &&
                     <>
-                      {item.buyPrice > item.avgBuyPrice && <small className='text-negative'>Loss</small>}
-                      {item.buyPrice < item.avgBuyPrice && <small className='text-positive'>Profit</small>}
+                      {item.buyPrice > item.avgBuyPrice && <small className='muted'>Avg Loss</small>}
+                      {item.buyPrice < item.avgBuyPrice && <small className='muted'>Avg profit</small>}
                     </>}
                   <br />
                   {item.demandBracket === 3 && item.avgSellPrice !== 0 &&
                     <>
-                      {item.sellPrice > item.avgSellPrice && <small className='commodity__price text-positive '>+ {(item.sellPrice - item.avgSellPrice).toLocaleString()} CR/T</small>}
-                      {item.sellPrice < item.avgSellPrice && <small className='commodity__price text-negative'>- {(item.avgSellPrice - item.sellPrice).toLocaleString()} CR/T</small>}
+                      {item.sellPrice > item.avgSellPrice && <small className='commodity__price text-positive '>+{(item.sellPrice - item.avgSellPrice).toLocaleString()} CR/T</small>}
+                      {item.sellPrice < item.avgSellPrice && <small className='commodity__price text-negative'>-{(item.avgSellPrice - item.sellPrice).toLocaleString()} CR/T</small>}
                     </>}
                   {item.stockBracket === 3 && item.avgBuyPrice !== 0 &&
                     <>
-                      {item.buyPrice > item.avgBuyPrice && <small className='commodity__price text-negative'>- {(item.buyPrice - item.avgBuyPrice).toLocaleString()} CR/T</small>}
-                      {item.buyPrice < item.avgBuyPrice && <small className='commodity__price text-positive'>+ {(item.avgBuyPrice - item.buyPrice).toLocaleString()} CR/T</small>}
+                      {item.buyPrice > item.avgBuyPrice && <small className='commodity__price text-negative'>-{(item.buyPrice - item.avgBuyPrice).toLocaleString()} CR/T</small>}
+                      {item.buyPrice < item.avgBuyPrice && <small className='commodity__price text-positive'>+{(item.avgBuyPrice - item.buyPrice).toLocaleString()} CR/T</small>}
                     </>}
                 </span>
               </span>

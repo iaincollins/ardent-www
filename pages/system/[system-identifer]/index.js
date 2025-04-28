@@ -74,7 +74,7 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      setNavigationPath([{ name: '…', path: '/', icon: 'icarus-terminal-system-orbits' }])
+      setNavigationPath([{ name: '', path: '/', icon: 'icarus-terminal-system-orbits' }])
       setLoading(true)
       setTimeout(playLoadingSound, 1500)
 

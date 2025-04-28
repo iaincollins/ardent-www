@@ -14,14 +14,12 @@
   padding: .2rem .25rem .4rem 0;
   position: relative;
   display: inline-block;
-  background-color: var(--color-primary-dark);
   text-shadow: 0 0 .5rem rgb(0, 0, 0);
   font-family: 'Jura';
   font-weight: bold;
   pointer-events: all;
   margin: 0;
-  background: linear-gradient(to left, var(--color-primary-dark) 1rem, var(--color-primary-darkest));
-  background: linear-gradient(to left, var(--color-primary-darkest) 1rem, #222);
+  background: linear-gradient(to left, var(--color-primary-darkest) 1rem, #333);
 }
 
 .breadcrumbs li > a,

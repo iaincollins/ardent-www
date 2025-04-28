@@ -218,8 +218,11 @@
     font-size: 1.1rem;
   }
   
-  .header__navigation .button {
+  .header__navigation .button,
+  .header__navigation .button:hover {
     background: transparent;
+    border-color: transparent;
+    color: var(--color-primary);
     padding-left: 0;
     padding-right: 0;
     margin-left: 0;

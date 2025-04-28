@@ -45,7 +45,7 @@
 
 .news-ticker__ticker-item-price-difference {
   position: absolute;
-  top: 0;
+  top: -.1rem;
   right: -3rem;
   width: 9rem;
   text-align: left;
@@ -55,7 +55,7 @@
 
 .news-ticker__ticker-item-price-difference small,
 .news-ticker__ticker-item-price-difference .commodity__price {
-  line-height: .8rem;
+  line-height: .9rem;
   font-weight: bold;
 }
 
