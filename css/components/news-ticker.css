@@ -11,6 +11,13 @@
   padding-top: .2rem;
   padding-bottom: .4rem;
   white-space: nowrap;
+
+  overflow: hidden;
+  white-space: nowrap;
+  position: fixed;
+  bottom: .75rem;
+  left: .5rem;
+  right: .5rem;
 }
 
 .news-ticker__ticker {

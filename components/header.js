@@ -294,11 +294,13 @@ export default () => {
         </button>
         <div className='header__menu is-visible-mobile' style={{visibility: menuVisible ? 'visible' : 'hidden' }}>
           <Link href='/commodity/advancedcatalysers' className='--no-hover'><button aria-label='Commodities' className='header__menu-item'>
-            <i className='icon icarus-terminal-cargo' /> Commodities
+            <i className='icon icarus-terminal-cargo' />
+            Commodities
             </button></Link>
           <br/>
           <button aria-label='Toggle Fullscreen' className='--no-hover header__menu-item' onClick={() => toggleFullScreen()}>
-            <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} /> Fullscreen
+            <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
+            Fullscreen
           </button>
         </div>
       </div>

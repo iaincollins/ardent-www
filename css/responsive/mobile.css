@@ -158,7 +158,7 @@
     margin-right: 0;
   }
 
-  .breadcrumbs {
+  /* .breadcrumbs {
     zoom: 1;
     padding-left: .1rem;
   }
@@ -166,11 +166,11 @@
   .breadcrumbs > li > a > span {
     display: inline-block;
     position: relative;
-    top: .2rem;
+    xtop: .2rem;
     max-width: 10rem !important;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
+  } */
 
   .header__search input {
     transition: 0s !important;

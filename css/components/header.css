@@ -1,3 +1,12 @@
+header {
+  background: linear-gradient(to bottom, #444, transparent);
+    position: absolute;
+    top: .1rem;
+    left: 0;
+    padding: .4rem .5rem;
+    right: 0;
+}
+
 .header__logo {
   position: relative;
   top: -.5rem;
@@ -99,6 +108,12 @@
   right: 1rem;
   padding: .6rem;
   z-index: 50;
+
+  position: absolute;
+    top: -.25rem;
+    right: 1.25rem;
+    padding: .6rem;
+    z-index: 50;
 }
 
 .header__navigation a {
@@ -282,7 +297,7 @@
   border: .2rem solid var(--color-primary-lightest);
   padding: .2rem .2rem 0 .2rem;
   font-size: 1rem;
-  min-width: 11rem;
+  min-width: 13rem;
   border-radius: .15rem;
   box-shadow: 0 0 1rem rgba(0,0,0,1);
 }
@@ -304,7 +319,8 @@
 .header__menu-item .icon {
   display: inline-block !important;
   float: left;
-  width: 1.75rem;
+  width: 2rem;
+  font-size: 1.25rem;
 }
 
 .header__menu-item:hover {

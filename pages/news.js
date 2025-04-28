@@ -9,7 +9,7 @@ export default () => {
   const [, setNavigationPath] = useContext(NavigationContext)
   const [galnetNews, setGalnetNews] = useState()
   useEffect(() => {
-    setNavigationPath([{ name: 'GALNET NEWS', path: '/news' }]
+    setNavigationPath([{ name: 'Galnet News', path: '/news' }]
     )
     ; (async () => {
       try {
