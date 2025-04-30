@@ -223,9 +223,10 @@
     background: transparent;
     border-color: transparent;
     color: var(--color-primary);
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: .25rem;
+    padding-right: .25rem;
     margin-left: 0;
+    margin-right: 0;
   }
 
   .layout__content-wrapper {
@@ -307,4 +308,8 @@
     font-size: .6rem;
   }
   
+  .home__news-article-headline {
+    padding-left: 0;
+    padding-rigght: 0;
+  }
 }

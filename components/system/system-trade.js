@@ -30,8 +30,7 @@ module.exports = ({
       <p className='muted'>
         {system?.systemName !== undefined &&
           <span className='fx__fade-in'>
-            Trade data for {system.systemName},
-            last update {timeBetweenTimestamps(lastUpdatedAt)} ago
+            Trade data for {system.systemName} last updated {timeBetweenTimestamps(lastUpdatedAt)} ago
           </span>}
       </p>
       {rareGoods?.length > 0 &&

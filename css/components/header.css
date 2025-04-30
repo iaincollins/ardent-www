@@ -186,7 +186,6 @@ header {
   color: transparent;
   transition: .15s;
   transition-property: width, color, background-color, border-color;
-  backdrop-filter: blur(1rem);
   background-color: var(--color-primary-darkest);
   background: linear-gradient(to bottom, var(--color-primary-darker), var(--color-primary-darkest));
 }
@@ -196,7 +195,7 @@ header {
   display: block;
   height: 2rem;
   width: 2rem;
-  left: .3rem;
+  left: .325rem;
   top: .5rem;
   font-size: 1.2rem;
   line-height: 1.2rem;
@@ -303,7 +302,7 @@ header {
 }
 
 .header__menu-item {
-  background: linear-gradient(to bottom, var(--color-primary-darker), var(--color-primary-darkest));
+  background: var(--color-primary-darkest);
   border: none;
   color: var(--color-primary);
   white-space: nowrap;
