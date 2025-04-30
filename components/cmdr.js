@@ -22,11 +22,11 @@ const SERVICE_STATION_TYPES = [
 
 export default () => {
   const [signedIn, setSignedIn] = useState()
+  const [maintanceMode, setMaintanceMode] = useState()
   const [csrfToken, setCsrfToken] = useState()
   const [cmdrProfile, setCmdrProfile] = useState(loadCache('cmdrProfile'))
   const [cmdrFleetCarrier, setCmdrFleetCarrier] = useState(loadCache('cmdrFleetCarrier'))
   const [nearestServices, setNearestServices] = useState(loadCache('cmdrNearestServices'))
-
   const updateNearestServices = async (_cmdrProfile) => {
     const [
       interstellarFactors,
@@ -66,11 +66,14 @@ export default () => {
     const isSignedIn = !!(_cmdrProfile?.commander?.id)
     setSignedIn(isSignedIn)
     if (isSignedIn) {
+      setMaintanceMode(false)
       setCmdrProfile(_cmdrProfile)
       saveCache('cmdrProfile', _cmdrProfile)
       updateFleetCarrier()
       updateNearestServices(_cmdrProfile)
     } else {
+      const _maintanceMode = _cmdrProfile?.status === 418
+      setMaintanceMode(_maintanceMode)
       clearCmdrCache()
     }
   }
@@ -83,11 +86,14 @@ export default () => {
       const isSignedIn = !!(_cmdrProfile?.commander?.id)
       setSignedIn(isSignedIn)
       if (isSignedIn) {
+        setMaintanceMode(false)
         setCmdrProfile(_cmdrProfile)
         saveCache('cmdrProfile', _cmdrProfile)
         updateFleetCarrier()
         updateNearestServices(_cmdrProfile)
       } else {
+        const _maintanceMode = _cmdrProfile?.status === 418
+        setMaintanceMode(_maintanceMode)
         clearCmdrCache()
       }
       setCsrfToken(await getCsrfToken())
@@ -213,19 +219,38 @@ export default () => {
         </>}
       {signedIn === false &&
         <>
-          <div className='home__sign-in-placeholder'>
-            <p className='text-center'>
-              <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning muted' />
-              <br />
-              <small>Anonymous access protocol</small>
-            </p>
-            <p className='text-center'>Sign in to access all services</p>
-            <form method='GET' action={SIGN_IN_URL}>
-              <button className='button' style={{ display: 'block', width: '100%', padding: '.75rem .25rem', fontSize: '1.25rem' }}>
-                Sign in
-              </button>
-            </form>
-          </div>
+          {maintanceMode == true
+            ?
+              <>
+                <div className='home__sign-in-placeholder'>
+                  <p className='text-center'>
+                    <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning muted' />
+                    <br />
+                    <small>Maintenance mode</small>
+                  </p>
+                  <p className='text-center'>Elite Dangerous is offline.</p>
+                  <p className='text-center'>This is usually due to scheduled weekly maintenance on a Thursday or because an update to the game is currently being deployed.</p>
+                  <p className='text-center'>
+                    For more information refer to the offical <a target="_blank" href="https://forums.frontier.co.uk/forums/elite-dangerous-news/">Elite Dangerous News Forum</a> 
+                  </p>
+                </div>
+              </>
+            :
+              <>
+                <div className='home__sign-in-placeholder'>
+                  <p className='text-center'>
+                    <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning muted' />
+                    <br />
+                    <small>Anonymous access protocol</small>
+                  </p>
+                  <p className='text-center'>Sign in to access all services</p>
+                  <form method='GET' action={SIGN_IN_URL}>
+                    <button className='button' style={{ display: 'block', width: '100%', padding: '.75rem .25rem', fontSize: '1.25rem' }}>
+                      Sign in
+                    </button>
+                  </form>
+                </div>
+              </>}
         </>}
     </div>
   )
