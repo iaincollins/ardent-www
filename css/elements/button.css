@@ -1,8 +1,8 @@
 .button {
   position: relative;
   background: transparent;
-  color: #ddd;
-  border: .15rem solid #ddd;
+  color: var(--color-primary-light-4);
+  border: .15rem solid var(--color-primary-light-4);
   border-color: transparent;
   border-radius: .1rem;
   font-size: 1rem;
@@ -12,7 +12,7 @@
   margin: .25rem;
   padding: .25rem 1rem;
   pointer-events: all;
-  text-shadow: 1.1px 0 2px var(--text-shift-right-color), -1.1px 0 2px var(--text-shift-left-color);
+  text-shadow: 1.1px 0 .5rem var(--color-primary-light-1), -1.1px 0 .5rem var(--color-primary-light-1);
   text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -34,7 +34,7 @@ a.button {
   inset: 0;
   clip-path: polygon(0 0,calc(100% - 1.00rem) 0,100% 1.00rem,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem));
   z-index: -2;
-  backdrop-filter: blur(.5rem);
+  Xbackdrop-filter: blur(.5rem);
 }
 
 .button::after {

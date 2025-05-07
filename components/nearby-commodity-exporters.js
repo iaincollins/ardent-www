@@ -19,8 +19,10 @@ export default ({ commodity }) => {
   useEffect(() => {
     (async () => {
       const _nearbyExporters = await getNearbyExportersOfCommodity(commodity.systemAddress, commodity.symbol)
-      if (_nearbyExporters.length > 0)
-        setNearbyExporters(_nearbyExporters.slice(0, MAX_ROWS_TO_DISPLAY))
+      ;(_nearbyExporters.length > 0)
+        ? setNearbyExporters(_nearbyExporters.slice(0, MAX_ROWS_TO_DISPLAY))
+        : setNearbyExporters([])
+    
     })()
   }, [commodity.commodityName, commodity.systemAddress])
 

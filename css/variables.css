@@ -5,7 +5,7 @@
   --color-info: #53ffce;
   --color-info: rgb(130, 250, 255);
 
-  --color-primary-hue: 0;
+  --color-primary-hue: 22;
   --color-primary-saturation: 0%;
   --color-primary-lightness: 50%;
 
@@ -21,7 +21,7 @@
   --color-primary-dark-4: hsl(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) - 40%));
   --color-primary-dark-5: hsl(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) - 50%));
 
-  --color-text-link: white;
+  --color-text-link: var(--color-primary-light-5);
   --color-text: var(--color-primary-light-5);
   --color-text-muted: hsla(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) + 50%), .75);
   --color-text-dark: var(--color-primary-dark-5);
