@@ -209,6 +209,7 @@ export default ({ disabled = false }) => {
           >
             <option value={COMMODITY_FILTER_DISTANCE_DEFAULT}>Any distance</option>
             <option value='1'>In system</option>
+            <option value='25'>&lt; 25 ly</option>
             <option value='50'>&lt; 50 ly</option>
             <option value='100'>&lt; 100 ly</option>
             <option value='500'>&lt; 500 ly</option>
@@ -243,6 +244,7 @@ export default ({ disabled = false }) => {
             }}
           >
             <option value='1'>Any quantity</option>
+            <option value='10'>&gt; 10 T</option>
             <option value='100'>&gt; 100 T</option>
             <option value='1000'>&gt; 1,000 T</option>
             <option value='10000'>&gt; 10,000 T</option>
