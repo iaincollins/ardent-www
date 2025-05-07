@@ -136,7 +136,7 @@
   border-radius: 100rem;
   aspect-ratio: 1;
   animation: system-map__scanner-animation 2s ease-in-out infinite;
-  background: radial-gradient(transparent 30%, var(--color-primary-darker) 70%);
+  background: radial-gradient(transparent 30%, var(--color-primary-dark-2) 70%);
   pointer-events: none;
 }
 
@@ -199,24 +199,24 @@
   height: .6rem;
   width: .6rem;
   border-radius: 1rem;
-  background: var(--color-primary-lightest);
+  background: var(--color-primary-light-5);
   content: '';
-  box-shadow: 0 0 .1rem .1rem var(--color-primary-lighter), 0 0 1rem .1rem var(--color-primary-lighter), 0 0 .5rem .1rem var(--color-primary);
+  box-shadow: 0 0 .1rem .1rem var(--color-primary-light-4), 0 0 1rem .1rem var(--color-primary-light-4), 0 0 .5rem .1rem var(--color-primary);
 }
 
 .system-map__point:after {
   position: absolute;
   display: inline-block;
   content: attr(data-name);
-  color: var(--color-primary);
+  color: var(--color-text);
   padding: .1rem .4rem;
-  text-shadow: 0 0 .5rem rgb(255, 255, 255), 0 0 .8rem rgb(255, 255, 255);
   max-width: 6rem;
   overflow-wrap: break-word;
   font-size: .8rem;
   line-height: 1rem;
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.4rem), calc(100% - 0.4rem) 100%, 0 100%);
   border-radius: .2rem;
+  opacity: .5;
 }
 
 .system-map__point:hover {
@@ -229,12 +229,13 @@
 }
 
 .system-map__point:hover:after {
-  background: var(--color-primary-darkest);
-  color: var(--color-primary-lightest);
+  background: var(--color-primary-dark-2);
+  color: var(--color-primary-light-5);
   z-index: 2;
   zoom: 1.1;
   pointer-events: all;
   transition: 200ms;
+  opacity: 1;
 }
 
 .system-map__point:hover:before {
@@ -279,7 +280,7 @@
   width: 1rem !important;
   border-color: transparent;
   z-index: 3;
-  box-shadow: 0 0 .4rem .2rem var(--color-primary-lightest), 0 0 2rem .5rem var(--color-primary), 0 0 4rem .7rem var(--color-primary);
+  box-shadow: 0 0 .4rem .2rem var(--color-primary-light-5), 0 0 2rem .5rem var(--color-primary-light-5), 0 0 4rem .7rem var(--color-primary-light-5);
 }
 
 .system-map__point--highlighted:hover {}
@@ -293,8 +294,8 @@
   zoom: 1.2 !important;
   line-height: 1rem;
   font-weight: bold;
-  color: var(--color-primary-darkest);
-  background: var(--color-primary-lightest);
+  color: var(--color-primary-dark-3);
+  background: var(--color-primary-light-5);
 }
 
 @media only screen and (min-width: 1024px) {

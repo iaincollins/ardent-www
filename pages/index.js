@@ -153,7 +153,7 @@ export default () => {
           <div className='heading--with-underline'>
             <h3>Ardent HQ</h3>
           </div>
-          <p style={{ backgroundColor: 'var(--color-text-inverted)', margin: 0, padding: '.5rem .25rem' }}>
+          <p style={{ margin: 0, padding: '.5rem .25rem' }}>
             <Link href='/system/Puppis%20Sector%20GB-X%20b1-5' className='text-uppercase' style={{ border: 0 }}>
               <i className='icon icarus-terminal-outpost' />Icarus Terminal
               <br />
@@ -165,7 +165,7 @@ export default () => {
           <div className='heading--with-underline'>
             <h3>Ardent Carrier</h3>
           </div>
-          <p style={{ backgroundColor: 'var(--color-text-inverted)', margin: 0, padding: '.5rem .25rem' }}>
+          <p style={{ margin: 0, padding: '.5rem .25rem' }}>
             <span className='text-uppercase'>
               <i className='icon icarus-terminal-fleet-carrier' />Ardent Pioneer V9G-G7Z
             </span>

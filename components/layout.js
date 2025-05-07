@@ -18,7 +18,6 @@ export default ({
   className = undefined,
   navigation = undefined
 }) => {
-
   useEffect(() => {
     ;(() => {
       if (loadingSound === true) playLoadingSound()
@@ -26,33 +25,34 @@ export default ({
   }, [])
 
   return (
-  <>
-    <Head>
-      <title>{title ?? DEFAULT_TITLE}</title>
-      <meta name='description' content={description ?? DEFAULT_DESCRIPTION} />
-      <meta name='keywords' content='Ardent Insight, Elite Dangerous, Elite: Dangerous, market, trade, commodities, pricing, prices, systems, exploration, API, SQL' />
-      <meta name='author' content='Iain Collins' />
-      <meta name='viewport' content='width=device-width' />
-    </Head>
-    <Loader visible={loading} text={loadingText} />
-    <div className={`${sidebar !== undefined ? 'layout__content-wrapper scrollable' : ''} ${className !== undefined ? className : ''}`}>
-      {sidebar !== undefined &&
-        <div className={`layout__content layout__content--left-sidebar scrollable ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
-          {sidebar}
-        </div>}
-      <div className={`layout__content scrollable ${sidebar !== undefined ? 'layout__content--right' : ''} ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
-        {children}
+    <>
+      <Head>
+        <title>{title ?? DEFAULT_TITLE}</title>
+        <meta name='description' content={description ?? DEFAULT_DESCRIPTION} />
+        <meta name='keywords' content='Ardent Insight, Elite Dangerous, Elite: Dangerous, market, trade, commodities, pricing, prices, systems, exploration, API, SQL' />
+        <meta name='author' content='Iain Collins' />
+        <meta name='viewport' content='width=device-width' />
+      </Head>
+      <Loader visible={loading} text={loadingText} />
+      <div className={`${sidebar !== undefined ? 'layout__content-wrapper scrollable' : ''} ${className !== undefined ? className : ''}`}>
+        {sidebar !== undefined &&
+          <div className={`layout__content layout__content--left-sidebar scrollable ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
+            {sidebar}
+          </div>}
+        <div className={`layout__content scrollable ${sidebar !== undefined ? 'layout__content--right' : ''} ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
+          {children}
+        </div>
+        {navigation !== undefined &&
+          <div className='navigation-bar'>
+            {navigation.map(item =>
+              <Link key={item.url} href={item.url} className='--no-hover'>
+                <button className={`${item?.active === true ? '--active' : ''}`} data-name={item.name}>
+                  <i className={`icon ${item.icon}`} />
+                </button>
+              </Link>
+            )}
+          </div>}
       </div>
-      {navigation !== undefined &&
-        <div className='navigation-bar'>
-          {navigation.map(item =>
-            <Link key={item.url} href={item.url} className='--no-hover'>
-              <button className={`${item?.active === true ? '--active' : ''}`} data-name={item.name}>
-                <i className={`icon ${item.icon}`} />
-              </button>
-            </Link>
-          )}
-        </div>}
-    </div>
-  </>)
+    </>
+  )
 }

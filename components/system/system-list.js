@@ -68,7 +68,7 @@ module.exports = ({
   )
 }
 
-function SystemObjects({ objects, depth = 0 }) {
+function SystemObjects ({ objects, depth = 0 }) {
   return objects?.map((systemObject, i) => {
     return (
       <Fragment key={`object-in-system-row-${depth}-${i}-${systemObject?.stationType ?? systemObject?.bodyType}-${systemObject?.stationName ?? systemObject?.bodyName}`}>

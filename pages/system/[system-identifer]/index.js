@@ -61,8 +61,7 @@ export default () => {
 
   useEffect(animateTableEffect)
 
-  useEffect(() => 
-  {
+  useEffect(() => {
     const basePath = path.basename(router.pathname)
     setActiveViewIndex(views.indexOf(basePath) === -1 ? 0 : views.indexOf(basePath))
     playLoadingSound()
@@ -90,7 +89,7 @@ export default () => {
       setBodiesInSystem(undefined)
       setSystemStatus(undefined)
       setNearestServices(undefined)
-      
+
       const systemIdentifer = router.query?.['system-identifer']?.replaceAll('_', ' ')?.trim()
       if (!systemIdentifer) return
 
@@ -342,7 +341,7 @@ export default () => {
             <span className='text-no-transform'>System not found</span>
           </h2>
         </div>
-        <div className='error__text' style={{left: '3rem'}}>
+        <div className='error__text' style={{ left: '3rem' }}>
           <i className='icon icarus-terminal-warning' />
           <span className='text-blink-slow muted'>System not found</span>
         </div>

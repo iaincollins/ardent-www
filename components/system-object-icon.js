@@ -8,26 +8,19 @@ module.exports = ({ systemObject, type, children }) => {
   } else if (_systemObjectType === 'Planet') {
     icon = 'planet'
 
-    if (systemObject.rings)
-      icon = 'planet-ringed'
+    if (systemObject.rings) { icon = 'planet-ringed' }
 
-    if (systemObject.terraformingState && systemObject.terraformingState !== 'Not terraformable' && systemObject.terraformingState !== 'Terraformed')
-      icon = 'planet-terraformable'
+    if (systemObject.terraformingState && systemObject.terraformingState !== 'Not terraformable' && systemObject.terraformingState !== 'Terraformed') { icon = 'planet-terraformable' }
 
-    if (systemObject.atmosphereComposition && !systemObject?.subType?.toLowerCase()?.includes('gas giant'))
-      icon = 'planet-atmosphere'
+    if (systemObject.atmosphereComposition && !systemObject?.subType?.toLowerCase()?.includes('gas giant')) { icon = 'planet-atmosphere' }
 
-    if (systemObject?.subType?.toLowerCase() === 'high metal content world' || systemObject?.subType?.toLowerCase() === 'metal rich')
-      icon = 'planet-high-metal-content'
+    if (systemObject?.subType?.toLowerCase() === 'high metal content world' || systemObject?.subType?.toLowerCase() === 'metal rich') { icon = 'planet-high-metal-content' }
 
-    if (systemObject?.subType?.toLowerCase() === 'ammonia world')
-      icon = 'planet-ammonia-world'
+    if (systemObject?.subType?.toLowerCase() === 'ammonia world') { icon = 'planet-ammonia-world' }
 
-    if (systemObject?.subType?.toLowerCase()?.includes('water world') || systemObject?.subType?.toLowerCase()?.includes('water giant'))
-      icon = 'planet-water-world'
+    if (systemObject?.subType?.toLowerCase()?.includes('water world') || systemObject?.subType?.toLowerCase()?.includes('water giant')) { icon = 'planet-water-world' }
 
-    if (systemObject?.subType?.toLowerCase()?.includes('gas giant'))
-      icon = 'planet-gas-giant'
+    if (systemObject?.subType?.toLowerCase()?.includes('gas giant')) { icon = 'planet-gas-giant' }
 
     /*
     if (systemObject?.subType?.toLowerCase()?.includes('water-based life'))
@@ -38,8 +31,7 @@ module.exports = ({ systemObject, type, children }) => {
 
     */
 
-    if (systemObject?.subType?.toLowerCase() === 'earth-like world')
-      icon = 'planet-earthlike'
+    if (systemObject?.subType?.toLowerCase() === 'earth-like world') { icon = 'planet-earthlike' }
 
     if (systemObject?.isLandable) {
       if (systemObject?.atmosphereComposition && !systemObject?.subType?.toLowerCase()?.includes('gas giant')) {

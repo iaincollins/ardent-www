@@ -126,7 +126,7 @@ function ExpandedRow ({ r }) {
   if (!exports) {
     return (
       <>
-        <p style={{ whiteSpace: 'normal', marginTop: '.5rem' }}>
+        <p className='stock-or-demand'>
           Stock of <strong>{r.name}</strong> in <Link href={`/system/${r.systemName.replaceAll(' ', '_')}`}>{r.systemName}</Link> ...
         </p>
         <div className='loading-bar loading-bar--table-row' />
@@ -136,7 +136,7 @@ function ExpandedRow ({ r }) {
 
   return (
     <>
-      <p style={{ whiteSpace: 'normal', marginTop: '.5rem' }}>
+      <p className='stock-or-demand'>
         Stock of <strong>{r.name}</strong> in <Link href={`/system/${r.systemName.replaceAll(' ', '_')}`}>{r.systemName}</Link>
       </p>
       <Table

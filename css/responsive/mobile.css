@@ -16,7 +16,7 @@
     padding-right: 0;
     clip-path: none;
     background: none;
-    color: var(--color-primary);
+    color: var(--color-text);
   }
 
   h2 {
@@ -65,7 +65,7 @@
     font-size: 1.5rem;
     line-height: 1.5rem;
     background: var(--color-primary);
-    color: var(--color-text-inverted);
+    color: var(--color-text-dark);
   }
 
   .header__logo p {
@@ -222,11 +222,11 @@
   .header__navigation .button:hover {
     background: transparent;
     border-color: transparent;
-    color: var(--color-primary);
     padding-left: .25rem;
     padding-right: .25rem;
     margin-left: 0;
     margin-right: 0;
+    color: var(--color-primary-light-4);
   }
 
   .layout__content-wrapper {

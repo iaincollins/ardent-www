@@ -14,7 +14,7 @@ const SERVICE_STATION_TYPES = [
   'MegaShip',
   'StrongholdCarrier',
   'CraterPort',
-  'CraterOutpost',
+  'CraterOutpost'
 ]
 
 module.exports = ({ system, nearestServices }) => {
@@ -24,8 +24,7 @@ module.exports = ({ system, nearestServices }) => {
         <h2>Nearest Services</h2>
       </div>
       {nearestServices === undefined &&
-        <p className='loading-bar' style={{ position: 'relative', top: '.25rem', top: '-.25rem', height: '1.75rem' }} />
-      }
+        <p className='loading-bar' style={{ position: 'relative', top: '.25rem', top: '-.25rem', height: '1.75rem' }} />}
       {nearestServices &&
         <div className='fx__fade-in'>
           <p className='muted'>Station services in {system.systemName} and nearest populated systems</p>
@@ -37,10 +36,10 @@ module.exports = ({ system, nearestServices }) => {
                     <Fragment key={`nearest_service_${service}`}>
                       <tr><th className='text-left'>{service}</th></tr>
                       <tr>
-                        <td style={{ paddingBottom: '1rem', paddingTop: 0, background: 'rgba(0,0,0,.25)' }}>
-                          {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.filter(s => s.distance === 0)?.length === 0 && 
+                        <td style={{ paddingBottom: '1rem', paddingTop: 0 }}>
+                          {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.filter(s => s.distance === 0)?.length === 0 &&
                             <p>
-                              <small><i className='icon icarus-terminal-warning' style={{position: 'relative', top: '.25rem'}}/>No known {service} in system</small>
+                              <small><i className='icon icarus-terminal-warning' style={{ position: 'relative', top: '.25rem' }} />No known {service} in system</small>
                             </p>}
                           {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.filter(s => s.distance === 0)?.length > 0 &&
                             <Collapsible
@@ -52,7 +51,7 @@ module.exports = ({ system, nearestServices }) => {
                                 <Fragment key={`in_system_service_${service}_${station.marketId}`}>
                                   <p style={{ padding: '.25rem .25rem 0 .25rem', marginBottom: '.25rem', display: 'inline-block' }}>
                                     <StationIcon station={station}>
-                                      {station.stationName} 
+                                      {station.stationName}
                                       <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>
                                       <br />{station.updatedAt && <small className='text-no-transform'>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                                     </StationIcon>

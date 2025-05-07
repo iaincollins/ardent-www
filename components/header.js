@@ -190,9 +190,9 @@ export default () => {
                     }
                   })
 
-                    ; (matchingCommodities.length > 0)
-                      ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
-                      : setCommoditySearchResults(undefined)
+                  ; (matchingCommodities.length > 0)
+                    ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
+                    : setCommoditySearchResults(undefined)
                 } catch (e) { }
 
                 try {
@@ -292,12 +292,13 @@ export default () => {
         <button id='header-menu-toggle' aria-label='Menu' className={`button header__menu-button is-visible-mobile ${menuVisible ? '--active' : ''}`} onClick={() => toggleMenu()}>
           <i className={`icon icarus-terminal-chevron-${menuVisible ? 'up' : 'down'}`} />
         </button>
-        <div className='header__menu is-visible-mobile' style={{visibility: menuVisible ? 'visible' : 'hidden' }}>
+        <div className='header__menu is-visible-mobile' style={{ visibility: menuVisible ? 'visible' : 'hidden' }}>
           <Link href='/commodity/advancedcatalysers' className='--no-hover'><button aria-label='Commodities' className='header__menu-item'>
             <i className='icon icarus-terminal-cargo' />
             Commodities
-            </button></Link>
-          <br/>
+          </button>
+          </Link>
+          <br />
           <button aria-label='Toggle Fullscreen' className='--no-hover header__menu-item' onClick={() => toggleFullScreen()}>
             <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
             Fullscreen
@@ -368,7 +369,7 @@ export default () => {
   )
 }
 
-function isFullScreen() {
+function isFullScreen () {
   if (typeof document === 'undefined') return false
 
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
@@ -378,7 +379,7 @@ function isFullScreen() {
   }
 }
 
-async function toggleFullScreen() {
+async function toggleFullScreen () {
   if (isFullScreen()) {
     if (document.cancelFullScreen) {
       document.cancelFullScreen()

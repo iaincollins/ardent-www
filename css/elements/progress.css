@@ -9,7 +9,7 @@ progress {
   border-style: solid;
   border-radius: 0;
   border-color: var(--color-primary);
-  background: var(--color-primary-dark);
+  background: var(--color-primary-dark-1);
   padding: 0;
   border: 0;
 }

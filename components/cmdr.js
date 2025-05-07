@@ -17,7 +17,7 @@ const SERVICE_STATION_TYPES = [
   'MegaShip',
   'StrongholdCarrier',
   'CraterPort',
-  'CraterOutpost',
+  'CraterOutpost'
 ]
 
 export default () => {
@@ -156,7 +156,7 @@ export default () => {
                             <Fragment key={`nearest_service_${service}`}>
                               <tr><th className='text-left'>{service}</th></tr>
                               <tr>
-                                <td style={{ paddingBottom: '1rem', paddingTop: 0, background: 'rgba(0,0,0,.25)' }}>
+                                <td style={{ paddingBottom: '1rem', paddingTop: 0 }}>
                                   {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.filter(s => s.distance === 0)?.length > 0 &&
                                     <small style={{ display: 'block', marginTop: '.5rem' }}>Station in system</small>}
                                   {nearestServices[service]?.filter(s => SERVICE_STATION_TYPES.includes(s.stationType))?.splice(0, 1)?.filter(s => s.distance === 0)?.map(station =>
@@ -220,37 +220,35 @@ export default () => {
       {signedIn === false &&
         <>
           {maintanceMode == true
-            ?
-              <>
-                <div className='home__sign-in-placeholder'>
-                  <p className='text-center'>
-                    <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning muted' />
-                    <br />
-                    <small>Maintenance mode</small>
-                  </p>
-                  <p className='text-center'>Elite Dangerous is offline.</p>
-                  <p className='text-center'>This is usually due to scheduled weekly maintenance on a Thursday or because an update to the game is currently being deployed.</p>
-                  <p className='text-center'>
-                    For more information refer to the offical <a target="_blank" href="https://forums.frontier.co.uk/forums/elite-dangerous-news/">Elite Dangerous News Forum</a> 
-                  </p>
-                </div>
-              </>
-            :
-              <>
-                <div className='home__sign-in-placeholder'>
-                  <p className='text-center'>
-                    <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning muted' />
-                    <br />
-                    <small>Anonymous access protocol</small>
-                  </p>
-                  <p className='text-center'>Sign in to access all services</p>
-                  <form method='GET' action={SIGN_IN_URL}>
-                    <button className='button' style={{ display: 'block', width: '100%', padding: '.75rem .25rem', fontSize: '1.25rem' }}>
-                      Sign in
-                    </button>
-                  </form>
-                </div>
-              </>}
+            ? <>
+              <div className='home__sign-in-placeholder'>
+                <p className='text-center'>
+                  <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning muted' />
+                  <br />
+                  <small>Maintenance mode</small>
+                </p>
+                <p className='text-center'>Elite Dangerous is offline.</p>
+                <p className='text-center'>This is usually due to scheduled weekly maintenance on a Thursday or because an update to the game is currently being deployed.</p>
+                <p className='text-center'>
+                  For more information refer to the offical <a target='_blank' href='https://forums.frontier.co.uk/forums/elite-dangerous-news/' rel='noreferrer'>Elite Dangerous News Forum</a>
+                </p>
+              </div>
+            </>
+            : <>
+              <div className='home__sign-in-placeholder'>
+                <p className='text-center'>
+                  <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning muted' />
+                  <br />
+                  <small>Anonymous access protocol</small>
+                </p>
+                <p className='text-center'>Sign in to access all services</p>
+                <form method='GET' action={SIGN_IN_URL}>
+                  <button className='button' style={{ display: 'block', width: '100%', padding: '.75rem .25rem', fontSize: '1.25rem' }}>
+                    Sign in
+                  </button>
+                </form>
+              </div>
+            </>}
         </>}
     </div>
   )

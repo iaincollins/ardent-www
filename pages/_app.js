@@ -1,4 +1,4 @@
-import React, { useEffect , useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Header from 'components/header'
 // import { Canvas, useFrame } from '@react-three/fiber'
@@ -12,7 +12,7 @@ function handleOnClick (e) {
     if (e.target.nodeName === 'TD' &&
         e.target.className.includes('rc-table-cell-row-hover') &&
         e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className.includes('data-table--interactive')
-        ) {
+    ) {
       playLoadingSound()
     }
   } catch (e) {
@@ -23,11 +23,11 @@ function handleOnClick (e) {
 export default ({ Component, pageProps }) => {
   const [navigationPath, setNavigationPath] = useState([])
   useEffect(() => {
-    document.body.addEventListener('click', handleOnClick);
+    document.body.addEventListener('click', handleOnClick)
     return () => {
-      document.body.removeEventListener('click', handleOnClick);
+      document.body.removeEventListener('click', handleOnClick)
     }
-  }, []);
+  }, [])
   return (
     <>
       <Head>

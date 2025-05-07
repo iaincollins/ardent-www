@@ -5,20 +5,41 @@
   --color-info: #53ffce;
   --color-info: rgb(130, 250, 255);
 
-  --color-text-link: white;
-  --color-text: hsl(0, 0%, 90%);
-  --color-text-muted: hsla(0, 0%, 90%, .75);
-  --color-text-inverted: hsl(0, 0%, 20%);
-  --color-text-inverted-muted: hsla(0, 0%, 20%, .75);
+  --color-primary-hue: 0;
+  --color-primary-saturation: 0%;
+  --color-primary-lightness: 50%;
 
-  --color-primary-lightest: hsl(0, 0%, 100%);
-  --color-primary-lighter: hsl(0, 0%, 95%);
-  --color-primary-light: hsl(0, 0%, 90%);
-  --color-primary: hsl(0, 0%, 85%);
-  --color-primary-dark: hsl(0, 0%, 60%);
-  --color-primary-darker: hsl(0, 0%, 40%);
-  --color-primary-darkest: hsl(0, 0%, 30%);
+  --color-primary: hsl(var(--color-primary-hue), var(--color-primary-saturation), var(--color-primary-lightness));
+  --color-primary-light-1: hsl(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) + 10%));
+  --color-primary-light-2: hsl(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) + 20%));
+  --color-primary-light-3: hsl(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) + 30%));
+  --color-primary-light-4: hsl(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) + 40%));
+  --color-primary-light-5: hsl(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) + 50%));
+  --color-primary-dark-1: hsl(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) - 10%));
+  --color-primary-dark-2: hsl(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) - 20%));
+  --color-primary-dark-3: hsl(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) - 30%));
+  --color-primary-dark-4: hsl(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) - 40%));
+  --color-primary-dark-5: hsl(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) - 50%));
+
+  --color-text-link: white;
+  --color-text: var(--color-primary-light-5);
+  --color-text-muted: hsla(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) + 50%), .75);
+  --color-text-dark: var(--color-primary-dark-5);
+  --color-text-dark-muted: hsla(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) - 50%), .75);
+  --color-text-white: white;
+  --color-text-black: black;
+
+  --color-table-heading-text: rgba(255,255,255,.8);
+  --color-table-background: transparent;
+  --color-table-row: hsla(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) + 10%), .1);
+  --color-table-row-alt: hsla(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) + 20%), .15);
+  --color-table-row-hover: hsla(var(--color-primary-hue), var(--color-primary-saturation),  calc(var(--color-primary-lightness) + 30%), .25);
+
+  --color-layout-frame: var(--color-primary-light-4);
+  --color-layout-frame-text: var(--color-primary-dark-5);
 
   --color-window-scrollbar-thumb: rgba(250, 241, 228);
   --color-window-scrollbar-track: rgba(103, 100, 94);
+
+  --color-test: hsl(33, 100%, 50%);
 }

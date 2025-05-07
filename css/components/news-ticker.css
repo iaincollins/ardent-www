@@ -1,21 +1,18 @@
 .news-ticker {
   background: rgba(0, 0, 0, .9);
   position: absolute;
-  bottom: .25rem;
-  left: 0;
   overflow: hidden;
   height: 1.9rem;
   max-width: 100%;
-  background: rgba(100, 100, 100, .5);
-  border-top: .25rem solid var(--color-primary);
+  background: linear-gradient(to top, var(--color-primary-dark-2), var(--color-primary-dark-3));
+  border-top: .25rem solid var(--color-layout-frame);
   padding-top: .2rem;
   padding-bottom: .4rem;
   white-space: nowrap;
-
   overflow: hidden;
   white-space: nowrap;
   position: fixed;
-  bottom: .75rem;
+  bottom: .74rem;
   left: .5rem;
   right: .5rem;
 }
@@ -73,8 +70,8 @@
   bottom: 0;
   width: 5.5rem;
   padding: 0 .5rem;
-  background: var(--color-primary);
-  color: black;
+  background: var(--color-layout-frame);
+  color: var(--color-layout-frame-text);
   text-align: center;
   z-index: 2;
   font-family: "Jura", sans-serif;
@@ -88,7 +85,8 @@
 .news-ticker__clock-date {
   font-size: .9rem;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, .6);
+  opacity: .75;
+  color: var(--color-layout-frame-text);
   text-shadow: 0 0 .5rem rgba(0, 0, 0, .5);
 }
 

@@ -167,9 +167,6 @@ export default function Page (props) {
               />
             </div>
           )}
-          <p className='text-center muted'>
-            Commodity prices and supply and demand are updated in real time using data submitted to <Link target='_blank' href='https://eddn.edcd.io/' rel='noreferrer'>EDDN</Link>.
-          </p>
         </div>}
     </Layout>
   )

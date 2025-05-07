@@ -1,8 +1,8 @@
 export default function Loader ({ visible = true, text = 'test' }) {
   return (
     <>
-      <div className='loader__background' style={{opacity: (visible === true) ? 1 : 0}} />
-      <div className='loader__spinner' style={{opacity: (visible === true) ? 1 : 0}}>
+      <div className='loader__background' style={{ opacity: (visible === true) ? 1 : 0 }} />
+      <div className='loader__spinner' style={{ opacity: (visible === true) ? 1 : 0 }}>
         <div className='loader__row'>
           <div className='loader__arrow loader__arrow--outer-18' />
           <div className='loader__arrow loader__arrow--down lloader__arrow--outer-17' />

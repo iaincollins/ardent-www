@@ -42,7 +42,7 @@ module.exports = ({
               triggerWhenOpen={<p style={{ margin: '0 0 .5rem 0', display: 'inline-block' }}><CollapsibleTrigger open>Rare Export — {rare.name}</CollapsibleTrigger></p>}
             >
               <div style={{ padding: '0 1rem', opacity: 0.7 }}>
-                <p style={{marginTop: '.25rem'}}>
+                <p style={{ marginTop: '.25rem' }}>
                   {rare.stationName} is the exclusive exporter of {rare.name}.
                 </p>
                 <p>
@@ -124,7 +124,7 @@ module.exports = ({
                   align: 'center',
                   width: 100,
                   className: 'is-hidden-mobile',
-                  render: (v) => <span>{v.length === 1 ? '1' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.1rem', opacity: .5}} className='icarus-terminal-cargo-export' /></span>
+                  render: (v) => <span>{v.length === 1 ? '1' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.1rem', opacity: 0.5 }} className='icarus-terminal-cargo-export' /></span>
                 },
                 {
                   title: 'Updated',
@@ -167,7 +167,7 @@ module.exports = ({
                 expandRowByClick: true,
                 expandedRowRender: r =>
                   <>
-                    <p style={{ marginTop: '.5rem' }}>
+                    <p className='stock-or-demand'>
                       Stock of <Link href={`/commodity/${r.symbol}/exporters?location=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name}</Link> in {r.systemName}
                     </p>
                     <LocalCommodityExporters
@@ -240,7 +240,7 @@ module.exports = ({
                   align: 'center',
                   width: 100,
                   className: 'is-hidden-mobile',
-                  render: (v) => <span>{v.length === 1 ? '1' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.1rem', opacity: .5 }} className='icarus-terminal-cargo-import' /></span>
+                  render: (v) => <span>{v.length === 1 ? '1' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.1rem', opacity: 0.5 }} className='icarus-terminal-cargo-import' /></span>
                 },
                 {
                   title: 'Updated',
@@ -283,7 +283,7 @@ module.exports = ({
                 expandRowByClick: true,
                 expandedRowRender: r =>
                   <>
-                    <p style={{ marginTop: '.5rem' }}>
+                    <p className='stock-or-demand'>
                       Demand for <Link href={`/commodity/${r.symbol}/importers?location=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name}</Link> in {r.systemName}
                     </p>
                     <LocalCommodityImporters
