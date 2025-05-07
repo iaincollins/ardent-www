@@ -78,7 +78,7 @@
   position: relative;
   top: 0;
   left: 3.6rem;
-  width: auto;
+  width: calc(100% - 3.6rem);
   overflow: auto;
   overflow-x: hidden;
   z-index: 3;
