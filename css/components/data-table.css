@@ -73,7 +73,7 @@
   border-right: .2rem solid var(--color-primary-light-4);
   border-bottom: .2rem solid var(--color-primary-light-4);
   background: var(--color-table-background) !important;
-  padding: .25rem;
+  padding: 0 .25rem .25rem .25rem;
 }
 
 .data-table th .icon,
