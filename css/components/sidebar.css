@@ -26,8 +26,8 @@
 .sidebar__options form input,
 .sidebar__options form select {
   width: calc(100%);
-  background: var(--color-primary-dark-4);
-  border-color: var(--color-primary);
+  background: var(--color-primary-dark-3);
+  border-color: var(--color-primary-light-1);
   color: var(--color-text);
   border-style: solid;
   border-width: .15rem;
@@ -46,8 +46,7 @@
 .sidebar__options form select:focus,
 .sidebar__options form input:hover:not(:disabled),
 .sidebar__options form select:hover:not(:disabled) {
-  background: linear-gradient(to top, var(--color-primary-dark-2), var(--color-primary-dark-4));
-  background: var(--color-primary-dark-5);
+  background: var(--color-primary-dark-4);
   border-color: var(--color-primary-light-5);
 }
 

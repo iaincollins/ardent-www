@@ -190,12 +190,12 @@ table.two-column-table>tbody>tr>td,
 
 .commodity__price.text-positive {
   background: var(--color-positive);
-  color: rgba(0,0,0,.6);
+  color: var(--color-text-dark-muted);
 }
 
 .commodity__price.text-negative {
   background: var(--color-negative);
-  color: rgba(0,0,0,.6);
+  color: var(--color-text-muted);
 }
 
 .rc-table-placeholder {
@@ -257,8 +257,21 @@ table.two-column-table>tbody>tr>td,
   overflow: hidden;
 }
 
+.counter--table-counter {
+  min-width: 1rem;
+  padding: .1rem .25rem;
+  display: inline-block;
+  margin: .25rem 0 0 0;
+  font-size: 1.1rem;
+  background: transparent;
+  color: var(--color-primary-light-3);
+  border: .15rem solid var(--color-primary-dark-1);
+  font-synthesis: weight !important;
+  text-align: center;
+}
+
 .counter__number {
-  background: linear-gradient(to right, var(--color-primary-dark-3), var(--color-primary-dark-4) 70%);
+  background: linear-gradient(to right, var(--color-primary-dark-2), var(--color-primary-dark-4) 70%);
   color: var(--color-text);
   padding: .25rem .5rem;
   border-radius: 2rem 0 0 2rem;

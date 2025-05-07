@@ -1109,7 +1109,8 @@
     "id": "129031327",
     "symbol": "Haematite",
     "category": "Minerals",
-    "name": "Haematite"
+    "name": "Haematite",
+    "description": "Haematite is a mineral often found in rocky asteroid fields alongside bauxite and rutile."
   },
   "hafnium178": {
     "id": "128668549",

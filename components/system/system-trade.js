@@ -59,7 +59,7 @@ module.exports = ({
         onSelect={
           (index) => {
             const view = (index === 1) ? 'imports' : 'exports'
-            router.push(`/system/${system.systemName.replaceAll(' ', '_')}/${view}`)
+            router.push(`/system/${system.systemAddress}/${view}`)
           }
         }
       >
@@ -124,7 +124,7 @@ module.exports = ({
                   align: 'center',
                   width: 100,
                   className: 'is-hidden-mobile',
-                  render: (v) => <span>{v.length === 1 ? '1' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.1rem', opacity: 0.5 }} className='icarus-terminal-cargo-export' /></span>
+                  render: (v) => <span className='counter counter--table-counter'>{v.length === 1 ? '1' : `${v.length}`}</span>
                 },
                 {
                   title: 'Updated',
@@ -167,9 +167,9 @@ module.exports = ({
                 expandRowByClick: true,
                 expandedRowRender: r =>
                   <>
-                    <p className='stock-or-demand'>
+                    {/* <p className='stock-or-demand'>
                       Stock of <Link href={`/commodity/${r.symbol}/exporters?location=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name}</Link> in {r.systemName}
-                    </p>
+                    </p> */}
                     <LocalCommodityExporters
                       system={system}
                       commodityName={r.name}
@@ -240,7 +240,7 @@ module.exports = ({
                   align: 'center',
                   width: 100,
                   className: 'is-hidden-mobile',
-                  render: (v) => <span>{v.length === 1 ? '1' : `${v.length}`}<i style={{ fontSize: '1.25rem', position: 'relative', top: '-.1rem', opacity: 0.5 }} className='icarus-terminal-cargo-import' /></span>
+                  render: (v) => <span className='counter counter--table-counter '>{v.length === 1 ? '1' : `${v.length}`}</span>
                 },
                 {
                   title: 'Updated',
@@ -283,9 +283,9 @@ module.exports = ({
                 expandRowByClick: true,
                 expandedRowRender: r =>
                   <>
-                    <p className='stock-or-demand'>
+                    {/* <p className='stock-or-demand'>
                       Demand for <Link href={`/commodity/${r.symbol}/importers?location=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name}</Link> in {r.systemName}
-                    </p>
+                    </p> */}
                     <LocalCommodityImporters
                       commodityName={r.name}
                       commoditySymbol={r.symbol}

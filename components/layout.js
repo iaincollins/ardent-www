@@ -16,7 +16,8 @@ export default ({
   children,
   sidebar = undefined,
   className = undefined,
-  navigation = undefined
+  navigation = undefined,
+  navigationOverlaid = false
 }) => {
   useEffect(() => {
     ;(() => {
@@ -39,7 +40,7 @@ export default ({
           <div className={`layout__content layout__content--left-sidebar scrollable ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
             {sidebar}
           </div>}
-        <div className={`layout__content scrollable ${sidebar !== undefined ? 'layout__content--right' : ''} ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
+        <div className={`layout__content scrollable ${sidebar !== undefined ? 'layout__content--right' : ''} ${navigation !== undefined ? 'layout__content--with-navigation' : ''} ${navigationOverlaid === true ? 'layout__content--with-navigation-overlayed' : ''}`}>
           {children}
         </div>
         {navigation !== undefined &&

@@ -330,6 +330,7 @@ export default () => {
           active: views[activeViewIndex] === 'nearby'
         }
       ]}
+      navigationOverlaid={(views[activeViewIndex] === '' && system !== null) ? true : false} // Overlay navigation for map view
     >
       <Head>
         <link rel='canonical' href={`https://ardent-insight.com/system/${system?.systemName}/${views[activeViewIndex]}`} />

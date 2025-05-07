@@ -187,14 +187,14 @@
     right: 2rem;
     z-index: 10;
     height: 2rem;
-    padding-left: 2.5rem;
+    padding-left: 2.75rem;
     box-shadow: 0 0 1rem black, 0 0 2rem black;
     animation: fx__fade-in-animation .25s ease-in-out;
   }
 
   .header__search:focus-within .icon {
     position: fixed;
-    top: 2.4rem;
+    top: 2.3rem;
     font-size: 1.5rem;
     left: 2rem;
     z-index: 11;
@@ -210,7 +210,7 @@
     width: calc(100vw - 6rem);
     max-width: none;
     padding-top: 2.5rem;
-    box-shadow: 0 0 1rem black, 0 0 5rem black;
+    box-shadow: 0 .5rem .5rem black;
   }
 
   .header__search:focus-within .header__search-results p {

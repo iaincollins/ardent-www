@@ -6,7 +6,7 @@ module.exports = ({ nearbySystems }) => {
   const router = useRouter()
 
   const onSystemsRowClick = (record, index, event) => {
-    router.push(`/system/${record.systemName.replaceAll(' ', '_')}`)
+    router.push(`/system/${record.systemAddress}`)
   }
 
   return (

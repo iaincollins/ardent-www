@@ -71,11 +71,11 @@ export default () => {
                   <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${newsItem.slug}`} rel='noreferrer'>Galnet {newsItem.date} </a></p>
                   <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
                   <div className='heading--with-underline'>
-                    <h3>Recent Galnet headlines</h3>
+                    <h3>More from Galnet</h3>
                   </div>
                   <ul style={{ margin: '1rem 0' }}>
                     {galnetNews.slice(1, 5).map((nextNewsItem, j) => (
-                      <li key={nextNewsItem.url} className='text-uppercase' style={{ marginTop: '.5rem' }}><Link href='/news' rel='noreferrer'>{nextNewsItem.title}</Link></li>
+                      <li key={nextNewsItem.url} className='text-uppercase' style={{ marginTop: '.5rem' }}><Link scroll={false} href={`/news?article=${nextNewsItem.slug}`}>{nextNewsItem.title}</Link></li>
                     ))}
                   </ul>
                 </div>

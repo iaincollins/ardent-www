@@ -177,7 +177,7 @@ export default () => {
                                         <StationIcon station={station}>
                                           {station.stationName}
                                           <br />
-                                          <Link className='muted' style={{ fontSize: '.9rem' }} href={`/system/${station.systemName.replaceAll(' ', '_')}`}>{station.systemName}</Link>
+                                          <Link className='muted' style={{ fontSize: '.9rem' }} href={`/system/${station.systemAddress}`}>{station.systemName}</Link>
                                           <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
                                         </StationIcon>
                                       </p>
@@ -192,7 +192,7 @@ export default () => {
                                             <StationIcon station={station}>
                                               {station.stationName}
                                               <br />
-                                              <Link className='muted' style={{ fontSize: '.9rem' }} href={`/system/${station.systemName.replaceAll(' ', '_')}`}>{station.systemName}</Link>
+                                              <Link className='muted' style={{ fontSize: '.9rem' }} href={`/system/${station.systemAddress}`}>{station.systemName}</Link>
                                               <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
                                               <br />{station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                                             </StationIcon>

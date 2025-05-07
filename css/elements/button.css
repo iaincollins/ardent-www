@@ -18,7 +18,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   transition: .25s;
-  transition-property: width, color, background-colo;
+  transition-property: width, color, background-color;
   clip-path: polygon(0 0,calc(100% - 1.00rem) 0,100% 1.00rem,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem));
   outline: 0;
 }
@@ -42,7 +42,7 @@ a.button {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--color-primary);
+  background: var(--color-primary-light-3);
   border-radius: .2rem;
   clip-path: polygon(0 0,calc(100% - 1.00rem) 0,100% 1.00rem,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem),0 0,.2rem  .2rem ,.2rem calc(100% - 1.00rem - 0.08rem),calc(1.00rem + 0.08rem) calc(100% - .2rem),calc(100% - .2rem) calc(100% - .2rem),calc(100% - .2rem) calc(1.00rem + 0.08rem),calc(100% - 1.00rem - 0.08rem) .2rem,.2rem .2rem);
 }

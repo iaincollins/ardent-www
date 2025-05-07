@@ -7,6 +7,10 @@
   opacity: .5;
 }
 
+.rc-table-cell .loading-bar {
+  margin-top: .25rem;
+}
+
 .loading-bar:after {
   content: '';
   display: block;

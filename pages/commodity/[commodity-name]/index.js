@@ -185,18 +185,13 @@ export default () => {
                 Imp<span className='is-hidden-mobile'>orters</span>
               </Tab>
             </TabList>
-            <TabDescription>
-              {/* {tabIndex === 0 && <>About {commodity.name}</>} */}
-              {tabIndex === 0 && <>Exporters of {commodity.name}</>}
-              {tabIndex === 1 && <>Importers of {commodity.name}</>}
-            </TabDescription>
             <TabPanel>
               {!exports && <div className='loading-bar loading-bar--tab' />}
-              {exports && <CommodityExportOrders commodities={exports} />}
+              {exports && <CommodityExportOrders tableName={`Exporters of ${commodity.name}`} commodities={exports} />}
             </TabPanel>
             <TabPanel>
               {!imports && <div className='loading-bar loading-bar--tab' />}
-              {imports && <CommodityImportOrders commodities={imports} rare={!!rareMarket} />}
+              {imports && <CommodityImportOrders tableName={`Importers of ${commodity.name}`} commodities={imports} rare={!!rareMarket} />}
             </TabPanel>
           </Tabs>
         </div>}

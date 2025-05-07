@@ -103,7 +103,7 @@ function SystemObjects ({ objects, depth = 0 }) {
                       <>
                         {systemObject.primaryEconomy}
                         {systemObject?.secondaryEconomy !== undefined && systemObject?.secondaryEconomy !== null && systemObject?.secondaryEconomy !== systemObject?.primaryEconomy &&
-                          <>, {systemObject.secondaryEconomy}</>}
+                          <> &amp; {systemObject.secondaryEconomy}</>}
                       </>}
                     {systemObject?.stationType === 'FleetCarrier' && 'Fleet Carrier'}
                   </small>

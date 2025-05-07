@@ -18,13 +18,13 @@ async function getExportsForCommodityBySystem (systemAddress, commodityName) {
   return exports.filter(c => c.stock > 0)
 }
 
-export default ({ commodities }) => {
+export default ({ tableName = 'Exporters', commodities }) => {
   return (
     <Table
       className='data-table data-table--striped data-table--interactive data-table--animated'
       columns={[
         {
-          title: 'Exporters',
+          title: tableName,
           dataIndex: 'stationName',
           key: 'stationName',
           align: 'left',
@@ -38,7 +38,7 @@ export default ({ commodities }) => {
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
               <div className='is-visible-mobile'>
                 <span style={{ textTransform: 'none', opacity: 0.75 }}>
-                  {r.systemName} <small style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} ly</> : ''}</small>
+                {r.systemName} <small style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} ly</> : ''}</small>
                 </span>
                 <table className='data-table--mini data-table--compact two-column-table'>
                   <tbody style={{ textTransform: 'uppercase' }}>
@@ -64,7 +64,7 @@ export default ({ commodities }) => {
           className: 'is-hidden-mobile',
           render: (v, r) => (
             <>
-              <span style={{ opacity: 0.75 }}>{v}</span>
+              <Link href={`/system/${r.systemAddress}`}>{v}</Link>
               {Number.isInteger(r.distance) && <small className='text-no-transform no-wrap' style={{ marginLeft: '.5rem', opacity: 0.5 }}>{Number.isInteger(r.distance) ? <>{r.distance.toLocaleString()} ly</> : ''}</small>}
             </>
           )
@@ -124,21 +124,16 @@ function ExpandedRow ({ r }) {
   }, [r.commodityName])
 
   if (!exports) {
-    return (
-      <>
-        <p className='stock-or-demand'>
-          Stock of <strong>{r.name}</strong> in <Link href={`/system/${r.systemName.replaceAll(' ', '_')}`}>{r.systemName}</Link> ...
-        </p>
-        <div className='loading-bar loading-bar--table-row' />
-      </>
-    )
+    return <div className='loading-bar loading-bar--table-row' />
   }
 
   return (
     <>
-      <p className='stock-or-demand'>
-        Stock of <strong>{r.name}</strong> in <Link href={`/system/${r.systemName.replaceAll(' ', '_')}`}>{r.systemName}</Link>
-      </p>
+      <Collapsible
+        trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> in {r.systemName}</CollapsibleTrigger>}
+        triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> in {r.systemName}</CollapsibleTrigger>}
+        open
+      >
       <Table
         className='data-table--mini data-table--striped scrollable'
         columns={[
@@ -206,6 +201,7 @@ function ExpandedRow ({ r }) {
         data={exports}
         rowKey={(r) => `commodity_export_orders_expanded_${r.commodityId}`}
       />
+            </Collapsible>
       <Collapsible
         trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
         triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}

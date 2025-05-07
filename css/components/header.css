@@ -131,12 +131,13 @@ header {
 }
 
 .header__navigation .button {
-  background: var(--color-primary-dark-2);
+  background-color: var(--color-primary-dark-2);
   clip-path: polygon(0 0,calc(100% - 0.5rem) 0,100% 0.5rem,100% 100%,0.5rem 100%,0 calc(100% - 0.5rem));
   border-color: var(--color-primary-dark-3);
-  margin-left: .25rem;
+  margin-left: .1rem;
   border-width: 0;
   padding: .1rem .35rem;
+  transition: 0;
 }
 
 .header__navigation .button:after,
@@ -154,6 +155,7 @@ header {
   border-color: var(--color-primary-light-4);
   color: var(--color-primary-dark-5);
   filter: none;
+  transition: 0;
 }
 
 .header__navigation .button .icon {
@@ -161,6 +163,7 @@ header {
   line-height: 1.25rem !important;
   top: -.1rem;
   position: relative;
+  transition: 0;
 }
 
 .header__navigation .button:hover .icon,
@@ -191,10 +194,10 @@ header {
   font-weight: bold;
   width: 0rem;
   color: transparent;
-  transition: .15s;
-  transition-property: width, color, background-color, border-color;
-  background-color: var(--color-primary-dark-3);
-  background: var(--color-primary-dark-2);
+  transition: .5s;
+  transition-property: width;
+  background-color: var(--color-primary-dark-2);
+  outline: none;
 }
 
 .header__search-input .icon {
@@ -215,23 +218,18 @@ header {
   color: var(--color-text-dark);
 }
 
-.header__search-input:focus-within .icon {
-  text-shadow: none;
-}
-
 .header__search-input input:hover,
 .header__search-input input:focus  {
   color: var(--color-text-dark);
-  background: var(--color-primary-light-5);
+  background-color: var(--color-primary-light-5);
   border-color: var(--color-primary-light-5);
   outline: none;
   box-shadow: 0 0 .5rem black, 0 0 1rem black;
-  transition: .5s;
 }
 
 .header__search-input input:focus {
   width: 18rem;
-  padding-left: 2rem;
+  padding-left: 2.25rem;
 }
 
 .header__search-results {
@@ -311,7 +309,7 @@ header {
 .header__menu-item {
   background: var(--color-primary-dark-3);
   border: none;
-  color: var(--color-primary);
+  color: var(--color-primary-light-5);
   white-space: nowrap;
   text-align: left;
   font-size: 1rem;
@@ -331,5 +329,5 @@ header {
 
 .header__menu-item:hover {
   background: var(--color-primary-light-5);
-  color: var(--color-text-dark);
+  color: var(--color-primary-dark-5);
 }

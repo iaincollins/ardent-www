@@ -163,7 +163,7 @@ module.exports = ({
           <div
             key={nearbySystem.systemAddress}
             className='system-map__point'
-            onClick={() => router.push(`/system/${nearbySystem.systemName.replaceAll(' ', '_')}`)}
+            onClick={() => router.push(`/system/${nearbySystem.systemAddress}`)}
             data-name={nearbySystem.systemName}
             style={{
               // animationDelay: `${distance([nearbySystem.systemX, nearbySystem.systemY, nearbySystem.systemZ],[system.systemX, system.systemY, system.systemZ]) * 1000}ms`,

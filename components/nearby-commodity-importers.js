@@ -18,9 +18,9 @@ export default ({ commodity, rare }) => {
   const [nearbyImporters, setNearbyImporters] = useState()
   useEffect(() => {
     (async () => {
-      setNearbyImporters(
-        (await getNearbyImportersOfCommodity(commodity.systemAddress, commodity.symbol)).slice(0, MAX_ROWS_TO_DISPLAY)
-      )
+      const _nearbyImporters = await getNearbyImportersOfCommodity(commodity.systemAddress, commodity.symbol)
+      if (_nearbyImporters.length > 0)
+        setNearbyImporters(_nearbyImporters.slice(0, MAX_ROWS_TO_DISPLAY))
     })()
   }, [commodity.commodityName, commodity.systemAddress])
 
@@ -45,7 +45,7 @@ export default ({ commodity, rare }) => {
                   </StationIcon>
                   <div className='is-visible-mobile'>
                     <span style={{ textTransform: 'none', opacity: 0.75, paddingLeft: '2rem' }}>
-                      <Link href={`/system/${r.systemName.replaceAll(' ', '_')}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} ly</span>
+                      <Link href={`/system/${r.systemAddress}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} ly</span>
                     </span>
                     <table className='data-table--mini data-table--compact two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>
@@ -71,7 +71,7 @@ export default ({ commodity, rare }) => {
               className: 'is-hidden-mobile',
               render: (v, r) =>
                 <>
-                  <span style={{ opacity: 0.75 }}><Link href={`/system/${v.replaceAll(' ', '_')}`}>{v}</Link></span>
+                  <span style={{ opacity: 0.75 }}><Link href={`/system/${r.systemAddress}`}>{v}</Link></span>
                   <span style={{ fontSize: '.8rem', opacity: 0.5 }}> {r.distance.toLocaleString()} ly</span>
                 </>
             },

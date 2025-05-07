@@ -68,3 +68,8 @@ mask-repeat: no-repeat, no-repeat;
 .layout__content--with-navigation {
   left: 3.6rem;
 }
+
+.layout__content--with-navigation-overlayed,
+.layout__content--with-navigation.layout__content--with-navigation-overlayed {
+  left: 0;
+}
