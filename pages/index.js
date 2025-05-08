@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Layout from 'components/layout'
 import Cmdr from 'components/cmdr'
-import { NavigationContext } from 'lib/context'
+import { NavigationContext, DialogContext } from 'lib/context'
 import { API_BASE_URL } from 'lib/consts'
 import Markdown from 'react-markdown'
 // import commodityCategories from 'lib/commodities/commodity-categories.json'
@@ -11,41 +11,41 @@ import Package from 'package.json'
 
 export default () => {
   const [, setNavigationPath] = useContext(NavigationContext)
+  const [, setDialog] = useContext(DialogContext)
   const [galnetNews, setGalnetNews] = useState()
   const [stats, setStats] = useState()
   const [version, setVersion] = useState()
 
   useEffect(() => {
     setNavigationPath([{ name: 'Welcome CMDR', path: '/' }])
+      ; (async () => {
+        try {
+          const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
+          const news = await res.json()
+          setGalnetNews(news)
+        } catch (e) {
+          console.error(e)
+        }
+      })()
 
-    ; (async () => {
-      try {
-        const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
-        const news = await res.json()
-        setGalnetNews(news)
-      } catch (e) {
-        console.error(e)
-      }
-    })()
-
-    ; (async () => {
-      try {
-        const res = await fetch(`${API_BASE_URL}/v1/stats`)
-        const stats = await res.json()
-        setStats(stats)
-      } catch (e) {
-        console.error(e)
-      }
-    })()
-    ; (async () => {
-      try {
-        const res = await fetch(`${API_BASE_URL}/v1/version`)
-        const version = await res.json()
-        setVersion(version)
-      } catch (e) {
-        console.error(e)
-      }
-    })()
+      ; (async () => {
+        try {
+          const res = await fetch(`${API_BASE_URL}/v1/stats`)
+          const stats = await res.json()
+          setStats(stats)
+        } catch (e) {
+          console.error(e)
+        }
+      })()
+      ; (async () => {
+        try {
+          const res = await fetch(`${API_BASE_URL}/v1/version`)
+          const version = await res.json()
+          setVersion(version)
+        } catch (e) {
+          console.error(e)
+        }
+      })()
   }, [])
 
   return (
@@ -75,7 +75,23 @@ export default () => {
                   </div>
                   <ul style={{ margin: '1rem 0' }}>
                     {galnetNews.slice(1, 5).map((nextNewsItem, j) => (
-                      <li key={nextNewsItem.url} className='text-uppercase' style={{ marginTop: '.5rem' }}><Link scroll={false} href={`/news?article=${nextNewsItem.slug}`}>{nextNewsItem.title}</Link></li>
+                      <li
+                        onClick={() =>
+                          setDialog({
+                            title: 'Galnet News',
+                            contents:
+                              <>
+                                <img src={nextNewsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' style={{ maxHeight: '10rem' }} />
+                                <p style={{fontSize: '1.5rem'}}>{nextNewsItem.title}</p>
+                                <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>Galnet {nextNewsItem.date} </a></p>
+                                <Markdown>{`${nextNewsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
+                              </>,
+                            visible: true
+                          })
+                        }
+                        key={nextNewsItem.url}
+                        className='text-uppercase' style={{ marginTop: '.5rem' }}
+                      >{nextNewsItem.title}</li>
                     ))}
                   </ul>
                 </div>

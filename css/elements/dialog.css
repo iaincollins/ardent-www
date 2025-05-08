@@ -13,22 +13,23 @@
 .dialog {
   position: fixed;
   z-index: 1001;
-  top: 0;
-  bottom: 0;
+  top: 2.5rem;
+  bottom: .5rem;
   left: 0;
   right: 0;
   margin: auto;
-  max-width: min(40rem, 80vw);
-  max-height: min(20rem, 80vh);
+  max-width: min(50rem, 80vw);
+  max-height: min(50rem, 80vh);
   padding: 0.5rem;
   transition: opacity .5s ease-in-out;
+  z-index: 1000;
 }
 
 .dialog:after {
   position: absolute;
   content: "";
   pointer-events: none;
-  background: var(--color-primary);
+  background: var(--color-primary-light-4);
   clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem),0 0,.2rem  .2rem ,.2rem calc(100% - 2.00rem - 0.08rem),calc(2.00rem + 0.08rem) calc(100% - .2rem),calc(100% - .2rem) calc(100% - .2rem),calc(100% - .2rem) .2rem,.2rem .2rem);
   inset: 0;
 }
@@ -60,8 +61,7 @@
   left: .4rem;
   right: .4rem;
   bottom: 3.1rem;
-  overflow: scroll;
-  padding-right: .4rem;
+  overflow: auto;
   z-index: 1002;
 }
 

@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import AboutDialog from 'components/dialog/about-dialog'
 import { getCommoditiesWithAvgPricing, listOfCommoditiesAsArray } from 'lib/commodities'
 import commodities from 'lib/commodities/commodities'
 import { NavigationContext } from 'lib/context'
@@ -12,7 +11,6 @@ export default () => {
   const router = useRouter()
   const [navigationPath] = useContext(NavigationContext)
   const [fullScreenState, setFullScreenState] = useState(false)
-  const [aboutDialogVisible, setAboutDialogVisible] = useState(false)
   const [newsTicker, setNewsTicker] = useState([])
   const [commoditySearchResults, setCommoditySearchResults] = useState()
   const [systemSearchResults, setSystemSearchResults] = useState()
@@ -361,10 +359,8 @@ export default () => {
               </span>
             )}
           </span>
-        )}
-
+        )}x
       </div>
-      {aboutDialogVisible && <AboutDialog toggle={setAboutDialogVisible} />}
     </header>
   )
 }

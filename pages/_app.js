@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Header from 'components/header'
 // import { Canvas, useFrame } from '@react-three/fiber'
-import { NavigationContext } from 'lib/context'
+import { NavigationContext, DialogContext } from 'lib/context'
 import 'css/index.css'
 import 'public/fonts/icarus-terminal/icarus-terminal.css'
 import { playLoadingSound } from 'lib/sounds'
@@ -22,6 +22,8 @@ function handleOnClick (e) {
 
 export default ({ Component, pageProps }) => {
   const [navigationPath, setNavigationPath] = useState([])
+  const [dialog, setDialog] = useState()
+
   useEffect(() => {
     document.body.addEventListener('click', handleOnClick)
     return () => {
@@ -41,8 +43,10 @@ export default ({ Component, pageProps }) => {
         {/* <AnimatedBackground /> */}
         <div className='fx__background' />
         <NavigationContext.Provider value={[navigationPath, setNavigationPath]}>
-          <Header />
-          <Component {...pageProps} />
+          <DialogContext.Provider value={[dialog, setDialog]}>
+            <Header />
+            <Component {...pageProps} />
+          </DialogContext.Provider>
         </NavigationContext.Provider>
       </div>
       <div className='fx__scanlines' />

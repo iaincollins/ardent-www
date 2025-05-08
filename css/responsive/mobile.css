@@ -315,6 +315,15 @@
   
   .home__news-article-headline {
     padding-left: 0;
-    padding-rigght: 0;
+    padding-right: 0;
+  }
+
+  .dialog__title {
+    padding: 0 .25rem;
+    display: block;
+    width: calc(100% - .5rem);
+    height: 2rem;
+    background: var(--color-primary-light-4);
+    color: var(--color-text-dark);
   }
 }
