@@ -25,13 +25,17 @@ export default () => {
   return (
     <>
       <div className='dialog__background fx__fade-in' onClick={() => setVisible(false)} />
-      <div className='dialog fx__fade-in'>
-        <h3 className='dialog__title'>{title}</h3>
-        <div className='dialog__content scrollable'>
-          {contents}
-        </div>
-        <div className='dialog__buttons'>
-          {buttons}
+      <div className='dialog__container'>
+        <div className='dialog fx__fade-in'>
+          <h3 className='dialog__title'>{title}</h3>
+          <div className='dialog__content'>
+            <div className='dialog__inner-content scrollable'>
+              {contents}
+            </div>
+          </div>
+          <div className='dialog__buttons'>
+            {buttons}
+          </div>
         </div>
       </div>
     </>
