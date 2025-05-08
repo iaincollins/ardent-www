@@ -168,7 +168,7 @@ header {
 
 .header__navigation .button:hover .icon,
 .header__navigation .button.--active .icon {
-  text-shadow: 0 0 .25rem rgba(30,30,30,.75);
+  text-shadow: 0 0 .5rem rgba(0,0,0,.75);
 }
 
 .header__search {
@@ -216,6 +216,7 @@ header {
 .header__search-input .icon:has(+ input:hover),
 .header__search-input:focus-within .icon {
   color: var(--color-text-dark);
+  text-shadow: 0 0 .75rem;
 }
 
 .header__search-input input:hover,

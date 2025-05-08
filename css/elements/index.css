@@ -28,6 +28,7 @@ html label {
   font-weight: bold;
   text-shadow: 0 0 15px rgba(0,0,0,.8), 0 0 15px rgba(255,255,255,.8);
   text-shadow: 0 0 .5rem var(--color-primary-light-5);
+  text-shadow: 0 0 .5rem;
 }
 
 body,
