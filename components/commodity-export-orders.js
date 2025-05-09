@@ -37,8 +37,8 @@ export default ({ tableName = 'Exporters', commodities }) => {
               {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
               {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
               <div className='is-visible-mobile'>
-                <span style={{ textTransform: 'none', opacity: 0.75 }}>
-                {r.systemName} <small style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} ly</> : ''}</small>
+                <span>
+                  <Link href={`/system/${r.systemAddress}`}>{r.systemName}</Link> <small style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} ly</> : ''}</small>
                 </span>
                 <table className='data-table--mini data-table--compact two-column-table'>
                   <tbody style={{ textTransform: 'uppercase' }}>

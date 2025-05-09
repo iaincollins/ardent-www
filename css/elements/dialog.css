@@ -27,7 +27,7 @@
   z-index: 1000;
   position: relative;
   margin: auto;
-  max-width: min(50rem, calc(100vw - 3rem));
+  max-width: min(60rem, calc(100vw - 3rem));
   height: auto; /* auto size ... */
   max-height: calc(100vh - 7rem); /* ... but dont grow bigger than screen */
   display: flex;
@@ -36,6 +36,7 @@
   pointer-events: all;
   padding-bottom: 3.1rem;
   clip-path: polygon(0 0,calc(100% - 2rem) 0,100% 2rem,100% 100%,2rem 100%,0 calc(100% - 2rem));
+  border-radius: .3rem;
 }
 
 .dialog:after {
@@ -62,7 +63,7 @@
   height: 100%;
   position: relative;
   padding: .25rem .25rem .25rem .5rem;
-  background-color: var(--color-primary-dark-5);
+  background-color: var(--color-primary-dark-4);
   overflow: hidden;
   position: relative;
   display: flex;
@@ -87,5 +88,5 @@
   z-index: 1002;
   padding-bottom: .2rem;
   clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem));
-  background: var(--color-primary-dark-5);
+  background: var(--color-primary-dark-4);
 }

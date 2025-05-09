@@ -82,7 +82,7 @@ export default () => {
                             contents:
                               <>
                                 <img src={nextNewsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' style={{ maxHeight: '10rem' }} />
-                                <p style={{fontSize: '1.5rem'}}>{nextNewsItem.title}</p>
+                                <p style={{fontSize: '1.5rem'}} className='text-uppercase'>{nextNewsItem.title}</p>
                                 <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>Galnet {nextNewsItem.date} </a></p>
                                 <Markdown>{`${nextNewsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
                               </>,

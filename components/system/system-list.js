@@ -26,7 +26,7 @@ module.exports = ({
           <span className='text-no-transform'>{system.systemName} System</span>
         </h2>
       </div>
-      <div className='rc-table data-table data-table--striped Xdata-table--interactive data-table--animated'>
+      <div className='rc-table data-table data-table--striped data-table--sticky-heading data-table--animated'>
         <div className='rc-table-container'>
           <div className='rc-table-content'>
             <table>
