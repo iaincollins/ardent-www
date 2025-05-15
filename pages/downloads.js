@@ -20,7 +20,7 @@ export default () => {
     (async () => {
       setNavigationPath([{ name: 'Downloads', path: '/downloads', icon: 'icarus-terminal-download' }])
       try {
-        const res = await fetch(`${API_BASE_URL}/v1/backup`)
+        const res = await fetch(`${API_BASE_URL}/v2/backup`)
         const databases = (await res.json()).databases
         databases.forEach(database => { database.description = databaseDescription?.[database.name] })
         setDatabases(databases.reverse())

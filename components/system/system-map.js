@@ -1,11 +1,11 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import factionStates from 'lib/utils/faction-states'
 import distance from 'lib/utils/distance'
 import { scanSystemSound } from 'lib/sounds'
 
-const SYSTEM_MAP_POINT_PLOT_MULTIPLIER = 50
+const SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER = 50
 
 module.exports = ({
   system,
@@ -19,10 +19,28 @@ module.exports = ({
   lastUpdatedAt
 }) => {
   const router = useRouter()
+  const [mapZoomMultiplier, setMapZoomMultiplier] = useState(SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER)
+  const [starsVisible, setStarsVisible] = useState(false)
 
   useEffect(() => {
     scanSystemSound()
+    setStarsVisible(false)
   }, [])
+
+  useEffect(() => {
+    if (nearbySystems !== undefined) {
+      if (nearbySystems?.length >= 1000) {
+        setMapZoomMultiplier(150)
+      } else if (nearbySystems?.length >= 500) {
+        setMapZoomMultiplier(100)
+      } else if (nearbySystems?.length >= 100) {
+        setMapZoomMultiplier(75)
+      } else {
+        setMapZoomMultiplier(SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER) 
+      }
+      setTimeout(() => setStarsVisible(true), 1000)
+    }
+  }, [nearbySystems])
 
   return (
     <div className='fx__fade-in' style={{ position: 'relative' }}>
@@ -159,16 +177,16 @@ module.exports = ({
         <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />
         {/* {system && nearbySystems === undefined && <div className='system-map__scanner'/>} */}
         <div className={`system-map__scanner${(!system || nearbySystems !== undefined) ? '--stopped' : ''}`} />
-        {nearbySystems && nearbySystems.map((nearbySystem, i) =>
+        {starsVisible && nearbySystems && nearbySystems.map((nearbySystem, i) =>
           <div
             key={nearbySystem.systemAddress}
-            className='system-map__point'
+            className='system-map__point fx__fade-in'
             onClick={() => router.push(`/system/${nearbySystem.systemAddress}`)}
             data-name={nearbySystem.systemName}
             style={{
               // animationDelay: `${distance([nearbySystem.systemX, nearbySystem.systemY, nearbySystem.systemZ],[system.systemX, system.systemY, system.systemZ]) * 1000}ms`,
-              top: nearbySystem.systemZ > system.systemZ ? `calc(50% + ${(nearbySystem.systemZ - system.systemZ) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)` : `calc(50% - ${(system.systemZ - nearbySystem.systemZ) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)`, // Z
-              left: nearbySystem.systemX > system.systemX ? `calc(50% + ${(nearbySystem.systemX - system.systemX) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)` : `calc(50% - ${(system.systemX - nearbySystem.systemX) * SYSTEM_MAP_POINT_PLOT_MULTIPLIER}px)`// X
+              top: nearbySystem.systemZ > system.systemZ ? `calc(50% + ${(nearbySystem.systemZ - system.systemZ) * mapZoomMultiplier}px)` : `calc(50% - ${(system.systemZ - nearbySystem.systemZ) * mapZoomMultiplier}px)`, // Z
+              left: nearbySystem.systemX > system.systemX ? `calc(50% + ${(nearbySystem.systemX - system.systemX) * mapZoomMultiplier}px)` : `calc(50% - ${(system.systemX - nearbySystem.systemX) * mapZoomMultiplier}px)`// X
             }}
           />
         )}

@@ -11,8 +11,8 @@ import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
 import systemIdentiferIsSystemAddress from 'lib/utils/system-identifer-is-system-address'
 
-async function getExportsForCommodityBySystem (systemAddress, commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/address/${systemAddress}/commodity/name/${commodityName}`)
+async function getExportsForCommodityBySystem(systemAddress, commodityName) {
+  const res = await fetch(`${API_BASE_URL}/v2/system/address/${systemAddress}/commodity/name/${commodityName}`)
   const exports = await res.json()
   if (!exports || exports.error) return [] // Handle system not found
   return exports.filter(c => c.stock > 0)
@@ -31,15 +31,16 @@ export default ({ tableName = 'Exporters', commodities }) => {
           className: 'max-width-mobile',
           render: (v, r) =>
             <div style={{ paddingLeft: '2em' }}>
-              <span style={{ position: 'absolute', left: '.5rem' }}>
-                <StationIcon station={r} />
-              </span>
-              {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-              {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
-              <div className='is-visible-mobile'>
-                <span>
-                  <Link href={`/system/${r.systemAddress}`}>{r.systemName}</Link> <small style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance ? <>{r.distance.toLocaleString()} ly</> : ''}</small>
+              <StationIcon station={r}>
+                {r.stationName}
+                {r.distanceToArrival !== undefined && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                <span className='is-visible-mobile'>
+                  <br />
+                  {r.systemName}
+                  {r.distance !== undefined && <small style={{ textTransform: 'none' }}> {r.distance.toLocaleString()} ly</small>}
                 </span>
+              </StationIcon>
+              <div className='is-visible-mobile'>
                 <table className='data-table--mini data-table--compact two-column-table'>
                   <tbody style={{ textTransform: 'uppercase' }}>
                     <tr>
@@ -52,7 +53,7 @@ export default ({ tableName = 'Exporters', commodities }) => {
                     </tr>
                   </tbody>
                 </table>
-                <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
+                <small>{timeBetweenTimestamps(r.updatedAt)} ago</small>
               </div>
             </div>
         },
@@ -64,8 +65,8 @@ export default ({ tableName = 'Exporters', commodities }) => {
           className: 'is-hidden-mobile',
           render: (v, r) => (
             <>
-              <Link href={`/system/${r.systemAddress}`}>{v}</Link>
-              {Number.isInteger(r.distance) && <small className='text-no-transform no-wrap' style={{ marginLeft: '.5rem', opacity: 0.5 }}>{Number.isInteger(r.distance) ? <>{r.distance.toLocaleString()} ly</> : ''}</small>}
+              {r.systemName}
+              {r.distance !== undefined && <small style={{ textTransform: 'none' }}> {r.distance.toLocaleString()} ly</small>}
             </>
           )
         },
@@ -76,7 +77,7 @@ export default ({ tableName = 'Exporters', commodities }) => {
           align: 'right',
           width: 110,
           className: 'is-hidden-mobile no-wrap',
-          render: (v) => <span style={{ fontSize: '.9rem', opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
+          render: (v) => <small>{timeBetweenTimestamps(v)}</small>
         },
         {
           title: 'Stock',
@@ -102,7 +103,7 @@ export default ({ tableName = 'Exporters', commodities }) => {
         }
       ]}
       data={commodities}
-      rowKey={(r) => `commodity_export_orders_${r.commodityId}`}
+      rowKey={(r) => `commodity_export_orders_${r.marketId}_${r.commodityName}`}
       expandable={{
         expandRowByClick: true,
         expandedRowRender: (r) => <ExpandedRow r={r} />
@@ -111,7 +112,7 @@ export default ({ tableName = 'Exporters', commodities }) => {
   )
 }
 
-function ExpandedRow ({ r }) {
+function ExpandedRow({ r }) {
   if (!r) return
 
   const [exports, setExports] = useState()
@@ -134,74 +135,87 @@ function ExpandedRow ({ r }) {
         triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> in {r.systemName}</CollapsibleTrigger>}
         open
       >
-      <Table
-        className='data-table--mini data-table--striped scrollable'
-        columns={[
-          {
-            title: 'Exporters in system',
-            dataIndex: 'stationName',
-            key: 'stationName',
-            align: 'left',
-            className: 'max-width-mobile',
-            render: (v, r) =>
-              <>
-                <StationIcon station={r}>
-                  {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                  {(r?.distanceToArrival ?? null) !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
-                </StationIcon>
-                <div className='is-visible-mobile'>
-                  <table className='data-table--mini data-table--compact two-column-table'>
-                    <tbody style={{ textTransform: 'uppercase' }}>
-                      <tr>
-                        <td>
-                          <span className='data-table__label'>Stock</span>
-                          <TradeBracketIcon bracket={r.stockBracket} />
-                          {r.stock.toLocaleString()} T
-                        </td>
-                        <td className='text-right'><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
-                </div>
-              </>
-          },
-          {
-            title: 'Updated',
-            dataIndex: 'updatedAt',
-            key: 'updatedAt',
-            align: 'right',
-            width: 130,
-            className: 'is-hidden-mobile no-wrap',
-            render: (v) => <>{timeBetweenTimestamps(v)}</>
-          },
-          {
-            title: 'Stock',
-            dataIndex: 'stock',
-            key: 'stock',
-            align: 'right',
-            width: 130,
-            className: 'is-hidden-mobile no-wrap',
-            render: (v, r) =>
-              <>
-                {v.toLocaleString()} T
-                <TradeBracketIcon bracket={r.stockBracket} />
-              </>
-          },
-          {
-            title: 'Price',
-            dataIndex: 'buyPrice',
-            key: 'buyPrice',
-            align: 'right',
-            width: 130,
-            className: 'is-hidden-mobile no-wrap',
-            render: (v) => <>{v.toLocaleString()} CR</>
-          }
-        ]}
-        data={exports}
-        rowKey={(r) => `commodity_export_orders_expanded_${r.commodityId}`}
-      />
-            </Collapsible>
+        <Table
+          className='data-table--mini data-table--striped scrollable fx__fade-in'
+          columns={[
+            {
+              title: 'Exporters in system',
+              dataIndex: 'stationName',
+              key: 'stationName',
+              align: 'left',
+              className: 'max-width-mobile',
+              render: (v, r) =>
+                <>
+                  <StationIcon station={r}>
+                    {r.stationName}
+                    {r.distanceToArrival !== undefined && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                    <span className='is-visible-mobile'>
+                      <br />
+                      <Link href={`/system/${r.systemAddress}`}>{r.systemName}</Link>
+                      {r.distance !== undefined && <small style={{ textTransform: 'none' }}> {r.distance.toLocaleString()} ly</small>}
+                    </span>
+                  </StationIcon>
+                  <div className='is-visible-mobile'>
+                    <table className='data-table--mini data-table--compact two-column-table'>
+                      <tbody style={{ textTransform: 'uppercase' }}>
+                        <tr>
+                          <td>
+                            <span className='data-table__label'>Stock</span>
+                            <TradeBracketIcon bracket={r.stockBracket} />
+                            {r.stock.toLocaleString()} T
+                          </td>
+                          <td className='text-right'><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <small>{timeBetweenTimestamps(r.updatedAt)} ago</small>
+                  </div>
+                </>
+            },
+            {
+              title: 'System',
+              dataIndex: 'systemName',
+              key: 'systemName',
+              align: 'right',
+              className: 'is-hidden-mobile',
+              render: (v, r) => <Link href={`/system/${r.systemAddress}`}>{v}</Link>
+            },
+            {
+              title: 'Updated',
+              dataIndex: 'updatedAt',
+              key: 'updatedAt',
+              align: 'right',
+              width: 130,
+              className: 'is-hidden-mobile no-wrap',
+              render: (v) => <small>{timeBetweenTimestamps(v)}</small>
+            },
+            {
+              title: 'Stock',
+              dataIndex: 'stock',
+              key: 'stock',
+              align: 'right',
+              width: 130,
+              className: 'is-hidden-mobile no-wrap',
+              render: (v, r) =>
+                <>
+                  {v.toLocaleString()} T
+                  <TradeBracketIcon bracket={r.stockBracket} />
+                </>
+            },
+            {
+              title: 'Price',
+              dataIndex: 'buyPrice',
+              key: 'buyPrice',
+              align: 'right',
+              width: 130,
+              className: 'is-hidden-mobile no-wrap',
+              render: (v) => <>{v.toLocaleString()} CR</>
+            }
+          ]}
+          data={exports}
+          rowKey={(r) => `commodity_export_orders_expanded_${r.marketId}_${r.commodityName}`}
+        />
+      </Collapsible>
       <Collapsible
         trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
         triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
@@ -214,6 +228,12 @@ function ExpandedRow ({ r }) {
       >
         <NearbyCommodityImporters commodity={r} />
       </Collapsible>
+      {/* <p className='table-row-expanded-link'>
+        <Link className='button--small' href={`/system/${r.systemAddress}`}>
+          <i className='station-icon icarus-terminal-star' />
+          {r.systemName}
+        </Link>
+      </p> */}
     </>
   )
 }

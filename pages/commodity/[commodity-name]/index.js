@@ -65,7 +65,7 @@ export default () => {
         const imports = await getImports(commodityName)
         if (Array.isArray(imports)) {
           imports.forEach(c => {
-            c.key = c.commodityId
+            c.key = `${c.marketId}_${c.commodityName}`
             c.avgProfit = c.avgSellPrice - c.avgBuyPrice
             c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
             c.maxProfit = c.maxSellPrice - c.minBuyPrice
@@ -87,7 +87,7 @@ export default () => {
         const exports = await getExports(commodityName)
         if (Array.isArray(exports)) {
           exports.forEach(c => {
-            c.key = c.commodityId
+            c.key = `${c.marketId}_${c.commodityName}`
             c.avgProfit = c.avgSellPrice - c.avgBuyPrice
             c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
             c.maxProfit = c.maxSellPrice - c.minBuyPrice
@@ -200,13 +200,13 @@ export default () => {
 }
 
 async function getCommodity (commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/commodity/name/${commodityName}`)
+  const res = await fetch(`${API_BASE_URL}/v2/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
 async function getExports (commodityName) {
   try {
-    const url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/exports?${apiQueryOptions()}`
+    const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/exports?${apiQueryOptions()}`
     const res = await fetch(url)
     return await res.json()
   } catch (e) {
@@ -216,7 +216,7 @@ async function getExports (commodityName) {
 
 async function getImports (commodityName) {
   try {
-    const url = `${API_BASE_URL}/v1/commodity/name/${commodityName}/imports?${apiQueryOptions()}`
+    const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/imports?${apiQueryOptions()}`
     const res = await fetch(url)
     return await res.json()
   } catch (e) {
@@ -225,7 +225,7 @@ async function getImports (commodityName) {
 }
 
 async function getCommodityFromMarket (marketId, commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v1/market/${marketId}/commodity/name/${commodityName}`)
+  const res = await fetch(`${API_BASE_URL}/v2/market/${marketId}/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 

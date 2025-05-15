@@ -10,7 +10,7 @@ export default ({ commodityOrders }) => {
       {!commodityOrders && <div className='loading-bar loading-bar--table-row' />}
       {commodityOrders &&
         <Table
-          className='data-table--mini data-table--striped scrollable'
+          className='data-table--mini data-table--striped scrollable fx__fade-in'
           columns={[
             {
               title: 'Importers in system',
@@ -21,7 +21,7 @@ export default ({ commodityOrders }) => {
               render: (v, r) =>
                 <>
                   <StationIcon station={r}>
-                    {r.fleetCarrier === 1 && 'FleetCarrier '}{r.stationName}
+                    {r.stationName}
                     {r.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                   </StationIcon>
                   <div className='is-visible-mobile'>
@@ -37,7 +37,7 @@ export default ({ commodityOrders }) => {
                         </tr>
                       </tbody>
                     </table>
-                    <small style={{ textTransform: 'none' }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
+                    <small>{timeBetweenTimestamps(r.updatedAt)} ago</small>
                   </div>
                 </>
             },
@@ -48,7 +48,7 @@ export default ({ commodityOrders }) => {
               align: 'right',
               width: 130,
               className: 'is-hidden-mobile no-wrap',
-              render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
+              render: (v) => <small>{timeBetweenTimestamps(v)}</small>
             },
             {
               title: 'Demand',
@@ -74,7 +74,7 @@ export default ({ commodityOrders }) => {
             }
           ]}
           data={commodityOrders}
-          rowKey={(r) => `local_commodity_importers_${r.commodityId}`}
+          rowKey={(r) => `local_commodity_importers_${r.marketId}_${r.commodityName}`}
         />}
     </>
   )

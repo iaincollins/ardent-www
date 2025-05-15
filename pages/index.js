@@ -20,7 +20,7 @@ export default () => {
     setNavigationPath([{ name: 'Welcome CMDR', path: '/' }])
       ; (async () => {
         try {
-          const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
+          const res = await fetch(`${API_BASE_URL}/v2/news/galnet`)
           const news = await res.json()
           setGalnetNews(news)
         } catch (e) {
@@ -30,7 +30,7 @@ export default () => {
 
       ; (async () => {
         try {
-          const res = await fetch(`${API_BASE_URL}/v1/stats`)
+          const res = await fetch(`${API_BASE_URL}/v2/stats`)
           const stats = await res.json()
           setStats(stats)
         } catch (e) {
@@ -39,7 +39,7 @@ export default () => {
       })()
       ; (async () => {
         try {
-          const res = await fetch(`${API_BASE_URL}/v1/version`)
+          const res = await fetch(`${API_BASE_URL}/v2/version`)
           const version = await res.json()
           setVersion(version)
         } catch (e) {
@@ -127,10 +127,10 @@ export default () => {
             <span className='counter__number'>{stats ? stats.stations.carriers.toLocaleString() : '…'}</span> Fleet Carriers
           </p>
           <p className='counter'>
-            <span className='counter__number'>{stats ? stats.trade.tradeOrders.toLocaleString() : '…'}</span> Buy/Sell Orders
+            <span className='counter__number'>{stats ? stats.trade.orders.toLocaleString() : '…'}</span> Buy/Sell Orders
           </p>
           <p className='counter'>
-            <span className='counter__number'>{stats ? (stats.trade.stations + stats.trade.carriers).toLocaleString() : '…'}</span> Markets
+            <span className='counter__number'>{stats ? stats.trade.markets.toLocaleString() : '…'}</span> Markets
           </p>
           <p className='counter'>
             <span className='counter__number'>{stats ? stats.pointsOfInterest.toLocaleString() : '…'}</span> Points of Interest

@@ -20,6 +20,7 @@
   pointer-events: none;
 }
 
+/*
 .layout__frame::before {
   position: absolute;
   z-index: 1000;
@@ -35,6 +36,7 @@
   bottom: .25rem;
   filter: blur(5rem);
 }
+*/
 
 .layout__content {
   overflow: auto;

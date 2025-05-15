@@ -253,6 +253,6 @@ export default () => {
 }
 
 async function getNearestService (systemName, service) {
-  const res = await fetch(`${API_BASE_URL}/v1/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
+  const res = await fetch(`${API_BASE_URL}/v2/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
   return res.ok ? await res.json() : null
 }

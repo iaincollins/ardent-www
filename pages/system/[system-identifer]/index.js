@@ -386,7 +386,7 @@ export default () => {
 async function getSystem (systemIdentifer) {
   try {
     const systemIdentiferType = systemIdentiferIsSystemAddress(systemIdentifer) ? 'address' : 'name'
-    const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}`)
+    const res = await fetch(`${API_BASE_URL}/v2/system/${systemIdentiferType}/${systemIdentifer}`)
     return (res.status === 200) ? await res.json() : null
   } catch (e) {
     console.error(e)
@@ -396,7 +396,7 @@ async function getSystem (systemIdentifer) {
 async function getStationsInSystem (systemIdentifer) {
   try {
     const systemIdentiferType = systemIdentiferIsSystemAddress(systemIdentifer) ? 'address' : 'name'
-    const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/stations`)
+    const res = await fetch(`${API_BASE_URL}/v2/system/${systemIdentiferType}/${systemIdentifer}/stations`)
     return (res.status === 200) ? await res.json() : null
   } catch (e) {
     console.error(e)
@@ -406,7 +406,7 @@ async function getStationsInSystem (systemIdentifer) {
 async function getNearbySystems (systemIdentifer) {
   try {
     const systemIdentiferType = systemIdentiferIsSystemAddress(systemIdentifer) ? 'address' : 'name'
-    const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/nearby?maxDistance=25`)
+    const res = await fetch(`${API_BASE_URL}/v2/system/${systemIdentiferType}/${systemIdentifer}/nearby?maxDistance=25`)
     return await res.json()
   } catch (e) {
     console.error(e)
@@ -416,7 +416,7 @@ async function getNearbySystems (systemIdentifer) {
 async function getNearestService (systemIdentifer, service) {
   try {
     const systemIdentiferType = systemIdentiferIsSystemAddress(systemIdentifer) ? 'address' : 'name'
-    const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/nearest/${service}?minLandingPadSize=3`)
+    const res = await fetch(`${API_BASE_URL}/v2/system/${systemIdentiferType}/${systemIdentifer}/nearest/${service}?minLandingPadSize=3`)
     return res.ok ? await res.json() : null
   } catch (e) {
     console.error(e)
@@ -426,7 +426,7 @@ async function getNearestService (systemIdentifer, service) {
 async function getBodiesInSystem (systemIdentifer) {
   try {
     const systemIdentiferType = systemIdentiferIsSystemAddress(systemIdentifer) ? 'address' : 'name'
-    const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/bodies`)
+    const res = await fetch(`${API_BASE_URL}/v2/system/${systemIdentiferType}/${systemIdentifer}/bodies`)
     return await res.json()
   } catch (e) {
     console.error(e)
@@ -436,7 +436,7 @@ async function getBodiesInSystem (systemIdentifer) {
 async function getSystemStatus (systemIdentifer) {
   try {
     const systemIdentiferType = systemIdentiferIsSystemAddress(systemIdentifer) ? 'address' : 'name'
-    const res = await fetch(`${API_BASE_URL}/v1/system/${systemIdentiferType}/${systemIdentifer}/status`)
+    const res = await fetch(`${API_BASE_URL}/v2/system/${systemIdentiferType}/${systemIdentifer}/status`)
     return await res.json()
   } catch (e) {
     console.error(e)

@@ -1,11 +1,13 @@
 {
   "name": "ardent-www",
-  "version": "1.35.1",
+  "version": "1.36.0",
   "description": "Ardent Insight Website",
   "main": "index.js",
   "scripts": {
     "start": "npx next start -p 3000",
+    "start:maintenance": "cross-env MAINTENANCE_MODE=true npx next start -p 3000",
     "build": "npx next build",
+    "build:local": "cross-env ARDENT_API_BASE_URL=http://localhost:3001/api ARDENT_AUTH_BASE_URL=http://localhost:3003/auth npx next build",
     "dev": "npx next dev -p 3000",
     "dev:local": "cross-env ARDENT_API_BASE_URL=http://localhost:3001/api ARDENT_AUTH_BASE_URL=http://localhost:3003/auth npx next dev -p 3000",
     "dev:local:api": "cross-env ARDENT_API_BASE_URL=http://localhost:3001/api npx next dev -p 3000",

@@ -50,6 +50,20 @@ a:hover:not(.--no-hover) {
   border-bottom: 1px dotted var(--color-text-link);
 }
 
+a.text-info {
+  color: var(--color-info);
+  text-decoration: none;
+  border-bottom: none;
+  filter: contrast(1.25) brightness(1.25);
+}
+
+a.text-info:hover:not(.--no-hover) {
+  color: var(--color-info);
+  text-decoration: none;
+  border-bottom: none;
+  filter: saturate(1.25);
+}
+
 h1,
 h2,
 h3,

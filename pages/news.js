@@ -17,7 +17,7 @@ export default (props) => {
     setNavigationPath([{ name: 'Galnet News', path: '/news' }])
       ; (async () => {
         try {
-          const res = await fetch(`${API_BASE_URL}/v1/news/galnet`)
+          const res = await fetch(`${API_BASE_URL}/v2/news/galnet`)
           if (res.ok) setGalnetNews(await res.json())
         } catch (e) {
           console.error(e)

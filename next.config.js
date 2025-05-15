@@ -43,6 +43,7 @@ module.exports = {
   publicRuntimeConfig: {
     ARDENT_DOMAIN: process.env.ARDENT_DOMAIN,
     ARDENT_API_BASE_URL: process.env.ARDENT_API_BASE_URL,
-    ARDENT_AUTH_BASE_URL: process.env.ARDENT_AUTH_BASE_URL
+    ARDENT_AUTH_BASE_URL: process.env.ARDENT_AUTH_BASE_URL,
+    MAINTENANCE_MODE: process.env.MAINTENANCE_MODE
   }
 }

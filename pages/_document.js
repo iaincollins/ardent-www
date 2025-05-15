@@ -6,6 +6,8 @@ import Document, { Html, Head, Main, NextScript } from 'next/document'
 //   : 'document.oncontextmenu = (e) => e.preventDefault()'
 const onContextMenu = ''
 
+const OFFLINE_IN_MAINTENANCE_MODE = true
+
 class MyDocument extends Document {
   static async getInitialProps (ctx) {
     const initialProps = await Document.getInitialProps(ctx)

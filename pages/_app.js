@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Header from 'components/header'
 // import { Canvas, useFrame } from '@react-three/fiber'
-import { NavigationContext, DialogContext } from 'lib/context'
+import { NavigationContext, DialogContext, MaintenanceModeContext } from 'lib/context'
 import 'css/index.css'
 import 'public/fonts/icarus-terminal/icarus-terminal.css'
 import { playLoadingSound } from 'lib/sounds'
@@ -23,6 +23,7 @@ function handleOnClick (e) {
 export default ({ Component, pageProps }) => {
   const [navigationPath, setNavigationPath] = useState([])
   const [dialog, setDialog] = useState()
+  const [maintenanceMode, setMaintenanceMode] = useState(false)
 
   useEffect(() => {
     document.body.addEventListener('click', handleOnClick)
@@ -44,8 +45,10 @@ export default ({ Component, pageProps }) => {
         <div className='fx__background' />
         <NavigationContext.Provider value={[navigationPath, setNavigationPath]}>
           <DialogContext.Provider value={[dialog, setDialog]}>
-            <Header />
-            <Component {...pageProps} />
+            <MaintenanceModeContext.Provider value={[maintenanceMode, setMaintenanceMode]}>
+              <Header />
+              <Component {...pageProps} />
+            </MaintenanceModeContext.Provider>
           </DialogContext.Provider>
         </NavigationContext.Provider>
       </div>

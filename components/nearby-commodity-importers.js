@@ -8,8 +8,8 @@ import { API_BASE_URL, NO_DEMAND_TEXT } from 'lib/consts'
 
 const MAX_ROWS_TO_DISPLAY = 10
 
-async function getNearbyImportersOfCommodity (systemAddress, commodityName) {
-  const url = `${API_BASE_URL}/v1/system/address/${systemAddress}/commodity/name/${commodityName}/nearby/imports`
+async function getNearbyImportersOfCommodity(systemAddress, commodityName) {
+  const url = `${API_BASE_URL}/v2/system/address/${systemAddress}/commodity/name/${commodityName}/nearby/imports`
   const res = await fetch(url)
   return await res.json()
 }
@@ -19,9 +19,9 @@ export default ({ commodity, rare }) => {
   useEffect(() => {
     (async () => {
       const _nearbyImporters = await getNearbyImportersOfCommodity(commodity.systemAddress, commodity.symbol)
-      ; (_nearbyImporters.length > 0)
-        ? setNearbyImporters(_nearbyImporters.slice(0, MAX_ROWS_TO_DISPLAY))
-        : setNearbyImporters([])
+        ; (_nearbyImporters.length > 0)
+          ? setNearbyImporters(_nearbyImporters.slice(0, MAX_ROWS_TO_DISPLAY))
+          : setNearbyImporters([])
     })()
   }, [commodity.commodityName, commodity.systemAddress])
 
@@ -30,7 +30,7 @@ export default ({ commodity, rare }) => {
       {!nearbyImporters && <div className='loading-bar' style={{ marginTop: 0 }} />}
       {nearbyImporters &&
         <Table
-          className='data-table--mini data-table--striped data-table--border-left scrollable'
+          className='data-table--mini data-table--striped data-table--border-left scrollable fx__fade-in'
           columns={[
             {
               title: 'Importers nearby',
@@ -41,13 +41,15 @@ export default ({ commodity, rare }) => {
               render: (v, r) =>
                 <>
                   <StationIcon station={r}>
-                    {r.fleetCarrier === 1 && 'Fleet Carrier '}{r.stationName}
-                    {r.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                    {r.stationName}
+                    {r.distanceToArrival !== undefined && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                    <span className='is-visible-mobile'>
+                      <br />
+                      <Link href={`/system/${r.systemAddress}`}>{r.systemName}</Link>
+                      {r.distance !== undefined && <small style={{ textTransform: 'none' }}> {r.distance.toLocaleString()} ly</small>}
+                    </span>
                   </StationIcon>
                   <div className='is-visible-mobile'>
-                    <span style={{ textTransform: 'none', opacity: 0.75, paddingLeft: '2rem' }}>
-                      <Link href={`/system/${r.systemAddress}`}>{r.systemName}</Link> <span style={{ opacity: 0.75, textTransform: 'none' }}>{r.distance} ly</span>
-                    </span>
                     <table className='data-table--mini data-table--compact two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
@@ -60,7 +62,7 @@ export default ({ commodity, rare }) => {
                         </tr>
                       </tbody>
                     </table>
-                    <small style={{ textTransform: 'none', opacity: 0.5 }}>{timeBetweenTimestamps(r.updatedAt)} ago</small>
+                    <small>{timeBetweenTimestamps(r.updatedAt)} ago</small>
                   </div>
                 </>
             },
@@ -72,8 +74,8 @@ export default ({ commodity, rare }) => {
               className: 'is-hidden-mobile',
               render: (v, r) =>
                 <>
-                  <span style={{ opacity: 0.75 }}><Link href={`/system/${r.systemAddress}`}>{v}</Link></span>
-                  <span style={{ fontSize: '.8rem', opacity: 0.5 }}> {r.distance.toLocaleString()} ly</span>
+                  <Link href={`/system/${r.systemAddress}`}>{r.systemName}</Link>
+                  {r.distance !== undefined && <small style={{ textTransform: 'none' }}> {r.distance.toLocaleString()} ly</small>}
                 </>
             },
             {
@@ -83,7 +85,7 @@ export default ({ commodity, rare }) => {
               align: 'right',
               width: 100,
               className: 'is-hidden-mobile no-wrap',
-              render: (v) => <span style={{ opacity: 0.5 }}>{timeBetweenTimestamps(v)}</span>
+              render: (v) => <small>{timeBetweenTimestamps(v)}</small>
             },
             {
               title: 'Demand',
@@ -109,7 +111,7 @@ export default ({ commodity, rare }) => {
             }
           ]}
           data={nearbyImporters}
-          rowKey={(r) => `nearby_commodity_importers_${r.commodityId}`}
+          rowKey={(r) => `nearby_commodity_importers_${r.marketId}_${r.commodityName}`}
         />}
     </>
   )

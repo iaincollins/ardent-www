@@ -19,7 +19,7 @@ export default ({ commodityName, reportName = 'core-systems-1000' }) => {
       const commodityReport = await getCommodityReport(commodityName, reportName)
 
       ;(commodityReport?.bestExporters ?? []).forEach(c => {
-        c.key = c.commodityId
+        c.key = `${c.marketId}_${c.commodityName}`
         c.avgProfit = c.avgSellPrice - c.avgBuyPrice
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
         c.maxProfit = c.maxSellPrice - c.minBuyPrice
@@ -31,7 +31,7 @@ export default ({ commodityName, reportName = 'core-systems-1000' }) => {
       setExports((commodityReport?.bestExporters ?? []))
 
       ;(commodityReport?.bestImporters ?? []).forEach(c => {
-        c.key = c.commodityId
+        c.key = `${c.marketId}_${c.commodityName}`
         c.avgProfit = c.avgSellPrice - c.avgBuyPrice
         c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
         c.maxProfit = c.maxSellPrice - c.minBuyPrice
@@ -65,6 +65,6 @@ export default ({ commodityName, reportName = 'core-systems-1000' }) => {
 }
 
 async function getCommodityReport (commodityName, reportName) {
-  const res = await fetch(`${API_BASE_URL}/v1/commodity/name/${commodityName}/${reportName}`)
+  const res = await fetch(`${API_BASE_URL}/v2/commodity/name/${commodityName}/${reportName}`)
   return await res.json()
 }

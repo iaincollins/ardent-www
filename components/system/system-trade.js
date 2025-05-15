@@ -167,9 +167,6 @@ module.exports = ({
                 expandRowByClick: true,
                 expandedRowRender: r =>
                   <>
-                    {/* <p className='stock-or-demand'>
-                      Stock of <Link href={`/commodity/${r.symbol}/exporters?location=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name}</Link> in {r.systemName}
-                    </p> */}
                     <LocalCommodityExporters
                       system={system}
                       commodityName={r.name}
@@ -188,6 +185,16 @@ module.exports = ({
                     >
                       <NearbyCommodityImporters system={system} commodity={r} />
                     </Collapsible>
+                    <p className='table-row-expanded-link'>
+                      <Link className='button--small' href={`/commodity/${r.symbol}/exporters?location=${encodeURIComponent(r.systemName)}&maxDistance=25`}>
+                        <i className='station-icon icarus-terminal-cargo-export'/>
+                        EXPORTERS
+                      </Link>
+                      <Link className='button--small' href={`/commodity/${r.symbol}/importers?location=${encodeURIComponent(r.systemName)}&maxDistance=25`}>
+                        <i className='station-icon icarus-terminal-cargo-import'/>
+                        IMPORTERS
+                      </Link>
+                    </p>
                   </>
               }}
             />}
@@ -283,9 +290,6 @@ module.exports = ({
                 expandRowByClick: true,
                 expandedRowRender: r =>
                   <>
-                    {/* <p className='stock-or-demand'>
-                      Demand for <Link href={`/commodity/${r.symbol}/importers?location=${encodeURIComponent(r.systemName)}&maxDistance=100`}>{r.name}</Link> in {r.systemName}
-                    </p> */}
                     <LocalCommodityImporters
                       commodityName={r.name}
                       commoditySymbol={r.symbol}
@@ -303,6 +307,16 @@ module.exports = ({
                     >
                       <NearbyCommodityImporters commodity={r} />
                     </Collapsible>
+                    <p className='table-row-expanded-link'>
+                      <Link className='button--small' href={`/commodity/${r.symbol}/exporters?location=${encodeURIComponent(r.systemName)}&maxDistance=25`}>
+                        <i className='station-icon icarus-terminal-cargo-export'/>
+                        EXPORTERS
+                      </Link>
+                      <Link className='button--small' href={`/commodity/${r.symbol}/importers?location=${encodeURIComponent(r.systemName)}&maxDistance=25`}>
+                        <i className='station-icon icarus-terminal-cargo-import'/>
+                        IMPORTERS
+                      </Link>
+                    </p>
                   </>
               }}
             />}

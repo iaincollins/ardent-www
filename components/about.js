@@ -11,7 +11,7 @@ export default ({ toggle }) => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/v1/stats`)
+        const res = await fetch(`${API_BASE_URL}/v2/stats`)
         const stats = await res.json()
         setStats(stats)
       } catch (e) {
@@ -20,7 +20,7 @@ export default ({ toggle }) => {
     })()
     ; (async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/v1/version`)
+        const res = await fetch(`${API_BASE_URL}/v2/version`)
         const version = await res.json()
         setVersion(version)
       } catch (e) {
