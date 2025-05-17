@@ -102,10 +102,8 @@ export default function Page (props) {
                       <>
                         <i className='icon icarus-terminal-cargo' />
                         {v}<br />
-                        <small>
-                          {r.category}
-                          {r.market_id && <>, RARE</>}
-                        </small>
+                        <small>{r.category}</small>
+                        {r?.market_id === true && <><small>, </small><small style={{opacity: 1}} className='text-rare'>Rare</small></>}
                         <div className='is-visible-mobile'>
                           <table className='data-table--mini data-table--compact two-column-table'>
                             <tbody style={{ textTransform: 'uppercase' }}>

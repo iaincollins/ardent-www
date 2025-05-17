@@ -167,7 +167,7 @@ module.exports = ({
               </span>}
 
             <span style={{ display: 'block' }} className='fx__fade-in'>
-              <small>Enhanced with telemetry from EDSM.NET</small>
+              <small>Stellar cartography enhanced by EDSM.NET</small>
             </span>
 
           </div>}

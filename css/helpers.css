@@ -43,6 +43,10 @@
   color: var(--color-info);
 }
 
+.text-rare {
+  color: rgb(255, 180, 0);
+}
+
 .text-no-transform {
   text-transform: none;
 }

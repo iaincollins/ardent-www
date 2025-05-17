@@ -3,14 +3,13 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { getCommoditiesWithAvgPricing, listOfCommoditiesAsArray } from 'lib/commodities'
 import commodities from 'lib/commodities/commodities'
-import { NavigationContext, MaintenanceModeContext } from 'lib/context'
+import { NavigationContext } from 'lib/context'
 import { API_BASE_URL } from 'lib/consts'
 import { eliteDateTime } from 'lib/utils/dates'
 
 export default () => {
   const router = useRouter()
   const [navigationPath] = useContext(NavigationContext)
-  const [maintenanceMode] = useContext(MaintenanceModeContext)
   const [fullScreenState, setFullScreenState] = useState(false)
   const [newsTicker, setNewsTicker] = useState([])
   const [commoditySearchResults, setCommoditySearchResults] = useState()
@@ -250,105 +249,104 @@ export default () => {
           ))}
         </ul>
       </div>
-      {maintenanceMode !== true &&
-        <div className='header__navigation' style={{ display: 'block' }}>
-          <div className='header__search'>
-            <label className='header__search-input' aria-label='Search' onClick={() => document.getElementById('header-search').focus()}>
-              <i className='icon icarus-terminal-search' />
-              <input
-                id='header-search' name='header-search' type='text' autoComplete='off' placeholder='Search'
-                onBlur={(e) => {
-                  setSearchResultsVisible(false)
-                }}
-                onFocus={(e) => {
-                  onSearchInputChange(e)
-                }}
-                // onMouseEnter={(e) => document.getElementById('header-search').focus()}
-                onChange={(e) => onSearchInputChange(e)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault()
-                    const searchText = e.target.value.trim().toLowerCase()
-                    if (searchResults?.length > 0) {
-                      /*
-                      let exactMatchFound = false
-                      for (const result of searchResults) {
-                        if (result.name.toLowerCase() === searchText) {
-                          setSearchResultsVisible(false)
-                          exactMatchFound = true
-                          router.push(result.path)
-                          document.getElementById('header-search').value = ''
-                        }
-                      }
-                      */
-                      // if (exactMatchFound !== true) {
-                      router.push(searchResults[hilightedSearchResult].path)
-                      setSearchResultsVisible(false)
-                      document.getElementById('header-search').value = ''
-                      // }
-                    }
-                  } else if (e.key === 'ArrowDown') {
-                    if (hilightedSearchResult < searchResults.length - 1) {
-                      setHilightedSearchResult(hilightedSearchResult + 1)
-                    }
-                  } else if (e.key === 'ArrowUp') {
-                    if (hilightedSearchResult - 1 >= 0) {
-                      setHilightedSearchResult(hilightedSearchResult - 1)
-                    }
-                  } else if (e.key === 'Escape') {
-                    e.target.value = ''
-                    document.activeElement.blur()
-                  }
-                }}
-              />
-            </label>
-            <div
-              className='header__search-results'
-              style={{
-                opacity: (searchResultsVisible) ? 1 : 0
+      <div className='header__navigation' style={{ display: 'block' }}>
+        <div className='header__search'>
+          <label className='header__search-input' aria-label='Search' onClick={() => document.getElementById('header-search').focus()}>
+            <i className='icon icarus-terminal-search' />
+            <input
+              id='header-search' name='header-search' type='text' autoComplete='off' placeholder='Search'
+              onBlur={(e) => {
+                setSearchResultsVisible(false)
               }}
-            >
-              {searchResults?.length > 0 && searchResults.map((result, i) =>
-                <p
-                  onMouseEnter={() => { setHilightedSearchResult(i) }}
-                  className={i === hilightedSearchResult ? 'header__search-result--highlighted' : undefined}
-                  key={`${i}:${result.icon}:${result.name}`}
-                  onMouseDown={() => {
-                    router.push(result.path)
+              onFocus={(e) => {
+                onSearchInputChange(e)
+              }}
+              // onMouseEnter={(e) => document.getElementById('header-search').focus()}
+              onChange={(e) => onSearchInputChange(e)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  const searchText = e.target.value.trim().toLowerCase()
+                  if (searchResults?.length > 0) {
+                    /*
+                    let exactMatchFound = false
+                    for (const result of searchResults) {
+                      if (result.name.toLowerCase() === searchText) {
+                        setSearchResultsVisible(false)
+                        exactMatchFound = true
+                        router.push(result.path)
+                        document.getElementById('header-search').value = ''
+                      }
+                    }
+                    */
+                    // if (exactMatchFound !== true) {
+                    router.push(searchResults[hilightedSearchResult].path)
                     setSearchResultsVisible(false)
                     document.getElementById('header-search').value = ''
-                  }}
-                ><i className={result.icon} />{result.name}
-                  {result.description !== undefined &&
-                    <div style={{ marginLeft: '1rem', overflow: 'hidden', fontSize: '.7rem', lineHeight: '.8rem', marginBottom: '.25rem' }}>
-                      <small style={{ textTransform: 'none' }}>{result.description}</small>
-                    </div>}
-                </p>
-              )}
-            </div>
-          </div>
-          <Link href='/' className='--no-hover'><button aria-label='Home' className='button'><i className='icon icarus-terminal-home' /></button></Link>
-          <Link href='/commodity/advancedcatalysers' className='--no-hover is-hidden-mobile'><button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button></Link>
-          <button aria-label='Toggle Fullscreen' className='button --no-hover is-hidden-mobile' onClick={() => toggleFullScreen()}>
-            <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
-          </button>
-          <button id='header-menu-toggle' aria-label='Menu' className={`button header__menu-button is-visible-mobile ${menuVisible ? '--active' : ''}`} onClick={() => toggleMenu()}>
-            <i className={`icon icarus-terminal-chevron-${menuVisible ? 'up' : 'down'}`} />
-          </button>
-          <div className='header__menu is-visible-mobile' style={{ visibility: menuVisible ? 'visible' : 'hidden' }}>
-            <Link href='/commodity/advancedcatalysers' className='--no-hover'><button aria-label='Commodities' className='header__menu-item'>
-              <i className='icon icarus-terminal-cargo' />
-              Commodities
-            </button>
-            </Link>
-            <br />
-            <button aria-label='Toggle Fullscreen' className='--no-hover header__menu-item' onClick={() => toggleFullScreen()}>
-              <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
-              Fullscreen
-            </button>
+                    // }
+                  }
+                } else if (e.key === 'ArrowDown') {
+                  if (hilightedSearchResult < searchResults.length - 1) {
+                    setHilightedSearchResult(hilightedSearchResult + 1)
+                  }
+                } else if (e.key === 'ArrowUp') {
+                  if (hilightedSearchResult - 1 >= 0) {
+                    setHilightedSearchResult(hilightedSearchResult - 1)
+                  }
+                } else if (e.key === 'Escape') {
+                  e.target.value = ''
+                  document.activeElement.blur()
+                }
+              }}
+            />
+          </label>
+          <div
+            className='header__search-results'
+            style={{
+              opacity: (searchResultsVisible) ? 1 : 0
+            }}
+          >
+            {searchResults?.length > 0 && searchResults.map((result, i) =>
+              <p
+                onMouseEnter={() => { setHilightedSearchResult(i) }}
+                className={i === hilightedSearchResult ? 'header__search-result--highlighted' : undefined}
+                key={`${i}:${result.icon}:${result.name}`}
+                onMouseDown={() => {
+                  router.push(result.path)
+                  setSearchResultsVisible(false)
+                  document.getElementById('header-search').value = ''
+                }}
+              ><i className={result.icon} />{result.name}
+                {result.description !== undefined &&
+                  <div style={{ marginLeft: '1rem', overflow: 'hidden', fontSize: '.7rem', lineHeight: '.8rem', marginBottom: '.25rem' }}>
+                    <small style={{ textTransform: 'none' }}>{result.description}</small>
+                  </div>}
+              </p>
+            )}
           </div>
         </div>
-      }
+        <Link href='/' className='--no-hover'><button aria-label='Home' className='button'><i className='icon icarus-terminal-home' /></button></Link>
+        <Link href='/commodity/advancedcatalysers' className='--no-hover is-hidden-mobile'><button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button></Link>
+        <button aria-label='Toggle Fullscreen' className='button --no-hover is-hidden-mobile' onClick={() => toggleFullScreen()}>
+          <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
+        </button>
+        <button id='header-menu-toggle' aria-label='Menu' className={`button header__menu-button is-visible-mobile ${menuVisible ? '--active' : ''}`} onClick={() => toggleMenu()}>
+          <i className={`icon icarus-terminal-chevron-${menuVisible ? 'up' : 'down'}`} />
+        </button>
+        <div className='header__menu is-visible-mobile' style={{ visibility: menuVisible ? 'visible' : 'hidden' }}>
+          <Link href='/commodity/advancedcatalysers' className='--no-hover'><button aria-label='Commodities' className='header__menu-item'>
+            <i className='icon icarus-terminal-cargo' />
+            Commodities
+          </button>
+          </Link>
+          <br />
+          <button aria-label='Toggle Fullscreen' className='--no-hover header__menu-item' onClick={() => toggleFullScreen()}>
+            <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
+            Fullscreen
+          </button>
+        </div>
+      </div>
+
       <div className='news-ticker'>
         <div className='news-ticker__clock'>
           {dateTime !== undefined &&
@@ -357,63 +355,56 @@ export default () => {
               <div className='news-ticker__clock-date'>{dateTime.day} {dateTime.month} {dateTime.year}</div>
             </div>}
         </div>
-        {maintenanceMode === true &&
-          <p class='text-center muted text-uppercase' style={{padding: '.5rem 0', margin: 0}}>
-            System offline
-          </p>
-        }
-        {maintenanceMode !== true &&
-          <>
-            {/* Ticker contents rendered twice to allow us to use CSS to make it appear to loop seemlessly */}
-            {[...Array(2)].map((arr, i) =>
-              <span key={`news-ticker-${i}`} className={`news-ticker__ticker news-ticker__ticker--${i}`}>
-                {newsTicker.map(item =>
-                  <span
-                    key={`ticker_${i}_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'
-                    onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?location=${encodeURIComponent(item.systemName)}&maxDistance=1`)}
-                  >
-                    <i
-                      className={`icarus-terminal-cargo-${item.demandBracket > item.stockBracket ? 'sell' : 'buy'} muted`}
-                      style={{ position: 'absolute', left: '-2.25rem', fontSize: '2rem', lineHeight: '2rem' }}
-                    />
-                    <span className='muted'>{item.stationName}, {item.systemName}</span>
-                    <br />
-                    {item.demandBracket > item.stockBracket ? 'Buying' : 'Selling'}
-                    {' '}
-                    <span style={{ color: 'var(--color-primary--lighter)' }}>{commodities?.[item.commodityName]?.name ?? item.commodityName}</span>
-                    <span className='news-ticker__ticker-item-price'>
-                      {(item.demandBracket > item.stockBracket)
-                        ? <>{item.demand === 0 ? '' : <>{item.demand.toLocaleString()} T</>}<br />{item.sellPrice.toLocaleString()} CR/T</>
-                        : <>{item.stock.toLocaleString()} T<br />{item.buyPrice.toLocaleString()} CR/T</>}
-                    </span>
-                    <span className='news-ticker__ticker-item-price-difference'>
-                      {item.avgSellPrice !== 0 && item.demandBracket === 3 &&
-                        <>
-                          {item.sellPrice > item.avgSellPrice && <small className='muted'>Avg profit</small>}
-                          {item.sellPrice < item.avgSellPrice && <small className='muted'>Avg Loss</small>}
-                        </>}
-                      {item.avgBuyPrice !== 0 && item.stockBracket === 3 &&
-                        <>
-                          {item.buyPrice > item.avgBuyPrice && <small className='muted'>Avg Loss</small>}
-                          {item.buyPrice < item.avgBuyPrice && <small className='muted'>Avg profit</small>}
-                        </>}
-                      <br />
-                      {item.demandBracket === 3 && item.avgSellPrice !== 0 &&
-                        <>
-                          {item.sellPrice > item.avgSellPrice && <small className='commodity__price text-positive '>+{(item.sellPrice - item.avgSellPrice).toLocaleString()} CR/T</small>}
-                          {item.sellPrice < item.avgSellPrice && <small className='commodity__price text-negative'>-{(item.avgSellPrice - item.sellPrice).toLocaleString()} CR/T</small>}
-                        </>}
-                      {item.stockBracket === 3 && item.avgBuyPrice !== 0 &&
-                        <>
-                          {item.buyPrice > item.avgBuyPrice && <small className='commodity__price text-negative'>-{(item.buyPrice - item.avgBuyPrice).toLocaleString()} CR/T</small>}
-                          {item.buyPrice < item.avgBuyPrice && <small className='commodity__price text-positive'>+{(item.avgBuyPrice - item.buyPrice).toLocaleString()} CR/T</small>}
-                        </>}
-                    </span>
-                  </span>
-                )}
+
+        {/* Ticker contents rendered twice to allow us to use CSS to make it appear to loop seemlessly */}
+        {[...Array(2)].map((arr, i) =>
+          <span key={`news-ticker-${i}`} className={`news-ticker__ticker news-ticker__ticker--${i}`}>
+            {newsTicker.map(item =>
+              <span
+                key={`ticker_${i}_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'
+                onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?location=${encodeURIComponent(item.systemName)}&maxDistance=1`)}
+              >
+                <i
+                  className={`icarus-terminal-cargo-${item.demandBracket > item.stockBracket ? 'sell' : 'buy'} muted`}
+                  style={{ position: 'absolute', left: '-2.25rem', fontSize: '2rem', lineHeight: '2rem' }}
+                />
+                <span className='muted'>{item.stationName}, {item.systemName}</span>
+                <br />
+                {item.demandBracket > item.stockBracket ? 'Buying' : 'Selling'}
+                {' '}
+                <span style={{ color: 'var(--color-primary--lighter)' }}>{commodities?.[item.commodityName]?.name ?? item.commodityName}</span>
+                <span className='news-ticker__ticker-item-price'>
+                  {(item.demandBracket > item.stockBracket)
+                    ? <>{item.demand === 0 ? '' : <>{item.demand.toLocaleString()} T</>}<br />{item.sellPrice.toLocaleString()} CR/T</>
+                    : <>{item.stock.toLocaleString()} T<br />{item.buyPrice.toLocaleString()} CR/T</>}
+                </span>
+                <span className='news-ticker__ticker-item-price-difference'>
+                  {item.avgSellPrice !== 0 && item.demandBracket === 3 &&
+                    <>
+                      {item.sellPrice > item.avgSellPrice && <small className='muted'>Avg profit</small>}
+                      {item.sellPrice < item.avgSellPrice && <small className='muted'>Avg Loss</small>}
+                    </>}
+                  {item.avgBuyPrice !== 0 && item.stockBracket === 3 &&
+                    <>
+                      {item.buyPrice > item.avgBuyPrice && <small className='muted'>Avg Loss</small>}
+                      {item.buyPrice < item.avgBuyPrice && <small className='muted'>Avg profit</small>}
+                    </>}
+                  <br />
+                  {item.demandBracket === 3 && item.avgSellPrice !== 0 &&
+                    <>
+                      {item.sellPrice > item.avgSellPrice && <small className='commodity__price text-positive '>+{(item.sellPrice - item.avgSellPrice).toLocaleString()} CR/T</small>}
+                      {item.sellPrice < item.avgSellPrice && <small className='commodity__price text-negative'>-{(item.avgSellPrice - item.sellPrice).toLocaleString()} CR/T</small>}
+                    </>}
+                  {item.stockBracket === 3 && item.avgBuyPrice !== 0 &&
+                    <>
+                      {item.buyPrice > item.avgBuyPrice && <small className='commodity__price text-negative'>-{(item.buyPrice - item.avgBuyPrice).toLocaleString()} CR/T</small>}
+                      {item.buyPrice < item.avgBuyPrice && <small className='commodity__price text-positive'>+{(item.avgBuyPrice - item.buyPrice).toLocaleString()} CR/T</small>}
+                    </>}
+                </span>
               </span>
             )}
-          </>}
+          </span>
+        )}
       </div>
     </header>
   )

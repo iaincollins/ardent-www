@@ -62,7 +62,7 @@ module.exports = ({
         </div>
       </div>
       <p className='text-center' style={{ marginBottom: 0 }}>
-        <small className='text-center'>Station orbital locations are approximate based on the latest available telemetry</small>
+        <small className='text-center'>Station orbital locations approximate based on latest telemetry</small>
       </p>
     </div>
   )
@@ -86,7 +86,7 @@ function SystemObjects ({ objects, depth = 0 }) {
                   {systemObject?.subType !== undefined && systemObject?.subType !== null &&
                     <small><br />{systemObject.subType}</small>}
                   {systemObject?.updatedAt !== undefined &&
-                    <small className='is-visible-mobile text-no-transform'>
+                    <small className='is-visible-mobile'>
                       <br />{timeBetweenTimestamps(systemObject.updatedAt)} ago
                     </small>}
                 </SystemObjectIcon>}
@@ -108,7 +108,7 @@ function SystemObjects ({ objects, depth = 0 }) {
                     {systemObject?.stationType === 'FleetCarrier' && 'Fleet Carrier'}
                   </small>
                   {systemObject?.updatedAt !== undefined &&
-                    <small className='is-visible-mobile text-no-transform'>
+                    <small className='is-visible-mobile'>
                       <br />{timeBetweenTimestamps(systemObject.updatedAt)} ago
                     </small>}
                 </StationIcon>
@@ -116,7 +116,7 @@ function SystemObjects ({ objects, depth = 0 }) {
             </div>
           </td>
           <td style={{ textAlign: 'right', fontSize: '0.9rem' }} className='is-hidden-mobile'>
-            {systemObject?.updatedAt !== undefined && <span className='text-no-transform' style={{ opacity: 0.5 }}>{timeBetweenTimestamps(systemObject.updatedAt)}</span>}
+            {systemObject?.updatedAt !== undefined && <small>{timeBetweenTimestamps(systemObject.updatedAt)}</small>}
           </td>
           <td style={{ textAlign: 'right' }} className='is-hidden-mobile'>
             {systemObject?.distanceToArrival !== undefined > 0 && <>{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls</>}

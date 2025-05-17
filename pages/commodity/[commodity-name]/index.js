@@ -286,7 +286,8 @@ const CommodityInfo = ({ commodity, rareMarket }) => {
       <CommodityTabOptions />
       <div className='fx__fade-in' style={{ padding: '0 .1rem' }}>
         <p className='fx__animated-text text-uppercase' data-fx-order='3' style={{ marginBottom: '.25rem', fontSize: '.9rem' }}>
-          <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>{commodity?.rare ? <span className='text-uppercase muted'>, Rare</span> : undefined}
+          <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>
+          {commodity?.rare && <>, <span style={{opacity: 1}} className='text-rare'>RARE</span></>}
         </p>
         <p className='text-no-transform muted' style={{ fontSize: '.8rem', marginTop: '.1rem' }}>
           {commodityCategories[commodity.category].description}

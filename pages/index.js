@@ -57,7 +57,6 @@ export default () => {
         <link rel='canonical' href='https://ardent-insight.com/about' />
       </Head>
       <div className='home fx__fade-in scrollable'>
-
         <div className='home__news-feed'>
           <div className='heading--with-underline'>
             <h2 className='text-uppercase'>Galnet News</h2>
@@ -68,7 +67,7 @@ export default () => {
                 <img src={newsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' />
                 <div className='home__news-article-text scrollable'>
                   <h3 className='home__news-article-headline'>{newsItem.title}</h3>
-                  <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${newsItem.slug}`} rel='noreferrer'>Galnet {newsItem.date} </a></p>
+                  <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${newsItem.slug}`} rel='noreferrer'>{newsItem.date} — Galnet</a></p>
                   <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
                   <div className='heading--with-underline'>
                     <h3>More from Galnet</h3>
@@ -83,7 +82,7 @@ export default () => {
                               <>
                                 <img src={nextNewsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' style={{ maxHeight: '10rem' }} />
                                 <p style={{fontSize: '1.5rem'}} className='text-uppercase'>{nextNewsItem.title}</p>
-                                <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>Galnet {nextNewsItem.date} </a></p>
+                                <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>{nextNewsItem.date} — Galnet</a></p>
                                 <Markdown>{`${nextNewsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
                               </>,
                             visible: true
