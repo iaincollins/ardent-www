@@ -1,7 +1,9 @@
+import { useContext } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Collapsible from 'react-collapsible'
 import { CollapsibleTrigger } from 'components/collapsible-trigger'
+import { DialogContext } from 'lib/context'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import Table from 'rc-table'
@@ -21,6 +23,7 @@ module.exports = ({
   lastUpdatedAt
 }) => {
   const router = useRouter()
+  const [, setDialog] = useContext(DialogContext)
 
   return (
     <div className='fx__fade-in'>
@@ -33,28 +36,6 @@ module.exports = ({
             Trade data for {system.systemName} last updated {timeBetweenTimestamps(lastUpdatedAt)} ago
           </span>}
       </p>
-      {rareGoods?.length > 0 &&
-        <div style={{ marginBottom: '1rem' }}>
-          {rareGoods.map(rare =>
-            <Collapsible
-              key={`rare_good_${rare.symbol}`}
-              trigger={<p style={{ margin: '0 0 .5rem 0', display: 'inline-block' }}><CollapsibleTrigger>Rare Export — {rare.name}</CollapsibleTrigger></p>}
-              triggerWhenOpen={<p style={{ margin: '0 0 .5rem 0', display: 'inline-block' }}><CollapsibleTrigger open>Rare Export — {rare.name}</CollapsibleTrigger></p>}
-            >
-              <div style={{ padding: '0 1rem', opacity: 0.7 }}>
-                <p style={{ marginTop: '.25rem' }}>
-                  {rare.stationName} is the exclusive exporter of {rare.name}.
-                </p>
-                <p>
-                  {rare?.description}
-                </p>
-                <p>
-                  {rare?.limit && <>Export restrictions limit orders to {rare.limit} T at a time.</>}
-                </p>
-              </div>
-            </Collapsible>
-          )}
-        </div>}
       <Tabs
         onSelect={
           (index) => {
@@ -94,7 +75,7 @@ module.exports = ({
                         <small style={{ float: 'right' }}>{r.exportOrders.length === 1 ? '1 exporter ' : `${r.exportOrders.length} exporters`}</small>
                       </div>
                       <small>{r.category}</small>
-                      {r?.rare === true && <><small>, </small><small style={{opacity: 1}} className='text-rare'>Rare</small></>}
+                      {r?.rare === true && <><small>, </small><small style={{ opacity: 1 }} className='text-rare'>Rare</small></>}
                       <div className='is-visible-mobile'>
                         <table className='data-table--mini two-column-table data-table--compact'>
                           <tbody style={{ textTransform: 'uppercase' }}>
@@ -183,12 +164,42 @@ module.exports = ({
                       <NearbyCommodityImporters system={system} commodity={r} />
                     </Collapsible>
                     <p className='table-row-expanded-link'>
-                      <Link className='button--small' href={`/commodity/${r.symbol}/exporters?location=${encodeURIComponent(r.systemName)}&maxDistance=25`}>
-                        <i className='station-icon icarus-terminal-cargo-export'/>
-                        EXPORTERS
-                      </Link>
+                      {r?.rare === true &&
+                        <div className='button--small'
+                          onClick={() => {
+                            const rare = rareGoods.filter(rare => rare.name.toLowerCase() === r.name.toLowerCase())?.[0]
+                            const contents = rare
+                              ?
+                                <>
+                                  <p>
+                                    {rare.stationName} is the exclusive exporter of {rare.name}.
+                                  </p>
+                                  <p>
+                                    {rare?.description}
+                                  </p>
+                                  <p>
+                                    {rare?.limit && <>Export restrictions limit orders to {rare.limit} T at a time.</>}
+                                  </p>
+                                </>
+                              : <p>{r.systemName} is the exclusive exporter of {r.name}.</p>
+
+                            setDialog({
+                              title: `About ${r.name}`,
+                              contents,
+                              visible: true
+                            })
+                          }}
+                        >
+                          <i className='station-icon icarus-terminal-info' />
+                          ABOUT
+                        </div>}
+                      {r?.rare !== true &&
+                        <Link className='button--small' href={`/commodity/${r.symbol}/exporters?location=${encodeURIComponent(r.systemName)}&maxDistance=25`}>
+                          <i className='station-icon icarus-terminal-cargo-export' />
+                          EXPORTERS
+                        </Link>}
                       <Link className='button--small' href={`/commodity/${r.symbol}/importers?location=${encodeURIComponent(r.systemName)}&maxDistance=25`}>
-                        <i className='station-icon icarus-terminal-cargo-import'/>
+                        <i className='station-icon icarus-terminal-cargo-import' />
                         IMPORTERS
                       </Link>
                     </p>
@@ -306,11 +317,11 @@ module.exports = ({
                     </Collapsible>
                     <p className='table-row-expanded-link'>
                       <Link className='button--small' href={`/commodity/${r.symbol}/exporters?location=${encodeURIComponent(r.systemName)}&maxDistance=25`}>
-                        <i className='station-icon icarus-terminal-cargo-export'/>
+                        <i className='station-icon icarus-terminal-cargo-export' />
                         EXPORTERS
                       </Link>
                       <Link className='button--small' href={`/commodity/${r.symbol}/importers?location=${encodeURIComponent(r.systemName)}&maxDistance=25`}>
-                        <i className='station-icon icarus-terminal-cargo-import'/>
+                        <i className='station-icon icarus-terminal-cargo-import' />
                         IMPORTERS
                       </Link>
                     </p>

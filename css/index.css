@@ -156,6 +156,7 @@ hr {
   padding-bottom: .25rem;
   padding-left: 1.4rem;
   display: block;
+  border-radius: .2rem;
 }
 
 .rc-table-cell .collapsible__trigger .collapsible__trigger-icon {
@@ -262,7 +263,8 @@ table.two-column-table>tbody>tr>td,
   padding: .1rem .25rem;
   display: inline-block;
   margin: .25rem 0 0 0;
-  font-size: 1.1rem;
+  font-size: .9rem;
+  line-height: 1.1rem;
   background: transparent;
   color: var(--color-primary-light-3);
   border: .15rem solid var(--color-primary-dark-1);
@@ -314,6 +316,7 @@ table.two-column-table>tbody>tr>td,
   margin-top: .25rem;
 }
 
+.button--small,
 a.button--small {
   display: inline-block;
   padding: .5rem .75rem .5rem .25rem;
@@ -323,6 +326,7 @@ a.button--small {
   border: none;
 }
 
+.button--small:hover,
 a.button--small:hover {
   background: var(--color-primary-light-4);
   color: var(--color-text-dark);

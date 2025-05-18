@@ -22,6 +22,7 @@ import {
   COMMODITY_FILTER_LOCATION_DEFAULT,
   COMMODITY_FILTER_DISTANCE_DEFAULT
 } from 'lib/consts'
+import StationIcon from 'components/station-icon'
 
 const TABS = ['exporters', 'importers']
 
@@ -50,7 +51,7 @@ export default () => {
     setTabIndex(newTabIndex)
   }, [router.pathname])
 
-  async function getImportsAndExports () {
+  async function getImportsAndExports() {
     playLoadingSound()
 
     // Can't reliably get this from the the route.query object
@@ -61,46 +62,46 @@ export default () => {
 
     if (activeTab === 'importers') {
       setImports(undefined)
-      ; (async () => {
-        const imports = await getImports(commodityName)
-        if (Array.isArray(imports)) {
-          imports.forEach(c => {
-            c.key = `${c.marketId}_${c.commodityName}`
-            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-            c.maxProfit = c.maxSellPrice - c.minBuyPrice
-            c.symbol = c.commodityName.toLowerCase()
-            c.category = listOfCommodities[c.symbol]?.category ?? ''
-            c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-            delete c.commodityName
-          })
-          setImports(imports)
-        } else {
-          setImports([])
-        }
-      })()
+        ; (async () => {
+          const imports = await getImports(commodityName)
+          if (Array.isArray(imports)) {
+            imports.forEach(c => {
+              c.key = `${c.marketId}_${c.commodityName}`
+              c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+              c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+              c.maxProfit = c.maxSellPrice - c.minBuyPrice
+              c.symbol = c.commodityName.toLowerCase()
+              c.category = listOfCommodities[c.symbol]?.category ?? ''
+              c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+              delete c.commodityName
+            })
+            setImports(imports)
+          } else {
+            setImports([])
+          }
+        })()
     }
 
     if (activeTab === 'exporters') {
       setExports(undefined)
-      ; (async () => {
-        const exports = await getExports(commodityName)
-        if (Array.isArray(exports)) {
-          exports.forEach(c => {
-            c.key = `${c.marketId}_${c.commodityName}`
-            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-            c.maxProfit = c.maxSellPrice - c.minBuyPrice
-            c.symbol = c.commodityName.toLowerCase()
-            c.category = listOfCommodities[c.symbol]?.category ?? ''
-            c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-            delete c.commodityName
-          })
-          setExports(exports)
-        } else {
-          setExports([])
-        }
-      })()
+        ; (async () => {
+          const exports = await getExports(commodityName)
+          if (Array.isArray(exports)) {
+            exports.forEach(c => {
+              c.key = `${c.marketId}_${c.commodityName}`
+              c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+              c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+              c.maxProfit = c.maxSellPrice - c.minBuyPrice
+              c.symbol = c.commodityName.toLowerCase()
+              c.category = listOfCommodities[c.symbol]?.category ?? ''
+              c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+              delete c.commodityName
+            })
+            setExports(exports)
+          } else {
+            setExports([])
+          }
+        })()
     }
   }
 
@@ -136,7 +137,9 @@ export default () => {
       if (c && !c.totalStock) c.totalStock = 0
       c ? setCommodity(c) : setCommodity(undefined)
       if (c?.rareMarketId) {
-        setRareMarket(await getCommodityFromMarket(c.rareMarketId, c.symbol))
+        //const rareCommodity = await getCommodityFromMarket(c.rareMarketId, c.symbol)
+        const rareMarket = await getMarket(c.rareMarketId, c.symbol)
+        setRareMarket(rareMarket)
       } else {
         setRareMarket(undefined)
       }
@@ -199,12 +202,12 @@ export default () => {
   )
 }
 
-async function getCommodity (commodityName) {
+async function getCommodity(commodityName) {
   const res = await fetch(`${API_BASE_URL}/v2/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getExports (commodityName) {
+async function getExports(commodityName) {
   try {
     const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/exports?${apiQueryOptions()}`
     const res = await fetch(url)
@@ -214,7 +217,7 @@ async function getExports (commodityName) {
   }
 }
 
-async function getImports (commodityName) {
+async function getImports(commodityName) {
   try {
     const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/imports?${apiQueryOptions()}`
     const res = await fetch(url)
@@ -224,8 +227,14 @@ async function getImports (commodityName) {
   }
 }
 
-async function getCommodityFromMarket (marketId, commodityName) {
+async function getCommodityFromMarket(marketId, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v2/market/${marketId}/commodity/name/${commodityName}`)
+  return (res.status === 200) ? await res.json() : null
+}
+
+
+async function getMarket(marketId, commodityName) {
+  const res = await fetch(`${API_BASE_URL}/v2/market/${marketId}`)
   return (res.status === 200) ? await res.json() : null
 }
 
@@ -244,7 +253,7 @@ const TabDescription = ({ children }) => {
   )
 }
 
-function apiQueryOptions () {
+function apiQueryOptions() {
   // Parse current query string and convert the params to an API query parametrer string
   const options = []
 
@@ -269,7 +278,7 @@ function apiQueryOptions () {
   return options.join('&')
 }
 
-function parseQueryString () {
+function parseQueryString() {
   const obj = {}
   window.location.search.replace(
     new RegExp('([^?=&]+)(=([^&]*))?', 'g'),
@@ -280,25 +289,33 @@ function parseQueryString () {
 
 const CommodityInfo = ({ commodity, rareMarket }) => {
   if (!commodity) return
-
   return (
     <div style={{ paddingTop: '.5rem' }}>
       <CommodityTabOptions />
       <div className='fx__fade-in' style={{ padding: '0 .1rem' }}>
         <p className='fx__animated-text text-uppercase' data-fx-order='3' style={{ marginBottom: '.25rem', fontSize: '.9rem' }}>
           <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>
-          {commodity?.rare && <>, <span style={{opacity: 1}} className='text-rare'>RARE</span></>}
         </p>
         <p className='text-no-transform muted' style={{ fontSize: '.8rem', marginTop: '.1rem' }}>
           {commodityCategories[commodity.category].description}
         </p>
         {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
           <>
-            <span className='text-uppercase muted' style={{ fontSize: '.9rem', display: 'block', marginTop: '.5rem' }}>Only exported from</span>
-            <span className='fx__animated-text text-no-transform' data-fx-order='2' style={{ fontSize: '.9rem' }}>
-              <Link href={`/commodity/${commodity.symbol.toLowerCase()}?location=${rareMarket.systemName}`}>{rareMarket.stationName}, {rareMarket.systemName}</Link>
-              {commodity?.rareMaxCount && <><br /><small>limit {commodity.rareMaxCount}T</small></>}
-            </span>
+            <span className='text-rare text-uppercase' style={{ fontSize: '.9rem', lineHeight: '1.5rem', display: 'block', marginTop: '.5rem' }}>Rare export from</span>
+            <StationIcon station={rareMarket}>
+              <span className='fx__animated-text text-no-transform' data-fx-order='2' style={{ fontSize: '.9rem' }}>
+                <Link href={`/commodity/${commodity.symbol.toLowerCase()}?location=${rareMarket.systemName}`}>{rareMarket.stationName}</Link>
+              </span>
+              {/* <br />
+              <span className='fx__animated-text text-no-transform' data-fx-order='3' style={{ fontSize: '.9rem' }}>
+                <Link href={`/commodity/${commodity.symbol.toLowerCase()}?location=${rareMarket.systemName}`}>{rareMarket.systemName}</Link>
+              </span> */}
+              {commodity?.rareMaxCount && <>
+                <br />
+                <span className='fx__animated-text text-no-transform' data-fx-order='3' style={{ fontSize: '.9rem' }}>
+                  <small>Limit {commodity.rareMaxCount}T</small>
+                </span></>}
+            </StationIcon>
           </>}
         {listOfCommodities[commodity.symbol]?.description &&
           <p style={{ marginBottom: 0, textTransform: 'none', fontSize: '.9rem' }}>
