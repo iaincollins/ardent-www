@@ -29,7 +29,7 @@
   margin: auto;
   max-width: min(60rem, calc(100vw - 3rem));
   height: auto; /* auto size ... */
-  max-height: calc(100vh - 7rem); /* ... but dont grow bigger than screen */
+  max-height: calc(100dvh - 7rem); /* ... but dont grow bigger than screen */
   display: flex;
   flex-direction: column;
   overflow: hidden;

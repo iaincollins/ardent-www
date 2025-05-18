@@ -242,7 +242,7 @@ header {
   overflow: hidden;
   /* overflow-y: auto; */
   width: 100vw;
-  max-height: calc(100vh - 7rem);
+  max-height: calc(100dvh - 7rem);
   max-width: 18rem;
   border: .2rem solid var(--color-primary-light-4);
   background-color: rgba(0,0,0,.5);

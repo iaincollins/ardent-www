@@ -59,6 +59,16 @@
 
 .home__sign-in-placeholder {
   padding: 1rem;
+  mask-image: linear-gradient(to bottom,
+    transparent,
+    black 5rem,
+    black calc(100% - 5rem),
+    transparent), linear-gradient(black, black);
+  mask-size: 100% 100%, 0 100%;
+  mask-position: 0 0, 100% 0;
+  mask-repeat: no-repeat, no-repeat;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(100,100,100,.1) 40px, rgba(100,100,100,.1) 80px);
+  min-height: 16rem;
 }
 
 .home__cmdr {
@@ -77,7 +87,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 20vh 1rem 0 1rem;
+    padding: 20dvh 1rem 0 1rem;
   }
 
   .home__about {
