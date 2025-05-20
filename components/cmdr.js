@@ -241,7 +241,7 @@ export default () => {
                 </p>
                 <p className='text-center'>Sign in to access all services</p>
                 <form method='GET' action={SIGN_IN_URL}>
-                  <button className='button' style={{ display: 'block', width: '100%', padding: '.75rem .25rem', fontSize: '1.25rem' }}>
+                  <button className='button home__sign-in-placeholder__button' style={{ display: 'block', width: '100%', padding: '.75rem .25rem', fontSize: '1.25rem' }}>
                     Sign in
                   </button>
                 </form>
