@@ -220,6 +220,8 @@ export default () => {
           document.activeElement?.id === 'location') {
           document.activeElement.blur()
         } else {
+          // If focus is on an INPUT element do nothing (may add more exceptions)
+          if (document?.activeElement?.tagName === 'INPUT') return
           document.getElementById('header-search').focus()
         }
       }

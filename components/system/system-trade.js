@@ -75,7 +75,7 @@ module.exports = ({
                         <small style={{ float: 'right' }}>{r.exportOrders.length === 1 ? '1 exporter ' : `${r.exportOrders.length} exporters`}</small>
                       </div>
                       <small>{r.category}</small>
-                      {r?.rare === true && <><small>, </small><small style={{ opacity: 1 }} className='text-rare'>Rare</small></>}
+                      {r?.rare === true && <small style={{ opacity: 1 }} className='text-rare'> Rare</small>}
                       <div className='is-visible-mobile'>
                         <table className='data-table--mini two-column-table data-table--compact'>
                           <tbody style={{ textTransform: 'uppercase' }}>

@@ -83,3 +83,12 @@
   text-transform: uppercase;
   opacity: .75;
 }
+
+.sidebar__options .input-with-autocomplete {
+  width: calc(100% - 1.75rem);
+}
+
+.sidebar__options .input-with-autocomplete__results {
+  width: calc(100%);
+  left: .5rem;
+}

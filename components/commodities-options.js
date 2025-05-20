@@ -10,6 +10,7 @@ import {
   COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
 } from 'lib/consts'
 import { getCommoditiesWithAvgPricing } from 'lib/commodities'
+import InputWithAutoComplete from './input-with-autocomplete'
 
 const ZERO_WIDTH_SPACE = '​' // Looking forward to regretting *this* later
 
@@ -25,6 +26,7 @@ export default ({ disabled = false }) => {
   const [distanceFilter, setDistanceFilter] = useState()
   const [commodities, setCommodities] = useState([])
   const [selectedCommodity, setSelectedCommodity] = useState()
+  const [commodityAutoCompleteResults, setCommodityAutoCompleteResults] = useState()
 
   useEffect(() => {
     (async () => {
@@ -96,6 +98,66 @@ export default ({ disabled = false }) => {
           document.activeElement.blur()
         }}
       >
+        <InputWithAutoComplete
+          label='Commodity'
+          name='commodity-name'
+          placeholder='Commodity name'
+          defaultValue={commodities?.filter(c => c.symbol.toLowerCase() === selectedCommodity)?.[0]?.name}
+          onChange={(e) => {
+            const commodityName = e?.target?.value ?? ''
+            const autoCompleteResults = []
+            let isExactMatch = false
+            // Rank matches that "start with" first
+            commodities.forEach(commodity => {
+              if (commodity.name === commodityName) {
+                isExactMatch === true
+              } else if (commodity.name.toLowerCase().startsWith(commodityName.toLowerCase())) {
+                autoCompleteResults.push({
+                  value: commodity.name,
+                  className: commodity.rare ? 'text-rare' : ''
+                })
+              }
+            })
+            if (!isExactMatch) { // Skip this is if it's an exact match
+              // Rank matches that "contain" next
+              commodities.forEach(commodity => {
+                if (commodity.name !== commodityName &&
+                    commodity.name.toLowerCase().includes(commodityName.toLowerCase()) &&
+                    !commodity.name.toLowerCase().startsWith(commodityName.toLowerCase())) {
+                  autoCompleteResults.push({
+                    value: commodity.name,
+                    className: commodity.rare ? 'text-rare' : ''
+                  })
+                }
+              })
+            }
+            // If no matches, or it's an exact match, result ALL results
+            if (autoCompleteResults.length === 0 || isExactMatch === true) {
+              commodities.forEach(commodity => autoCompleteResults.push({ 
+                value: commodity.name,
+                className: commodity.rare ? 'text-rare' : ''
+              }))
+            }
+            setCommodityAutoCompleteResults(autoCompleteResults)
+          }}
+          onSelect={text => {
+            let matchingCommodity = null
+            for (const commodity of commodities) {
+              if (commodity.name.toLowerCase() === text.toLowerCase()) {
+                matchingCommodity = commodity
+                break;
+              }
+            }
+            if (matchingCommodity !== null) {
+               updateUrlWithFilterOptions(router, matchingCommodity.symbol.toLowerCase())
+            } else {
+              // TODO update UI to show no valid option
+               updateUrlWithFilterOptions(router, null)
+            }
+          }}
+          autoCompleteResults={commodityAutoCompleteResults}
+        />
+        {/*
         <label>
           <span className='tab-options__label-text'>Commodity</span>
           <select
@@ -113,6 +175,7 @@ export default ({ disabled = false }) => {
             ))}
           </select>
         </label>
+        */}
         <label>
           <span className='tab-options__label-text'>Near</span>
           <input

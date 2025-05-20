@@ -30,7 +30,7 @@ export default ({ tableName = 'Exporters', commodities }) => {
           align: 'left',
           className: 'max-width-mobile',
           render: (v, r) =>
-            <div style={{ paddingLeft: '2em' }}>
+            <div>
               <StationIcon station={r}>
                 {r.stationName}
                 {r.distanceToArrival !== undefined && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}

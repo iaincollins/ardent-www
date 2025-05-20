@@ -301,21 +301,33 @@ const CommodityInfo = ({ commodity, rareMarket }) => {
         </p>
         {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
           <>
-            <span className='text-rare text-uppercase' style={{ fontSize: '.9rem', lineHeight: '1.5rem', display: 'block', marginTop: '.5rem' }}>Rare export from</span>
+            <span className='text-rare text-uppercase' style={{ fontSize: '.9rem', lineHeight: '1.5rem', display: 'block', marginTop: '.5rem' }}>
+              Rare export
+              {commodity?.rareMaxCount && <small> Limit {commodity.rareMaxCount}T</small>}
+            </span>
             <StationIcon station={rareMarket}>
               <span className='fx__animated-text text-no-transform' data-fx-order='2' style={{ fontSize: '.9rem' }}>
                 <Link href={`/commodity/${commodity.symbol.toLowerCase()}?location=${rareMarket.systemName}`}>{rareMarket.stationName}</Link>
+                              {rareMarket.distanceToArrival !== undefined && <>
+                <small className='text-no-transform'> {Math.round(rareMarket.distanceToArrival).toLocaleString()} Ls</small></>}
               </span>
+
               {/* <br />
               <span className='fx__animated-text text-no-transform' data-fx-order='3' style={{ fontSize: '.9rem' }}>
                 <Link href={`/commodity/${commodity.symbol.toLowerCase()}?location=${rareMarket.systemName}`}>{rareMarket.systemName}</Link>
               </span> */}
-              {commodity?.rareMaxCount && <>
+              {/* {commodity?.rareMaxCount && <>
                 <br />
                 <span className='fx__animated-text text-no-transform' data-fx-order='3' style={{ fontSize: '.9rem' }}>
                   <small>Limit {commodity.rareMaxCount}T</small>
-                </span></>}
+                </span></>} */}
             </StationIcon>
+            <div style={{ paddingTop: '.5rem' }}>
+              <Link className='button--small' href={`/system/${rareMarket.systemAddress}`}>
+                <i className='icarus-terminal-star system-icon' />
+                {rareMarket.systemName}
+              </Link>
+            </div>
           </>}
         {listOfCommodities[commodity.symbol]?.description &&
           <p style={{ marginBottom: 0, textTransform: 'none', fontSize: '.9rem' }}>

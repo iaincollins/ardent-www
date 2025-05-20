@@ -79,7 +79,7 @@
     line-height: 2rem;
     height: 2rem;
   }
-  
+
   .is-hidden-mobile {
     display: none !important;
     width: 0;
@@ -217,7 +217,7 @@
     line-height: 2rem;
     font-size: 1.1rem;
   }
-  
+
   .header__navigation .button,
   .header__navigation .button:hover {
     background: transparent;
@@ -276,7 +276,8 @@
     left: .5rem;
   }
 
-  .sidebar__options form label span {
+  .sidebar__options form label span,
+  .sidebar__options .input-with-autocomplete__label-text {
     display: inline-block;
     width: 6rem;
     text-align: right;
@@ -290,6 +291,20 @@
   .sidebar__options form input,
   .sidebar__options form select {
     width: calc(100% - 7rem);
+  }
+
+  .sidebar__options .input-with-autocomplete {
+    width: 100%;
+  }
+
+  .sidebar__options .input-with-autocomplete__input {
+    width: calc(100% - 9rem) !important;
+  }
+
+  .sidebar__options .input-with-autocomplete__results {
+    width: calc(100% - 1rem) !important;
+    xleft: 7.5rem;
+    left: 0;
   }
 
   .counter {
@@ -312,7 +327,7 @@
   .system-map__system-status small {
     font-size: .6rem;
   }
-  
+
   .home__news-article-headline {
     padding-left: 0;
     padding-right: 0;
