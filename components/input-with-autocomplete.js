@@ -24,7 +24,8 @@ export default ({
     const onSelectResult = (e) => {
       if (e.target.className.includes('input-with-autocomplete__result')) {
         inputRef.current.value = e.target.innerText
-        onSelect(e.target.innerText)
+        inputRef.current.dataset.autoCompleteOption = e.target.dataset?.autoCompleteOption
+        onSelect(e.target.innerText, JSON.parse(e.target.dataset?.autoCompleteOption))
         document.activeElement.blur()
       }
     }
@@ -46,10 +47,10 @@ export default ({
   }
 
   function inputOnBlurHandler(e) {
-    _autoCompleteResults.forEach(r => {
-      if (r.value.toLowerCase() === inputRef.current.value.toLowerCase()) {
-        inputRef.current.value = r.value
-        onSelect(r.value)
+    _autoCompleteResults.forEach(result => {
+      if (result.text.toLowerCase() === inputRef.current.value.toLowerCase()) {
+        inputRef.current.value = result.text
+        onSelect(result.text, result)
       }
     })
     setTimeout(() => {
@@ -101,8 +102,9 @@ export default ({
             {_autoCompleteResults.map((result, i) =>
               <p key={`autocomplete-${name}-${result.value}`}
                 className={`input-with-autocomplete__result ${result.className}`}
+                data-auto-complete-option={JSON.stringify(result)}
               >
-                {result.value}
+                {result.text}
               </p>)}
               </div>
           </div>}

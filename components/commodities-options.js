@@ -113,7 +113,8 @@ export default ({ disabled = false }) => {
                 isExactMatch === true
               } else if (commodity.name.toLowerCase().startsWith(commodityName.toLowerCase())) {
                 autoCompleteResults.push({
-                  value: commodity.name,
+                  text: commodity.name,
+                  value: commodity.symbol,
                   className: commodity.rare ? 'text-rare' : ''
                 })
               }
@@ -125,7 +126,8 @@ export default ({ disabled = false }) => {
                     commodity.name.toLowerCase().includes(commodityName.toLowerCase()) &&
                     !commodity.name.toLowerCase().startsWith(commodityName.toLowerCase())) {
                   autoCompleteResults.push({
-                    value: commodity.name,
+                    text: commodity.name,
+                    value: commodity.symbol,
                     className: commodity.rare ? 'text-rare' : ''
                   })
                 }
@@ -134,25 +136,16 @@ export default ({ disabled = false }) => {
             // If no matches, or it's an exact match, result ALL results
             if (autoCompleteResults.length === 0 || isExactMatch === true) {
               commodities.forEach(commodity => autoCompleteResults.push({ 
-                value: commodity.name,
+                text: commodity.name,
+                value: commodity.symbol,
                 className: commodity.rare ? 'text-rare' : ''
               }))
             }
             setCommodityAutoCompleteResults(autoCompleteResults)
           }}
-          onSelect={text => {
-            let matchingCommodity = null
-            for (const commodity of commodities) {
-              if (commodity.name.toLowerCase() === text.toLowerCase()) {
-                matchingCommodity = commodity
-                break;
-              }
-            }
-            if (matchingCommodity !== null) {
-               updateUrlWithFilterOptions(router, matchingCommodity.symbol.toLowerCase())
-            } else {
-              // TODO update UI to show no valid option
-               updateUrlWithFilterOptions(router, null)
+          onSelect={(text, data) => {
+            if (data) {
+              updateUrlWithFilterOptions(router, data.value.toLowerCase())
             }
           }}
           autoCompleteResults={commodityAutoCompleteResults}
