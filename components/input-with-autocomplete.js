@@ -95,17 +95,8 @@ export default ({
           autoComplete='off'
           className='input-with-autocomplete__input'
         />
-        {/* {focus === true && inputRef?.current?.value !== '' &&
-          <div className='input-with-autocomplete__clear-input'
-            style={{
-              position: 'absolute',
-              right: '.5rem',
-              top: '1.5rem'
-            }}
-            onClick={(e) => { inputRef.current.value = '' }}
-          >X</div>
-        } */}
         {focus === true && _autoCompleteResults?.length > 0 &&
+        <div className='input-with-autocomplete__results-dropdown'>
           <div ref={resultsRef} className='input-with-autocomplete__results scrollable'>
             {_autoCompleteResults.map((result, i) =>
               <p key={`autocomplete-${name}-${result.value}`}
@@ -113,35 +104,9 @@ export default ({
               >
                 {result.value}
               </p>)}
+              </div>
           </div>}
       </label>
     </div>
   )
 }
-
-/*
-<div
-            className='header__search-results'
-            style={{
-              opacity: (searchResultsVisible) ? 1 : 0
-            }}
-          >
-            {searchResults?.length > 0 && searchResults.map((result, i) =>
-              <p
-                onMouseEnter={() => { setHilightedSearchResult(i) }}
-                className={i === hilightedSearchResult ? 'header__search-result--highlighted' : undefined}
-                key={`${i}:${result.icon}:${result.name}`}
-                onMouseDown={() => {
-                  router.push(result.path)
-                  setSearchResultsVisible(false)
-                  document.getElementById('header-search').value = ''
-                }}
-              ><i className={result.icon} />{result.name}
-                {result.description !== undefined &&
-                  <div style={{ marginLeft: '1rem', overflow: 'hidden', fontSize: '.7rem', lineHeight: '.8rem', marginBottom: '.25rem' }}>
-                    <small style={{ textTransform: 'none' }}>{result.description}</small>
-                  </div>}
-              </p>
-            )}
-          </div>
-*/

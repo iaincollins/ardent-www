@@ -301,10 +301,12 @@
     width: calc(100% - 9rem) !important;
   }
 
-  .sidebar__options .input-with-autocomplete__results {
-    width: calc(100% - 1rem) !important;
+  .sidebar__options .input-with-autocomplete__results-dropdown {
+    width: calc(100% - 1.25rem) !important;
     xleft: 7.5rem;
-    left: 0;
+    margin-left: -.2rem;
+    margin-top: .2rem;
+    padding-top: .2rem;
   }
 
   .counter {

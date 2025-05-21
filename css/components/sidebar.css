@@ -88,7 +88,7 @@
   width: calc(100% - 1.75rem);
 }
 
-.sidebar__options .input-with-autocomplete__results {
+.sidebar__options .input-with-autocomplete__results-dropdown {
   width: calc(100%);
   left: .5rem;
 }
