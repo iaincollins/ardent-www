@@ -53,7 +53,6 @@ export default () => {
 
   async function getImportsAndExports() {
     playLoadingSound()
-
     // Can't reliably get this from the the route.query object
     const commodityName = window.location.pathname.split('/')[2]
     if (!commodityName) return
@@ -105,6 +104,7 @@ export default () => {
     }
   }
 
+  // FIXME Refactor / remove this
   useEffect(() => {
     ; (async () => {
       setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
@@ -115,7 +115,7 @@ export default () => {
       // Compare current tab (i.e. Importers, Exporters) and query options
       // If they have not actually changed then avoid triggering a redraw.
       const activeTab = window.location.pathname.split('/')[3]?.toLowerCase() ?? TABS[0]
-      const cacheFingerprint = JSON.stringify({ activeTab, query: router.query }) // Could be a checksum, but not worth it
+      const cacheFingerprint = JSON.stringify({ commodityName, activeTab, query: router.query }) // Could be a checksum, but not worth it
       if (cachedQuery && cachedQuery === cacheFingerprint) return // If the query hasn't *really* changed, return early
       setCachedQuery(cacheFingerprint) // If the query has changed, continue and update the "last seen" query
 
@@ -148,6 +148,54 @@ export default () => {
     })()
   }, [router.query])
 
+  const callback = async (e) => {
+    setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
+
+    const commodityName = window.location.pathname.split('/')[2]
+    if (!commodityName) return
+
+    // Compare current tab (i.e. Importers, Exporters) and query options
+    // If they have not actually changed then avoid triggering a redraw.
+    const activeTab = window.location.pathname.split('/')[3]?.toLowerCase() ?? TABS[0]
+    const cacheFingerprint = JSON.stringify({ commodityName, activeTab, query: parseQueryString() }) // Could be a checksum, but not worth it
+    if (cachedQuery && cachedQuery === cacheFingerprint) return // If the query hasn't *really* changed, return early
+    setCachedQuery(cacheFingerprint) // If the query has changed, continue and update the "last seen" query
+
+    setImports(undefined)
+    setExports(undefined)
+
+    let c = await getCommodity(commodityName)
+    if (c) {
+      c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+      c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+      c.maxProfit = c.maxSellPrice - c.minBuyPrice
+      c.symbol = c.commodityName.toLowerCase()
+      c.category = listOfCommodities[c.symbol]?.category ?? 'Insufficent data'
+      c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+      delete c.commodityName
+    }
+    if (!c) c = listOfCommodities[commodityName.toLowerCase()]
+    if (c && !c.totalDemand) c.totalDemand = 0
+    if (c && !c.totalStock) c.totalStock = 0
+    c ? setCommodity(c) : setCommodity(undefined)
+    if (c?.rareMarketId) {
+      //const rareCommodity = await getCommodityFromMarket(c.rareMarketId, c.symbol)
+      const rareMarket = await getMarket(c.rareMarketId, c.symbol)
+      setRareMarket(rareMarket)
+    } else {
+      setRareMarket(undefined)
+    }
+
+    getImportsAndExports()
+    
+  }
+  useEffect(()=> {
+    window.addEventListener('getImportsAndExports', callback)
+    return ()=> {
+        window.removeEventListener('getImportsAndExports', callback)
+    }
+})
+
   return (
     <Layout
       loading={commodity === undefined}
@@ -174,7 +222,7 @@ export default () => {
             className='clear'
             onSelect={
               (newTabIndex) => {
-                router.push(`/commodity/${router.query['commodity-name'].toLowerCase()}/${TABS[newTabIndex]}${window.location.search}`)
+                router.push(`/commodity/${commodity?.symbol.toLowerCase()}/${TABS[newTabIndex]}${window.location.search}`)
               }
             }
           >
@@ -269,7 +317,12 @@ function apiQueryOptions() {
   if (fleetCarrierFilterValue === 'excluded') options.push('fleetCarriers=false')
   if (fleetCarrierFilterValue === 'only') options.push('fleetCarriers=true')
   if (locationFilterValue && locationFilterValue !== COMMODITY_FILTER_LOCATION_DEFAULT) {
-    options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
+    // If the location value is a number, treat it as a system address
+    if (isNaN(locationFilterValue)) {
+      options.push(`systemName=${encodeURIComponent(locationFilterValue)}`)
+    } else {
+      options.push(`systemAddress=${encodeURIComponent(locationFilterValue)}`)
+    }
     if (distanceFilterValue && distanceFilterValue !== COMMODITY_FILTER_DISTANCE_DEFAULT) {
       options.push(`maxDistance=${distanceFilterValue}`)
     }
@@ -285,7 +338,7 @@ function parseQueryString() {
     ($0, $1, $2, $3) => { obj[$1] = decodeURIComponent($3) }
   )
   return obj
-};
+}
 
 const CommodityInfo = ({ commodity, rareMarket }) => {
   if (!commodity) return

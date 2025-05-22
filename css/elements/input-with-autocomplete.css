@@ -1,4 +1,8 @@
 
+.input-with-autocomplete {
+  position: relative;
+}
+
 .input-with-autocomplete__label {}
 
 .input-with-autocomplete__label-text {}
@@ -6,8 +10,12 @@
 .input-with-autocomplete__input {
   width: 100% !important;
   outline: none !important;
-  z-index: 2;
   position: relative;
+  z-index: 2;
+}
+
+.input-with-autocomplete__input--with-focus {
+  z-index: 4;
 }
 
 .input-with-autocomplete__input::placeholder {}
@@ -15,7 +23,10 @@
 .input-with-autocomplete__input:focus::placeholder {}
 
 .input-with-autocomplete__input::selection {
-  color: var(--color-text);
+  color:  var(--color-text);
+  background-color:  var(--color-primary-dark-1);
+  /* color: var(--color-primary-light-5);
+  background-color:  var(--color-primary); */
 }
 
 .input-with-autocomplete__results-dropdown {
@@ -23,12 +34,16 @@
   position: absolute;
   max-height: 15rem;
   background: var(--color-primary-dark-4);
-  border: .2rem solid var(--color-primary-light-5);
+  border: .15rem solid var(--color-primary-light-5);
   border-radius: .2rem;
   width: 100%;
   box-shadow: 0 0 1rem rgb(0,0,0), 0 0 2rem rgb(0,0,0);
-  padding: .3rem .2rem .2rem .2rem;
+  padding: .35rem .2rem .2rem .2rem;
   margin-top: -.3rem;
+}
+
+.input-with-autocomplete__input--with-focus + .input-with-autocomplete__results-dropdown {
+  z-index: 3;
 }
 
 .input-with-autocomplete__results {
@@ -39,9 +54,34 @@
   margin: 0 .2rem 0 0;
   padding: .2rem;
   font-size: .8rem;
+  position: relative;
 }
 
 .input-with-autocomplete__result:hover {
   background: var(--color-primary-light-5);
   color: var(--color-text-dark);
+}
+
+.input-with-autocomplete__result-icon {
+  position: absolute;
+  left: 0;
+}
+
+.input-with-autocomplete__result--with-icon {
+  padding-left: 1.2rem;
+}
+
+.input-with-autocomplete__clear {
+  position: absolute;
+  right: -1rem;
+  top: 1.5rem;
+  display: inline-block;
+  z-index: 10;
+  opacity: 0 !important;
+}
+
+.input-with-autocomplete__clear,
+.input-with-autocomplete__input:hover ~ .input-with-autocomplete__clear,
+.input-with-autocomplete__input--with-focus ~ .input-with-autocomplete__clear {
+  opacity: 1 !important;
 }

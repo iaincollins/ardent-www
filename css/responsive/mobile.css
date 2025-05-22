@@ -303,10 +303,15 @@
 
   .sidebar__options .input-with-autocomplete__results-dropdown {
     width: calc(100% - 1.25rem) !important;
-    xleft: 7.5rem;
     margin-left: -.2rem;
     margin-top: .2rem;
     padding-top: .2rem;
+    border-top-width: .2rem;
+  }
+
+  .input-with-autocomplete__clear {
+    right: 0;
+    top: .35rem;
   }
 
   .counter {

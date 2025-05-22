@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 
+
+
 export default ({
   id = 'input-with-autocomplete',
   label = 'Input',
@@ -8,12 +10,14 @@ export default ({
   defaultValue = '',
   onChange = (e) => { },
   onSelect = (text) => { },
-  autoCompleteResults
+  autoCompleteResults,
+  onClear
 }) => {
   const inputRef = useRef()
   const resultsRef = useRef()
   const [focus, setFocus] = useState(false)
   const [_autoCompleteResults, _setAutoCompleteResults] = useState()
+
 
   useEffect(() => {
     _setAutoCompleteResults(autoCompleteResults)
@@ -22,11 +26,14 @@ export default ({
 
   useEffect(() => {
     const onSelectResult = (e) => {
-      if (e.target.className.includes('input-with-autocomplete__result')) {
-        inputRef.current.value = e.target.innerText
-        inputRef.current.dataset.autoCompleteOption = e.target.dataset?.autoCompleteOption
-        onSelect(e.target.innerText, JSON.parse(e.target.dataset?.autoCompleteOption))
+      if (e.target.dataset.autoCompleteResult) {
+        const dataObj = JSON.parse(e.target.dataset.autoCompleteOption)
+        const text = dataObj.text
+        inputRef.current.value = text
+        inputRef.current.dataset.autoCompleteOption = dataObj
+        onSelect(text, dataObj)
         document.activeElement.blur()
+        setFocus(false)
       }
     }
     const resultElements = document.querySelector(`#${id}`)
@@ -46,13 +53,25 @@ export default ({
     }, 200)
   }
 
-  function inputOnBlurHandler(e) {
-    _autoCompleteResults.forEach(result => {
-      if (result.text.toLowerCase() === inputRef.current.value.toLowerCase()) {
-        inputRef.current.value = result.text
-        onSelect(result.text, result)
+  function inputOnBlurHandler() {
+    let matchFound = false
+    if (_autoCompleteResults) {
+      for (const result of _autoCompleteResults) {
+        if (inputRef.current.value.toLowerCase() === result?.text?.toLowerCase()) {
+          inputRef.current.value = result.text
+          onSelect(result.text, result)
+          matchFound = true
+          break
+        }
       }
-    })
+    }
+    if (!matchFound) {
+      if (inputRef.current.value.trim() === '') {
+        onSelect(null, null)
+      } else {
+        onSelect(inputRef.current.value, null)
+      }
+    }
     setTimeout(() => {
       setFocus(false)
       if (document.activeElement?.name === name) {
@@ -76,14 +95,15 @@ export default ({
           document.activeElement.blur()
         }
       }, 200)
-    } 
+    }
   }
 
   return (
-    <div className='input-with-autocomplete'>
-      <label id={id} className='input-with-autocomplete__label'>
+    <div id={id} className='input-with-autocomplete'>
+      <label className='input-with-autocomplete__label'>
         <span className='input-with-autocomplete__label-text'>{label}</span>
         <input
+          id={`${id}-input`}
           ref={inputRef}
           type='text'
           name={name}
@@ -94,20 +114,31 @@ export default ({
           onChange={inputOnChangeHandler}
           onKeyDown={inputOnKeyDownHandler}
           autoComplete='off'
-          className='input-with-autocomplete__input'
+          // The use of a class for focus, rather than using :focus in CSS is to allow better control of the apperance
+          // of the control and the dropdown menu to avoid flickering during interactions
+          className={`input-with-autocomplete__input ${focus === true ? 'input-with-autocomplete__input--with-focus' : ''}`}
         />
         {focus === true && _autoCompleteResults?.length > 0 &&
-        <div className='input-with-autocomplete__results-dropdown'>
-          <div ref={resultsRef} className='input-with-autocomplete__results scrollable'>
-            {_autoCompleteResults.map((result, i) =>
-              <p key={`autocomplete-${name}-${result.value}`}
-                className={`input-with-autocomplete__result ${result.className}`}
-                data-auto-complete-option={JSON.stringify(result)}
-              >
-                {result.text}
-              </p>)}
-              </div>
+          <div className={`input-with-autocomplete__results-dropdown`}>
+            <div ref={resultsRef} className='input-with-autocomplete__results scrollable'>
+              {_autoCompleteResults.map((result, i) =>
+                <div key={`autocomplete-${name}-${result.value}-${i}`}>
+                  {!result?.seperator &&
+                    <p
+                      className={`input-with-autocomplete__result ${result?.className ?? ''} ${result?.icon ? 'input-with-autocomplete__result--with-icon' : ''}`}
+                      data-auto-complete-option={JSON.stringify(result)}
+                      data-auto-complete-result={true}
+                    >
+                      {result?.icon && <i className={`input-with-autocomplete__result-icon icarus-terminal-${result?.icon}`} style={{ pointerEvents: 'none' }} />}
+                      {result.text}
+                    </p>
+                  }
+                  {result?.seperator === true && <hr key={`seperator-${i}`} style={{ margin: '.25rem 0' }} />}
+                </div>
+              )}
+            </div>
           </div>}
+          {onClear !== undefined && inputRef?.current?.value !== '' && <span className='input-with-autocomplete__clear' onClick={onClear}>✖</span>}
       </label>
     </div>
   )

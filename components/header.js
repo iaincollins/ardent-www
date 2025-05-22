@@ -364,7 +364,7 @@ export default () => {
             {newsTicker.map(item =>
               <span
                 key={`ticker_${i}_${item.marketId}_${item.commodityName}`} className='news-ticker__ticker-item'
-                onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?location=${encodeURIComponent(item.systemName)}&maxDistance=1`)}
+                onClick={() => router.push(`/commodity/${item.commodityName}/${item.demandBracket === 3 ? 'importers' : 'exporters'}?location=${encodeURIComponent(item.systemAddress)}&maxDistance=1`)}
               >
                 <i
                   className={`icarus-terminal-cargo-${item.demandBracket > item.stockBracket ? 'sell' : 'buy'} muted`}
