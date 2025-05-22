@@ -186,15 +186,19 @@ export default ({ disabled = false }) => {
           label='Commodity'
           placeholder='Commodity name'
           defaultValue={commodities?.filter(c => c.symbol.toLowerCase() === selectedCommodity)?.[0]?.name}
+          onClear={(e) => {
+            document.getElementById('commodity-name-input').value = ''
+          }}
           onChange={(e) => {
             const commodityName = e?.target?.value ?? ''
             const autoCompleteResults = []
             let isExactMatch = false
             // Rank matches that "start with" first
             commodities.forEach(commodity => {
-              if (commodity.name === commodityName) {
-                isExactMatch === true
-              } else if (commodity.name.toLowerCase().startsWith(commodityName.toLowerCase())) {
+              if (commodity.name.toLowerCase() === commodityName.toLowerCase()) {
+                isExactMatch = true
+              }
+              if (commodity.name.toLowerCase().startsWith(commodityName.toLowerCase())) {
                 autoCompleteResults.push({
                   icon: 'cargo',
                   text: commodity.name,
@@ -203,23 +207,26 @@ export default ({ disabled = false }) => {
                 })
               }
             })
-            if (!isExactMatch) { // Skip this is if it's an exact match
-              // Rank matches that "contain" next
-              commodities.forEach(commodity => {
-                if (commodity.name !== commodityName &&
-                  commodity.name.toLowerCase().includes(commodityName.toLowerCase()) &&
-                  !commodity.name.toLowerCase().startsWith(commodityName.toLowerCase())) {
-                  autoCompleteResults.push({
-                    icon: 'cargo',
-                    text: commodity.name,
-                    value: commodity.symbol,
-                    className: commodity.rare ? 'text-rare' : ''
-                  })
-                }
-              })
-            }
-            // If no matches, or it's an exact match, result ALL results
-            if (autoCompleteResults.length === 0 || isExactMatch === true) {
+            // Rank matches that "contain" next
+            commodities.forEach(commodity => {
+              if (commodity.name.toLowerCase() !== commodityName.toLowerCase() &&
+                  !commodity.name.toLowerCase().startsWith(commodityName.toLowerCase()) &&
+                  commodity.name.toLowerCase().includes(commodityName.toLowerCase())
+                ) {
+                autoCompleteResults.push({
+                  icon: 'cargo',
+                  text: commodity.name,
+                  value: commodity.symbol,
+                  className: commodity.rare ? 'text-rare' : ''
+                })
+              }
+            })
+            if ((isExactMatch === true && autoCompleteResults.length === 1) || autoCompleteResults.length === 0) {
+              if (isExactMatch === true && autoCompleteResults.length === 1) {
+                autoCompleteResults.push({
+                  seperator: true
+                })
+              }
               commodities.forEach(commodity => autoCompleteResults.push({
                 icon: 'cargo',
                 text: commodity.name,

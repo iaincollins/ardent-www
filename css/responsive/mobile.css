@@ -310,8 +310,8 @@
   }
 
   .input-with-autocomplete__clear {
-    right: 0;
-    top: .35rem;
+    right: 1rem;
+    top: .3rem;
   }
 
   .counter {

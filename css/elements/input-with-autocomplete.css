@@ -73,15 +73,30 @@
 
 .input-with-autocomplete__clear {
   position: absolute;
-  right: -1rem;
-  top: 1.5rem;
-  display: inline-block;
-  z-index: 10;
+  right: -1.4rem;
+  top: 1.6rem;
+  z-index: 2;
   opacity: 0 !important;
+  text-align: center;
+  display: inline-block;
+  background-color: var(--color-primary-dark-2);
+  border-radius: 2rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  line-height: 1.3rem;
 }
 
-.input-with-autocomplete__clear,
+.input-with-autocomplete__clear:hover,
 .input-with-autocomplete__input:hover ~ .input-with-autocomplete__clear,
 .input-with-autocomplete__input--with-focus ~ .input-with-autocomplete__clear {
+  opacity: .8 !important;
+  z-index: 2;
+}
+
+.input-with-autocomplete__clear:hover {
   opacity: 1 !important;
 }
+/* .input-with-autocomplete__clear:hover {
+  color: red;
+  background: greenyellow;
+} */

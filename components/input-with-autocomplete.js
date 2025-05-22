@@ -138,7 +138,7 @@ export default ({
               )}
             </div>
           </div>}
-          {onClear !== undefined && inputRef?.current?.value !== '' && <span className='input-with-autocomplete__clear' onClick={onClear}>✖</span>}
+          {onClear !== undefined && inputRef?.current?.value !== '' && <div className='input-with-autocomplete__clear' onClick={onClear}>✖</div>}
       </label>
     </div>
   )
