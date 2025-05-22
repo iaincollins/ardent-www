@@ -34,10 +34,17 @@ export default ({ disabled = false }) => {
   const [fleetCarrierFilter, setFleetCarrierFilter] = useState()
   const [locationFilter, setLocationFilter] = useState()
   const [distanceFilter, setDistanceFilter] = useState()
+  const [userSelectedDistanceFilter, setUserSelectedDistanceFilter] = useState()
   const [commodities, setCommodities] = useState([])
   const [selectedCommodity, setSelectedCommodity] = useState()
   const [commodityAutoCompleteResults, setCommodityAutoCompleteResults] = useState()
   const [systemAutoCompleteResults, setSystemAutoCompleteResults] = useState()
+
+  useEffect(() => {
+    if (distanceFilter && distanceFilter !== 'Any distance') {
+      setUserSelectedDistanceFilter(distanceFilter)
+    }
+  }, [distanceFilter])
 
   useEffect(() => {
     (async () => {
@@ -111,7 +118,7 @@ export default ({ disabled = false }) => {
       url += `?${options.join('&')}`
     }
 
-    history.pushState(url, "", url)
+    window.history.pushState({ ...window.history.state, as: url, url: url }, '', url)
     dispatchEvent(new Event('getImportsAndExports'))
   }
 
@@ -122,14 +129,14 @@ export default ({ disabled = false }) => {
       componentMounted.current = true
     }
   }, [lastUpdatedFilter, fleetCarrierFilter, minVolumeFilter, locationFilter, distanceFilter])
-
+  
   useEffect(() => {COMMODITY_FILTER_DISTANCE_DEFAULT
     const commodityName = window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
     setSelectedCommodity(commodityName.toLowerCase())
 
     const maxDistance = (router.query?.maxDistance === 'Any distance')
-      ? COMMODITY_FILTER_DISTANCE_DEFAULT
-      : router.query?.maxDistance ?? COMMODITY_FILTER_DISTANCE_DEFAULT
+      ? userSelectedDistanceFilter
+      : router.query?.maxDistance ?? userSelectedDistanceFilter
 
     setLastUpdatedFilter(router.query?.maxDaysAgo ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
     setMinVolumeFilter(router.query?.minVolume ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
@@ -145,7 +152,7 @@ export default ({ disabled = false }) => {
               const system = await res.json()
               if (system) {
                 setLocationFilter(system.systemAddress)
-                if (maxDistance === COMMODITY_FILTER_DISTANCE_DEFAULT) setDistanceFilter(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
+                setDistanceFilter(userSelectedDistanceFilter)
               }
             } catch (e) {
               console.error(e)
@@ -337,10 +344,10 @@ export default ({ disabled = false }) => {
           }}
           onSelect={async (text, data) => {
             if (text === 'Core Systems') {
-              document.getElementById('location-input').value = 'Sol'
+              setLocationFilter(data.value)
               setDistanceFilter(500)
             } else if (text === 'Colonia Region') {
-              document.getElementById('location-input').value = 'Colonia'
+              setLocationFilter(data.value)
               setDistanceFilter(100)
             } else if (text === 'Any system') {
               document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
@@ -348,7 +355,7 @@ export default ({ disabled = false }) => {
               setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
             } else if (data) {
               setLocationFilter(data.value) // Use system address
-              // if (distanceFilter === COMMODITY_FILTER_DISTANCE_DEFAULT) setDistanceFilter(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
+              setDistanceFilter(userSelectedDistanceFilter)
             } else if (text) {
               // If there is a text value, but it's free form and does not have metadata 
               // then 'revert' the value of the location field back
@@ -359,13 +366,14 @@ export default ({ disabled = false }) => {
                   if (system) {
                     document.getElementById('location-input').value = system.systemName
                     setLocationFilter(system.systemAddress)
-                    // if (distanceFilter === COMMODITY_FILTER_DISTANCE_DEFAULT) setDistanceFilter(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
+                    setDistanceFilter(userSelectedDistanceFilter)
                   }
                 } catch (e) {
                   console.error(e)
                   // If that fails, reset it to nothing
                   setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-                  etDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
+                  setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
+
                   document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
                 }
               } else {
