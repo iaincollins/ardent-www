@@ -123,7 +123,7 @@ export default ({
             <div ref={resultsRef} className='input-with-autocomplete__results scrollable'>
               {_autoCompleteResults.map((result, i) =>
                 <div key={`autocomplete-${name}-${result.value}-${i}`}>
-                  {!result?.seperator &&
+                  {!result?.seperator && !result.disabled &&
                     <p
                       className={`input-with-autocomplete__result ${result?.className ?? ''} ${result?.icon ? 'input-with-autocomplete__result--with-icon' : ''}`}
                       data-auto-complete-option={JSON.stringify(result)}
@@ -133,6 +133,7 @@ export default ({
                       {result.text}
                     </p>
                   }
+                  {result?.disabled === true && <p className='input-with-autocomplete__result input-with-autocomplete__result--disabled muted'>{result?.text}</p>}
                   {result?.seperator === true && <hr key={`seperator-${i}`} style={{ margin: '.25rem 0' }} />}
                 </div>
               )}

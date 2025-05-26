@@ -197,7 +197,7 @@ export default ({ disabled = false }) => {
             document.getElementById('commodity-name-input').value = ''
           }}
           onChange={(e) => {
-            const commodityName = e?.target?.value ?? ''
+            const commodityName = e?.target?.value?.trim() ?? ''
             const autoCompleteResults = []
             let isExactMatch = false
             // Rank matches that "start with" first
@@ -233,6 +233,14 @@ export default ({ disabled = false }) => {
                 autoCompleteResults.push({
                   seperator: true
                 })
+              } else {
+                if (autoCompleteResults.length === 0) {
+                  autoCompleteResults.push({
+                    text: `No results for '${commodityName}'`,
+                    disabled: true,
+                    seperator: true
+                  })
+                }
               }
               commodities.forEach(commodity => autoCompleteResults.push({
                 icon: 'cargo',
@@ -257,7 +265,6 @@ export default ({ disabled = false }) => {
               } else {
                 // If we can't find a match even for the symbol, reset the value
                 // to whatever it was before, we don't allow invalid values.
-
                 document.getElementById('commodity-name-input').value = commodities?.filter(c => c.symbol.toLowerCase() === selectedCommodity)?.[0]?.name
                 updateUrlWithFilterOptions(router, selectedCommodity)
               }
@@ -265,7 +272,6 @@ export default ({ disabled = false }) => {
               // If no data, reset the value to whatever it was before, we don't
               // allow blank values for this field as there MUST be a commodity
               // selected for this view.
-
               document.getElementById('commodity-name-input').value = commodities?.filter(c => c.symbol.toLowerCase() === selectedCommodity)?.[0]?.name
               updateUrlWithFilterOptions(router, selectedCommodity)
             }
@@ -285,7 +291,7 @@ export default ({ disabled = false }) => {
             document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
           }}
           onChange={async (e) => {
-            const systemName = e?.target?.value ?? ''
+            const systemName = e?.target?.value?.trim() ?? ''
             const autoCompleteResults = []
 
             autoCompleteResults.push({
@@ -316,6 +322,14 @@ export default ({ disabled = false }) => {
             if (systemSearchResults.length > 0) {
               autoCompleteResults.push({
                 seperator: true
+              })
+            } else {
+              autoCompleteResults.push({
+                seperator: true
+              })
+              autoCompleteResults.push({
+                text: `No results for '${systemName}'`,
+                disabled: true
               })
             }
 

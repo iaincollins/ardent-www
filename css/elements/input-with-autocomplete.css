@@ -57,7 +57,7 @@
   position: relative;
 }
 
-.input-with-autocomplete__result:hover {
+.input-with-autocomplete__result:not(.input-with-autocomplete__result--disabled):hover {
   background: var(--color-primary-light-5);
   color: var(--color-text-dark);
 }
