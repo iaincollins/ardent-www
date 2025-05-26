@@ -87,35 +87,45 @@ export default ({ disabled = false }) => {
 
     let url = `/commodity/${commodityName}/${activeTab}`
 
-    const options = []
+    const options = {}
+
     if (lastUpdatedFilter && lastUpdatedFilter !== COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT) {
-      options.push(`maxDaysAgo=${lastUpdatedFilter}`)
+      options.maxDaysAgo = lastUpdatedFilter
     }
     if (minVolumeFilter && minVolumeFilter !== COMMODITY_FILTER_MIN_VOLUME_DEFAULT) {
-      options.push(`minVolume=${minVolumeFilter}`)
+      options.minVolume = minVolumeFilter
     }
     if (fleetCarrierFilter && fleetCarrierFilter !== COMMODITY_FILTER_FLEET_CARRIER_DEFAULT) {
-      options.push(`fleetCarriers=${fleetCarrierFilter}`)
+      options.fleetCarriers = fleetCarrierFilter
     }
     if (locationFilter && locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT) {
-      options.push(`location=${encodeURIComponent(locationFilter)}`)
+      options.location = locationFilter
     }
 
-    if (distanceFilter && distanceFilter !== 'Any distance') {
-      options.push(`maxDistance=${distanceFilter}`)
+    if (distanceFilter) {
+      options.maxDistance = distanceFilter
     }
 
-    if (options.length === 0) {
+    if (Object.keys(options).length === 0) {
       const queryStringParams = parseQueryString()
       for (const param in queryStringParams) {
         if (param === 'location') continue
-        if (param === 'maxDistance' && queryStringParams[param] === 'Any distance') continue
-        options.push(`${param}=${queryStringParams[param]}`)
+        options.param = queryStringParams[param]
       }
     }
 
-    if (options.length > 0) {
-      url += `?${options.join('&')}`
+    // Don't displayMaxDistance if there is no location set or is the default value
+    if (options.maxDistance && (!options.location || options.maxDistance === 'Any distance')) {
+      delete options.maxDistance
+    }
+
+    const optionsAsArray = []
+    for (const option in options) {
+      optionsAsArray.push(`${option}=${encodeURIComponent(options[option])}`)
+    }
+
+    if (optionsAsArray.length > 0) {
+      url += `?${optionsAsArray.join('&')}`
     }
 
     window.history.pushState({ ...window.history.state, as: url, url: url }, '', url)

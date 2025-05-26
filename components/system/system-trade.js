@@ -57,7 +57,7 @@ module.exports = ({
           </Tab>
         </TabList>
         <TabPanel>
-          {!exportOrders && <div style={{ marginTop: '2rem' }} className='loading-bar loading-bar--tab' />}
+          {!exportOrders && <div className='loading-bar loading-bar--tab' />}
           {exportOrders &&
             <Table
               className='data-table data-table--striped data-table--interactive data-table--animated'
@@ -208,7 +208,7 @@ module.exports = ({
             />}
         </TabPanel>
         <TabPanel>
-          {!importOrders && <div style={{ marginTop: '2rem' }} className='loading-bar loading-bar--tab' />}
+          {!importOrders && <div className='loading-bar loading-bar--tab' />}
           {importOrders &&
             <Table
               className='data-table data-table--striped data-table--interactive data-table--animated'
