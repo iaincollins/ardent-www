@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { getCommoditiesWithAvgPricing, listOfCommoditiesAsArray } from 'lib/commodities'
+import { getCommoditiesWithPricing, listOfCommoditiesAsArray } from 'lib/commodities'
 import commodities from 'lib/commodities/commodities'
 import { NavigationContext } from 'lib/context'
 import { API_BASE_URL } from 'lib/consts'
@@ -131,7 +131,7 @@ export default () => {
     try {
       const res = await fetch(`${API_BASE_URL}/v2/news/commodities`)
       const ticker = await res.json()
-      const latestCommodityData = await getCommoditiesWithAvgPricing()
+      const latestCommodityData = await getCommoditiesWithPricing()
 
       const newTickerItems = []
       ticker.forEach((item, i) => {

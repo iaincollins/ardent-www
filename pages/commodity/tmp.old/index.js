@@ -51,27 +51,26 @@ export default () => {
     setTabIndex(newTabIndex)
   }, [router.pathname])
 
-  async function getImportsAndExports() {
+  async function getImportsAndExports(commoditySymbol) {
     playLoadingSound()
-    // Can't reliably get this from the the route.query object
-    const commodityName = window.location.pathname.split('/')[2]
-    if (!commodityName) return
+
+    console.log('getImportsAndExports:commodity', commoditySymbol)
 
     const activeTab = window.location.pathname.split('/')[3]?.toLowerCase() ?? TABS[0]
 
     if (activeTab === 'importers') {
       setImports(undefined)
         ; (async () => {
-          const imports = await getImports(commodityName)
+          const imports = await getImports(commoditySymbol)
           if (Array.isArray(imports)) {
             imports.forEach(c => {
-              c.key = `${c.marketId}_${c.commodityName}`
+              c.symbol = commoditySymbol
+              c.key = `${c.marketId}_${c.commoditySymbol}`
               c.avgProfit = c.avgSellPrice - c.avgBuyPrice
               c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
               c.maxProfit = c.maxSellPrice - c.minBuyPrice
-              c.symbol = c.commodityName.toLowerCase()
-              c.category = listOfCommodities[c.symbol]?.category ?? ''
-              c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+              c.category = listOfCommodities[commoditySymbol]?.category ?? ''
+              c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
               delete c.commodityName
             })
             setImports(imports)
@@ -84,16 +83,16 @@ export default () => {
     if (activeTab === 'exporters') {
       setExports(undefined)
         ; (async () => {
-          const exports = await getExports(commodityName)
+          const exports = await getExports(commoditySymbol)
           if (Array.isArray(exports)) {
             exports.forEach(c => {
-              c.key = `${c.marketId}_${c.commodityName}`
+              c.key = `${c.marketId}_${c.commoditySymbol}`
+              c.symbol = commoditySymbol
               c.avgProfit = c.avgSellPrice - c.avgBuyPrice
               c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
               c.maxProfit = c.maxSellPrice - c.minBuyPrice
-              c.symbol = c.commodityName.toLowerCase()
               c.category = listOfCommodities[c.symbol]?.category ?? ''
-              c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+              c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
               delete c.commodityName
             })
             setExports(exports)
@@ -104,33 +103,36 @@ export default () => {
     }
   }
 
-  const updateCallback = async () => {
+  async function loadCommodity(e) {
     setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
 
-    const commodityName = window.location.pathname.split('/')[2]
-    if (!commodityName) return
+    // Commodity 
+    const commoditySymbol = (e?.detail ?? window.location.pathname.split('/')[2]).toLowerCase()
+    if (!commoditySymbol) return
+
+    console.log('loadCommodity:commoditySymbol', commoditySymbol)
 
     // Compare current tab (i.e. Importers, Exporters) and query options
     // If they have not actually changed then avoid triggering a redraw.
     const activeTab = window.location.pathname.split('/')[3]?.toLowerCase() ?? TABS[0]
-    const cacheFingerprint = JSON.stringify({ commodityName, activeTab, query: parseQueryString() }) // Could be a checksum, but not worth it
+    const cacheFingerprint = JSON.stringify({ commoditySymbol, activeTab, query: parseQueryString() }) // Could be a checksum, but not worth it
     if (cachedQuery && cachedQuery === cacheFingerprint) return // If the query hasn't *really* changed, return early
     setCachedQuery(cacheFingerprint) // If the query has changed, continue and update the "last seen" query
 
     setImports(undefined)
     setExports(undefined)
 
-    let c = await getCommodity(commodityName)
+    let c = await getCommodity(commoditySymbol)
     if (c) {
+      c.symbol = commoditySymbol
       c.avgProfit = c.avgSellPrice - c.avgBuyPrice
       c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
       c.maxProfit = c.maxSellPrice - c.minBuyPrice
-      c.symbol = c.commodityName.toLowerCase()
-      c.category = listOfCommodities[c.symbol]?.category ?? 'Insufficent data'
-      c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+      c.category = listOfCommodities[commoditySymbol]?.category ?? 'Insufficent data'
+      c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
       delete c.commodityName
     }
-    if (!c) c = listOfCommodities[commodityName.toLowerCase()]
+     if (!c) c = listOfCommodities[commoditySymbol]
     if (c && !c.totalDemand) c.totalDemand = 0
     if (c && !c.totalStock) c.totalStock = 0
     c ? setCommodity(c) : setCommodity(undefined)
@@ -141,17 +143,18 @@ export default () => {
     } else {
       setRareMarket(undefined)
     }
-    getImportsAndExports()
+    console.log('loadCommodity', commoditySymbol)
+    getImportsAndExports(commoditySymbol)
   }
 
   useEffect(()=> {
-    window.addEventListener('getImportsAndExports', updateCallback)
-    return () => window.removeEventListener('getImportsAndExports', updateCallback)
+    window.addEventListener('LoadCommodityEvent', loadCommodity)
+    return () => window.removeEventListener('LoadCommodityEvent', loadCommodity)
   }, [])
 
   useEffect(() => {
-    updateCallback()
-  }, [router.query])
+    loadCommodity()
+  }, [])
 
   return (
     <Layout
@@ -307,7 +310,7 @@ const CommodityInfo = ({ commodity, rareMarket }) => {
           <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>
         </p>
         <p className='text-no-transform muted' style={{ fontSize: '.8rem', marginTop: '.1rem' }}>
-          {commodityCategories[commodity.category].description}
+          {commodityCategories[commodity.category]?.description}
         </p>
         {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
           <>

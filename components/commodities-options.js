@@ -10,184 +10,40 @@ import {
   COMMODITY_FILTER_DISTANCE_DEFAULT,
   COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
 } from 'lib/consts'
-import { getCommoditiesWithAvgPricing } from 'lib/commodities'
 import InputWithAutoComplete from './input-with-autocomplete'
 
-const ZERO_WIDTH_SPACE = '​' // Looking forward to regretting *this* later
-
-const DEFAULT_LOCATION_OPTIONS = ['Any location', 'Core Systems', 'Colonia Region']
-
-function parseQueryString() {
-  const obj = {}
-  window.location.search.replace(
-    new RegExp('([^?=&]+)(=([^&]*))?', 'g'),
-    ($0, $1, $2, $3) => { obj[$1] = decodeURIComponent($3) }
-  )
-  return obj
-}
-
-export default ({ disabled = false }) => {
+export default ({ disabled = false, commodities = [], commodity }) => {
   const router = useRouter()
-  const componentMounted = useRef(false)
-  const [lastUpdatedFilter, setLastUpdatedFilter] = useState()
-  const [minVolumeFilter, setMinVolumeFilter] = useState()
-  const [fleetCarrierFilter, setFleetCarrierFilter] = useState()
-  const [locationFilter, setLocationFilter] = useState()
-  const [distanceFilter, setDistanceFilter] = useState()
-  const [userSelectedDistanceFilter, setUserSelectedDistanceFilter] = useState()
-  const [commodities, setCommodities] = useState([])
-  const [selectedCommodity, setSelectedCommodity] = useState()
+  const commodityInput = useRef()
+  const locationInput = useRef()
+  const distanceInput = useRef()
+  const [maxDaysAgo, setMaxDaysAgo] = useState(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
+  const [minVolume, setMinVolume] = useState(COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
+  const [fleetCarriers, setFleetCarriers] = useState(COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
+  const [location, setLocation] = useState()
+  const [maxDistance, setDistance] = useState()
   const [commodityAutoCompleteResults, setCommodityAutoCompleteResults] = useState()
   const [systemAutoCompleteResults, setSystemAutoCompleteResults] = useState()
-
-  useEffect(() => {
-    if (distanceFilter && distanceFilter !== 'Any distance') {
-      setUserSelectedDistanceFilter(distanceFilter)
-    }
-  }, [distanceFilter])
-
-  useEffect(() => {
-    (async () => {
-      const commoditiesWithPricing = await getCommoditiesWithAvgPricing()
-      setCommodities(commoditiesWithPricing)
-
-      // When commodities are loaded, check the commodity name input and to
-      // resolve it from a symbol into a commodity name if there is an exact match
-      const commodityNameInputValue = document.getElementById('commodity-name-input').value
-      if (commodityNameInputValue.length > 0 && commoditiesWithPricing?.filter(c => c.symbol.toLowerCase() === commodityNameInputValue)?.length === 1) {
-        document.getElementById('commodity-name-input').value = commoditiesWithPricing?.filter(c => c.symbol.toLowerCase() === commodityNameInputValue)?.[0]?.name
-      }
-    })()
-  }, [])
-
-  async function updateUrlWithFilterOptions(router, newCommodityName) {
-    const commoditiesWithPricing = await getCommoditiesWithAvgPricing()
-
-    let resolveCommodityName = false
-    let resolveCommodityNameInterval = null
-
-    let commodityName = (newCommodityName ?? window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')).toLowerCase()
-
-    if (!commodityName) {
-      commodityName = commoditiesWithPricing?.filter(c => c.name.toLowerCase() === document.getElementById('commodity-name-input').value.toLowerCase())?.[0]?.symbol.toLowerCase()
-    }
-
-    setSelectedCommodity(commodityName)
-
-    if (commoditiesWithPricing.length > 0) {
-      // If commodities have been loaded, resolve the name of the commodity to display it in the input box.
-      document.getElementById('commodity-name-input').value = commoditiesWithPricing?.filter(c => c.symbol.toLowerCase() === commodityName)?.[0]?.name
-    } else {
-      // If commodities have NOT been loaded yet, it will be resolved in the useEffect() call when they are.
-      document.getElementById('commodity-name-input').value = commodityName
-    }
-
-
-    const activeTab = window.location.pathname.split('/')[3]?.toLowerCase() ?? 'exporters'
-
-    let url = `/commodity/${commodityName}/${activeTab}`
-
-    const options = {}
-
-    if (lastUpdatedFilter && lastUpdatedFilter !== COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT) {
-      options.maxDaysAgo = lastUpdatedFilter
-    }
-    if (minVolumeFilter && minVolumeFilter !== COMMODITY_FILTER_MIN_VOLUME_DEFAULT) {
-      options.minVolume = minVolumeFilter
-    }
-    if (fleetCarrierFilter && fleetCarrierFilter !== COMMODITY_FILTER_FLEET_CARRIER_DEFAULT) {
-      options.fleetCarriers = fleetCarrierFilter
-    }
-    if (locationFilter && locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT) {
-      options.location = locationFilter
-    }
-
-    if (distanceFilter) {
-      options.maxDistance = distanceFilter
-    }
-
-    if (Object.keys(options).length === 0) {
-      const queryStringParams = parseQueryString()
-      for (const param in queryStringParams) {
-        if (param === 'location') continue
-        options.param = queryStringParams[param]
-      }
-    }
-
-    // Don't displayMaxDistance if there is no location set or is the default value
-    if (options.maxDistance && (!options.location || options.maxDistance === 'Any distance')) {
-      delete options.maxDistance
-    }
-
-    const optionsAsArray = []
-    for (const option in options) {
-      optionsAsArray.push(`${option}=${encodeURIComponent(options[option])}`)
-    }
-
-    if (optionsAsArray.length > 0) {
-      url += `?${optionsAsArray.join('&')}`
-    }
-
-    window.history.pushState({ ...window.history.state, as: url, url: url }, '', url)
-    dispatchEvent(new Event('getImportsAndExports'))
-  }
-
-  useEffect(() => {
-    if (componentMounted.current === true) {
-      updateUrlWithFilterOptions(router)
-    } else {
-      componentMounted.current = true
-    }
-  }, [lastUpdatedFilter, fleetCarrierFilter, minVolumeFilter, locationFilter, distanceFilter])
   
-  useEffect(() => {COMMODITY_FILTER_DISTANCE_DEFAULT
-    const commodityName = window.location?.pathname?.replace(/\/(importers|exporters)$/, '').replace(/.*\//, '')
-    setSelectedCommodity(commodityName.toLowerCase())
+  useEffect(() => {
+    const query = {}
 
-    const maxDistance = (router.query?.maxDistance === 'Any distance')
-      ? userSelectedDistanceFilter
-      : router.query?.maxDistance ?? userSelectedDistanceFilter
-
-    setLastUpdatedFilter(router.query?.maxDaysAgo ?? COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
-    setMinVolumeFilter(router.query?.minVolume ?? COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
-    setFleetCarrierFilter(router.query?.fleetCarriers ?? COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
-    setDistanceFilter(maxDistance)
-    setLocationFilter(router.query?.location ?? COMMODITY_FILTER_LOCATION_DEFAULT)
-    if (router.query?.location) { // Force UI text input to update (text inputs are a special case)
-      if (isNaN(router.query.location)) {
-        document.getElementById('location-input').value = router.query.location
-          ; (async () => {
-            try {
-              const res = await fetch(`${API_BASE_URL}/v2/system/name/${router.query.location}`)
-              const system = await res.json()
-              if (system) {
-                setLocationFilter(system.systemAddress)
-                setDistanceFilter(userSelectedDistanceFilter)
-              }
-            } catch (e) {
-              console.error(e)
-            }
-          })()
+    if (location) {
+      query.location = location.systemAddress
+      if (maxDistance) {
+        query.maxDistance = maxDistance
       } else {
-        // If the location value is a number, treat it as a system address and resolve the name
-        ; (async () => {
-          try {
-            const res = await fetch(`${API_BASE_URL}/v2/system/address/${router.query.location}`)
-            const system = await res.json()
-            if (system) {
-              document.getElementById('location-input').value = system.systemName
-            }
-          } catch (e) {
-            document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
-            setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-            console.error(e)
-          }
-        })()
+        query.maxDistance = COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
       }
-    } else {
-      document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
     }
-  }, [router.query])
+
+    query.maxDaysAgo = (maxDaysAgo) ? maxDaysAgo :  COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
+    query.minVolume = (minVolume) ? minVolume : COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+    if (fleetCarriers && fleetCarriers !== COMMODITY_FILTER_FLEET_CARRIER_DEFAULT) query.fleetCarriers = fleetCarriers
+
+    const urlObject = { pathname: window.location.pathname, query }
+    router.push(urlObject, undefined, { shallow: true })
+  }, [location, maxDistance, maxDaysAgo, minVolume, fleetCarriers])
 
   return (
     <div className='sidebar__options'>
@@ -198,11 +54,11 @@ export default ({ disabled = false }) => {
         }}
       >
         <InputWithAutoComplete
+          forwardRef={commodityInput}
           id='commodity-name'
           name='commodity-name'
           label='Commodity'
           placeholder='Commodity name'
-          defaultValue={commodities?.filter(c => c.symbol.toLowerCase() === selectedCommodity)?.[0]?.name}
           onClear={(e) => {
             document.getElementById('commodity-name-input').value = ''
           }}
@@ -227,9 +83,9 @@ export default ({ disabled = false }) => {
             // Rank matches that "contain" next
             commodities.forEach(commodity => {
               if (commodity.name.toLowerCase() !== commodityName.toLowerCase() &&
-                  !commodity.name.toLowerCase().startsWith(commodityName.toLowerCase()) &&
-                  commodity.name.toLowerCase().includes(commodityName.toLowerCase())
-                ) {
+                !commodity.name.toLowerCase().startsWith(commodityName.toLowerCase()) &&
+                commodity.name.toLowerCase().includes(commodityName.toLowerCase())
+              ) {
                 autoCompleteResults.push({
                   icon: 'cargo',
                   text: commodity.name,
@@ -262,43 +118,28 @@ export default ({ disabled = false }) => {
             setCommodityAutoCompleteResults(autoCompleteResults)
           }}
           onSelect={(text, data) => {
+            console.log('onSelect Callback', text, data)
             if (text && data) {
-              updateUrlWithFilterOptions(router, data.value.toLowerCase())
-            } else if (text) {
-              // If the name doesn't match, fallback to checking to see if the
-              // value matches the actual symbol for the commodity, in case 
-              // someone has pasted that in.
-              const commmodityNameMatchbySymbol = commodities?.filter(c => c.symbol.toLowerCase() === text.toLowerCase())?.[0]?.name
-              if (commmodityNameMatchbySymbol) {
-                document.getElementById('commodity-name-input').value = commmodityNameMatchbySymbol
-                updateUrlWithFilterOptions(router, text.toLowerCase())
-              } else {
-                // If we can't find a match even for the symbol, reset the value
-                // to whatever it was before, we don't allow invalid values.
-                document.getElementById('commodity-name-input').value = commodities?.filter(c => c.symbol.toLowerCase() === selectedCommodity)?.[0]?.name
-                updateUrlWithFilterOptions(router, selectedCommodity)
-              }
-            } else {
-              // If no data, reset the value to whatever it was before, we don't
-              // allow blank values for this field as there MUST be a commodity
-              // selected for this view.
-              document.getElementById('commodity-name-input').value = commodities?.filter(c => c.symbol.toLowerCase() === selectedCommodity)?.[0]?.name
-              updateUrlWithFilterOptions(router, selectedCommodity)
+              // If commodity changes, fire event so parent component updates
+              dispatchEvent(new CustomEvent('LoadCommodityEvent', { detail: data.value }))
+            } else if (text && !data) {
+              // Text but not valid option
+              commodityInput.current.focus()
             }
           }}
           autoCompleteResults={commodityAutoCompleteResults}
         />
         <InputWithAutoComplete
+          forwardRef={locationInput}
           id='location'
           name='location'
           label='Near'
           placeholder='System name'
-          defaultValue={locationFilter}
           onClear={(e) => {
             e.preventDefault()
-            setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-            setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
-            document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
+            // setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
+            // setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
+            // document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
           }}
           onChange={async (e) => {
             const systemName = e?.target?.value?.trim() ?? ''
@@ -353,6 +194,7 @@ export default ({ disabled = false }) => {
                 })
               }
             })
+
             // Case insensitive "starts with" matches next
             systemSearchResults.forEach(system => {
               if (!system.systemName.startsWith(systemName) &&
@@ -364,22 +206,37 @@ export default ({ disabled = false }) => {
                 })
               }
             })
+
             setSystemAutoCompleteResults(autoCompleteResults)
           }}
+
           onSelect={async (text, data) => {
             if (text === 'Core Systems') {
-              setLocationFilter(data.value)
-              setDistanceFilter(500)
+              setLocation({
+                systemName: 'Sol',
+                systemAddress: data.value
+              })
+              setDistance(500)
+              locationInput.current.value = 'Sol'
             } else if (text === 'Colonia Region') {
-              setLocationFilter(data.value)
-              setDistanceFilter(100)
+              setLocation({
+                systemName: 'Colonia',
+                systemAddress: data.value
+              })
+              setDistance(100)
+              locationInput.current.value = 'Colonia'
             } else if (text === 'Any system') {
-              document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
-              setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-              setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
+              // document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
+              // setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
+              // setDistance(COMMODITY_FILTER_DISTANCE_DEFAULT)
+              setLocation(undefined)
+              locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
             } else if (data) {
-              setLocationFilter(data.value) // Use system address
-              setDistanceFilter(userSelectedDistanceFilter)
+              setLocation({
+                systemName: data.text,
+                systemAddress: data.value
+              })
+              if (!distance) setDistance(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
             } else if (text) {
               // If there is a text value, but it's free form and does not have metadata 
               // then 'revert' the value of the location field back
@@ -388,50 +245,61 @@ export default ({ disabled = false }) => {
                   const res = await fetch(`${API_BASE_URL}/v2/system/address/${text}`)
                   const system = await res.json()
                   if (system) {
-                    document.getElementById('location-input').value = system.systemName
-                    setLocationFilter(system.systemAddress)
-                    setDistanceFilter(userSelectedDistanceFilter)
+                    setLocation({
+                      systemName: data.text,
+                      systemAddress: data.value
+                    })
+                    if (!distance) setDistance(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
                   }
                 } catch (e) {
+                  // If error, reset it to nothing
                   console.error(e)
-                  // If that fails, reset it to nothing
-                  setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-                  setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
-
-                  document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
+                  locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+                  setLocation(undefined)
+                  setDistance(undefined)
                 }
               } else {
                 // TODO: If it's a string, see if we can find a match for it by name
-                setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-                setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
-                document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
+                try {
+                  const res = await fetch(`${API_BASE_URL}/v2/system/name/${text}`)
+                  const system = await res.json()
+                  if (system) {
+                    setLocation({
+                      systemName: data.text,
+                      systemAddress: data.value
+                    })
+                    if (!distance) setDistance(COMMODITY_FILTER_DISTANCE_DEFAULT)
+                  } else {
+                    // If no match, reset location to nothing
+                    locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+                    setLocation(undefined)
+                    setDistance(undefined)
+                  }
+                } catch (e) {
+                  // If error, reset it to nothing
+                  console.error(e)
+                  locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+                  setLocation(undefined)
+                  setDistance(undefined)
+                }
               }
             } else {
               // If the field is empty then set it to nothing
-              setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-              setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
-              document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
+              locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+              setLocation(undefined)
+              setDistance(undefined)
             }
           }}
           autoCompleteResults={systemAutoCompleteResults}
         />
         <small style={{ display: 'block', textAlign: 'right', paddingRight: '.75rem' }}>
-          {(locationFilter && !isNaN(locationFilter))
-            ? <><span className='muted'>System ID</span> <Link href={`/system/${locationFilter}`}>{locationFilter}</Link></>
+          {(location && location.systemName && location.systemAddress)
+            ? <><span className='muted'>System ID</span> <Link href={`/system/${location.systemAddress}`}>{location.systemName}</Link></>
             : <span className='muted'>...</span>}
         </small>
         <label>
           <span className='tab-options__label-text'>Distance</span>
-          <select
-            id='distance' name='distance'
-            disabled={disabled || locationFilter === COMMODITY_FILTER_LOCATION_DEFAULT || locationFilter === ZERO_WIDTH_SPACE}
-            value={distanceFilter}
-            onChange={(e) => {
-              ; (e.target.value === COMMODITY_FILTER_DISTANCE_DEFAULT)
-                ? setDistanceFilter(undefined)
-                : setDistanceFilter(e.target.value)
-            }}
-          >
+          <select ref={distanceInput} name='distance' disabled={disabled || !location} onChange={(e) => setDistance(e.target.value)}>
             <option value={COMMODITY_FILTER_DISTANCE_DEFAULT}>Any distance</option>
             <option value='1'>In system</option>
             <option value='25'>&lt; 25 ly</option>
@@ -445,13 +313,7 @@ export default ({ disabled = false }) => {
 
         <label>
           <span className='tab-options__label-text'>Updated</span>
-          <select
-            id='last-updated-select' name='last-updated' value={lastUpdatedFilter}
-            disabled={disabled}
-            onChange={(e) => {
-              setLastUpdatedFilter(e.target.value)
-            }}
-          >
+          <select name='updated' disabled={disabled} onChange={(e) => setMaxDaysAgo(e.target.value)}>
             <option value='1'>Today</option>
             <option value='7'>Last week</option>
             <option value='30'>Last month</option>
@@ -461,13 +323,7 @@ export default ({ disabled = false }) => {
 
         <label>
           <span className='tab-options__label-text'>Quantity</span>
-          <select
-            name='commodity-quantity' value={minVolumeFilter}
-            disabled={disabled}
-            onChange={(e) => {
-              setMinVolumeFilter(e.target.value)
-            }}
-          >
+          <select name='volume' disabled={disabled} onChange={(e) => setMinVolume(e.target.value)}>
             <option value='1'>Any quantity</option>
             <option value='10'>&gt; 10 T</option>
             <option value='100'>&gt; 100 T</option>
@@ -478,43 +334,12 @@ export default ({ disabled = false }) => {
 
         <label>
           <span className='tab-options__label-text'>Carriers</span>
-          <select
-            name='fleet-carriers' value={fleetCarrierFilter}
-            disabled={disabled}
-            onChange={(e) => {
-              setFleetCarrierFilter(e.target.value)
-            }}
-          >
+          <select name='fleet-carriers' disabled={disabled} onChange={(e) => setFleetCarriers(e.target.value)}>
             <option value='included'>Included</option>
             <option value='excluded'>Excluded</option>
             <option value='only'>Only</option>
           </select>
         </label>
-        {(
-          // parseInt(lastUpdatedFilter) !== parseInt(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT) ||
-          // parseInt(minVolumeFilter) !== parseInt(COMMODITY_FILTER_MIN_VOLUME_DEFAULT) ||
-          // fleetCarrierFilter !== COMMODITY_FILTER_FLEET_CARRIER_DEFAULT ||
-          // locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT ||
-          // (locationFilter !== COMMODITY_FILTER_LOCATION_DEFAULT  && parseInt(distanceFilter) !== parseInt(COMMODITY_FILTER_DISTANCE_DEFAULT))
-          false
-        )
-          ? (
-            <button
-              disabled={disabled}
-              style={{ position: 'absolute', top: '.25rem', right: '.25rem' }}
-              onClick={() => {
-                document.getElementById('location').value = ''
-                setLastUpdatedFilter(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
-                setMinVolumeFilter(COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
-                setFleetCarrierFilter(COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
-                setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-                setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
-              }}
-            >
-              Reset
-            </button>
-          )
-          : ''}
       </form>
     </div>
   )
