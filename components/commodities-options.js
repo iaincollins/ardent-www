@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import {
   API_BASE_URL,
@@ -12,38 +13,56 @@ import {
 } from 'lib/consts'
 import InputWithAutoComplete from './input-with-autocomplete'
 
+function parseQueryString() {
+  const obj = {}
+  console.log('window.location.href', window.location.href)
+  window.location.search.replace(
+    new RegExp('([^?=&]+)(=([^&]*))?', 'g'),
+    ($0, $1, $2, $3) => { obj[$1] = decodeURIComponent($3) }
+  )
+  return obj
+}
+
 export default ({ disabled = false, commodities = [], commodity }) => {
   const router = useRouter()
+  const searchParams = useSearchParams()
+
   const commodityInput = useRef()
   const locationInput = useRef()
   const distanceInput = useRef()
-  const [maxDaysAgo, setMaxDaysAgo] = useState(COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT)
-  const [minVolume, setMinVolume] = useState(COMMODITY_FILTER_MIN_VOLUME_DEFAULT)
-  const [fleetCarriers, setFleetCarriers] = useState(COMMODITY_FILTER_FLEET_CARRIER_DEFAULT)
+  const [selectedCommodity, setSelectedCommodity] = useState()
+  const [maxDaysAgo, setMaxDaysAgo] = useState()
+  const [minVolume, setMinVolume] = useState()
+  const [fleetCarriers, setFleetCarriers] = useState()
   const [location, setLocation] = useState()
-  const [maxDistance, setDistance] = useState()
+  const [maxDistance, setMaxDistance] = useState()
   const [commodityAutoCompleteResults, setCommodityAutoCompleteResults] = useState()
   const [systemAutoCompleteResults, setSystemAutoCompleteResults] = useState()
   
   useEffect(() => {
+    console.log('query string params changed', window.location.href)
     const query = {}
-
     if (location) {
       query.location = location.systemAddress
-      if (maxDistance) {
-        query.maxDistance = maxDistance
-      } else {
-        query.maxDistance = COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
-      }
+      query.maxDistance = location.maxDistance
     }
-
     query.maxDaysAgo = (maxDaysAgo) ? maxDaysAgo :  COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
     query.minVolume = (minVolume) ? minVolume : COMMODITY_FILTER_MIN_VOLUME_DEFAULT
     if (fleetCarriers && fleetCarriers !== COMMODITY_FILTER_FLEET_CARRIER_DEFAULT) query.fleetCarriers = fleetCarriers
 
     const urlObject = { pathname: window.location.pathname, query }
-    router.push(urlObject, undefined, { shallow: true })
+    //router.push(urlObject, undefined, { shallow: true })
   }, [location, maxDistance, maxDaysAgo, minVolume, fleetCarriers])
+
+  useEffect(() => {
+    if (commodity && commodity.symbol !== selectedCommodity?.symbol) {
+      const urlParams = parseQueryString()
+      console.log('Changed:commodity', commodity)
+      console.log('Changed:router', router)
+      setSelectedCommodity(commodity)
+      commodityInput.current.value = commodity.name
+    }
+  }, [commodity])
 
   return (
     <div className='sidebar__options'>
@@ -60,7 +79,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
           label='Commodity'
           placeholder='Commodity name'
           onClear={(e) => {
-            document.getElementById('commodity-name-input').value = ''
+            commodityInput.current.value = ''
           }}
           onChange={(e) => {
             const commodityName = e?.target?.value?.trim() ?? ''
@@ -137,9 +156,9 @@ export default ({ disabled = false, commodities = [], commodity }) => {
           placeholder='System name'
           onClear={(e) => {
             e.preventDefault()
-            // setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-            // setDistanceFilter(COMMODITY_FILTER_DISTANCE_DEFAULT)
-            // document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
+            locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+            setLocation(undefined)
+            setMaxDistance(undefined)
           }}
           onChange={async (e) => {
             const systemName = e?.target?.value?.trim() ?? ''
@@ -214,29 +233,30 @@ export default ({ disabled = false, commodities = [], commodity }) => {
             if (text === 'Core Systems') {
               setLocation({
                 systemName: 'Sol',
-                systemAddress: data.value
+                systemAddress: data.value,
+                maxDistance: 500
               })
-              setDistance(500)
+              setMaxDistance(500)
               locationInput.current.value = 'Sol'
             } else if (text === 'Colonia Region') {
               setLocation({
                 systemName: 'Colonia',
-                systemAddress: data.value
+                systemAddress: data.value,
+                maxDistance: 100
               })
-              setDistance(100)
+              setMaxDistance(100)
               locationInput.current.value = 'Colonia'
             } else if (text === 'Any system') {
-              // document.getElementById('location-input').value = COMMODITY_FILTER_LOCATION_DEFAULT
-              // setLocationFilter(COMMODITY_FILTER_LOCATION_DEFAULT)
-              // setDistance(COMMODITY_FILTER_DISTANCE_DEFAULT)
               setLocation(undefined)
+              setMaxDaysAgo(undefined)
               locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
             } else if (data) {
               setLocation({
                 systemName: data.text,
-                systemAddress: data.value
+                systemAddress: data.value,
+                maxDistance: (maxDistance && maxDistance !== COMMODITY_FILTER_DISTANCE_DEFAULT) ? maxDistance : COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
               })
-              if (!distance) setDistance(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
+              if (!maxDistance || maxDistance === COMMODITY_FILTER_DISTANCE_DEFAULT) setMaxDistance(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
             } else if (text) {
               // If there is a text value, but it's free form and does not have metadata 
               // then 'revert' the value of the location field back
@@ -247,47 +267,49 @@ export default ({ disabled = false, commodities = [], commodity }) => {
                   if (system) {
                     setLocation({
                       systemName: data.text,
-                      systemAddress: data.value
+                      systemAddress: data.value,
+                      maxDistance: (maxDistance && maxDistance !== COMMODITY_FILTER_DISTANCE_DEFAULT) ? maxDistance : COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
                     })
-                    if (!distance) setDistance(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
+                    if (!maxDistance || maxDistance === COMMODITY_FILTER_DISTANCE_DEFAULT) setMaxDistance(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
                   }
                 } catch (e) {
                   // If error, reset it to nothing
                   console.error(e)
                   locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
                   setLocation(undefined)
-                  setDistance(undefined)
+                  setMaxDistance(undefined)
                 }
               } else {
-                // TODO: If it's a string, see if we can find a match for it by name
+                // If it's a string, see if we can find a match for it by name
                 try {
                   const res = await fetch(`${API_BASE_URL}/v2/system/name/${text}`)
                   const system = await res.json()
                   if (system) {
                     setLocation({
                       systemName: data.text,
-                      systemAddress: data.value
+                      systemAddress: data.value,
+                      maxDistance: (maxDistance && maxDistance !== COMMODITY_FILTER_DISTANCE_DEFAULT) ? maxDistance : COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
                     })
-                    if (!distance) setDistance(COMMODITY_FILTER_DISTANCE_DEFAULT)
+                    if (!maxDistance || maxDistance === COMMODITY_FILTER_DISTANCE_DEFAULT) setMaxDistance(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
                   } else {
                     // If no match, reset location to nothing
                     locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
                     setLocation(undefined)
-                    setDistance(undefined)
+                    setMaxDistance(undefined)
                   }
                 } catch (e) {
                   // If error, reset it to nothing
                   console.error(e)
                   locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
                   setLocation(undefined)
-                  setDistance(undefined)
+                  setMaxDistance(undefined)
                 }
               }
             } else {
               // If the field is empty then set it to nothing
               locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
               setLocation(undefined)
-              setDistance(undefined)
+              setMaxDistance(undefined)
             }
           }}
           autoCompleteResults={systemAutoCompleteResults}
@@ -299,7 +321,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
         </small>
         <label>
           <span className='tab-options__label-text'>Distance</span>
-          <select ref={distanceInput} name='distance' disabled={disabled || !location} onChange={(e) => setDistance(e.target.value)}>
+          <select ref={distanceInput} name='max-distance' disabled={disabled || !location} onChange={(e) => setMaxDistance(e.target.value)}>
             <option value={COMMODITY_FILTER_DISTANCE_DEFAULT}>Any distance</option>
             <option value='1'>In system</option>
             <option value='25'>&lt; 25 ly</option>
@@ -312,8 +334,8 @@ export default ({ disabled = false, commodities = [], commodity }) => {
         </label>
 
         <label>
-          <span className='tab-options__label-text'>Updated</span>
-          <select name='updated' disabled={disabled} onChange={(e) => setMaxDaysAgo(e.target.value)}>
+          <span className='tab-options__label-text'>Updated - {maxDaysAgo}</span>
+          <select name='max-days-ago' defaultValue={maxDaysAgo} disabled={disabled} onChange={(e) => setMaxDaysAgo(e.target.value)}>
             <option value='1'>Today</option>
             <option value='7'>Last week</option>
             <option value='30'>Last month</option>
@@ -323,7 +345,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
 
         <label>
           <span className='tab-options__label-text'>Quantity</span>
-          <select name='volume' disabled={disabled} onChange={(e) => setMinVolume(e.target.value)}>
+          <select name='min-volume' disabled={disabled} onChange={(e) => setMinVolume(e.target.value)}>
             <option value='1'>Any quantity</option>
             <option value='10'>&gt; 10 T</option>
             <option value='100'>&gt; 100 T</option>

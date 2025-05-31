@@ -150,7 +150,7 @@ export default () => {
     // We don't have access to the router.query from an event, so hackily reading from the URL
     const _activeTab = window.location.pathname.split('/')?.[3]?.toLowerCase() ?? TABS[0]
 
-    router.push(`/commodity/${commoditySymbol}/${_activeTab}`)
+    router.push(`/commodity/${commoditySymbol}/${_activeTab}${window.location.search}`)
   }
 
   useEffect(() => {
@@ -175,7 +175,7 @@ export default () => {
     setActiveTab(_activeTab)
     
     if (_activeTab !== activeTab) {
-      router.push(`/commodity/${commoditySymbol}/${_activeTab}`)
+      router.push(`/commodity/${commoditySymbol}/${_activeTab}${window.location.search}`)
     } else {
       loadCommodity(commoditySymbol, _activeTab)
     }
