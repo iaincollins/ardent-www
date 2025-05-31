@@ -25,7 +25,7 @@ import {
   HIDDEN_SYSTEMS
 } from 'lib/consts'
 
-export default (params) => {
+export default () => {
   const router = useRouter()
   const [, setNavigationPath] = useContext(NavigationContext)
   const [loading, setLoading] = useState(true)
@@ -50,12 +50,6 @@ export default (params) => {
   useEffect(animateTableEffect)
 
   useEffect(() => {
-    const basePath = path.basename(router.pathname)
-    setActiveViewIndex(views.indexOf(basePath) === -1 ? 0 : views.indexOf(basePath))
-    playLoadingSound()
-  }, [router.pathname])
-
-  useEffect(() => {
     if (system !== undefined) setLoading(false)
   })
 
@@ -65,6 +59,10 @@ export default (params) => {
 
       const systemIdentifer = router.query.slug[0]?.replaceAll('_', ' ')?.trim()
       if (!systemIdentifer) return
+      
+      (router.query?.slug?.[1])
+        ? setActiveViewIndex(views.indexOf(router.query.slug[1]))
+        : setActiveViewIndex(0)
 
       setNavigationPath([{ name: '', path: '/', icon: 'icarus-terminal-system-orbits' }])
       setLoading(true)
