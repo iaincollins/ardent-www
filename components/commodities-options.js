@@ -13,56 +13,103 @@ import {
 } from 'lib/consts'
 import InputWithAutoComplete from './input-with-autocomplete'
 
-function parseQueryString() {
-  const obj = {}
-  console.log('window.location.href', window.location.href)
-  window.location.search.replace(
-    new RegExp('([^?=&]+)(=([^&]*))?', 'g'),
-    ($0, $1, $2, $3) => { obj[$1] = decodeURIComponent($3) }
-  )
-  return obj
-}
-
 export default ({ disabled = false, commodities = [], commodity }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const commodityInput = useRef()
-  const locationInput = useRef()
-  const distanceInput = useRef()
+  const commodityRef = useRef()
+  const locationRef = useRef()
+  const maxDistanceRef = useRef()
+  const maxDaysAgoRef = useRef()
+  const minVolumeRef = useRef()
+  const fleetCarriersRef = useRef()
+
   const [selectedCommodity, setSelectedCommodity] = useState()
-  const [maxDaysAgo, setMaxDaysAgo] = useState()
-  const [minVolume, setMinVolume] = useState()
-  const [fleetCarriers, setFleetCarriers] = useState()
-  const [location, setLocation] = useState()
-  const [maxDistance, setMaxDistance] = useState()
   const [commodityAutoCompleteResults, setCommodityAutoCompleteResults] = useState()
   const [systemAutoCompleteResults, setSystemAutoCompleteResults] = useState()
-  
-  useEffect(() => {
-    console.log('query string params changed', window.location.href)
+
+  function optionChangeHandler(e) {
     const query = {}
-    if (location) {
-      query.location = location.systemAddress
-      query.maxDistance = location.maxDistance
+
+    if (locationRef.current?.dataset.value) {
+      query.location = locationRef.current?.dataset.value
+      query.maxDistance = maxDistanceRef.current.value
     }
-    query.maxDaysAgo = (maxDaysAgo) ? maxDaysAgo :  COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
-    query.minVolume = (minVolume) ? minVolume : COMMODITY_FILTER_MIN_VOLUME_DEFAULT
-    if (fleetCarriers && fleetCarriers !== COMMODITY_FILTER_FLEET_CARRIER_DEFAULT) query.fleetCarriers = fleetCarriers
+
+    query.maxDaysAgo = maxDaysAgoRef.current.value
+    query.minVolume = minVolumeRef.current.value
+    query.fleetCarriers = fleetCarriersRef.current.value
 
     const urlObject = { pathname: window.location.pathname, query }
-    //router.push(urlObject, undefined, { shallow: true })
-  }, [location, maxDistance, maxDaysAgo, minVolume, fleetCarriers])
+    router.push(urlObject, undefined, { shallow: true })
+  }
 
   useEffect(() => {
     if (commodity && commodity.symbol !== selectedCommodity?.symbol) {
-      const urlParams = parseQueryString()
-      console.log('Changed:commodity', commodity)
-      console.log('Changed:router', router)
       setSelectedCommodity(commodity)
-      commodityInput.current.value = commodity.name
+      commodityRef.current.value = commodity.name
     }
   }, [commodity])
+
+  useEffect(() => {
+      ;(async () => {
+        // Set default values for inputs when loading, taking them from the query
+        // string (if they exist) or the preset default values for each option
+        if (router.query.location) {
+          // Check if 'location' seems to be a string (system name) or number (system address)
+          const queryUrl = (!isNaN(router.query.location))
+            ? `${API_BASE_URL}/v2/system/address/${router.query.location}`
+            : `${API_BASE_URL}/v2/system/name/${router.query.location}`
+          try {
+            const res = await fetch(queryUrl)
+            const system = await res.json()
+            if (system) {
+              locationRef.current.value = system.systemName
+              locationRef.current.dataset.value = system.systemAddress
+              if (maxDistanceRef.current.value === COMMODITY_FILTER_DISTANCE_DEFAULT) {
+                maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
+              }
+            } else {
+              locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+              delete locationRef.current.dataset.value
+            }
+          } catch (e) {
+            // If error, reset it to nothing
+            console.error(e)
+            locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+            delete locationRef.current.dataset.value
+          }
+        }
+
+        if (router.query.maxDistance) {
+          maxDistanceRef.current.value = router.query.maxDistance
+        } else {
+          if (router.query.location) {
+            maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
+          } else {
+            maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_DEFAULT
+          }
+        }
+
+        if (router.query.maxDaysAgo) {
+          maxDaysAgoRef.current.value = router.query.maxDaysAgo
+        } else {
+          maxDaysAgoRef.current.value = COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
+        }
+
+        if (router.query.minVolume) {
+          minVolumeRef.current.value = router.query.minVolume
+        } else {
+          minVolumeRef.current.value = COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+        }
+
+        if (router.query.fleetCarriers) {
+          fleetCarriersRef.current.value = router.query.fleetCarriers
+        } else {
+          fleetCarriersRef.current.value = COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
+        }
+      })()
+  }, [])
 
   return (
     <div className='sidebar__options'>
@@ -73,13 +120,13 @@ export default ({ disabled = false, commodities = [], commodity }) => {
         }}
       >
         <InputWithAutoComplete
-          forwardRef={commodityInput}
+          forwardRef={commodityRef}
           id='commodity-name'
           name='commodity-name'
           label='Commodity'
           placeholder='Commodity name'
           onClear={(e) => {
-            commodityInput.current.value = ''
+            commodityRef.current.value = ''
           }}
           onChange={(e) => {
             const commodityName = e?.target?.value?.trim() ?? ''
@@ -137,28 +184,27 @@ export default ({ disabled = false, commodities = [], commodity }) => {
             setCommodityAutoCompleteResults(autoCompleteResults)
           }}
           onSelect={(text, data) => {
-            console.log('onSelect Callback', text, data)
             if (text && data) {
               // If commodity changes, fire event so parent component updates
               dispatchEvent(new CustomEvent('LoadCommodityEvent', { detail: data.value }))
             } else if (text && !data) {
-              // Text but not valid option
-              commodityInput.current.focus()
+              // When text input is not a valid option
+              commodityRef.current.focus()
             }
           }}
           autoCompleteResults={commodityAutoCompleteResults}
         />
         <InputWithAutoComplete
-          forwardRef={locationInput}
+          forwardRef={locationRef}
           id='location'
           name='location'
           label='Near'
           placeholder='System name'
           onClear={(e) => {
             e.preventDefault()
-            locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
-            setLocation(undefined)
-            setMaxDistance(undefined)
+            locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+            delete locationRef.current.dataset.value
+            optionChangeHandler(locationRef.current)
           }}
           onChange={async (e) => {
             const systemName = e?.target?.value?.trim() ?? ''
@@ -231,97 +277,68 @@ export default ({ disabled = false, commodities = [], commodity }) => {
 
           onSelect={async (text, data) => {
             if (text === 'Core Systems') {
-              setLocation({
-                systemName: 'Sol',
-                systemAddress: data.value,
-                maxDistance: 500
-              })
-              setMaxDistance(500)
-              locationInput.current.value = 'Sol'
+              locationRef.current.value = 'Sol'
+              locationRef.current.dataset.value = data.value
+              maxDistanceRef.current.value = 500
             } else if (text === 'Colonia Region') {
-              setLocation({
-                systemName: 'Colonia',
-                systemAddress: data.value,
-                maxDistance: 100
-              })
-              setMaxDistance(100)
-              locationInput.current.value = 'Colonia'
+              locationRef.current.value = 'Colonia'
+              locationRef.current.dataset.value = data.value
+              maxDistanceRef.current.value = 100
             } else if (text === 'Any system') {
-              setLocation(undefined)
-              setMaxDaysAgo(undefined)
-              locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+              locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+              delete locationRef.current.dataset.value
+              maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_DEFAULT
             } else if (data) {
-              setLocation({
-                systemName: data.text,
-                systemAddress: data.value,
-                maxDistance: (maxDistance && maxDistance !== COMMODITY_FILTER_DISTANCE_DEFAULT) ? maxDistance : COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
-              })
-              if (!maxDistance || maxDistance === COMMODITY_FILTER_DISTANCE_DEFAULT) setMaxDistance(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
+              locationRef.current.value = data.text
+              locationRef.current.dataset.value = data.value
+              if (maxDistanceRef.current.value === COMMODITY_FILTER_DISTANCE_DEFAULT) {
+                maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
+              }
             } else if (text) {
-              // If there is a text value, but it's free form and does not have metadata 
-              // then 'revert' the value of the location field back
-              if (text && !isNaN(text)) {
-                try {
-                  const res = await fetch(`${API_BASE_URL}/v2/system/address/${text}`)
-                  const system = await res.json()
-                  if (system) {
-                    setLocation({
-                      systemName: data.text,
-                      systemAddress: data.value,
-                      maxDistance: (maxDistance && maxDistance !== COMMODITY_FILTER_DISTANCE_DEFAULT) ? maxDistance : COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
-                    })
-                    if (!maxDistance || maxDistance === COMMODITY_FILTER_DISTANCE_DEFAULT) setMaxDistance(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
+              // Check if is string (system name) or number (system address)
+              const queryUrl = (text && !isNaN(text))
+                ? `${API_BASE_URL}/v2/system/address/${text}`
+                : `${API_BASE_URL}/v2/system/name/${text}`
+              try {
+                const res = await fetch(queryUrl)
+                const system = await res.json()
+                if (system) {
+                  locationRef.current.value = system.systemName
+                  locationRef.current.dataset.value = system.systemAddress
+                  if (maxDistanceRef.current.value === COMMODITY_FILTER_DISTANCE_DEFAULT) {
+                    maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
                   }
-                } catch (e) {
-                  // If error, reset it to nothing
-                  console.error(e)
-                  locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
-                  setLocation(undefined)
-                  setMaxDistance(undefined)
+                } else {
+                  locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+                  delete locationRef.current.dataset.value
                 }
-              } else {
-                // If it's a string, see if we can find a match for it by name
-                try {
-                  const res = await fetch(`${API_BASE_URL}/v2/system/name/${text}`)
-                  const system = await res.json()
-                  if (system) {
-                    setLocation({
-                      systemName: data.text,
-                      systemAddress: data.value,
-                      maxDistance: (maxDistance && maxDistance !== COMMODITY_FILTER_DISTANCE_DEFAULT) ? maxDistance : COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
-                    })
-                    if (!maxDistance || maxDistance === COMMODITY_FILTER_DISTANCE_DEFAULT) setMaxDistance(COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT)
-                  } else {
-                    // If no match, reset location to nothing
-                    locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
-                    setLocation(undefined)
-                    setMaxDistance(undefined)
-                  }
-                } catch (e) {
-                  // If error, reset it to nothing
-                  console.error(e)
-                  locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
-                  setLocation(undefined)
-                  setMaxDistance(undefined)
-                }
+              } catch (e) {
+                // If error, reset it to nothing
+                console.error(e)
+                locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+                delete locationRef.current.dataset.value
               }
             } else {
               // If the field is empty then set it to nothing
-              locationInput.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
-              setLocation(undefined)
-              setMaxDistance(undefined)
+              locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+              delete locationRef.current.dataset.value
             }
+            optionChangeHandler(locationRef.current)
           }}
           autoCompleteResults={systemAutoCompleteResults}
         />
         <small style={{ display: 'block', textAlign: 'right', paddingRight: '.75rem' }}>
-          {(location && location.systemName && location.systemAddress)
-            ? <><span className='muted'>System ID</span> <Link href={`/system/${location.systemAddress}`}>{location.systemName}</Link></>
+          {locationRef.current?.dataset?.value
+            ? <>
+                <span className='muted'>SYS ADDR</span>
+                {' '}
+                <Link href={`/system/${locationRef.current?.dataset?.value}`}>{locationRef.current?.dataset?.value}</Link>
+              </>
             : <span className='muted'>...</span>}
         </small>
         <label>
           <span className='tab-options__label-text'>Distance</span>
-          <select ref={distanceInput} name='max-distance' disabled={disabled || !location} onChange={(e) => setMaxDistance(e.target.value)}>
+          <select ref={maxDistanceRef} name='maxDistance' disabled={disabled || !locationRef.current?.dataset?.value} onChange={optionChangeHandler}>
             <option value={COMMODITY_FILTER_DISTANCE_DEFAULT}>Any distance</option>
             <option value='1'>In system</option>
             <option value='25'>&lt; 25 ly</option>
@@ -334,8 +351,8 @@ export default ({ disabled = false, commodities = [], commodity }) => {
         </label>
 
         <label>
-          <span className='tab-options__label-text'>Updated - {maxDaysAgo}</span>
-          <select name='max-days-ago' defaultValue={maxDaysAgo} disabled={disabled} onChange={(e) => setMaxDaysAgo(e.target.value)}>
+          <span className='tab-options__label-text'>Updated</span>
+          <select ref={maxDaysAgoRef} name='max-days-ago' disabled={disabled} onChange={optionChangeHandler}>
             <option value='1'>Today</option>
             <option value='7'>Last week</option>
             <option value='30'>Last month</option>
@@ -345,7 +362,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
 
         <label>
           <span className='tab-options__label-text'>Quantity</span>
-          <select name='min-volume' disabled={disabled} onChange={(e) => setMinVolume(e.target.value)}>
+          <select ref={minVolumeRef} name='minVolume' disabled={disabled} onChange={optionChangeHandler}>
             <option value='1'>Any quantity</option>
             <option value='10'>&gt; 10 T</option>
             <option value='100'>&gt; 100 T</option>
@@ -356,7 +373,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
 
         <label>
           <span className='tab-options__label-text'>Carriers</span>
-          <select name='fleet-carriers' disabled={disabled} onChange={(e) => setFleetCarriers(e.target.value)}>
+          <select ref={fleetCarriersRef} name='fleetCarriers' disabled={disabled} onChange={optionChangeHandler}>
             <option value='included'>Included</option>
             <option value='excluded'>Excluded</option>
             <option value='only'>Only</option>

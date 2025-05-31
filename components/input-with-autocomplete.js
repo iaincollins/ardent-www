@@ -32,8 +32,6 @@ export default ({
         const text = dataObj.text
         forwardRef.current.value = text
         forwardRef.current.dataset.autoCompleteOption = JSON.stringify(dataObj)
-        forwardRef.current.dataset.value = dataObj?.value ?? text
-        console.log('onSelect 1')
         onSelect(text, dataObj)
         document.activeElement.blur()
         setFocus(false)
@@ -57,29 +55,6 @@ export default ({
   }
 
   function inputOnBlurHandler() {
-    /*
-    let matchFound = false
-    if (_autoCompleteResults) {
-      for (const result of _autoCompleteResults) {
-        if (forwardRef.current.value.toLowerCase() === result?.text?.toLowerCase()) {
-          forwardRef.current.value = result.text
-          console.log('onSelect 2')
-          onSelect(result.text, result)
-          matchFound = true
-          break
-        }
-      }
-    }
-    if (!matchFound) {
-      if (forwardRef.current.value.trim() === '') {
-        console.log('onSelect 3')
-        onSelect(null, null)
-      } else {
-        console.log('onSelect 4')
-        onSelect(forwardRef.current.value, null)
-      }
-    }
-    */
     setTimeout(() => {
       setFocus(false)
       if (document.activeElement?.name === name) {
