@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 
 export default ({
   id = 'input-with-autocomplete',
+  forwardRef = useRef(),
   label = 'Input',
   name = 'input',
   placeholder = '',
@@ -13,7 +14,6 @@ export default ({
   autoCompleteResults,
   onClear
 }) => {
-  const inputRef = useRef()
   const resultsRef = useRef()
   const [focus, setFocus] = useState(false)
   const [_autoCompleteResults, _setAutoCompleteResults] = useState()
@@ -27,10 +27,11 @@ export default ({
   useEffect(() => {
     const onSelectResult = (e) => {
       if (e.target.dataset.autoCompleteResult) {
+        e.preventDefault()
         const dataObj = JSON.parse(e.target.dataset.autoCompleteOption)
         const text = dataObj.text
-        inputRef.current.value = text
-        inputRef.current.dataset.autoCompleteOption = dataObj
+        forwardRef.current.value = text
+        forwardRef.current.dataset.autoCompleteOption = JSON.stringify(dataObj)
         onSelect(text, dataObj)
         document.activeElement.blur()
         setFocus(false)
@@ -44,34 +45,16 @@ export default ({
   function inputOnFocusHandler(e) {
     setFocus(true)
     onChange(e)
-    inputRef.current.select()
+    forwardRef.current.select()
     // This seems to be required on Chrome (seems to be a known issue)
     setTimeout(() => {
-      if (window?.getSelection()?.toString() !== inputRef.current.value) {
-        inputRef.current.select()
+      if (window?.getSelection()?.toString() !== forwardRef.current.value) {
+        forwardRef.current.select()
       }
     }, 200)
   }
 
   function inputOnBlurHandler() {
-    let matchFound = false
-    if (_autoCompleteResults) {
-      for (const result of _autoCompleteResults) {
-        if (inputRef.current.value.toLowerCase() === result?.text?.toLowerCase()) {
-          inputRef.current.value = result.text
-          onSelect(result.text, result)
-          matchFound = true
-          break
-        }
-      }
-    }
-    if (!matchFound) {
-      if (inputRef.current.value.trim() === '') {
-        onSelect(null, null)
-      } else {
-        onSelect(inputRef.current.value, null)
-      }
-    }
     setTimeout(() => {
       setFocus(false)
       if (document.activeElement?.name === name) {
@@ -104,7 +87,7 @@ export default ({
         <span className='input-with-autocomplete__label-text'>{label}</span>
         <input
           id={`${id}-input`}
-          ref={inputRef}
+          ref={forwardRef}
           type='text'
           name={name}
           defaultValue={defaultValue}
@@ -139,7 +122,7 @@ export default ({
               )}
             </div>
           </div>}
-          {onClear !== undefined && inputRef?.current?.value !== '' && <div className='input-with-autocomplete__clear' onClick={onClear}>✖</div>}
+          {onClear !== undefined && forwardRef?.current?.value !== '' && <div className='input-with-autocomplete__clear' onClick={onClear}>✖</div>}
       </label>
     </div>
   )

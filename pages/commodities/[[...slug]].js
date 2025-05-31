@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import Table from 'rc-table'
 import Layout from 'components/layout'
-import { getCommoditiesWithAvgPricing } from 'lib/commodities'
+import { getCommoditiesWithPricing } from 'lib/commodities'
 import animateTableEffect from 'lib/animate-table-effect'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 import { NavigationContext } from 'lib/context'
@@ -27,10 +27,10 @@ export default function Page (props) {
     (async () => {
       setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
 
-      const commodities_ = commodities ?? await getCommoditiesWithAvgPricing()
+      const commodities_ = commodities ?? await getCommoditiesWithPricing()
 
-      const filterByCategory = (router.query?.['commodity-category'])
-        ? commodities_.filter((c) => c.category.toLowerCase() === router.query?.['commodity-category'].toLowerCase())?.[0]?.category ?? false
+      const filterByCategory = (router.query.slug)
+        ? commodities_.filter((c) => c.category.toLowerCase() === router.query.slug[0].toLowerCase())?.[0]?.category ?? false
         : false
 
       const categories_ = filterByCategory
@@ -41,7 +41,7 @@ export default function Page (props) {
       setCategories(categories_)
       playLoadingSound()
     })()
-  }, [router.asPath])
+  }, [router.query])
 
   return (
     <Layout

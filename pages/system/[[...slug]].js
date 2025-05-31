@@ -21,24 +21,11 @@ import {
   API_BASE_URL,
   SOL_COORDINATES,
   COLONIA_COORDINATES,
-  GALACTIC_CENTER_COORDINATES
+  GALACTIC_CENTER_COORDINATES,
+  HIDDEN_SYSTEMS
 } from 'lib/consts'
 
-// These are systems that actually exist in game but that are not "real" systems
-// systems you can normally visit, so we don't want to display them
-const HIDDEN_SYSTEMS = [
-  '7780433924818', // Test
-  '9154823459538', // Test2
-  '9704579273426', // TestRender
-  '349203072180', // SingleLightTest
-  '353498039476', // BinaryLightTest
-  '8055311864530', // Training (Tutorial)
-  '7780433924818' // Destination (Tutorial)
-]
-
-// FIXME Ugh who wrote this 🗑️🔥
-
-export default () => {
+export default (params) => {
   const router = useRouter()
   const [, setNavigationPath] = useContext(NavigationContext)
   const [loading, setLoading] = useState(true)
@@ -57,6 +44,7 @@ export default () => {
   const [bodiesInSystem, setBodiesInSystem] = useState()
   const [systemStatus, setSystemStatus] = useState()
 
+  // TODO Refactor to read path from slug
   const views = ['', 'list', 'exports', 'imports', 'services', 'nearby']
 
   useEffect(animateTableEffect)
@@ -73,6 +61,11 @@ export default () => {
 
   useEffect(() => {
     (async () => {
+      if (!router.query.slug) return
+
+      const systemIdentifer = router.query.slug[0]?.replaceAll('_', ' ')?.trim()
+      if (!systemIdentifer) return
+
       setNavigationPath([{ name: '', path: '/', icon: 'icarus-terminal-system-orbits' }])
       setLoading(true)
       setTimeout(playLoadingSound, 1500)
@@ -89,9 +82,6 @@ export default () => {
       setBodiesInSystem(undefined)
       setSystemStatus(undefined)
       setNearestServices(undefined)
-
-      const systemIdentifer = router.query?.['system-identifer']?.replaceAll('_', ' ')?.trim()
-      if (!systemIdentifer) return
 
       let mostRecentUpdatedAt
 
@@ -283,11 +273,12 @@ export default () => {
         setNearestServices(null)
       }
     })()
-  }, [router.query['system-identifer']])
+  }, [router.query])
 
   // If a numeric system ID was specified, use that for links, otherwise, if it
   // looks like a name, keep using that so the URL format doesn't change.
-  const systemViewBaseUrl = (Number.isInteger(parseInt(router?.query['system-identifer'])))
+  const systemIdentifer = router.query.slug ? router.query.slug[0]?.replaceAll('_', ' ')?.trim() : null
+  const systemViewBaseUrl = (systemIdentifer && Number.isInteger(parseInt(systemIdentifer)))
     ? `/system/${system?.systemAddress}`
     : `/system/${system?.systemName.replaceAll(' ', '_')}`
 

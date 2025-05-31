@@ -13,6 +13,7 @@ import animateTableEffect from 'lib/animate-table-effect'
 import { NavigationContext } from 'lib/context'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 import { playLoadingSound } from 'lib/sounds'
+import { getCommodityBySymbol, getCommoditiesWithPricing } from 'lib/commodities'
 
 import {
   API_BASE_URL,
@@ -30,7 +31,9 @@ export default () => {
   const router = useRouter()
   const [, setNavigationPath] = useContext(NavigationContext)
   const [cachedQuery, setCachedQuery] = useState()
-  const [tabIndex, setTabIndex] = useState(0)
+  //const [tabIndex, setTabIndex] = useState(0)
+  const [activeTab, setActiveTab] = useState()
+  const [commodities, setCommodities] = useState([])
   const [commodity, setCommodity] = useState()
   const [exports, setExports] = useState()
   const [imports, setImports] = useState()
@@ -38,99 +41,93 @@ export default () => {
 
   useEffect(animateTableEffect)
 
-  useEffect(() => {
-    const basePath = path.basename(router.pathname)
-    let newTabIndex = 0
-    if (basePath === 'exporters') {
-      setExports(undefined)
-    }
-    if (basePath === 'importers') {
-      setImports(undefined)
-      newTabIndex = 1
-    }
-    setTabIndex(newTabIndex)
-  }, [router.pathname])
+  // useEffect(() => {
+  //   const basePath = path.basename(router.pathname)
+  //   let newTabIndex = 0
+  //   if (basePath === 'exporters') {
+  //     setExports(undefined)
+  //   }
+  //   if (basePath === 'importers') {
+  //     setImports(undefined)
+  //     newTabIndex = 1
+  //   }
+  //   setTabIndex(newTabIndex)
+  // }, [router.pathname])
 
-  async function getImportsAndExports() {
-    playLoadingSound()
-    // Can't reliably get this from the the route.query object
-    const commodityName = window.location.pathname.split('/')[2]
-    if (!commodityName) return
-
-    const activeTab = window.location.pathname.split('/')[3]?.toLowerCase() ?? TABS[0]
-
-    if (activeTab === 'importers') {
-      setImports(undefined)
-        ; (async () => {
-          const imports = await getImports(commodityName)
-          if (Array.isArray(imports)) {
-            imports.forEach(c => {
-              c.key = `${c.marketId}_${c.commodityName}`
-              c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-              c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-              c.maxProfit = c.maxSellPrice - c.minBuyPrice
-              c.symbol = c.commodityName.toLowerCase()
-              c.category = listOfCommodities[c.symbol]?.category ?? ''
-              c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-              delete c.commodityName
-            })
-            setImports(imports)
-          } else {
-            setImports([])
-          }
-        })()
-    }
-
-    if (activeTab === 'exporters') {
-      setExports(undefined)
-        ; (async () => {
-          const exports = await getExports(commodityName)
-          if (Array.isArray(exports)) {
-            exports.forEach(c => {
-              c.key = `${c.marketId}_${c.commodityName}`
-              c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-              c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-              c.maxProfit = c.maxSellPrice - c.minBuyPrice
-              c.symbol = c.commodityName.toLowerCase()
-              c.category = listOfCommodities[c.symbol]?.category ?? ''
-              c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
-              delete c.commodityName
-            })
-            setExports(exports)
-          } else {
-            setExports([])
-          }
-        })()
-    }
+  async function getExporters(commoditySymbol) {
+    setExports(undefined)
+      ; (async () => {
+        const exports = await getExports(commoditySymbol)
+        if (Array.isArray(exports)) {
+          exports.forEach(c => {
+            c.key = `${c.marketId}_${c.commoditySymbol}`
+            c.symbol = commoditySymbol
+            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+            c.maxProfit = c.maxSellPrice - c.minBuyPrice
+            c.category = listOfCommodities[c.symbol]?.category ?? ''
+            c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
+            delete c.commodityName
+          })
+          setExports(exports)
+        } else {
+          setExports([])
+        }
+      })()
   }
 
-  const updateCallback = async () => {
+  async function getImporters(commoditySymbol) {
+    setImports(undefined)
+      ; (async () => {
+        const imports = await getImports(commoditySymbol)
+        if (Array.isArray(imports)) {
+          imports.forEach(c => {
+            c.symbol = commoditySymbol
+            c.key = `${c.marketId}_${c.commoditySymbol}`
+            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+            c.maxProfit = c.maxSellPrice - c.minBuyPrice
+            c.category = listOfCommodities[commoditySymbol]?.category ?? ''
+            c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
+            delete c.commodityName
+          })
+          setImports(imports)
+        } else {
+          setImports([])
+        }
+      })()
+  }
+
+  async function loadCommodity(_commoditySymbol, _activeTab) {
+    const commoditySymbol = _commoditySymbol?.toLowerCase() 
+    if (!commoditySymbol) return
+    
     setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
 
-    const commodityName = window.location.pathname.split('/')[2]
-    if (!commodityName) return
-
-    // Compare current tab (i.e. Importers, Exporters) and query options
-    // If they have not actually changed then avoid triggering a redraw.
-    const activeTab = window.location.pathname.split('/')[3]?.toLowerCase() ?? TABS[0]
-    const cacheFingerprint = JSON.stringify({ commodityName, activeTab, query: parseQueryString() }) // Could be a checksum, but not worth it
+    const cacheFingerprint = JSON.stringify({ 
+      commoditySymbol,
+      activeTab: _activeTab,
+      query: parseQueryString()
+    })
     if (cachedQuery && cachedQuery === cacheFingerprint) return // If the query hasn't *really* changed, return early
     setCachedQuery(cacheFingerprint) // If the query has changed, continue and update the "last seen" query
 
+    // Reset Imports / Exports when loading a new commodity or applying new filter rules
     setImports(undefined)
     setExports(undefined)
 
-    let c = await getCommodity(commodityName)
+    // TODO Refactor to use 'getCommodityBySymbol' - can reduce network calls
+    let c = await getCommodity(commoditySymbol)
     if (c) {
+      c.symbol = commoditySymbol
       c.avgProfit = c.avgSellPrice - c.avgBuyPrice
       c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
       c.maxProfit = c.maxSellPrice - c.minBuyPrice
-      c.symbol = c.commodityName.toLowerCase()
-      c.category = listOfCommodities[c.symbol]?.category ?? 'Insufficent data'
-      c.name = listOfCommodities[c.symbol]?.name ?? c.commodityName
+      c.category = listOfCommodities[commoditySymbol]?.category ?? 'Insufficent data'
+      c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
       delete c.commodityName
     }
-    if (!c) c = listOfCommodities[commodityName.toLowerCase()]
+    if (!c) c = listOfCommodities[commoditySymbol]
     if (c && !c.totalDemand) c.totalDemand = 0
     if (c && !c.totalStock) c.totalStock = 0
     c ? setCommodity(c) : setCommodity(undefined)
@@ -141,16 +138,47 @@ export default () => {
     } else {
       setRareMarket(undefined)
     }
-    getImportsAndExports()
+
+    playLoadingSound()
+    if (activeTab === 'exporters') getExporters(commoditySymbol, activeTab)
+    if (activeTab === 'importers') getImporters(commoditySymbol, activeTab)
   }
 
-  useEffect(()=> {
-    window.addEventListener('getImportsAndExports', updateCallback)
-    return () => window.removeEventListener('getImportsAndExports', updateCallback)
+  const loadCommodityEventHandler = (e) => {
+    const commoditySymbol = e.detail.toLowerCase()
+
+    // We don't have access to the router.query from an event, so hackily reading from the URL
+    const _activeTab = window.location.pathname.split('/')?.[3]?.toLowerCase() ?? TABS[0]
+
+    router.push(`/commodity/${commoditySymbol}/${_activeTab}${window.location.search}`)
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      const commoditiesWithPricing = await getCommoditiesWithPricing()
+      setCommodities(commoditiesWithPricing)
+    })()
+
+
+    window.addEventListener('LoadCommodityEvent', loadCommodityEventHandler)
+    return () => window.removeEventListener('LoadCommodityEvent', loadCommodityEventHandler)
   }, [])
 
   useEffect(() => {
-    updateCallback()
+    const commoditySymbol = router.query?.slug?.[0]?.toLowerCase()
+    const _activeTab = router.query?.slug?.[1] ?? TABS[0]
+
+    // TODO: Check inputs and gracefully invalid values
+    if (!commoditySymbol || commoditySymbol == 'undefined') return
+    if (!_activeTab || _activeTab == 'undefined') return
+
+    setActiveTab(_activeTab)
+    
+    if (_activeTab !== activeTab) {
+      router.push(`/commodity/${commoditySymbol}/${_activeTab}${window.location.search}`)
+    } else {
+      loadCommodity(commoditySymbol, _activeTab)
+    }
   }, [router.query])
 
   return (
@@ -159,7 +187,7 @@ export default () => {
       loadingText='Loading trade data'
       title={commodity ? `${commodity.name} commodity` : null}
       description={commodity ? `Where to buy and sell ${commodity.name} in Elite Dangerous` : null}
-      sidebar={<CommodityInfo commodity={commodity} rareMarket={rareMarket} />}
+      sidebar={<CommodityInfo commodities={commodities} commodity={commodity} rareMarket={rareMarket} />}
       heading={
         <div className='heading--with-underline'>
           <h2 className='heading--with-icon'>
@@ -169,17 +197,17 @@ export default () => {
       }
     >
       <Head>
-        <link rel='canonical' href={`https://ardent-insight.com/commodity/${commodity?.symbol}${(tabIndex > 0) ? `/${TABS[tabIndex]}` : ''}`} />
+        <link rel='canonical' href={`https://ardent-insight.com/commodity/${commodity?.symbol}/${activeTab}`} />
       </Head>
       {commodity === null && <><h1>Error: Not found</h1><p className='text-large clear'>Commodity not found.</p></>}
       {commodity &&
         <div className='sticky-heading fx__fade-in'>
           <Tabs
-            selectedIndex={tabIndex}
+            selectedIndex={TABS.indexOf(activeTab)}
             className='clear'
             onSelect={
-              (newTabIndex) => {
-                router.push(`/commodity/${commodity?.symbol.toLowerCase()}/${TABS[newTabIndex]}${window.location.search}`)
+              (index) => {
+                router.push(`/commodity/${commodity?.symbol.toLowerCase()}/${TABS[index]}${window.location.search}`)
               }
             }
           >
@@ -297,17 +325,17 @@ function parseQueryString() {
   return obj
 }
 
-const CommodityInfo = ({ commodity, rareMarket }) => {
+const CommodityInfo = ({ commodities, commodity, rareMarket, }) => {
   if (!commodity) return
   return (
     <div style={{ paddingTop: '.5rem' }}>
-      <CommodityTabOptions />
+      <CommodityTabOptions commodities={commodities} commodity={commodity} />
       <div className='fx__fade-in' style={{ padding: '0 .1rem' }}>
         <p className='fx__animated-text text-uppercase' data-fx-order='3' style={{ marginBottom: '.25rem', fontSize: '.9rem' }}>
           <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>
         </p>
         <p className='text-no-transform muted' style={{ fontSize: '.8rem', marginTop: '.1rem' }}>
-          {commodityCategories[commodity.category].description}
+          {commodityCategories[commodity.category]?.description}
         </p>
         {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
           <>
@@ -318,10 +346,9 @@ const CommodityInfo = ({ commodity, rareMarket }) => {
             <StationIcon station={rareMarket}>
               <span className='fx__animated-text text-no-transform' data-fx-order='2' style={{ fontSize: '.9rem' }}>
                 <Link href={`/commodity/${commodity.symbol.toLowerCase()}?location=${rareMarket.systemName}`}>{rareMarket.stationName}</Link>
-                              {rareMarket.distanceToArrival !== undefined && <>
-                <small className='text-no-transform'> {Math.round(rareMarket.distanceToArrival).toLocaleString()} Ls</small></>}
+                {rareMarket.distanceToArrival !== undefined && <>
+                  <small className='text-no-transform'> {Math.round(rareMarket.distanceToArrival).toLocaleString()} Ls</small></>}
               </span>
-
               {/* <br />
               <span className='fx__animated-text text-no-transform' data-fx-order='3' style={{ fontSize: '.9rem' }}>
                 <Link href={`/commodity/${commodity.symbol.toLowerCase()}?location=${rareMarket.systemName}`}>{rareMarket.systemName}</Link>
