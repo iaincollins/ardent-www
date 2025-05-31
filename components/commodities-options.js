@@ -28,6 +28,21 @@ export default ({ disabled = false, commodities = [], commodity }) => {
   const [commodityAutoCompleteResults, setCommodityAutoCompleteResults] = useState()
   const [systemAutoCompleteResults, setSystemAutoCompleteResults] = useState()
 
+  useEffect(() => {
+    if (commodity && commodity.symbol !== selectedCommodity?.symbol) {
+      setSelectedCommodity(commodity)
+      commodityRef.current.value = commodity.name
+    }
+  }, [commodity])
+
+  useEffect(() => {
+    updateOptions()
+  }, [router.query])
+
+  useEffect(() => {
+    updateOptions()
+  }, [])
+
   function optionChangeHandler(e) {
     const query = {}
 
@@ -44,72 +59,63 @@ export default ({ disabled = false, commodities = [], commodity }) => {
     router.push(urlObject, undefined, { shallow: true })
   }
 
-  useEffect(() => {
-    if (commodity && commodity.symbol !== selectedCommodity?.symbol) {
-      setSelectedCommodity(commodity)
-      commodityRef.current.value = commodity.name
-    }
-  }, [commodity])
-
-  useEffect(() => {
-      ;(async () => {
-        // Set default values for inputs when loading, taking them from the query
-        // string (if they exist) or the preset default values for each option
-        if (router.query.location) {
-          // Check if 'location' seems to be a string (system name) or number (system address)
-          const queryUrl = (!isNaN(router.query.location))
-            ? `${API_BASE_URL}/v2/system/address/${router.query.location}`
-            : `${API_BASE_URL}/v2/system/name/${router.query.location}`
-          try {
-            const res = await fetch(queryUrl)
-            const system = await res.json()
-            if (system) {
-              locationRef.current.value = system.systemName
-              locationRef.current.dataset.value = system.systemAddress
-              if (maxDistanceRef.current.value === COMMODITY_FILTER_DISTANCE_DEFAULT) {
-                maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
-              }
-            } else {
-              locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
-              delete locationRef.current.dataset.value
-            }
-          } catch (e) {
-            // If error, reset it to nothing
-            console.error(e)
-            locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
-            delete locationRef.current.dataset.value
-          }
-        }
-
-        if (router.query.maxDistance) {
-          maxDistanceRef.current.value = router.query.maxDistance
-        } else {
-          if (router.query.location) {
+  async function updateOptions() {
+    // Set default values for inputs when loading, taking them from the query
+    // string (if they exist) or the preset default values for each option
+    if (router.query.location) {
+      // Check if 'location' seems to be a string (system name) or number (system address)
+      const queryUrl = (!isNaN(router.query.location))
+        ? `${API_BASE_URL}/v2/system/address/${router.query.location}`
+        : `${API_BASE_URL}/v2/system/name/${router.query.location}`
+      try {
+        const res = await fetch(queryUrl)
+        const system = await res.json()
+        if (system?.systemName && system?.systemAddress) {
+          locationRef.current.value = system.systemName
+          locationRef.current.dataset.value = system.systemAddress
+          if (maxDistanceRef.current.value === COMMODITY_FILTER_DISTANCE_DEFAULT) {
             maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
-          } else {
-            maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_DEFAULT
           }
-        }
-
-        if (router.query.maxDaysAgo) {
-          maxDaysAgoRef.current.value = router.query.maxDaysAgo
         } else {
-          maxDaysAgoRef.current.value = COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
+          locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+          delete locationRef.current.dataset.value
         }
+      } catch (e) {
+        // If error, reset it to nothing
+        console.error(e)
+        locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+        delete locationRef.current.dataset.value
+      }
+    }
 
-        if (router.query.minVolume) {
-          minVolumeRef.current.value = router.query.minVolume
-        } else {
-          minVolumeRef.current.value = COMMODITY_FILTER_MIN_VOLUME_DEFAULT
-        }
+    if (router.query.maxDistance) {
+      maxDistanceRef.current.value = router.query.maxDistance
+    } else {
+      if (router.query.location) {
+        maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
+      } else {
+        maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_DEFAULT
+      }
+    }
 
-        if (router.query.fleetCarriers) {
-          fleetCarriersRef.current.value = router.query.fleetCarriers
-        } else {
-          fleetCarriersRef.current.value = COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
-        }
-      })()
-  }, [])
+    if (router.query.maxDaysAgo) {
+      maxDaysAgoRef.current.value = router.query.maxDaysAgo
+    } else {
+      maxDaysAgoRef.current.value = COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT
+    }
+
+    if (router.query.minVolume) {
+      minVolumeRef.current.value = router.query.minVolume
+    } else {
+      minVolumeRef.current.value = COMMODITY_FILTER_MIN_VOLUME_DEFAULT
+    }
+
+    if (router.query.fleetCarriers) {
+      fleetCarriersRef.current.value = router.query.fleetCarriers
+    } else {
+      fleetCarriersRef.current.value = COMMODITY_FILTER_FLEET_CARRIER_DEFAULT
+    }
+  }
 
   return (
     <div className='sidebar__options'>
@@ -302,7 +308,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
               try {
                 const res = await fetch(queryUrl)
                 const system = await res.json()
-                if (system) {
+                if (system?.systemName && system?.systemAddress) {
                   locationRef.current.value = system.systemName
                   locationRef.current.dataset.value = system.systemAddress
                   if (maxDistanceRef.current.value === COMMODITY_FILTER_DISTANCE_DEFAULT) {

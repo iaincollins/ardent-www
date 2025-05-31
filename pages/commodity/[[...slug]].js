@@ -349,7 +349,6 @@ const CommodityInfo = ({ commodities, commodity, rareMarket, }) => {
                 {rareMarket.distanceToArrival !== undefined && <>
                   <small className='text-no-transform'> {Math.round(rareMarket.distanceToArrival).toLocaleString()} Ls</small></>}
               </span>
-
               {/* <br />
               <span className='fx__animated-text text-no-transform' data-fx-order='3' style={{ fontSize: '.9rem' }}>
                 <Link href={`/commodity/${commodity.symbol.toLowerCase()}?location=${rareMarket.systemName}`}>{rareMarket.systemName}</Link>
