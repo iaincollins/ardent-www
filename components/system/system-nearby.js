@@ -22,10 +22,11 @@ module.exports = ({ nearbySystems }) => {
             dataIndex: 'systemName',
             key: 'systemName',
             align: 'left',
-            render: (v, r) => <SystemObjectIcon type='Star'>
-              {v}
-              <small className='is-visible-mobile text-no-transform'> {r?.distance < 1 ? '< 1 ly' : <>{Math.floor(r.distance).toLocaleString()} ly</>}</small>
-            </SystemObjectIcon>
+            render: (v, r) =>
+              <SystemObjectIcon type='Star'>
+                {v}
+                <small className='is-visible-mobile text-no-transform'> {r?.distance < 1 ? '< 1 ly' : <>{Math.floor(r.distance).toLocaleString()} ly</>}</small>
+              </SystemObjectIcon>
           },
           {
             title: 'Distance',

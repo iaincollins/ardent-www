@@ -79,7 +79,7 @@ function SystemObjects ({ objects, depth = 0 }) {
               {(systemObject?.bodyType === 'Planet' || systemObject?.bodyType === 'Star') &&
                 <SystemObjectIcon systemObject={systemObject}>
                   {systemObject.bodyName}
-                  {systemObject?.distanceToArrival !== undefined > 0 &&
+                  {systemObject?.distanceToArrival !== undefined &&
                     <small className='is-visible-mobile text-no-transform'>
                       {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls
                     </small>}
@@ -90,36 +90,37 @@ function SystemObjects ({ objects, depth = 0 }) {
                       <br />{timeBetweenTimestamps(systemObject.updatedAt)} ago
                     </small>}
                 </SystemObjectIcon>}
-              {systemObject?.stationType !== undefined && <>
-                <StationIcon station={systemObject}>
-                  {systemObject.stationName}
-                  {systemObject?.distanceToArrival !== undefined > 0 &&
-                    <small className='is-visible-mobile text-no-transform'>
-                      {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls
-                    </small>}
-                  <small>
-                    <br />
-                    {systemObject?.primaryEconomy !== undefined && systemObject?.primaryEconomy !== null &&
-                      <>
-                        {systemObject.primaryEconomy}
-                        {systemObject?.secondaryEconomy !== undefined && systemObject?.secondaryEconomy !== null && systemObject?.secondaryEconomy !== systemObject?.primaryEconomy &&
-                          <> &amp; {systemObject.secondaryEconomy}</>}
-                      </>}
-                    {systemObject?.stationType === 'FleetCarrier' && 'Fleet Carrier'}
-                  </small>
-                  {systemObject?.updatedAt !== undefined &&
-                    <small className='is-visible-mobile'>
-                      <br />{timeBetweenTimestamps(systemObject.updatedAt)} ago
-                    </small>}
-                </StationIcon>
-              </>}
+              {systemObject?.stationType !== undefined &&
+                <>
+                  <StationIcon station={systemObject}>
+                    {systemObject.stationName}
+                    {systemObject?.distanceToArrival !== undefined &&
+                      <small className='is-visible-mobile text-no-transform'>
+                        {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls
+                      </small>}
+                    <small>
+                      <br />
+                      {systemObject?.primaryEconomy !== undefined && systemObject?.primaryEconomy !== null &&
+                        <>
+                          {systemObject.primaryEconomy}
+                          {systemObject?.secondaryEconomy !== undefined && systemObject?.secondaryEconomy !== null && systemObject?.secondaryEconomy !== systemObject?.primaryEconomy &&
+                            <> &amp; {systemObject.secondaryEconomy}</>}
+                        </>}
+                      {systemObject?.stationType === 'FleetCarrier' && 'Fleet Carrier'}
+                    </small>
+                    {systemObject?.updatedAt !== undefined &&
+                      <small className='is-visible-mobile'>
+                        <br />{timeBetweenTimestamps(systemObject.updatedAt)} ago
+                      </small>}
+                  </StationIcon>
+                </>}
             </div>
           </td>
           <td style={{ textAlign: 'right', fontSize: '0.9rem' }} className='is-hidden-mobile'>
             {systemObject?.updatedAt !== undefined && <small>{timeBetweenTimestamps(systemObject.updatedAt)}</small>}
           </td>
           <td style={{ textAlign: 'right' }} className='is-hidden-mobile'>
-            {systemObject?.distanceToArrival !== undefined > 0 && <>{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls</>}
+            {systemObject?.distanceToArrival !== undefined && <>{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls</>}
           </td>
         </tr>
         {systemObject?.stations?.length > 0 && <SystemObjects objects={systemObject.stations} depth={depth + 1} />}

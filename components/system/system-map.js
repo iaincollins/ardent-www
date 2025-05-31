@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import factionStates from 'lib/utils/faction-states'
-import distance from 'lib/utils/distance'
 import { scanSystemSound } from 'lib/sounds'
 
 const SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER = 50
@@ -54,7 +53,7 @@ module.exports = ({
 
         <div className='system-map__system-objects'>
           {(stationsInSystem === undefined || bodiesInSystem === undefined) &&
-            <p className='loading-bar' style={{ position: 'relative', top: '.25rem', top: '-.25rem', height: '1.75rem' }} />}
+            <p className='loading-bar' style={{ position: 'relative', top: '-.25rem', height: '1.75rem' }} />}
           {bodiesInSystem !== undefined &&
             stationsInSystem !== undefined &&
             settlementsInSystem !== undefined &&

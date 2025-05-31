@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
-import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import {
   API_BASE_URL,
@@ -15,7 +14,6 @@ import InputWithAutoComplete from './input-with-autocomplete'
 
 export default ({ disabled = false, commodities = [], commodity }) => {
   const router = useRouter()
-  const searchParams = useSearchParams()
 
   const commodityRef = useRef()
   const locationRef = useRef()
@@ -192,7 +190,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
           onSelect={(text, data) => {
             if (text && data) {
               // If commodity changes, fire event so parent component updates
-              dispatchEvent(new CustomEvent('LoadCommodityEvent', { detail: data.value }))
+              window.dispatchEvent(new CustomEvent('LoadCommodityEvent', { detail: data.value }))
             } else if (text && !data) {
               // When text input is not a valid option
               commodityRef.current.focus()
@@ -277,10 +275,8 @@ export default ({ disabled = false, commodities = [], commodity }) => {
                 })
               }
             })
-
             setSystemAutoCompleteResults(autoCompleteResults)
           }}
-
           onSelect={async (text, data) => {
             if (text === 'Core Systems') {
               locationRef.current.value = 'Sol'
@@ -339,7 +335,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
               <span className='muted'>SYS ADDR</span>
               {' '}
               <Link href={`/system/${locationRef.current?.dataset?.value}`}>{locationRef.current?.dataset?.value}</Link>
-              </>
+            </>
             : <span className='muted'>...</span>}
         </small>
         <label>
@@ -388,10 +384,4 @@ export default ({ disabled = false, commodities = [], commodity }) => {
       </form>
     </div>
   )
-}
-
-async function findSystemsByName (systemName) {
-  if (systemName.length < 1) return []
-  const res = await fetch(`${API_BASE_URL}/v2/search/system/name/${systemName}/`)
-  return await res.json()
 }

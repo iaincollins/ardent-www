@@ -1,4 +1,3 @@
-import path from 'path'
 import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -13,7 +12,7 @@ import animateTableEffect from 'lib/animate-table-effect'
 import { NavigationContext } from 'lib/context'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 import { playLoadingSound } from 'lib/sounds'
-import { getCommodityBySymbol, getCommoditiesWithPricing } from 'lib/commodities'
+import { getCommoditiesWithPricing } from 'lib/commodities'
 
 import {
   API_BASE_URL,
@@ -132,8 +131,7 @@ export default () => {
     if (c && !c.totalStock) c.totalStock = 0
     c ? setCommodity(c) : setCommodity(undefined)
     if (c?.rareMarketId) {
-      // const rareCommodity = await getCommodityFromMarket(c.rareMarketId, c.symbol)
-      const rareMarket = await getMarket(c.rareMarketId, c.symbol)
+      const rareMarket = await getMarket(c.rareMarketId)
       setRareMarket(rareMarket)
     } else {
       setRareMarket(undefined)
@@ -168,8 +166,8 @@ export default () => {
     const _activeTab = router.query?.slug?.[1] ?? TABS[0]
 
     // TODO: Check inputs and gracefully invalid values
-    if (!commoditySymbol || commoditySymbol == 'undefined') return
-    if (!_activeTab || _activeTab == 'undefined') return
+    if (!commoditySymbol || commoditySymbol === 'undefined') return
+    if (!_activeTab || _activeTab === 'undefined') return
 
     setActiveTab(_activeTab)
 
@@ -259,12 +257,7 @@ async function getImports (commodityName) {
   }
 }
 
-async function getCommodityFromMarket (marketId, commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v2/market/${marketId}/commodity/name/${commodityName}`)
-  return (res.status === 200) ? await res.json() : null
-}
-
-async function getMarket (marketId, commodityName) {
+async function getMarket (marketId) {
   const res = await fetch(`${API_BASE_URL}/v2/market/${marketId}`)
   return (res.status === 200) ? await res.json() : null
 }
@@ -275,14 +268,6 @@ async function getMarket (marketId, commodityName) {
 //   const greatestCommonDivisor = (a, b) => (b === 0) ? a : greatestCommonDivisor(b, a % b)
 //   return `${a / greatestCommonDivisor(a, b)}:${b / greatestCommonDivisor(a, b)}`
 // }
-
-const TabDescription = ({ children }) => {
-  return (
-    <div className='tab-options' style={{ paddingTop: '.25rem' }}>
-      <p style={{ margin: '.25rem .25rem .25rem .25rem', textTransform: 'uppercase' }}>{children}</p>
-    </div>
-  )
-}
 
 function apiQueryOptions () {
   // Parse current query string and convert the params to an API query parametrer string
@@ -344,9 +329,10 @@ const CommodityInfo = ({ commodities, commodity, rareMarket }) => {
             <StationIcon station={rareMarket}>
               <span className='fx__animated-text text-no-transform' data-fx-order='2' style={{ fontSize: '.9rem' }}>
                 <Link href={`/commodity/${commodity.symbol.toLowerCase()}?location=${rareMarket.systemName}`}>{rareMarket.stationName}</Link>
-                {rareMarket.distanceToArrival !== undefined && <>
-                  <small className='text-no-transform'> {Math.round(rareMarket.distanceToArrival).toLocaleString()} Ls</small>
-                </>}
+                {rareMarket.distanceToArrival !== undefined &&
+                  <>
+                    <small className='text-no-transform'> {Math.round(rareMarket.distanceToArrival).toLocaleString()} Ls</small>
+                  </>}
               </span>
               {/* <br />
               <span className='fx__animated-text text-no-transform' data-fx-order='3' style={{ fontSize: '.9rem' }}>

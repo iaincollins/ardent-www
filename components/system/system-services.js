@@ -24,7 +24,7 @@ module.exports = ({ system, nearestServices }) => {
         <h2>Nearest Services</h2>
       </div>
       {nearestServices === undefined &&
-        <p className='loading-bar' style={{ position: 'relative', top: '.25rem', top: '-.25rem', height: '1.75rem' }} />}
+        <p className='loading-bar' style={{ position: 'relative', top: '-.25rem', height: '1.75rem' }} />}
       {nearestServices &&
         <div className='fx__fade-in'>
           <p className='muted'>Station services in {system.systemName} and nearest populated systems</p>

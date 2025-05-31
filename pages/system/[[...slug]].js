@@ -1,4 +1,3 @@
-import path from 'path'
 import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -324,18 +323,19 @@ export default () => {
       <Head>
         <link rel='canonical' href={`https://ardent-insight.com/system/${system?.systemName}/${views[activeViewIndex]}`} />
       </Head>
-      {system === null && <>
-        <div className='heading--with-underline'>
-          <h2 className='heading--with-icon'>
+      {system === null &&
+        <>
+          <div className='heading--with-underline'>
+            <h2 className='heading--with-icon'>
+              <i className='icon icarus-terminal-warning' />
+              <span className='text-no-transform'> UNKNOWN SYSTEM</span>
+            </h2>
+          </div>
+          <div className='error__text' style={{ left: '3rem' }}>
             <i className='icon icarus-terminal-warning' />
-            <span className='text-no-transform'> UNKNOWN SYSTEM</span>
-          </h2>
-        </div>
-        <div className='error__text' style={{ left: '3rem' }}>
-          <i className='icon icarus-terminal-warning' />
-          <span className='text-blink-slow muted'> No data for this system</span>
-        </div>
-      </>}
+            <span className='text-blink-slow muted'> No data for this system</span>
+          </div>
+        </>}
       {system &&
         <>
           {views[activeViewIndex] === '' &&

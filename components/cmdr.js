@@ -217,7 +217,7 @@ export default () => {
         </>}
       {signedIn === false &&
         <>
-          {maintanceMode == true
+          {maintanceMode === true
             ? <>
               <div className='home__sign-in-placeholder'>
                 <p className='text-center'>

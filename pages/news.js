@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react'
+import { useEffect, useContext, useState, Fragment } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
@@ -43,7 +43,7 @@ export default (props) => {
             <h2 className='text-uppercase'>Galnet News</h2>
           </div>
           {galnetNews && galnetNews.map((newsItem, i) => (
-            <>
+            <Fragment key={`galnet-news-item-${i}}`}>
               {(articleSlug === undefined || articleSlug === newsItem.slug) &&
                 <div id={newsItem.slug} key={newsItem.url} style={{ marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '.2rem dashed var(--color-primary-darkest)' }}>
                   <div className='home__news-article-body'>
@@ -55,7 +55,7 @@ export default (props) => {
                     </div>
                   </div>
                 </div>}
-            </>
+            </Fragment>
           ))}
 
           {articleSlug !== undefined && galnetNews !== undefined &&

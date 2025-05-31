@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { getCommoditiesWithPricing, listOfCommoditiesAsArray } from 'lib/commodities'
@@ -9,6 +9,7 @@ import { eliteDateTime } from 'lib/utils/dates'
 
 export default () => {
   const router = useRouter()
+  const headerSearchRef = useRef()
   const [navigationPath] = useContext(NavigationContext)
   const [fullScreenState, setFullScreenState] = useState(false)
   const [newsTicker, setNewsTicker] = useState([])
@@ -216,13 +217,13 @@ export default () => {
   useEffect(() => {
     const onKeyDown = ({ key }) => {
       if (key === 'Enter') {
-        if (document.activeElement?.id === 'header-search' ||
+        if (document.activeElement?.id === 'headerSearch' ||
           document.activeElement?.id === 'location') {
           document.activeElement.blur()
         } else {
           // If focus is on an INPUT element do nothing (may add more exceptions)
           if (document?.activeElement?.tagName === 'INPUT') return
-          document.getElementById('header-search').focus()
+          headerSearchRef.current.focus()
         }
       }
     }
@@ -253,39 +254,29 @@ export default () => {
       </div>
       <div className='header__navigation' style={{ display: 'block' }}>
         <div className='header__search'>
-          <label className='header__search-input' aria-label='Search' onClick={() => document.getElementById('header-search').focus()}>
+          <label className='header__search-input' aria-label='Search' onClick={() => headerSearchRef.current.focus()}>
             <i className='icon icarus-terminal-search' />
             <input
-              id='header-search' name='header-search' type='text' autoComplete='off' placeholder='Search'
+              ref={headerSearchRef}
+              id='headerSearch'
+              name='headerSearch'
+              type='text'
+              autoComplete='off'
+              placeholder='Search'
               onBlur={(e) => {
                 setSearchResultsVisible(false)
               }}
               onFocus={(e) => {
                 onSearchInputChange(e)
               }}
-              // onMouseEnter={(e) => document.getElementById('header-search').focus()}
               onChange={(e) => onSearchInputChange(e)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault()
-                  const searchText = e.target.value.trim().toLowerCase()
                   if (searchResults?.length > 0) {
-                    /*
-                    let exactMatchFound = false
-                    for (const result of searchResults) {
-                      if (result.name.toLowerCase() === searchText) {
-                        setSearchResultsVisible(false)
-                        exactMatchFound = true
-                        router.push(result.path)
-                        document.getElementById('header-search').value = ''
-                      }
-                    }
-                    */
-                    // if (exactMatchFound !== true) {
                     router.push(searchResults[hilightedSearchResult].path)
                     setSearchResultsVisible(false)
-                    document.getElementById('header-search').value = ''
-                    // }
+                    headerSearchRef.current.value = ''
                   }
                 } else if (e.key === 'ArrowDown') {
                   if (hilightedSearchResult < searchResults.length - 1) {
@@ -316,7 +307,7 @@ export default () => {
                 onMouseDown={() => {
                   router.push(result.path)
                   setSearchResultsVisible(false)
-                  document.getElementById('header-search').value = ''
+                  headerSearchRef.current.value = ''
                 }}
               ><i className={result.icon} />{result.name}
                 {result.description !== undefined &&
