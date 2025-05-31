@@ -5,10 +5,11 @@ import { timeBetweenTimestamps } from 'lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
 import StationIcon from './station-icon'
 import { API_BASE_URL, NO_DEMAND_TEXT } from 'lib/consts'
+import animateTableEffect from 'lib/animate-table-effect'
 
 const MAX_ROWS_TO_DISPLAY = 10
 
-async function getNearbyImportersOfCommodity(systemAddress, commodityName) {
+async function getNearbyImportersOfCommodity (systemAddress, commodityName) {
   const url = `${API_BASE_URL}/v2/system/address/${systemAddress}/commodity/name/${commodityName}/nearby/imports?maxDaysAgo=30&fleetCarriers=0&sort=distance`
   const res = await fetch(url)
   return await res.json()
@@ -16,12 +17,15 @@ async function getNearbyImportersOfCommodity(systemAddress, commodityName) {
 
 export default ({ commodity, rare }) => {
   const [nearbyImporters, setNearbyImporters] = useState()
+
+  useEffect(animateTableEffect)
+
   useEffect(() => {
     (async () => {
       const _nearbyImporters = await getNearbyImportersOfCommodity(commodity.systemAddress, commodity.symbol)
         ; (_nearbyImporters.length > 0)
-          ? setNearbyImporters(_nearbyImporters.slice(0, MAX_ROWS_TO_DISPLAY))
-          : setNearbyImporters([])
+        ? setNearbyImporters(_nearbyImporters.slice(0, MAX_ROWS_TO_DISPLAY))
+        : setNearbyImporters([])
     })()
   }, [commodity.commodityName, commodity.systemAddress])
 
@@ -30,7 +34,7 @@ export default ({ commodity, rare }) => {
       {!nearbyImporters && <div className='loading-bar' style={{ marginTop: 0 }} />}
       {nearbyImporters &&
         <Table
-          className='data-table--mini data-table--striped data-table--border-left scrollable fx__fade-in'
+          className='data-table--mini data-table--striped data-table--border-left data-table--animated scrollable'
           columns={[
             {
               title: 'Importers nearby',

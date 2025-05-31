@@ -43,7 +43,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
     updateOptions()
   }, [])
 
-  function optionChangeHandler(e) {
+  function optionChangeHandler (e) {
     const query = {}
 
     if (locationRef.current?.dataset.value) {
@@ -59,7 +59,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
     router.push(urlObject, undefined, { shallow: true })
   }
 
-  async function updateOptions() {
+  async function updateOptions () {
     // Set default values for inputs when loading, taking them from the query
     // string (if they exist) or the preset default values for each option
     if (router.query.location) {
@@ -336,9 +336,9 @@ export default ({ disabled = false, commodities = [], commodity }) => {
         <small style={{ display: 'block', textAlign: 'right', paddingRight: '.75rem' }}>
           {locationRef.current?.dataset?.value
             ? <>
-                <span className='muted'>SYS ADDR</span>
-                {' '}
-                <Link href={`/system/${locationRef.current?.dataset?.value}`}>{locationRef.current?.dataset?.value}</Link>
+              <span className='muted'>SYS ADDR</span>
+              {' '}
+              <Link href={`/system/${locationRef.current?.dataset?.value}`}>{locationRef.current?.dataset?.value}</Link>
               </>
             : <span className='muted'>...</span>}
         </small>
@@ -390,7 +390,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
   )
 }
 
-async function findSystemsByName(systemName) {
+async function findSystemsByName (systemName) {
   if (systemName.length < 1) return []
   const res = await fetch(`${API_BASE_URL}/v2/search/system/name/${systemName}/`)
   return await res.json()

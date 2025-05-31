@@ -36,7 +36,7 @@ module.exports = ({
       } else if (nearbySystems?.length >= 100) {
         setMapZoomMultiplier(75)
       } else {
-        setMapZoomMultiplier(SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER) 
+        setMapZoomMultiplier(SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER)
       }
       setTimeout(() => setStarsVisible(true), 1000)
     }

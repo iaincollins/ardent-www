@@ -25,6 +25,10 @@ module.exports = ({
   const router = useRouter()
   const [, setDialog] = useContext(DialogContext)
 
+  const activeTab = router.query?.slug?.[1] === 'imports'
+    ? 1
+    : 0
+
   return (
     <div className='fx__fade-in'>
       <div className='heading--with-underline'>
@@ -37,6 +41,7 @@ module.exports = ({
           </span>}
       </p>
       <Tabs
+        selectedIndex={activeTab}
         onSelect={
           (index) => {
             const view = (index === 1) ? 'imports' : 'exports'
@@ -165,11 +170,12 @@ module.exports = ({
                     </Collapsible>
                     <p className='table-row-expanded-link'>
                       {r?.rare === true &&
-                        <div className='button--small'
+                        <div
+                          className='button--small'
                           onClick={() => {
                             const rare = rareGoods.filter(rare => rare.name.toLowerCase() === r.name.toLowerCase())?.[0]
                             const contents = rare
-                              ?
+                              ? (
                                 <>
                                   <p>
                                     {rare.stationName} is the exclusive exporter of {rare.name}.
@@ -181,6 +187,7 @@ module.exports = ({
                                     {rare?.limit && <>Export restrictions limit orders to {rare.limit} T at a time.</>}
                                   </p>
                                 </>
+                                )
                               : <p>{r.systemName} is the exclusive exporter of {r.name}.</p>
 
                             setDialog({

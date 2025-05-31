@@ -36,7 +36,7 @@ export default ({
         <meta name='viewport' content='width=device-width' />
       </Head>
       <Loader visible={loading} text={loadingText} />
-      <Dialog/>
+      <Dialog />
       <div className={`${sidebar !== undefined ? 'layout__content-wrapper scrollable' : ''} ${className !== undefined ? className : ''}`}>
         {sidebar !== undefined &&
           <div className={`layout__content layout__content--left-sidebar scrollable ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>

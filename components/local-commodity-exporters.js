@@ -1,15 +1,19 @@
+import { useEffect } from 'react'
 import Table from 'rc-table'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import TradeBracketIcon from './trade-bracket'
 import StationIcon from './station-icon'
+import animateTableEffect from 'lib/animate-table-effect'
 
 export default ({ commodityOrders }) => {
+  useEffect(animateTableEffect)
+
   return (
     <>
       {!commodityOrders && <div className='loading-bar loading-bar--table-row' />}
       {commodityOrders &&
         <Table
-          className='data-table--mini data-table--striped scrollable fx__fade-in'
+          className='data-table--mini data-table--striped data-table--animated scrollable'
           columns={[
             {
               title: 'Exporters in system',

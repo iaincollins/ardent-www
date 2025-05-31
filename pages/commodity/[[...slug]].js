@@ -31,7 +31,7 @@ export default () => {
   const router = useRouter()
   const [, setNavigationPath] = useContext(NavigationContext)
   const [cachedQuery, setCachedQuery] = useState()
-  //const [tabIndex, setTabIndex] = useState(0)
+  // const [tabIndex, setTabIndex] = useState(0)
   const [activeTab, setActiveTab] = useState()
   const [commodities, setCommodities] = useState([])
   const [commodity, setCommodity] = useState()
@@ -54,57 +54,57 @@ export default () => {
   //   setTabIndex(newTabIndex)
   // }, [router.pathname])
 
-  async function getExporters(commoditySymbol) {
+  async function getExporters (commoditySymbol) {
     setExports(undefined)
-      ; (async () => {
-        const exports = await getExports(commoditySymbol)
-        if (Array.isArray(exports)) {
-          exports.forEach(c => {
-            c.key = `${c.marketId}_${c.commoditySymbol}`
-            c.symbol = commoditySymbol
-            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-            c.maxProfit = c.maxSellPrice - c.minBuyPrice
-            c.category = listOfCommodities[c.symbol]?.category ?? ''
-            c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
-            delete c.commodityName
-          })
-          setExports(exports)
-        } else {
-          setExports([])
-        }
-      })()
+    ; (async () => {
+      const exports = await getExports(commoditySymbol)
+      if (Array.isArray(exports)) {
+        exports.forEach(c => {
+          c.key = `${c.marketId}_${c.commoditySymbol}`
+          c.symbol = commoditySymbol
+          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+          c.maxProfit = c.maxSellPrice - c.minBuyPrice
+          c.category = listOfCommodities[c.symbol]?.category ?? ''
+          c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
+          delete c.commodityName
+        })
+        setExports(exports)
+      } else {
+        setExports([])
+      }
+    })()
   }
 
-  async function getImporters(commoditySymbol) {
+  async function getImporters (commoditySymbol) {
     setImports(undefined)
-      ; (async () => {
-        const imports = await getImports(commoditySymbol)
-        if (Array.isArray(imports)) {
-          imports.forEach(c => {
-            c.symbol = commoditySymbol
-            c.key = `${c.marketId}_${c.commoditySymbol}`
-            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-            c.maxProfit = c.maxSellPrice - c.minBuyPrice
-            c.category = listOfCommodities[commoditySymbol]?.category ?? ''
-            c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
-            delete c.commodityName
-          })
-          setImports(imports)
-        } else {
-          setImports([])
-        }
-      })()
+    ; (async () => {
+      const imports = await getImports(commoditySymbol)
+      if (Array.isArray(imports)) {
+        imports.forEach(c => {
+          c.symbol = commoditySymbol
+          c.key = `${c.marketId}_${c.commoditySymbol}`
+          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+          c.maxProfit = c.maxSellPrice - c.minBuyPrice
+          c.category = listOfCommodities[commoditySymbol]?.category ?? ''
+          c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
+          delete c.commodityName
+        })
+        setImports(imports)
+      } else {
+        setImports([])
+      }
+    })()
   }
 
-  async function loadCommodity(_commoditySymbol, _activeTab) {
-    const commoditySymbol = _commoditySymbol?.toLowerCase() 
+  async function loadCommodity (_commoditySymbol, _activeTab) {
+    const commoditySymbol = _commoditySymbol?.toLowerCase()
     if (!commoditySymbol) return
-    
+
     setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
 
-    const cacheFingerprint = JSON.stringify({ 
+    const cacheFingerprint = JSON.stringify({
       commoditySymbol,
       activeTab: _activeTab,
       query: parseQueryString()
@@ -132,7 +132,7 @@ export default () => {
     if (c && !c.totalStock) c.totalStock = 0
     c ? setCommodity(c) : setCommodity(undefined)
     if (c?.rareMarketId) {
-      //const rareCommodity = await getCommodityFromMarket(c.rareMarketId, c.symbol)
+      // const rareCommodity = await getCommodityFromMarket(c.rareMarketId, c.symbol)
       const rareMarket = await getMarket(c.rareMarketId, c.symbol)
       setRareMarket(rareMarket)
     } else {
@@ -159,7 +159,6 @@ export default () => {
       setCommodities(commoditiesWithPricing)
     })()
 
-
     window.addEventListener('LoadCommodityEvent', loadCommodityEventHandler)
     return () => window.removeEventListener('LoadCommodityEvent', loadCommodityEventHandler)
   }, [])
@@ -173,7 +172,7 @@ export default () => {
     if (!_activeTab || _activeTab == 'undefined') return
 
     setActiveTab(_activeTab)
-    
+
     if (_activeTab !== activeTab) {
       router.push(`/commodity/${commoditySymbol}/${_activeTab}${window.location.search}`)
     } else {
@@ -235,12 +234,12 @@ export default () => {
   )
 }
 
-async function getCommodity(commodityName) {
+async function getCommodity (commodityName) {
   const res = await fetch(`${API_BASE_URL}/v2/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getExports(commodityName) {
+async function getExports (commodityName) {
   try {
     const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/exports?${apiQueryOptions()}`
     const res = await fetch(url)
@@ -250,7 +249,7 @@ async function getExports(commodityName) {
   }
 }
 
-async function getImports(commodityName) {
+async function getImports (commodityName) {
   try {
     const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/imports?${apiQueryOptions()}`
     const res = await fetch(url)
@@ -260,13 +259,12 @@ async function getImports(commodityName) {
   }
 }
 
-async function getCommodityFromMarket(marketId, commodityName) {
+async function getCommodityFromMarket (marketId, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v2/market/${marketId}/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-
-async function getMarket(marketId, commodityName) {
+async function getMarket (marketId, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v2/market/${marketId}`)
   return (res.status === 200) ? await res.json() : null
 }
@@ -286,7 +284,7 @@ const TabDescription = ({ children }) => {
   )
 }
 
-function apiQueryOptions() {
+function apiQueryOptions () {
   // Parse current query string and convert the params to an API query parametrer string
   const options = []
 
@@ -316,7 +314,7 @@ function apiQueryOptions() {
   return options.join('&')
 }
 
-function parseQueryString() {
+function parseQueryString () {
   const obj = {}
   window.location.search.replace(
     new RegExp('([^?=&]+)(=([^&]*))?', 'g'),
@@ -325,7 +323,7 @@ function parseQueryString() {
   return obj
 }
 
-const CommodityInfo = ({ commodities, commodity, rareMarket, }) => {
+const CommodityInfo = ({ commodities, commodity, rareMarket }) => {
   if (!commodity) return
   return (
     <div style={{ paddingTop: '.5rem' }}>
@@ -347,7 +345,8 @@ const CommodityInfo = ({ commodities, commodity, rareMarket, }) => {
               <span className='fx__animated-text text-no-transform' data-fx-order='2' style={{ fontSize: '.9rem' }}>
                 <Link href={`/commodity/${commodity.symbol.toLowerCase()}?location=${rareMarket.systemName}`}>{rareMarket.stationName}</Link>
                 {rareMarket.distanceToArrival !== undefined && <>
-                  <small className='text-no-transform'> {Math.round(rareMarket.distanceToArrival).toLocaleString()} Ls</small></>}
+                  <small className='text-no-transform'> {Math.round(rareMarket.distanceToArrival).toLocaleString()} Ls</small>
+                </>}
               </span>
               {/* <br />
               <span className='fx__animated-text text-no-transform' data-fx-order='3' style={{ fontSize: '.9rem' }}>

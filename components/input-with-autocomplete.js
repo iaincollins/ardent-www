@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 
-
-
 export default ({
   id = 'input-with-autocomplete',
   forwardRef = useRef(),
@@ -17,7 +15,6 @@ export default ({
   const resultsRef = useRef()
   const [focus, setFocus] = useState(false)
   const [_autoCompleteResults, _setAutoCompleteResults] = useState()
-
 
   useEffect(() => {
     _setAutoCompleteResults(autoCompleteResults)
@@ -42,7 +39,7 @@ export default ({
     return () => document.removeEventListener('click', onSelectResult)
   }, [])
 
-  function inputOnFocusHandler(e) {
+  function inputOnFocusHandler (e) {
     setFocus(true)
     onChange(e)
     forwardRef.current.select()
@@ -54,7 +51,7 @@ export default ({
     }, 200)
   }
 
-  function inputOnBlurHandler() {
+  function inputOnBlurHandler () {
     setTimeout(() => {
       setFocus(false)
       if (document.activeElement?.name === name) {
@@ -63,13 +60,13 @@ export default ({
     }, 200)
   }
 
-  function inputOnChangeHandler(e) {
+  function inputOnChangeHandler (e) {
     if (focus === true) {
       onChange(e)
     }
   }
 
-  function inputOnKeyDownHandler(e) {
+  function inputOnKeyDownHandler (e) {
     if (e.key === 'Enter' || e.key === 'Escape') {
       e.preventDefault()
       setTimeout(() => {
@@ -102,7 +99,7 @@ export default ({
           className={`input-with-autocomplete__input ${focus === true ? 'input-with-autocomplete__input--with-focus' : ''}`}
         />
         {focus === true && _autoCompleteResults?.length > 0 &&
-          <div className={`input-with-autocomplete__results-dropdown`}>
+          <div className='input-with-autocomplete__results-dropdown'>
             <div ref={resultsRef} className='input-with-autocomplete__results scrollable'>
               {_autoCompleteResults.map((result, i) =>
                 <div key={`autocomplete-${name}-${result.value}-${i}`}>
@@ -110,19 +107,18 @@ export default ({
                     <p
                       className={`input-with-autocomplete__result ${result?.className ?? ''} ${result?.icon ? 'input-with-autocomplete__result--with-icon' : ''}`}
                       data-auto-complete-option={JSON.stringify(result)}
-                      data-auto-complete-result={true}
+                      data-auto-complete-result
                     >
                       {result?.icon && <i className={`input-with-autocomplete__result-icon icarus-terminal-${result?.icon}`} style={{ pointerEvents: 'none' }} />}
                       {result.text}
-                    </p>
-                  }
+                    </p>}
                   {result?.disabled === true && <p className='input-with-autocomplete__result input-with-autocomplete__result--disabled muted'>{result?.text}</p>}
                   {result?.seperator === true && <hr key={`seperator-${i}`} style={{ margin: '.25rem 0' }} />}
                 </div>
               )}
             </div>
           </div>}
-          {onClear !== undefined && forwardRef?.current?.value !== '' && <div className='input-with-autocomplete__clear' onClick={onClear}>✖</div>}
+        {onClear !== undefined && forwardRef?.current?.value !== '' && <div className='input-with-autocomplete__clear' onClick={onClear}>✖</div>}
       </label>
     </div>
   )

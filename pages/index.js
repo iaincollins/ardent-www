@@ -18,34 +18,34 @@ export default () => {
 
   useEffect(() => {
     setNavigationPath([{ name: 'Welcome CMDR', path: '/' }])
-      ; (async () => {
-        try {
-          const res = await fetch(`${API_BASE_URL}/v2/news/galnet`)
-          const news = await res.json()
-          setGalnetNews(news)
-        } catch (e) {
-          console.error(e)
-        }
-      })()
+    ; (async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/v2/news/galnet`)
+        const news = await res.json()
+        setGalnetNews(news)
+      } catch (e) {
+        console.error(e)
+      }
+    })()
 
-      ; (async () => {
-        try {
-          const res = await fetch(`${API_BASE_URL}/v2/stats`)
-          const stats = await res.json()
-          setStats(stats)
-        } catch (e) {
-          console.error(e)
-        }
-      })()
-      ; (async () => {
-        try {
-          const res = await fetch(`${API_BASE_URL}/v2/version`)
-          const version = await res.json()
-          setVersion(version)
-        } catch (e) {
-          console.error(e)
-        }
-      })()
+    ; (async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/v2/stats`)
+        const stats = await res.json()
+        setStats(stats)
+      } catch (e) {
+        console.error(e)
+      }
+    })()
+    ; (async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/v2/version`)
+        const version = await res.json()
+        setVersion(version)
+      } catch (e) {
+        console.error(e)
+      }
+    })()
   }, [])
 
   return (
@@ -79,18 +79,18 @@ export default () => {
                           setDialog({
                             title: 'Galnet News',
                             contents:
-                              <>
-                                <img src={nextNewsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' style={{ maxHeight: '10rem' }} />
-                                <p style={{fontSize: '1.5rem'}} className='text-uppercase'>{nextNewsItem.title}</p>
-                                <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>{nextNewsItem.date} — Galnet</a></p>
-                                <Markdown>{`${nextNewsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
-                              </>,
+  <>
+    <img src={nextNewsItem.image} width='100%' alt='News article headline' className='home__news-headline-image' style={{ maxHeight: '10rem' }} />
+    <p style={{ fontSize: '1.5rem' }} className='text-uppercase'>{nextNewsItem.title}</p>
+    <p className='muted text-uppercase'><a target='_blank' href={`https://www.elitedangerous.com/news/galnet/${nextNewsItem.slug}`} rel='noreferrer'>{nextNewsItem.date} — Galnet</a></p>
+    <Markdown>{`${nextNewsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
+  </>,
                             visible: true
-                          })
-                        }
+                          })}
                         key={nextNewsItem.url}
                         className='text-uppercase' style={{ marginTop: '.5rem' }}
-                      >{nextNewsItem.title}</li>
+                      >{nextNewsItem.title}
+                      </li>
                     ))}
                   </ul>
                 </div>

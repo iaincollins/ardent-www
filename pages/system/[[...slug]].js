@@ -59,7 +59,7 @@ export default () => {
 
       const systemIdentifer = router.query.slug[0]?.replaceAll('_', ' ')?.trim()
       if (!systemIdentifer) return
-      
+
       (router.query?.slug?.[1])
         ? setActiveViewIndex(views.indexOf(router.query.slug[1]))
         : setActiveViewIndex(0)
@@ -319,7 +319,7 @@ export default () => {
           active: views[activeViewIndex] === 'nearby'
         }
       ]}
-      navigationOverlaid={(views[activeViewIndex] === '' && system !== null) ? true : false} // Overlay navigation for map view
+      navigationOverlaid={!!((views[activeViewIndex] === '' && system !== null))} // Overlay navigation for map view
     >
       <Head>
         <link rel='canonical' href={`https://ardent-insight.com/system/${system?.systemName}/${views[activeViewIndex]}`} />

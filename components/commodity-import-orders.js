@@ -9,8 +9,9 @@ import StationIcon from './station-icon'
 import { API_BASE_URL, NO_DEMAND_TEXT } from 'lib/consts'
 import NearbyCommodityImporters from './nearby-commodity-importers'
 import NearbyCommodityExporters from './nearby-commodity-exporters'
+import animateTableEffect from 'lib/animate-table-effect'
 
-async function getImportsForCommodityBySystem(systemAddress, commodityName) {
+async function getImportsForCommodityBySystem (systemAddress, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v2/system/address/${systemAddress}/commodity/name/${commodityName}`)
   const imports = await res.json()
   if (!imports || imports.error) return [] // Handle system not found
@@ -18,6 +19,8 @@ async function getImportsForCommodityBySystem(systemAddress, commodityName) {
 }
 
 export default ({ tableName = 'Importers', commodities, rare }) => {
+  useEffect(animateTableEffect)
+
   return (
     <Table
       className='data-table data-table--striped data-table--interactive data-table--animated'
@@ -111,7 +114,7 @@ export default ({ tableName = 'Importers', commodities, rare }) => {
   )
 }
 
-function ExpandedRow({ r, rare }) {
+function ExpandedRow ({ r, rare }) {
   if (!r) return
 
   const [imports, setImports] = useState()
@@ -135,7 +138,7 @@ function ExpandedRow({ r, rare }) {
         open
       >
         <Table
-          className='data-table--mini data-table--striped scrollable fx__fade-in'
+          className='data-table--mini data-table--striped data-table--animated scrollable'
           columns={[
             {
               title: 'Importers in system',

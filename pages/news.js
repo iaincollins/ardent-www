@@ -15,14 +15,14 @@ export default (props) => {
 
   useEffect(() => {
     setNavigationPath([{ name: 'Galnet News', path: '/news' }])
-      ; (async () => {
-        try {
-          const res = await fetch(`${API_BASE_URL}/v2/news/galnet`)
-          if (res.ok) setGalnetNews(await res.json())
-        } catch (e) {
-          console.error(e)
-        }
-      })()
+    ; (async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/v2/news/galnet`)
+        if (res.ok) setGalnetNews(await res.json())
+      } catch (e) {
+        console.error(e)
+      }
+    })()
   }, [])
 
   useEffect(() => {
@@ -54,13 +54,12 @@ export default (props) => {
                       <Markdown>{`${newsItem.text.replaceAll('\n', '\n\n')}`}</Markdown>
                     </div>
                   </div>
-                </div>
-              }
+                </div>}
             </>
           ))}
 
-          {articleSlug !== undefined && galnetNews !== undefined && 
-            <div style={{position: 'relative', top: '-2rem'}}>
+          {articleSlug !== undefined && galnetNews !== undefined &&
+            <div style={{ position: 'relative', top: '-2rem' }}>
               <div className='heading--with-underline'>
                 <h3>More from Galnet</h3>
               </div>

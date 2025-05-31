@@ -44,7 +44,7 @@ export default () => {
     return () => clearInterval(dateTimeInterval)
   }, [])
 
-  async function onSearchInputChange(e) {
+  async function onSearchInputChange (e) {
     const searchText = e.target.value.trim()
 
     if (searchText.length === 0) {
@@ -73,9 +73,9 @@ export default () => {
         }
       })
 
-        ; (matchingCommodities.length > 0)
-          ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
-          : setCommoditySearchResults(undefined)
+      ; (matchingCommodities.length > 0)
+        ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
+        : setCommoditySearchResults(undefined)
     } catch (e) { }
 
     try {
@@ -412,7 +412,7 @@ export default () => {
   )
 }
 
-function isFullScreen() {
+function isFullScreen () {
   if (typeof document === 'undefined') return false
 
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
@@ -422,7 +422,7 @@ function isFullScreen() {
   }
 }
 
-async function toggleFullScreen() {
+async function toggleFullScreen () {
   if (isFullScreen()) {
     if (document.cancelFullScreen) {
       document.cancelFullScreen()
