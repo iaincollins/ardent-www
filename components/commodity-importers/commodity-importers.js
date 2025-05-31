@@ -2,23 +2,23 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Table from 'rc-table'
 import Collapsible from 'react-collapsible'
-import { CollapsibleTrigger } from './collapsible-trigger'
+import { CollapsibleTrigger } from 'components/collapsible-trigger'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
-import TradeBracketIcon from './trade-bracket'
-import StationIcon from './station-icon'
-import { API_BASE_URL } from 'lib/consts'
-import NearbyCommodityImporters from './nearby-commodity-importers'
-import NearbyCommodityExporters from './nearby-commodity-exporters'
+import TradeBracketIcon from 'components/trade-bracket'
+import StationIcon from 'components/station-icon'
+import { API_BASE_URL, NO_DEMAND_TEXT } from 'lib/consts'
+import CommodityImportersNearby from 'components/commodity-importers/commodity-importers-nearby'
+import CommodityExportersNearby from 'components/commodity-exporters/commodity-exporters-nearby'
 import animateTableEffect from 'lib/animate-table-effect'
 
-async function getExportsForCommodityBySystem (systemAddress, commodityName) {
+async function getImportsForCommodityBySystem (systemAddress, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v2/system/address/${systemAddress}/commodity/name/${commodityName}`)
-  const exports = await res.json()
-  if (!exports || exports.error) return [] // Handle system not found
-  return exports.filter(c => c.stock > 0)
+  const imports = await res.json()
+  if (!imports || imports.error) return [] // Handle system not found
+  return imports.filter(c => (c.demand > 0 || c.demand === 0) && c.sellPrice > 1)
 }
 
-export default ({ tableName = 'Exporters', commodities }) => {
+export default ({ tableName = 'Importers', commodities, rare }) => {
   useEffect(animateTableEffect)
 
   return (
@@ -47,11 +47,11 @@ export default ({ tableName = 'Exporters', commodities }) => {
                   <tbody style={{ textTransform: 'uppercase' }}>
                     <tr>
                       <td>
-                        <span className='data-table__label'>Stock</span>
-                        <TradeBracketIcon bracket={r.stockBracket} />
-                        {r.stock.toLocaleString()} T
+                        <span className='data-table__label'>Demand</span>
+                        <TradeBracketIcon bracket={rare ? 2 : r.demandBracket} />
+                        {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
                       </td>
-                      <td className='text-right'><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                      <td className='text-right'><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                     </tr>
                   </tbody>
                 </table>
@@ -82,22 +82,22 @@ export default ({ tableName = 'Exporters', commodities }) => {
           render: (v) => <small>{timeBetweenTimestamps(v)}</small>
         },
         {
-          title: 'Stock',
-          dataIndex: 'stock',
-          key: 'stock',
+          title: 'Demand',
+          dataIndex: 'demand',
+          key: 'demand',
           align: 'right',
           width: 140,
           className: 'is-hidden-mobile no-wrap',
           render: (v, r) =>
             <>
-              {v.toLocaleString()} T
-              <TradeBracketIcon bracket={r.stockBracket} />
+              {v > 0 ? `${v.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
+              <TradeBracketIcon bracket={rare ? 2 : r.demandBracket} />
             </>
         },
         {
           title: 'Price',
-          dataIndex: 'buyPrice',
-          key: 'buyPrice',
+          dataIndex: 'sellPrice',
+          key: 'sellPrice',
           align: 'right',
           width: 140,
           className: 'is-hidden-mobile no-wrap',
@@ -105,43 +105,43 @@ export default ({ tableName = 'Exporters', commodities }) => {
         }
       ]}
       data={commodities}
-      rowKey={(r) => `commodity_export_orders_${r.marketId}_${r.commodityName}`}
+      rowKey={(r) => `commodity_import_orders_${r.marketId}_${r.commodityName}`}
       expandable={{
         expandRowByClick: true,
-        expandedRowRender: (r) => <ExpandedRow r={r} />
+        expandedRowRender: (r) => <ExpandedRow r={r} rare={rare} />
       }}
     />
   )
 }
 
-function ExpandedRow ({ r }) {
+function ExpandedRow ({ r, rare }) {
   if (!r) return
 
-  const [exports, setExports] = useState()
+  const [imports, setImports] = useState()
 
   useEffect(() => {
     (async () => {
-      const exports = await getExportsForCommodityBySystem(r.systemAddress, r.symbol)
-      setExports(exports)
+      const imports = await getImportsForCommodityBySystem(r.systemAddress, r.symbol)
+      setImports(imports)
     })()
-  }, [r.commodityName])
+  }, [r])
 
-  if (!exports) {
+  if (!imports) {
     return <div className='loading-bar loading-bar--table-row' />
   }
 
   return (
     <>
       <Collapsible
-        trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> in {r.systemName}</CollapsibleTrigger>}
-        triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> in {r.systemName}</CollapsibleTrigger>}
+        trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> in {r.systemName}</CollapsibleTrigger>}
+        triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> in {r.systemName}</CollapsibleTrigger>}
         open
       >
         <Table
           className='data-table--mini data-table--striped data-table--animated scrollable'
           columns={[
             {
-              title: 'Exporters in system',
+              title: 'Importers in system',
               dataIndex: 'stationName',
               key: 'stationName',
               align: 'left',
@@ -162,11 +162,11 @@ function ExpandedRow ({ r }) {
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
                           <td>
-                            <span className='data-table__label'>Stock</span>
-                            <TradeBracketIcon bracket={r.stockBracket} />
-                            {r.stock.toLocaleString()} T
+                            <span className='data-table__label'>Demand</span>
+                            <TradeBracketIcon bracket={rare ? 2 : r.demandBracket} />
+                            {r.demand > 0 ? `${r.demand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
                           </td>
-                          <td className='text-right'><span className='data-table__label'>Price</span>{r.buyPrice.toLocaleString()} CR</td>
+                          <td className='text-right'><span className='data-table__label'>Price</span>{r.sellPrice.toLocaleString()} CR</td>
                         </tr>
                       </tbody>
                     </table>
@@ -192,43 +192,43 @@ function ExpandedRow ({ r }) {
               render: (v) => <small>{timeBetweenTimestamps(v)}</small>
             },
             {
-              title: 'Stock',
-              dataIndex: 'stock',
-              key: 'stock',
+              title: 'Demand',
+              dataIndex: 'demand',
+              key: 'demand',
               align: 'right',
               width: 130,
               className: 'is-hidden-mobile no-wrap',
               render: (v, r) =>
                 <>
-                  {v.toLocaleString()} T
-                  <TradeBracketIcon bracket={r.stockBracket} />
+                  {v > 0 ? `${v.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}
+                  <TradeBracketIcon bracket={rare ? 2 : r.demandBracket} />
                 </>
             },
             {
               title: 'Price',
-              dataIndex: 'buyPrice',
-              key: 'buyPrice',
+              dataIndex: 'sellPrice',
+              key: 'sellPrice',
               align: 'right',
               width: 130,
-              className: 'is-hidden-mobile no-wrap',
+              className: 'is-hidden-mobile no-wrap no-wrap',
               render: (v) => <>{v.toLocaleString()} CR</>
             }
           ]}
-          data={exports}
-          rowKey={(r) => `commodity_export_orders_expanded_${r.marketId}_${r.commodityName}`}
+          data={imports}
+          rowKey={(r) => `commodity_import_orders_expanded_${r.marketId}_${r.commodityName}`}
         />
       </Collapsible>
       <Collapsible
         trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
         triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
       >
-        <NearbyCommodityExporters commodity={r} />
+        <CommodityExportersNearby commodity={r} />
       </Collapsible>
       <Collapsible
         trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
         triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
       >
-        <NearbyCommodityImporters commodity={r} />
+        <CommodityImportersNearby commodity={r} rare={rare} />
       </Collapsible>
       {/* <p className='table-row-expanded-link'>
         <Link className='button--small' href={`/system/${r.systemAddress}`}>

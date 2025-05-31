@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import CommodityExportOrders from './commodity-export-orders'
-import CommodityImportOrders from './commodity-import-orders'
+import CommodityExportOrders from './commodity-exporters'
+import CommodityImportOrders from './commodity-importers'
 import commoditiesInfo from 'lib/commodities.json'
 import { API_BASE_URL } from 'lib/consts'
 

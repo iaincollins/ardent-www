@@ -7,10 +7,10 @@ import { DialogContext } from 'lib/context'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import Table from 'rc-table'
-import LocalCommodityImporters from 'components/local-commodity-importers'
-import LocalCommodityExporters from 'components/local-commodity-exporters'
-import NearbyCommodityImporters from 'components/nearby-commodity-importers'
-import NearbyCommodityExporters from 'components/nearby-commodity-exporters'
+import CommodityImportersInSystem from 'components/commodity-importers/commodity-importers-in-system'
+import CommodityExportersInSystem from 'components/commodity-exporters/commodity-exporters-in-system'
+import CommodityImportersNearby from 'components/commodity-importers/commodity-importers-nearby'
+import CommodityExportersNearby from 'components/commodity-exporters/commodity-exporters-nearby'
 
 import { NO_DEMAND_TEXT } from 'lib/consts'
 
@@ -150,7 +150,7 @@ module.exports = ({
                 expandRowByClick: true,
                 expandedRowRender: r =>
                   <>
-                    <LocalCommodityExporters
+                    <CommodityExportersInSystem
                       system={system}
                       commodityName={r.name}
                       commoditySymbol={r.symbol}
@@ -160,13 +160,13 @@ module.exports = ({
                       trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                       triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                     >
-                      <NearbyCommodityExporters system={system} commodity={r} />
+                      <CommodityExportersNearby system={system} commodity={r} />
                     </Collapsible>
                     <Collapsible
                       trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                       triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                     >
-                      <NearbyCommodityImporters system={system} commodity={r} />
+                      <CommodityImportersNearby system={system} commodity={r} />
                     </Collapsible>
                     <p className='table-row-expanded-link'>
                       {r?.rare === true &&
@@ -305,7 +305,7 @@ module.exports = ({
                 expandRowByClick: true,
                 expandedRowRender: r =>
                   <>
-                    <LocalCommodityImporters
+                    <CommodityImportersInSystem
                       commodityName={r.name}
                       commoditySymbol={r.symbol}
                       commodityOrders={r.importOrders}
@@ -314,13 +314,13 @@ module.exports = ({
                       trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                       triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                     >
-                      <NearbyCommodityExporters commodity={r} />
+                      <CommodityExportersNearby commodity={r} />
                     </Collapsible>
                     <Collapsible
                       trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                       triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
                     >
-                      <NearbyCommodityImporters commodity={r} />
+                      <CommodityImportersNearby commodity={r} />
                     </Collapsible>
                     <p className='table-row-expanded-link'>
                       <Link className='button--small' href={`/commodity/${r.symbol}/exporters?location=${encodeURIComponent(r.systemName)}&maxDistance=25`}>

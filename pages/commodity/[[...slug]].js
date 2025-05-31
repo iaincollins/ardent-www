@@ -3,10 +3,10 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import CommodityTabOptions from 'components/commodities-options'
+import CommodityFilterOptions from 'components/commodity-filter-options'
 import Layout from 'components/layout'
-import CommodityImportOrders from 'components/commodity-import-orders'
-import CommodityExportOrders from 'components/commodity-export-orders'
+import CommodityImporters from 'components/commodity-importers/commodity-importers'
+import CommodityExporters from 'components/commodity-exporters/commodity-exporters'
 import listOfCommodities from 'lib/commodities/commodities.json'
 import animateTableEffect from 'lib/animate-table-effect'
 import { NavigationContext } from 'lib/context'
@@ -220,11 +220,11 @@ export default () => {
             </TabList>
             <TabPanel>
               {!exports && <div className='loading-bar loading-bar--tab' />}
-              {exports && <CommodityExportOrders tableName={`Exporters of ${commodity.name}`} commodities={exports} />}
+              {exports && <CommodityExporters tableName={`Exporters of ${commodity.name}`} commodities={exports} />}
             </TabPanel>
             <TabPanel>
               {!imports && <div className='loading-bar loading-bar--tab' />}
-              {imports && <CommodityImportOrders tableName={`Importers of ${commodity.name}`} commodities={imports} rare={!!rareMarket} />}
+              {imports && <CommodityImporters tableName={`Importers of ${commodity.name}`} commodities={imports} rare={!!rareMarket} />}
             </TabPanel>
           </Tabs>
         </div>}
@@ -312,7 +312,7 @@ const CommodityInfo = ({ commodities, commodity, rareMarket }) => {
   if (!commodity) return
   return (
     <div style={{ paddingTop: '.5rem' }}>
-      <CommodityTabOptions commodities={commodities} commodity={commodity} />
+      <CommodityFilterOptions commodities={commodities} commodity={commodity} />
       <div className='fx__fade-in' style={{ padding: '0 .1rem' }}>
         <p className='fx__animated-text text-uppercase' data-fx-order='3' style={{ marginBottom: '.25rem', fontSize: '.9rem' }}>
           <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>

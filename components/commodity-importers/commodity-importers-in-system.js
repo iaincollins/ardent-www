@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import Table from 'rc-table'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
-import TradeBracketIcon from './trade-bracket'
-import StationIcon from './station-icon'
+import TradeBracketIcon from 'components/trade-bracket'
+import StationIcon from 'components/station-icon'
 import { NO_DEMAND_TEXT } from 'lib/consts'
 import animateTableEffect from 'lib/animate-table-effect'
 
