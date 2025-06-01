@@ -5,7 +5,6 @@ import { timeBetweenTimestamps } from 'lib/utils/dates'
 import TradeBracketIcon from 'components/trade-bracket'
 import StationIcon from 'components/station-icon'
 import { API_BASE_URL, NO_DEMAND_TEXT } from 'lib/consts'
-import animateTableEffect from 'lib/animate-table-effect'
 
 const MAX_ROWS_TO_DISPLAY = 10
 
@@ -17,8 +16,6 @@ async function getNearbyImportersOfCommodity (systemAddress, commodityName) {
 
 export default ({ commodity, rare }) => {
   const [nearbyImporters, setNearbyImporters] = useState()
-
-  useEffect(animateTableEffect)
 
   useEffect(() => {
     (async () => {
@@ -34,7 +31,7 @@ export default ({ commodity, rare }) => {
       {!nearbyImporters && <div className='loading-bar' style={{ marginTop: 0 }} />}
       {nearbyImporters &&
         <Table
-          className='data-table--mini data-table--striped data-table--border-left data-table--animated scrollable'
+          className='data-table--mini data-table--striped data-table--border-left scrollable'
           columns={[
             {
               title: 'Importers nearby',

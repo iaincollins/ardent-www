@@ -72,7 +72,7 @@ function SystemObjects ({ objects, depth = 0 }) {
   return objects?.map((systemObject, i) => {
     return (
       <Fragment key={`object-in-system-row-${depth}-${i}-${systemObject?.stationType ?? systemObject?.bodyType}-${systemObject?.stationName ?? systemObject?.bodyName}`}>
-        <tr className='rc-table-row rc-table-row-level-0 --visible'>
+        <tr className='rc-table-row rc-table-row-level-0 data-table__row--visible'>
           <td className='max-width-mobile' style={{ paddingLeft: '.25rem' }}>
             <div style={{ display: 'inline-block', paddingLeft: `${depth}rem` }}>
               {systemObject?.bodyType === 'Null' && <>✕— </>}

@@ -138,7 +138,7 @@ function ExpandedRow ({ r, rare }) {
         open
       >
         <Table
-          className='data-table--mini data-table--striped data-table--animated scrollable'
+          className='data-table--mini data-table--striped scrollable'
           columns={[
             {
               title: 'Importers in system',

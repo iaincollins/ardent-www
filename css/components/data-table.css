@@ -161,8 +161,8 @@ table.data-table--animated > tbody > tr:not(.rc-table-expanded-row),
   opacity: 0;
 }
 
-table.data-table--animated > tbody > tr:not(.rc-table-expanded-row).--visible,
-.data-table--animated > .rc-table-container > .rc-table-content > table > tbody > tr:not(.rc-table-expanded-row).--visible {
+table.data-table--animated > tbody > tr:not(.rc-table-expanded-row).data-table__row--visible,
+.data-table--animated > .rc-table-container > .rc-table-content > table > tbody > tr:not(.rc-table-expanded-row).data-table__row--visible {
   animation: row-flash-in-animation .25s;
   animation-fill-mode: forwards;
   opacity: 0;
@@ -181,5 +181,7 @@ table.data-table--animated > tbody > tr:not(.rc-table-expanded-row).--visible,
     background: none;
     filter: invert(0);
   }
-  100% { opacity: 1; }
+  100% { 
+    opacity: 1; 
+  }
 }
