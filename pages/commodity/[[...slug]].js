@@ -12,7 +12,7 @@ import animateTableEffect from 'lib/animate-table-effect'
 import { NavigationContext } from 'lib/context'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 import { playLoadingSound } from 'lib/sounds'
-import { getCommoditiesWithPricing } from 'lib/commodities'
+import { getCommodityBySymbolOrName, getCommoditiesWithPricing } from 'lib/commodities'
 
 import {
   API_BASE_URL,
@@ -39,51 +39,51 @@ export default () => {
 
   useEffect(animateTableEffect)
 
-  async function getExporters (commoditySymbol) {
+  async function getExporters(commoditySymbol) {
     setExports(undefined)
-    ; (async () => {
-      const exports = await getExports(commoditySymbol)
-      if (Array.isArray(exports)) {
-        exports.forEach(c => {
-          c.key = `${c.marketId}_${c.commoditySymbol}`
-          c.symbol = commoditySymbol
-          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-          c.maxProfit = c.maxSellPrice - c.minBuyPrice
-          c.category = listOfCommodities[c.symbol]?.category ?? ''
-          c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
-          delete c.commodityName
-        })
-        setExports(exports)
-      } else {
-        setExports([])
-      }
-    })()
+      ; (async () => {
+        const exports = await getExports(commoditySymbol)
+        if (Array.isArray(exports)) {
+          exports.forEach(c => {
+            c.key = `${c.marketId}_${c.commoditySymbol}`
+            c.symbol = commoditySymbol
+            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+            c.maxProfit = c.maxSellPrice - c.minBuyPrice
+            c.category = listOfCommodities[c.symbol]?.category ?? ''
+            c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
+            delete c.commodityName
+          })
+          setExports(exports)
+        } else {
+          setExports([])
+        }
+      })()
   }
 
-  async function getImporters (commoditySymbol) {
+  async function getImporters(commoditySymbol) {
     setImports(undefined)
-    ; (async () => {
-      const imports = await getImports(commoditySymbol)
-      if (Array.isArray(imports)) {
-        imports.forEach(c => {
-          c.symbol = commoditySymbol
-          c.key = `${c.marketId}_${c.commoditySymbol}`
-          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-          c.maxProfit = c.maxSellPrice - c.minBuyPrice
-          c.category = listOfCommodities[commoditySymbol]?.category ?? ''
-          c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
-          delete c.commodityName
-        })
-        setImports(imports)
-      } else {
-        setImports([])
-      }
-    })()
+      ; (async () => {
+        const imports = await getImports(commoditySymbol)
+        if (Array.isArray(imports)) {
+          imports.forEach(c => {
+            c.symbol = commoditySymbol
+            c.key = `${c.marketId}_${c.commoditySymbol}`
+            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+            c.maxProfit = c.maxSellPrice - c.minBuyPrice
+            c.category = listOfCommodities[commoditySymbol]?.category ?? ''
+            c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
+            delete c.commodityName
+          })
+          setImports(imports)
+        } else {
+          setImports([])
+        }
+      })()
   }
 
-  async function loadCommodity (_commoditySymbol, _activeTab) {
+  async function loadCommodity(_commoditySymbol, _activeTab) {
     const commoditySymbol = _commoditySymbol?.toLowerCase()
     if (!commoditySymbol) return
 
@@ -101,27 +101,24 @@ export default () => {
     setImports(undefined)
     setExports(undefined)
 
-    // TODO Refactor to use 'getCommodityBySymbol' - can reduce network calls
-    let c = await getCommodity(commoditySymbol)
+    const c = await getCommodityBySymbolOrName(commoditySymbol)
     if (c) {
-      c.symbol = commoditySymbol
-      c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-      c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-      c.maxProfit = c.maxSellPrice - c.minBuyPrice
-      c.category = listOfCommodities[commoditySymbol]?.category ?? 'Insufficent data'
-      c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
-      delete c.commodityName
-    }
-    if (!c) c = listOfCommodities[commoditySymbol]
-    if (c && !c.totalDemand) c.totalDemand = 0
-    if (c && !c.totalStock) c.totalStock = 0
-    c ? setCommodity(c) : setCommodity(undefined)
-    if (c?.rareMarketId) {
-      const rareMarket = await getMarket(c.rareMarketId)
-      setRareMarket(rareMarket)
+      if (commoditySymbol.toLowerCase() !== c.symbol.toLowerCase()) {
+        router.push(`/commodity/${c.symbol.toLowerCase()}/${_activeTab}${window.location.search}`)
+        return
+      }
+      setCommodity(c)
+      if (c?.rareMarketId) {
+        const rareMarket = await getMarket(c.rareMarketId)
+        setRareMarket(rareMarket)
+      } else {
+        setRareMarket(undefined)
+      }
     } else {
-      setRareMarket(undefined)
+      // TODO Handle invalid commodity names / symbols here
+      setCommodity(null)
     }
+
 
     playLoadingSound()
     if (activeTab === 'exporters') getExporters(commoditySymbol, activeTab)
@@ -138,7 +135,7 @@ export default () => {
   }
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const commoditiesWithPricing = await getCommoditiesWithPricing()
       setCommodities(commoditiesWithPricing)
     })()
@@ -170,7 +167,7 @@ export default () => {
       loadingText='Loading trade data'
       title={commodity ? `${commodity.name} commodity` : null}
       description={commodity ? `Where to buy and sell ${commodity.name} in Elite Dangerous` : null}
-      sidebar={<CommodityInfo commodities={commodities} commodity={commodity} rareMarket={rareMarket} />}
+      sidebar={(commodity !== null ? <CommodityInfo commodities={commodities} commodity={commodity} rareMarket={rareMarket} /> : undefined)}
       heading={
         <div className='heading--with-underline'>
           <h2 className='heading--with-icon'>
@@ -182,7 +179,15 @@ export default () => {
       <Head>
         <link rel='canonical' href={`https://ardent-insight.com/commodity/${commodity?.symbol}/${activeTab}`} />
       </Head>
-      {commodity === null && <><h1>Error: Not found</h1><p className='text-large clear'>Commodity not found.</p></>}
+      {commodity === null && <>
+      <div className='heading--with-underline'>
+        <h2 className='heading--with-icon'>
+          <i className='icon icarus-terminal-warning' />
+          <span className='text-no-transform'>Commodity not found</span>
+        </h2>
+        </div>
+        <p className='text-large clear'>Commodity name not found.</p>
+      </>}
       {commodity &&
         <div className='sticky-heading fx__fade-in'>
           <Tabs
@@ -218,12 +223,12 @@ export default () => {
   )
 }
 
-async function getCommodity (commodityName) {
+async function getCommodity(commodityName) {
   const res = await fetch(`${API_BASE_URL}/v2/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getExports (commodityName) {
+async function getExports(commodityName) {
   try {
     const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/exports?${apiQueryOptions()}`
     const res = await fetch(url)
@@ -233,7 +238,7 @@ async function getExports (commodityName) {
   }
 }
 
-async function getImports (commodityName) {
+async function getImports(commodityName) {
   try {
     const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/imports?${apiQueryOptions()}`
     const res = await fetch(url)
@@ -243,7 +248,7 @@ async function getImports (commodityName) {
   }
 }
 
-async function getMarket (marketId) {
+async function getMarket(marketId) {
   const res = await fetch(`${API_BASE_URL}/v2/market/${marketId}`)
   return (res.status === 200) ? await res.json() : null
 }
@@ -255,7 +260,7 @@ async function getMarket (marketId) {
 //   return `${a / greatestCommonDivisor(a, b)}:${b / greatestCommonDivisor(a, b)}`
 // }
 
-function apiQueryOptions () {
+function apiQueryOptions() {
   // Parse current query string and convert the params to an API query parametrer string
   const options = []
 
@@ -285,7 +290,7 @@ function apiQueryOptions () {
   return options.join('&')
 }
 
-function parseQueryString () {
+function parseQueryString() {
   const obj = {}
   window.location.search.replace(
     new RegExp('([^?=&]+)(=([^&]*))?', 'g'),
