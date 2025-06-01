@@ -10,7 +10,8 @@ import {
   COMMODITY_FILTER_DISTANCE_DEFAULT,
   COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
 } from 'lib/consts'
-import InputWithAutoComplete from './input-with-autocomplete'
+import InputWithAutoComplete from 'components/input-with-autocomplete'
+import { getCommodityBySymbolOrName } from 'lib/commodities'
 
 export default ({ disabled = false, commodities = [], commodity }) => {
   const router = useRouter()
@@ -30,6 +31,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
     if (commodity && commodity.symbol !== selectedCommodity?.symbol) {
       setSelectedCommodity(commodity)
       commodityRef.current.value = commodity.name
+      commodityRef.current.dataset.value = commodity.symbol
     }
   }, [commodity])
 
@@ -41,7 +43,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
     updateOptions()
   }, [])
 
-  function optionChangeHandler (e) {
+  function optionChangeHandler(e) {
     const query = {}
 
     if (locationRef.current?.dataset.value) {
@@ -57,13 +59,9 @@ export default ({ disabled = false, commodities = [], commodity }) => {
     router.push(urlObject, undefined, { shallow: true })
   }
 
-  async function updateOptions () {
+  async function updateOptions() {
     // Set default values for inputs when loading, taking them from the query
     // string (if they exist) or the preset default values for each option
-
-    // Reset value of location input
-    locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
-    delete locationRef.current.dataset.value
 
     // Attempt to re-populate location input
     if (router.query.location) {
@@ -80,10 +78,18 @@ export default ({ disabled = false, commodities = [], commodity }) => {
           if (maxDistanceRef.current.value === COMMODITY_FILTER_DISTANCE_DEFAULT) {
             maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
           }
+        } else {
+          locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+          delete locationRef.current.dataset.value
         }
       } catch (e) {
         console.error(e)
+        locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+        delete locationRef.current.dataset.value
       }
+    } else {
+      locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+      delete locationRef.current.dataset.value
     }
 
     if (router.query.maxDistance) {
@@ -187,13 +193,17 @@ export default ({ disabled = false, commodities = [], commodity }) => {
             }
             setCommodityAutoCompleteResults(autoCompleteResults)
           }}
-          onSelect={(text, data) => {
-            if (text && data) {
-              // If commodity changes, fire event so parent component updates
-              window.dispatchEvent(new CustomEvent('LoadCommodityEvent', { detail: data.value }))
-            } else if (text && !data) {
-              // When text input is not a valid option
-              commodityRef.current.focus()
+          onBlur={async (e) => {
+            const text = e.target.value.trim()
+            if (!text) {
+              commodityRef.current.value = selectedCommodity.name
+            } else {
+              const commodity = await getCommodityBySymbolOrName(text)
+              if (commodity) {
+                window.dispatchEvent(new CustomEvent('LoadCommodityEvent', { detail: commodity.symbol }))
+              } else {
+                commodityRef.current.value = selectedCommodity.name
+              }
             }
           }}
           autoCompleteResults={commodityAutoCompleteResults}
@@ -209,6 +219,14 @@ export default ({ disabled = false, commodities = [], commodity }) => {
             locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
             delete locationRef.current.dataset.value
             optionChangeHandler(locationRef.current)
+          }}
+          onBlur={async (e) => {
+            // Reset selection if value is empty
+            if (!e.target.value.trim()) {
+              locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+              delete locationRef.current.dataset.value
+              optionChangeHandler(locationRef.current)
+            }
           }}
           onChange={async (e) => {
             const systemName = e?.target?.value?.trim() ?? ''

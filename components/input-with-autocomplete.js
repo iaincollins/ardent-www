@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 
 export default ({
-  id = 'input-with-autocomplete',
+  id = 'inputWithAutocomplete',
   forwardRef = useRef(),
   label = 'Input',
   name = 'input',
@@ -9,8 +9,10 @@ export default ({
   defaultValue = '',
   onChange = (e) => { },
   onSelect = (text) => { },
+  onFocus = (e) => { },
+  onBlur = (e) => { },
   autoCompleteResults,
-  onClear
+  onClear,
 }) => {
   const resultsRef = useRef()
   const [focus, setFocus] = useState(false)
@@ -41,6 +43,7 @@ export default ({
 
   function inputOnFocusHandler (e) {
     setFocus(true)
+    onFocus(e)
     onChange(e)
     forwardRef.current.select()
     // This seems to be required on Chrome (seems to be a known issue)
@@ -51,12 +54,13 @@ export default ({
     }, 200)
   }
 
-  function inputOnBlurHandler () {
+  function inputOnBlurHandler (e) {
     setTimeout(() => {
       setFocus(false)
       if (document.activeElement?.name === name) {
         document.activeElement.blur()
       }
+      onBlur(e)
     }, 200)
   }
 
@@ -69,6 +73,9 @@ export default ({
   function inputOnKeyDownHandler (e) {
     if (e.key === 'Enter' || e.key === 'Escape') {
       e.preventDefault()
+      if (e.key === 'Enter') {
+        onSelect(e.target.value)
+      }
       setTimeout(() => {
         setFocus(false)
         if (document.activeElement?.name === name) {
