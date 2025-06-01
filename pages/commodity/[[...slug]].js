@@ -30,7 +30,6 @@ export default () => {
   const router = useRouter()
   const [, setNavigationPath] = useContext(NavigationContext)
   const [cachedQuery, setCachedQuery] = useState()
-  // const [tabIndex, setTabIndex] = useState(0)
   const [activeTab, setActiveTab] = useState()
   const [commodities, setCommodities] = useState([])
   const [commodity, setCommodity] = useState()
@@ -39,19 +38,6 @@ export default () => {
   const [rareMarket, setRareMarket] = useState()
 
   useEffect(animateTableEffect)
-
-  // useEffect(() => {
-  //   const basePath = path.basename(router.pathname)
-  //   let newTabIndex = 0
-  //   if (basePath === 'exporters') {
-  //     setExports(undefined)
-  //   }
-  //   if (basePath === 'importers') {
-  //     setImports(undefined)
-  //     newTabIndex = 1
-  //   }
-  //   setTabIndex(newTabIndex)
-  // }, [router.pathname])
 
   async function getExporters (commoditySymbol) {
     setExports(undefined)
