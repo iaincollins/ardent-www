@@ -1,6 +1,6 @@
 {
   "name": "ardent-www",
-  "version": "1.44.2",
+  "version": "1.44.3",
   "description": "Ardent Insight Website",
   "main": "index.js",
   "scripts": {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useReducer } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import {
@@ -23,6 +23,10 @@ export default ({ disabled = false, commodities = [], commodity }) => {
   const minVolumeRef = useRef()
   const fleetCarriersRef = useRef()
 
+  // Force Update method to be able to force a re-render when data attrs on
+  // on elements are updated (as these are used for conditional rendering).
+  // It's a little unconventional but simpler than using state.
+  const [, forceUpdate] = useReducer(x => x + 1, 0)
   const [selectedCommodity, setSelectedCommodity] = useState()
   const [commodityAutoCompleteResults, setCommodityAutoCompleteResults] = useState()
   const [systemAutoCompleteResults, setSystemAutoCompleteResults] = useState()
@@ -59,7 +63,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
     router.push(urlObject, undefined, { shallow: true })
   }
 
-  async function updateOptions() {
+  const updateOptions = async () => {
     // Set default values for inputs when loading, taking them from the query
     // string (if they exist) or the preset default values for each option
 
@@ -87,9 +91,11 @@ export default ({ disabled = false, commodities = [], commodity }) => {
         locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
         delete locationRef.current.dataset.value
       }
+      forceUpdate() // Force component to re-render after updating dataset
     } else {
       locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
       delete locationRef.current.dataset.value
+      forceUpdate() // Force component to re-render after updating dataset
     }
 
     if (router.query.maxDistance) {
