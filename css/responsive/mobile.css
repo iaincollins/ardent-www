@@ -125,35 +125,35 @@
     padding-left: .25rem;
   }
 
-  .tab-options__label-text {
+  .form-options__label-text {
     display: inline-block;
     width: 5rem;
     padding-right: .25em;
   }
 
-  .tab-options {
+  .form-options {
     padding: .25rem;
   }
 
-  .tab-options form label span,
-  .tab-options form input,
-  .tab-options form select {
+  .form-options form label span,
+  .form-options form input,
+  .form-options form select {
     float: none;
   }
 
-  .tab-options form label span {
+  .form-options form label span {
     margin-right: .25rem;
   }
 
-  .tab-options form input {
+  .form-options form input {
     width: 9rem;
   }
 
-  .tab-options form select {
+  .form-options form select {
     width: 10rem;
   }
 
-  .tab-options form label {
+  .form-options form label {
     display: block;
     margin-right: 0;
   }

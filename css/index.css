@@ -3,10 +3,12 @@
 @import url('helpers.css');
 @import url('layout.css');
 @import url('home.css');
+
 @import url('elements/index.css');
 
 @import url('components/breadcrumbs.css');
 @import url('components/data-table.css');
+@import url('components/form-options.css');
 @import url('components/header.css');
 @import url('components/loader.css');
 @import url('components/loading-bar.css');

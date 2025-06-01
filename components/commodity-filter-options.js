@@ -60,6 +60,12 @@ export default ({ disabled = false, commodities = [], commodity }) => {
   async function updateOptions () {
     // Set default values for inputs when loading, taking them from the query
     // string (if they exist) or the preset default values for each option
+
+    // Reset value of location input
+    locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
+    delete locationRef.current.dataset.value
+
+    // Attempt to re-populate location input
     if (router.query.location) {
       // Check if 'location' seems to be a string (system name) or number (system address)
       const queryUrl = (!isNaN(router.query.location))
@@ -74,15 +80,9 @@ export default ({ disabled = false, commodities = [], commodity }) => {
           if (maxDistanceRef.current.value === COMMODITY_FILTER_DISTANCE_DEFAULT) {
             maxDistanceRef.current.value = COMMODITY_FILTER_DISTANCE_WITH_LOCATION_DEFAULT
           }
-        } else {
-          locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
-          delete locationRef.current.dataset.value
         }
       } catch (e) {
-        // If error, reset it to nothing
         console.error(e)
-        locationRef.current.value = COMMODITY_FILTER_LOCATION_DEFAULT
-        delete locationRef.current.dataset.value
       }
     }
 
@@ -339,7 +339,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
             : <span className='muted'>...</span>}
         </small>
         <label>
-          <span className='tab-options__label-text'>Distance</span>
+          <span className='form-options__label-text'>Distance</span>
           <select ref={maxDistanceRef} name='maxDistance' disabled={disabled || !locationRef.current?.dataset?.value} onChange={optionChangeHandler}>
             <option value={COMMODITY_FILTER_DISTANCE_DEFAULT}>Any distance</option>
             <option value='1'>In system</option>
@@ -353,7 +353,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
         </label>
 
         <label>
-          <span className='tab-options__label-text'>Updated</span>
+          <span className='form-options__label-text'>Updated</span>
           <select ref={maxDaysAgoRef} name='max-days-ago' disabled={disabled} onChange={optionChangeHandler}>
             <option value='1'>Today</option>
             <option value='7'>Last week</option>
@@ -363,7 +363,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
         </label>
 
         <label>
-          <span className='tab-options__label-text'>Quantity</span>
+          <span className='form-options__label-text'>Quantity</span>
           <select ref={minVolumeRef} name='minVolume' disabled={disabled} onChange={optionChangeHandler}>
             <option value='1'>Any quantity</option>
             <option value='10'>&gt; 10 T</option>
@@ -374,7 +374,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
         </label>
 
         <label>
-          <span className='tab-options__label-text'>Carriers</span>
+          <span className='form-options__label-text'>Carriers</span>
           <select ref={fleetCarriersRef} name='fleetCarriers' disabled={disabled} onChange={optionChangeHandler}>
             <option value='included'>Included</option>
             <option value='excluded'>Excluded</option>
