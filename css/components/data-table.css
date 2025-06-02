@@ -36,8 +36,8 @@
   color: #111;
   color: var(--color-text);
   border-bottom: .15rem solid var(--color-primary-light-3);
-  padding-top: .6rem;
-  padding-bottom: .6rem;
+  padding-top: .8rem;
+  padding-bottom: .8rem;
   text-transform: uppercase;
   font-family: "Jura", sans-serif;
   background: transparent;

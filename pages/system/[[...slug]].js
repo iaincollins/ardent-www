@@ -59,13 +59,18 @@ export default () => {
       const systemIdentifer = router.query.slug[0]?.replaceAll('_', ' ')?.trim()
       if (!systemIdentifer) return
 
-      (router.query?.slug?.[1])
-        ? setActiveViewIndex(views.indexOf(router.query.slug[1]))
-        : setActiveViewIndex(0)
+      const view = router.query?.slug?.[1] ?? ''
+      setActiveViewIndex(views.indexOf(view))
+
+      if (view) {
+        playLoadingSound()
+      } else {
+        // Delay loading sound for system map view
+        // setTimeout(playLoadingSound, 1500)
+      }
 
       setNavigationPath([{ name: '…', path: '/', icon: 'icarus-terminal-system-orbits' }])
       setLoading(true)
-      setTimeout(playLoadingSound, 1500)
 
       setSystem(undefined)
       setStationsInSystem(undefined)
@@ -335,7 +340,7 @@ export default () => {
           </div>
           <div className='error__text' style={{ left: '3rem' }}>
             <i className='icon icarus-terminal-warning' />
-            <span className='text-blink-slow muted'> No data for this system</span>
+            <span className='text-blink-slow muted'> System not found</span>
           </div>
         </>}
       {system &&

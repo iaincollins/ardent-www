@@ -85,7 +85,8 @@ export default () => {
 
   async function loadCommodity(_commoditySymbol, _activeTab) {
     const commoditySymbol = _commoditySymbol?.toLowerCase()
-    if (!commoditySymbol) return
+    
+    if (!commoditySymbol)
 
     setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
 
@@ -114,15 +115,14 @@ export default () => {
       } else {
         setRareMarket(undefined)
       }
+
+      playLoadingSound()
+      if (activeTab === 'exporters') getExporters(commoditySymbol, activeTab)
+      if (activeTab === 'importers') getImporters(commoditySymbol, activeTab)
     } else {
-      // TODO Handle invalid commodity names / symbols here
+      // Invalid commodity names / symbols get set to null
       setCommodity(null)
     }
-
-
-    playLoadingSound()
-    if (activeTab === 'exporters') getExporters(commoditySymbol, activeTab)
-    if (activeTab === 'importers') getImporters(commoditySymbol, activeTab)
   }
 
   const loadCommodityEventHandler = (e) => {
@@ -149,8 +149,8 @@ export default () => {
     const _activeTab = router.query?.slug?.[1] ?? TABS[0]
 
     // TODO: Check inputs and gracefully invalid values
-    if (!commoditySymbol || commoditySymbol === 'undefined') return
-    if (!_activeTab || _activeTab === 'undefined') return
+    if (!commoditySymbol) return
+    if (!_activeTab) return
 
     setActiveTab(_activeTab)
 
@@ -160,6 +160,11 @@ export default () => {
       loadCommodity(commoditySymbol, _activeTab)
     }
   }, [router.query])
+
+  if (commodity === null) {
+    router.push('/commodities')
+    return
+  }
 
   return (
     <Layout
@@ -179,15 +184,6 @@ export default () => {
       <Head>
         <link rel='canonical' href={`https://ardent-insight.com/commodity/${commodity?.symbol}/${activeTab}`} />
       </Head>
-      {commodity === null && <>
-      <div className='heading--with-underline'>
-        <h2 className='heading--with-icon'>
-          <i className='icon icarus-terminal-warning' />
-          <span className='text-no-transform'>Commodity not found</span>
-        </h2>
-        </div>
-        <p className='text-large clear'>Commodity name not found.</p>
-      </>}
       {commodity &&
         <div className='sticky-heading fx__fade-in'>
           <Tabs

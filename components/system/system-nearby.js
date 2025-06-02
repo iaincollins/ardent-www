@@ -8,7 +8,7 @@ module.exports = ({ nearbySystems }) => {
   const onSystemsRowClick = (record, index, event) => {
     router.push(`/system/${record.systemAddress}`)
   }
-
+  
   return (
     <div className='fx__fade-in'>
       <div className='heading--with-underline'>
@@ -40,7 +40,7 @@ module.exports = ({ nearbySystems }) => {
           }
         ]}
         data={nearbySystems}
-        emptyText={<span className='muted'>No nearby systems found</span>}
+        emptyText={(nearbySystems === undefined || nearbySystems === null) ? <span className='muted'>Searching...</span> : <span className='muted'>No nearby systems known</span>}
         rowKey='systemAddress'
         onRow={(record, index) => ({
           onClick: onSystemsRowClick.bind(null, record, index)
