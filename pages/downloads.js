@@ -43,7 +43,7 @@ export default () => {
           You can download the source code and data for Ardent Insight.
         </p>
         <p>
-          <Link href='/about'>More information about this software</Link>.
+          <Link href='/about'>About this software</Link>.
         </p>
         <div className='heading--with-underline'>
           <h2>Source Code</h2>

@@ -4,14 +4,15 @@
   margin: auto;
   margin-top: .5rem;
   margin-bottom: .8rem;
-  overflow: hidden;
   pointer-events: none;
   white-space: nowrap;
   zoom: 1;
+  overflow: hidden;
+  width: calc(100dvw - 2rem);
 }
 
 .breadcrumbs li {
-  padding: .1rem .25rem .3rem 0;
+  padding: .2rem .25rem .25rem 0;
   position: relative;
   display: inline-block;
   text-shadow: 0 0 .5rem rgb(0, 0, 0);
@@ -19,7 +20,7 @@
   font-weight: bold;
   pointer-events: all;
   margin: 0;
-  background: linear-gradient(to left, var(--color-primary-dark-2) 1rem, var(--color-primary-dark-3));
+  background: linear-gradient(to left, var(--color-primary-dark-1) 1rem, var(--color-primary-dark-3));
 }
 
 .breadcrumbs li > a,
@@ -118,5 +119,5 @@
 
 .breadcrumbs li:last-child:first-child a:after,
 .breadcrumbs li:last-child:first-child span:after {
-  background-color: var(--color-primary-dark-2);
+  background-color: var(--color-primary-dark-1);
 }

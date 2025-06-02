@@ -353,7 +353,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
           }}
           autoCompleteResults={systemAutoCompleteResults}
         />
-        <small style={{ display: 'block', textAlign: 'right', paddingRight: '.75rem' }}>
+        <small style={{ display: 'block', textAlign: 'right', paddingRight: '.75rem', paddingTop: '.15rem' }}>
           {locationRef.current?.dataset?.value
             ? <>
               <span className='muted'>SYS ADDR</span>

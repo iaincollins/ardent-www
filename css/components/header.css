@@ -31,6 +31,7 @@ header {
   font-weight: bold;
   font-style: italic;
   float: none;
+  max-width: 15.5rem;
 }
 
 .header__logo h1,
@@ -130,13 +131,12 @@ header {
 }
 
 .header__navigation .button {
-  background-color: var(--color-primary-dark-2);
-  clip-path: polygon(0 0,calc(100% - 0.5rem) 0,100% 0.5rem,100% 100%,0.5rem 100%,0 calc(100% - 0.5rem));
-  border-color: var(--color-primary-dark-3);
   margin-left: .1rem;
   border-width: 0;
-  padding: .1rem .35rem;
   transition: 0;
+  clip-path: none;
+  padding: .2rem;
+  background-color: transparent;
 }
 
 .header__navigation .button:after,
@@ -149,10 +149,9 @@ header {
 .header__navigation .button.header__menu-button.--active,
 .header__navigation .button:hover,
 .header__navigation .button.--active {
-  background: linear-gradient(to top, var(--color-primary-light-3), var(--color-primary-light-5));
-  background: var(--color-primary-light-4);
-  border-color: var(--color-primary-light-4);
-  color: var(--color-primary-dark-5);
+  background: linear-gradient(to top, var(--color-primary-light-1), transparent);
+  color: var(--color-primary-light-5);
+  border-bottom: .2rem solid var(--color-primary-light-5);
   filter: none;
   transition: 0;
 }
@@ -195,7 +194,8 @@ header {
   color: transparent;
   transition: .5s;
   transition-property: width;
-  background-color: var(--color-primary-dark-2);
+  xbackground-color: var(--color-primary-dark-2);
+  background-color: transparent;
   outline: none;
 }
 
@@ -297,11 +297,10 @@ header {
 .header__menu {
   background: black;
   position: absolute;
-  right: .9rem;
+  right: .6rem;
   border: .2rem solid var(--color-primary-light-5);
   padding: .2rem .2rem 0 .2rem;
-  font-size: 1rem;
-  min-width: 13rem;
+  width: calc(100dvw - 4.6rem);
   border-radius: .15rem;
   box-shadow: 0 0 1rem rgba(0,0,0,1);
 }
@@ -312,8 +311,8 @@ header {
   color: var(--color-primary-light-5);
   white-space: nowrap;
   text-align: left;
-  font-size: 1rem;
-  line-height: 2rem;
+  font-size: 1.25rem;
+  line-height: 2.4rem;
   width: 100%;
   border-color: transparent;
   text-transform: uppercase;

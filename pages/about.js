@@ -7,7 +7,7 @@ import { NavigationContext } from 'lib/context'
 export default () => {
   const [, setNavigationPath] = useContext(NavigationContext)
   useEffect(() => {
-    setNavigationPath([{ name: 'About this software', path: '/about' }])
+    setNavigationPath([{ name: 'About Ardent', path: '/about', icon: 'icarus-terminal-info' }])
   }, [])
   return (
     <Layout

@@ -98,11 +98,11 @@ module.exports = ({
           <div className='system-map__location'>
             <p>
               <small className='fx__animated-text' data-fx-order='1'>
-                <span className='muted'>Address</span>  {system.systemAddress}
+                <span className='muted'>ADDR</span>  {system.systemAddress}
               </small>
               <br />
               <small className='fx__animated-text' data-fx-order='1'>
-                <span className='muted'>Coordinates</span> {system.systemX}, {system.systemY}, {system.systemZ}
+                <span className='muted'>POS</span> {system.systemX}, {system.systemY}, {system.systemZ}
               </small>
               <br />
               <small style={{ opacity: 1 }} className='fx__animated-text' data-fx-order='2'>
