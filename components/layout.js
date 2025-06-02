@@ -21,7 +21,7 @@ export default ({
   navigationOverlaid = false
 }) => {
   useEffect(() => {
-    ;(() => {
+    ; (() => {
       if (loadingSound === true) playLoadingSound()
     })()
   }, [])
@@ -48,7 +48,7 @@ export default ({
         {navigation !== undefined &&
           <div className='navigation-bar'>
             {navigation.map(item =>
-              <Link key={item.url} href={item.url} className='--no-hover'>
+              <Link key={item.name} href={item.url} className='--no-hover'>
                 <button className={`${item?.active === true ? '--active' : ''}`} data-name={item.name}>
                   <i className={`icon ${item.icon}`} />
                 </button>
