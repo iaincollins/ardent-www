@@ -85,10 +85,7 @@ export default () => {
 
   async function loadCommodity(_commoditySymbol, _activeTab) {
     const commoditySymbol = _commoditySymbol?.toLowerCase()
-    
-    if (!commoditySymbol)
-
-    setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
+    if (!commoditySymbol) return
 
     const cacheFingerprint = JSON.stringify({
       commoditySymbol,
@@ -135,6 +132,8 @@ export default () => {
   }
 
   useEffect(() => {
+    setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
+
     ; (async () => {
       const commoditiesWithPricing = await getCommoditiesWithPricing()
       setCommodities(commoditiesWithPricing)
@@ -207,11 +206,11 @@ export default () => {
             </TabList>
             <TabPanel>
               {!exports && <div className='loading-bar loading-bar--tab' />}
-              {exports && <CommodityExporters tableName={`Exporters of ${commodity.name}`} commodities={exports} />}
+              {exports && <CommodityExporters tableName={`${commodity.name} Exporters`} commodities={exports} />}
             </TabPanel>
             <TabPanel>
               {!imports && <div className='loading-bar loading-bar--tab' />}
-              {imports && <CommodityImporters tableName={`Importers of ${commodity.name}`} commodities={imports} rare={!!rareMarket} />}
+              {imports && <CommodityImporters tableName={`${commodity.name} Importers`} commodities={imports} rare={!!rareMarket} />}
             </TabPanel>
           </Tabs>
         </div>}

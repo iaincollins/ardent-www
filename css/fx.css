@@ -40,6 +40,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-color: rgb(30, 30, 30);
   background-image: url('/images/background.jpg'), linear-gradient(rgb(30, 30, 30) 20%, rgb(15, 15, 15) 80%);
   filter: contrast(.9) brightness(1.1);
 }

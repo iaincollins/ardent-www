@@ -300,7 +300,7 @@ header {
   right: .6rem;
   border: .2rem solid var(--color-primary-light-5);
   padding: .2rem .2rem 0 .2rem;
-  width: calc(100dvw - 4.6rem);
+  width: calc(100dvw - 5.5rem);
   border-radius: .15rem;
   box-shadow: 0 0 1rem rgba(0,0,0,1);
 }

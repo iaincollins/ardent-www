@@ -62,7 +62,7 @@ export default () => {
           <h2>Download Data</h2>
         </div>
         <p>
-          You can download data as compressed SQLite Database files.
+          You can download the databases as compressed SQLite Database files.
         </p>
         <p>
           These downloads are updated weekly during the in-game maintenance window from 07:00-09:00 UTC on Thursdays.

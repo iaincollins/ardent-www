@@ -18,7 +18,7 @@ module.exports = ({ nearbySystems }) => {
         className='data-table data-table--striped data-table--interactive data-table--animated'
         columns={[
           {
-            title: 'System',
+            title: 'Nearby system',
             dataIndex: 'systemName',
             key: 'systemName',
             align: 'left',
