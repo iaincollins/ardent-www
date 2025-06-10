@@ -82,9 +82,9 @@
   margin: 0 -6px;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
-  border-bottom: 21.6px solid var(--color-primary);
+  border-bottom: 21.6px solid var(--color-primary-5);
   animation: loader__arrow-blink 1s infinite;
-  filter: drop-shadow(0 0 18px var(--color-primary));
+  filter: drop-shadow(0 0 18px var(--color-primary-5));
 }
 
 .loader__arrow--down {

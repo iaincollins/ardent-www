@@ -17,9 +17,11 @@ export default ({
   const resultsRef = useRef()
   const [focus, setFocus] = useState(false)
   const [_autoCompleteResults, _setAutoCompleteResults] = useState()
+  const [highlightedResult, setHighlightedResult] = useState()
 
   useEffect(() => {
     _setAutoCompleteResults(autoCompleteResults)
+    setHighlightedResult(0)
     if (resultsRef?.current?.scrollTop) resultsRef.current.scrollTop = 0
   }, [autoCompleteResults])
 
@@ -83,6 +85,19 @@ export default ({
         }
       }, 200)
     }
+    /*
+    } else if (e.key === 'ArrowDown') {
+      // e.preventDefault()
+      if (highlightedResult < _autoCompleteResults.length - 1) {
+        setHighlightedResult(highlightedResult + 1)
+      }
+    } else if (e.key === 'ArrowUp') {
+      // e.preventDefault()
+      if (highlightedResult - 1 >= 0) {
+        setHighlightedResult(highlightedResult - 1)
+      }
+    }
+    */
   }
 
   return (
@@ -112,7 +127,7 @@ export default ({
                 <div key={`autocomplete-${name}-${result.value}-${i}`}>
                   {!result?.seperator && !result.disabled &&
                     <p
-                      className={`input-with-autocomplete__result ${result?.className ?? ''} ${result?.icon ? 'input-with-autocomplete__result--with-icon' : ''}`}
+                      className={`input-with-autocomplete__result ${''/* highlightedResult === i ? 'input-with-autocomplete__result-highlighted' : '' */} ${result?.className ?? ''} ${result?.icon ? 'input-with-autocomplete__result--with-icon' : ''}`}
                       data-auto-complete-option={JSON.stringify(result)}
                       data-auto-complete-result
                     >

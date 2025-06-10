@@ -99,8 +99,8 @@ header {
 
 .header__logo p,
 .header__logo p:after {
-  background: var(--color-primary-dark-2);
-  color: var(--color-primary);
+  background: var(--color-primary-3);
+  color: var(--color-primary-5);
 }
 
 .header__logo small {
@@ -149,9 +149,9 @@ header {
 .header__navigation .button.header__menu-button.--active,
 .header__navigation .button:hover,
 .header__navigation .button.--active {
-  background: linear-gradient(to top, var(--color-primary-light-1), transparent);
-  color: var(--color-primary-light-5);
-  border-bottom: .2rem solid var(--color-primary-light-5);
+  background: linear-gradient(to top, var(--color-primary-6), transparent);
+  color: var(--color-primary-10);
+  border-bottom: .2rem solid var(--color-primary-10);
   filter: none;
   transition: 0;
 }
@@ -194,7 +194,7 @@ header {
   color: transparent;
   transition: .5s;
   transition-property: width;
-  xbackground-color: var(--color-primary-dark-2);
+  xbackground-color: var(--color-primary-3);
   background-color: transparent;
   outline: none;
 }
@@ -209,7 +209,7 @@ header {
   font-size: 1.2rem;
   line-height: 1.2rem;
   z-index: 10000;
-  color: var(--color-primary-light-4);
+  color: var(--color-primary-9);
 }
 
 .header__search-input .icon:has(+ input:hover),
@@ -221,15 +221,15 @@ header {
 .header__search-input input:hover,
 .header__search-input input:focus {
   color: var(--color-text-dark);
-  background-color: var(--color-primary-light-5);
-  border-color: var(--color-primary-light-5);
+  background-color: var(--color-primary-10);
+  border-color: var(--color-primary-10);
   outline: none;
 }
 
 .header__search-input input:focus {
   width: 18rem;
   padding-left: 2.25rem;
-  outline: .2rem solid var(--color-primary-light-1);
+  outline: .2rem solid var(--color-primary-6);
 }
 
 .header__search-results {
@@ -243,7 +243,7 @@ header {
   width: 100vw;
   max-height: calc(100dvh - 7rem);
   max-width: 18rem;
-  border: .2rem solid var(--color-primary-light-4);
+  border: .2rem solid var(--color-primary-9);
   background-color: rgba(0,0,0,.5);
   backdrop-filter: blur(1rem);
   border-radius: .2rem;
@@ -264,7 +264,7 @@ header {
   padding-bottom: .15rem;
   margin: 1rem 0 .25rem 0;
   margin-top: 1rem;
-  border-bottom: .1rem solid var(--color-primary-dark-1);
+  border-bottom: .1rem solid var(--color-primary-4);
   font-size: .8rem;
 }
 
@@ -290,7 +290,7 @@ header {
 }
 
 .header__search-result--highlighted {
-  background-color: var(--color-primary-light-5);
+  background-color: var(--color-primary-10);
   color: var(--color-text-dark);
 }
 
@@ -298,17 +298,18 @@ header {
   background: black;
   position: absolute;
   right: .6rem;
-  border: .2rem solid var(--color-primary-light-5);
+  border: .2rem solid var(--color-primary-10);
   padding: .2rem .2rem 0 .2rem;
-  width: calc(100dvw - 5.5rem);
+  xwidth: calc(100dvw - 5.5rem);
+  min-width: 13rem;
   border-radius: .15rem;
   box-shadow: 0 0 1rem rgba(0,0,0,1);
 }
 
 .header__menu-item {
-  background: var(--color-primary-dark-3);
+  background: var(--color-primary-2);
   border: none;
-  color: var(--color-primary-light-5);
+  color: var(--color-primary-10);
   white-space: nowrap;
   text-align: left;
   font-size: 1.25rem;
@@ -327,6 +328,6 @@ header {
 }
 
 .header__menu-item:hover {
-  background: var(--color-primary-light-5);
-  color: var(--color-primary-dark-5);
+  background: var(--color-primary-10);
+  color: var(--color-primary-0);
 }

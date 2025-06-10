@@ -353,14 +353,15 @@ export default ({ disabled = false, commodities = [], commodity }) => {
           }}
           autoCompleteResults={systemAutoCompleteResults}
         />
-        <small style={{ display: 'block', textAlign: 'right', paddingRight: '.75rem', paddingTop: '.15rem' }}>
+        <small style={{ display: 'block', opacity: 1, textAlign: 'right', paddingTop: '.15rem', height: '1rem'}}>
           {locationRef.current?.dataset?.value
-            ? <>
+            ? <span onClick={() => router.push(`/system/${locationRef.current?.dataset?.value}`)}>
               <span className='muted'>SYS ADDR</span>
               {' '}
-              <Link href={`/system/${locationRef.current?.dataset?.value}`}>{locationRef.current?.dataset?.value}</Link>
-            </>
-            : <span className='muted'>...</span>}
+              <span style={{borderBottom: '1px dotted var(--color-primary-10'}}>{locationRef.current?.dataset?.value}</span>
+              <i className='icarus-terminal-chevron-right'/>
+            </span>
+            : <span className='muted' style={{paddingRight: '1rem'}}>...</span>}
         </small>
         <label>
           <span className='form-options__label-text'>Distance</span>

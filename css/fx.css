@@ -67,7 +67,7 @@
   bottom: 0;
   right: 0;
   background: radial-gradient(circle, rgba(255,255,255,.1) 0, rgba(0,0,0,.8) 100%);
-  xbackground: radial-gradient(circle, var(--color-primary-dark-3) 0, var(--color-primary-dark-5) 100%);
+  /* background: radial-gradient(circle, var(--color-primary-2) 0, var(--color-primary-0) 100%); */
   z-index: -5;
   pointer-events: none;
 }

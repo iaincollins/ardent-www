@@ -64,7 +64,7 @@
   .heading--table {
     font-size: 1.5rem;
     line-height: 1.5rem;
-    background: var(--color-primary);
+    background: var(--color-primary-5);
     color: var(--color-text-dark);
   }
 
@@ -226,7 +226,7 @@
     padding-right: .25rem;
     margin-left: 0;
     margin-right: 0;
-    color: var(--color-primary-light-4);
+    color: var(--color-primary-9);
 
   }
 
@@ -345,7 +345,7 @@
     display: block;
     width: calc(100% - .5rem);
     height: 2rem;
-    background: var(--color-primary-light-4);
+    background: var(--color-primary-9);
     color: var(--color-text-dark);
   }
 }

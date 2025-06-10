@@ -20,7 +20,7 @@
   font-weight: bold;
   pointer-events: all;
   margin: 0;
-  background: linear-gradient(to left, var(--color-primary-dark-1) 1rem, var(--color-primary-dark-3));
+  background: linear-gradient(to left, var(--color-primary-4) 1rem, var(--color-primary-2));
 }
 
 .breadcrumbs li > a,
@@ -60,7 +60,7 @@
 }
 
 .breadcrumbs li:last-child:not(:first-child)  {
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-5);
   color: var(--color-text-dark);
 }
 
@@ -81,7 +81,7 @@
   height: 1.75rem;
   width: .75rem;
   left: 0;
-  background-color: var(--color-primary-dark-1);
+  background-color: var(--color-primary-4);
 }
 
 .breadcrumbs li:not(:first-child):before {
@@ -94,7 +94,7 @@
   left: .1rem;
   transform: rotate(45deg);
   zoom: 1.25;
-  background-color: var(--color-primary-dark-1);
+  background-color: var(--color-primary-4);
   border-top: .1rem solid rgba(0, 0, 0, .5);
   border-right: .1rem solid rgba(0, 0, 0, .5);
   z-index: 1;
@@ -114,10 +114,10 @@
 
 .breadcrumbs li:last-child:not(:first-child) a:after,
 .breadcrumbs li:last-child:not(:first-child) span:after {
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-5);
 }
 
 .breadcrumbs li:last-child:first-child a:after,
 .breadcrumbs li:last-child:first-child span:after {
-  background-color: var(--color-primary-dark-1);
+  background-color: var(--color-primary-4);
 }

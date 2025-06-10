@@ -1,6 +1,6 @@
 progress {
   --color-progress-background:rgba(0,0,0,.25);
-  --color-progress-value: var(--color-primary);
+  --color-progress-value: var(--color-primary-5);
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -8,8 +8,8 @@ progress {
   border-width: .15rem;
   border-style: solid;
   border-radius: 0;
-  border-color: var(--color-primary);
-  background: var(--color-primary-dark-1);
+  border-color: var(--color-primary-5);
+  background: var(--color-primary-4);
   padding: 0;
   border: 0;
 }

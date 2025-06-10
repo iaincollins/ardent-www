@@ -17,7 +17,7 @@ export default () => {
   const [systemSearchResults, setSystemSearchResults] = useState()
   const [stationSearchResults, setStationSearchResults] = useState()
   const [searchResults, setSearchResults] = useState()
-  const [hilightedSearchResult, setHilightedSearchResult] = useState()
+  const [highlightedResult, setHighlightedResult] = useState()
   const [searchResultsVisible, setSearchResultsVisible] = useState(false)
   const [menuVisible, setMenuVisible] = useState(false)
   const [dateTime, setDateTime] = useState()
@@ -206,7 +206,7 @@ export default () => {
       })
     }
     setSearchResults(searchResults)
-    setHilightedSearchResult(0)
+    setHighlightedResult(0)
     if (searchResults.length > 0) {
       setSearchResultsVisible(true)
     } else {
@@ -229,7 +229,7 @@ export default () => {
     }
     document.addEventListener('keydown', onKeyDown)
     return () => {
-      document.removeEventListener('keyup', onKeyDown)
+      document.removeEventListener('keydown', onKeyDown)
     }
   }, [])
 
@@ -274,17 +274,17 @@ export default () => {
                 if (e.key === 'Enter') {
                   e.preventDefault()
                   if (searchResults?.length > 0) {
-                    router.push(searchResults[hilightedSearchResult].path)
+                    router.push(searchResults[highlightedResult].path)
                     setSearchResultsVisible(false)
                     headerSearchRef.current.value = ''
                   }
                 } else if (e.key === 'ArrowDown') {
-                  if (hilightedSearchResult < searchResults.length - 1) {
-                    setHilightedSearchResult(hilightedSearchResult + 1)
+                  if (highlightedResult < searchResults.length - 1) {
+                    setHighlightedResult(highlightedResult + 1)
                   }
                 } else if (e.key === 'ArrowUp') {
-                  if (hilightedSearchResult - 1 >= 0) {
-                    setHilightedSearchResult(hilightedSearchResult - 1)
+                  if (highlightedResult - 1 >= 0) {
+                    setHighlightedResult(highlightedResult - 1)
                   }
                 } else if (e.key === 'Escape') {
                   e.target.value = ''
@@ -301,8 +301,8 @@ export default () => {
           >
             {searchResults?.length > 0 && searchResults.map((result, i) =>
               <p
-                onMouseEnter={() => { setHilightedSearchResult(i) }}
-                className={i === hilightedSearchResult ? 'header__search-result--highlighted' : undefined}
+                onMouseEnter={() => { setHighlightedResult(i) }}
+                className={i === highlightedResult ? 'header__search-result--highlighted' : undefined}
                 key={`${i}:${result.icon}:${result.name}`}
                 onMouseDown={() => {
                   router.push(result.path)

@@ -20,7 +20,7 @@
   clip-path: polygon(0 0,calc(100% - 2.00rem) 0,100% 2.00rem,100% 100%,0 100%);
   background: linear-gradient(
     to bottom,
-    var(--color-primary),
+    var(--color-primary-5),
     30%,
     transparent
   );
@@ -34,8 +34,8 @@
   content: '';
   position: relative;
   display: block;
-  box-shadow: inset 0 -1px var(--color-primary-light-4);
-  border-bottom: .25rem solid var(--color-primary-light-4);
+  box-shadow: inset 0 -1px var(--color-primary-9);
+  border-bottom: .25rem solid var(--color-primary-9);
   width: 100%;
   Xmax-width: 45rem;
   Xmask: linear-gradient(90deg, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 90%);
@@ -49,7 +49,7 @@
   width: calc(100% - .25rem);
   content: '';
   height: 2.19rem;
-  background: var(--color-primary);
+  background: var(--color-primary-5);
   z-index: 1; */
 }
 
@@ -67,8 +67,8 @@
   margin-right: .5rem;
   margin-left: 1rem;
   z-index: 1;
-  background: var(--color-primary-light-1);
-  color: var(--color-primary-dark-3);
+  background: var(--color-primary-6);
+  color: var(--color-primary-2);
   outline: none;
 }
 
@@ -80,7 +80,7 @@
   height: 100%;
   content: '';
   z-index: -1;
-  background: var(--color-primary-light-1);
+  background: var(--color-primary-6);
   clip-path: polygon(100% 0, 0% 100%, 100% 100%);
 }
 
@@ -92,7 +92,7 @@
   height: 100%;
   content: '';
   z-index: -1;
-  background: var(--color-primary-light-1);
+  background: var(--color-primary-6);
   clip-path: polygon(0 0, 0% 100%, 100% 100%);
 }
 
@@ -104,14 +104,14 @@
 .react-tabs__tab.react-tabs__tab--selected,
 .react-tabs__tab.react-tabs__tab--selected::before,
 .react-tabs__tab.react-tabs__tab--selected::after {
-  background: var(--color-primary-light-4);
-  color: var(--color-primary-dark-5);
+  background: var(--color-primary-9);
+  color: var(--color-primary-0);
   z-index: 3;
 }
 
 .tab-badge {
   border-radius: 2rem;
-  background: var(--color-primary-dark-2);
+  background: var(--color-primary-3);
   color: var(--color-text);
   padding: .15rem .3rem;
   line-height: .8rem;

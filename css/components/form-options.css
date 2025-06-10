@@ -2,7 +2,7 @@
 .form-options {
   position: relative;
   z-index: 2;
-  background:linear-gradient(to bottom, var(--color-primary-dark-1), transparent);
+  background:linear-gradient(to bottom, var(--color-primary-4), transparent);
   color: var(--color-text-muted);
   padding: .75rem .25rem .25rem .25rem;
   font-family: "Jura", sans-serif;  
@@ -37,8 +37,8 @@
 .form-options form select {
   float: left;
   clear: both;
-  background: var(--color-primary-light-3);
-  border-color: var(--color-primary-dark-2);
+  background: var(--color-primary-8);
+  border-color: var(--color-primary-3);
   color: var(--color-text-dark);
   border-style: solid;
   border-width: .15rem;
@@ -51,8 +51,8 @@
 
 .form-options form input:hover:not(:disabled),
 .form-options form select:hover:not(:disabled) {
-  background: var(--color-primary-light-4);
-  border-color: var(--color-primary-dark-2);
+  background: var(--color-primary-9);
+  border-color: var(--color-primary-3);
 }
 
 .form-options form button:disabled,
