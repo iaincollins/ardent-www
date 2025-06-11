@@ -5,6 +5,7 @@ import { timeBetweenTimestamps } from 'lib/utils/dates'
 import TradeBracketIcon from 'components/trade-bracket'
 import StationIcon from 'components/station-icon'
 import { API_BASE_URL } from 'lib/consts'
+import CopyOnClick from 'components/copy-on-click'
 
 const MAX_ROWS_TO_DISPLAY = 10
 
@@ -42,7 +43,7 @@ export default ({ commodity }) => {
               render: (v, r) =>
                 <>
                   <StationIcon station={r}>
-                    {r.stationName}
+                    <CopyOnClick>{r.stationName}</CopyOnClick>
                     {r.distanceToArrival !== undefined && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                     <span className='is-visible-mobile'>
                       <br />

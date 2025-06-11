@@ -99,11 +99,11 @@ module.exports = ({
           <div className='system-map__location'>
             <p>
               <small className='fx__animated-text' data-fx-order='1'>
-                <span className='muted'>SYS ADDR</span>  {system.systemAddress}
+                <span className='muted'>SYS ADDR</span> <CopyOnClick>{system.systemAddress}</CopyOnClick>
               </small>
               <br />
-              <small className='fx__animated-text' data-fx-order='1'>
-                <span className='muted'>SYS POS</span> {system.systemX}, {system.systemY}, {system.systemZ}
+              <small className='fx__animated-text' data-fx-order='1' style={{paddingRight: '1rem'}}>
+                <span className='muted'>SYS POS</span> <CopyOnClick>{system.systemX}, {system.systemY}, {system.systemZ}</CopyOnClick>
               </small>
               <br />
               <small style={{ opacity: 1 }} className='fx__animated-text' data-fx-order='2'>
@@ -125,7 +125,7 @@ module.exports = ({
             {systemStatus.faction &&
               <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='4'>
                 <i className='icon icarus-terminal-system-authority' />
-                {systemStatus.faction}
+                <CopyOnClick>{systemStatus.faction}</CopyOnClick>
               </span>}
 
             {systemStatus.government &&

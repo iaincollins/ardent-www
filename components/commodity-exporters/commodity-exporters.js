@@ -10,6 +10,7 @@ import { API_BASE_URL } from 'lib/consts'
 import CommodityImportersNearby from 'components/commodity-importers/commodity-importers-nearby'
 import CommodityExportersNearby from 'components/commodity-exporters/commodity-exporters-nearby'
 import animateTableEffect from 'lib/animate-table-effect'
+import CopyOnClick from 'components/copy-on-click'
 
 async function getExportsForCommodityBySystem (systemAddress, commodityName) {
   const res = await fetch(`${API_BASE_URL}/v2/system/address/${systemAddress}/commodity/name/${commodityName}`)
@@ -34,7 +35,7 @@ export default ({ tableName = 'Exporters', commodities }) => {
           render: (v, r) =>
             <div>
               <StationIcon station={r}>
-                {r.stationName}
+                <CopyOnClick>{r.stationName}</CopyOnClick>
                 {r.distanceToArrival !== undefined && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                 <span className='is-visible-mobile'>
                   <br />
@@ -149,7 +150,7 @@ function ExpandedRow ({ r }) {
               render: (v, r) =>
                 <>
                   <StationIcon station={r}>
-                    {r.stationName}
+                    <CopyOnClick>{r.stationName}</CopyOnClick>
                     {r.distanceToArrival !== undefined && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                     <span className='is-visible-mobile'>
                       <br />

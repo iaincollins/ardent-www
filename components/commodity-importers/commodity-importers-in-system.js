@@ -4,6 +4,7 @@ import { timeBetweenTimestamps } from 'lib/utils/dates'
 import TradeBracketIcon from 'components/trade-bracket'
 import StationIcon from 'components/station-icon'
 import { NO_DEMAND_TEXT } from 'lib/consts'
+import CopyOnClick from 'components/copy-on-click'
 
 export default ({ commodityOrders }) => {
   return (
@@ -22,7 +23,7 @@ export default ({ commodityOrders }) => {
               render: (v, r) =>
                 <>
                   <StationIcon station={r}>
-                    {r.stationName}
+                    <CopyOnClick>{r.stationName}</CopyOnClick>
                     {r.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                   </StationIcon>
                   <div className='is-visible-mobile'>

@@ -5,10 +5,11 @@ export default function CopyOnClick ({ children, prepend, append }) {
   const selectableText = useRef()
   function copyText (e) {
     try {
+      e.preventDefault()
       const text = selectableText.current.innerHTML
       document.execCommand('copy')
       navigator.clipboard.writeText(text)
-      notification(() => <p><span className='muted'>text copied</span><br/><span>{`"${text}"`}</span></p>)
+      notification(() => <p><span className='muted'>Copied text</span><br/><span className='text-no-transform'>{`"${text}"`}</span></p>)
     } catch { /* don't care */ }
   }
   return (
