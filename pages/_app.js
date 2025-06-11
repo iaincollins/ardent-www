@@ -48,12 +48,12 @@ export default ({ Component, pageProps }) => {
             <div id='notifications' style={{ transition: '1s all ease-in-out', position: 'fixed', zIndex: 9999 }}>
               <Toaster
                 containerStyle={{
-                  bottom: 30
+                  bottom: 110
                 }}
                 gutter={10}
                 position='bottom-right'
                 toastOptions={{
-                  duration: 8000,
+                  duration: 4000,
                   className: 'notification text-uppercase',
                   style: {
                     borderRadius: '0',

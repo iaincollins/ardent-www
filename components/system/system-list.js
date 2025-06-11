@@ -79,7 +79,7 @@ function SystemObjects ({ objects, depth = 0 }) {
               {systemObject?.bodyType === 'Null' && <>✕— </>}
               {(systemObject?.bodyType === 'Planet' || systemObject?.bodyType === 'Star') &&
                 <SystemObjectIcon systemObject={systemObject}>
-                  {systemObject.bodyName}
+                  <CopyOnClick>{systemObject.bodyName}</CopyOnClick>
                   {systemObject?.distanceToArrival !== undefined &&
                     <small className='is-visible-mobile text-no-transform'>
                       {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls
@@ -94,7 +94,7 @@ function SystemObjects ({ objects, depth = 0 }) {
               {systemObject?.stationType !== undefined &&
                 <>
                   <StationIcon station={systemObject}>
-                    {systemObject.stationName}
+                    <CopyOnClick>{systemObject.stationName}</CopyOnClick>
                     {systemObject?.distanceToArrival !== undefined &&
                       <small className='is-visible-mobile text-no-transform'>
                         {' '}{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls

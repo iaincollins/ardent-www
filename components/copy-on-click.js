@@ -12,7 +12,7 @@ export default function CopyOnClick ({ children, prepend, append }) {
     } catch { /* don't care */ }
   }
   return (
-    <span className='selectable selectable-wrapper' onClick={copyText} title={`Copy text "${selectableText?.current?.innerHTML}"`}>
+    <span className='selectable selectable-wrapper' onClick={copyText} title='Click to copy text'>
       {prepend}
       <span ref={selectableText} className='selectable'>{children}</span>
       {append}

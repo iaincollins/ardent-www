@@ -2,8 +2,7 @@
   --color-positive: rgb(137, 255, 82);
   --color-negative: rgb(255, 26, 26);
   --color-warning: rgb(254, 212, 114);
-  --color-info: #53ffce;
-  --color-info: rgb(130, 250, 255);
+  --color-info: rgb(100, 255, 255);
 
   --color-primary-hue: 22;
   --color-primary-saturation: 0%;
@@ -35,7 +34,7 @@
   --color-table-row-alt: hsla(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) + 20%), .15);
   --color-table-row-hover: hsla(var(--color-primary-hue), var(--color-primary-saturation),  calc(var(--color-primary-lightness) + 30%), .25);
 
-  --color-background-transparent: hsla(var(--color-primary-hue), var(--color-primary-saturation), 0%, .75);
+  --color-background-transparent: hsla(var(--color-primary-hue), var(--color-primary-saturation), 0%, .7);
 
   --color-layout-frame: var(--color-primary-9);
   --color-layout-frame-text: var(--color-primary-0);

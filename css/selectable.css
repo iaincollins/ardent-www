@@ -27,7 +27,9 @@
   opacity: 0;
   transition: all .1s ease-in;
   content: "\ea01";
-  color: var(--color-info);
+  color: aquamarine;
+  --text-shadow-color: rgb(0, 105, 131);
+  text-shadow: .1rem .1rem .1rem var(--text-shadow-color), -.1rem -.1rem .1rem var(--text-shadow-color), -.1rem .1rem .1rem var(--text-shadow-color), .1rem -.1rem .1rem var(--text-shadow-color);
   bottom: -.1rem;
   right: -1.75rem;
   font-size: 1.25rem;
@@ -37,11 +39,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   pointer-events: none;
-}
-
-.heading--with-underline h2 .selectable-wrapper::after {
-  color: var(--text-dark);
-  right: -1.5rem;
 }
 
 .text-right > .selectable-wrapper::after {
