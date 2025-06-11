@@ -1,0 +1,69 @@
+
+.not-selectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.selectable-wrapper,
+.selectable {
+  position: relative;
+  -webkit-touch-callout: all !important;
+  -webkit-user-select: all !important;
+  -khtml-user-select: all !important;
+  -moz-user-select: all !important;
+  -ms-user-select: all !important;
+  user-select: all !important;
+  /* cursor: text; */
+  pointer-events: all;
+}
+
+.selectable-wrapper::after {
+  display: block;
+  position: absolute;
+  opacity: 0;
+  transition: all .1s ease-in;
+  content: "\ea01";
+  color: var(--color-info);
+  bottom: -.1rem;
+  right: -1.75rem;
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+  font-family: 'icarus-terminal' !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  pointer-events: none;
+}
+
+.heading--with-underline h2 .selectable-wrapper::after {
+  color: var(--text-dark);
+  right: -1.5rem;
+}
+
+.text-right > .selectable-wrapper::after {
+  right: initial;
+  left: -1.75rem;
+}
+
+.selectable:hover::after {
+  opacity: 1;
+}
+
+.selectable--text {
+  -webkit-touch-callout: text !important;
+  -webkit-user-select: text !important;
+  -khtml-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+
+::selection {
+  background: none;
+  color: inherit;
+  text-shadow: initial;
+}

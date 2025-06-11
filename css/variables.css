@@ -35,6 +35,8 @@
   --color-table-row-alt: hsla(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) + 20%), .15);
   --color-table-row-hover: hsla(var(--color-primary-hue), var(--color-primary-saturation),  calc(var(--color-primary-lightness) + 30%), .25);
 
+  --color-background-transparent: hsla(var(--color-primary-hue), var(--color-primary-saturation), 0%, .75);
+
   --color-layout-frame: var(--color-primary-9);
   --color-layout-frame-text: var(--color-primary-0);
 

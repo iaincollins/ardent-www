@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Header from 'components/header'
+import { Toaster } from 'react-hot-toast'
 // import { Canvas, useFrame } from '@react-three/fiber'
 import { NavigationContext, DialogContext } from 'lib/context'
 import 'css/index.css'
@@ -44,6 +45,31 @@ export default ({ Component, pageProps }) => {
         <div className='fx__background' />
         <NavigationContext.Provider value={[navigationPath, setNavigationPath]}>
           <DialogContext.Provider value={[dialog, setDialog]}>
+            <div id='notifications' style={{ transition: '1s all ease-in-out', position: 'fixed', zIndex: 9999 }}>
+              <Toaster
+                containerStyle={{
+                  bottom: 30
+                }}
+                gutter={10}
+                position='bottom-right'
+                toastOptions={{
+                  duration: 8000,
+                  className: 'notification text-uppercase',
+                  style: {
+                    borderRadius: '0',
+                    border: '.2rem solid var(--color-primary-10)',
+                    background: 'var(--color-background-transparent)',
+                    color: 'var(--color-text)',
+                    minWidth: '300px',
+                    maxWidth: '600px',
+                    textAlign: 'left !important',
+                    margin: '0 1rem',
+                    boxShadow: '0 0 1rem black',
+                    padding: 0,
+                  }
+                }}
+              />
+            </div>
             <Header />
             <Component {...pageProps} />
           </DialogContext.Provider>

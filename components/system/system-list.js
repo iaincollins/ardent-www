@@ -3,6 +3,7 @@ import StationIcon from 'components/station-icon'
 import SystemObjectIcon from 'components/system-object-icon'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import { parseBodiesAndStations } from 'lib/utils/sytem-map-utils'
+import CopyOnClick from 'components/copy-on-click'
 
 module.exports = ({
   system,
@@ -23,7 +24,7 @@ module.exports = ({
       <div className='heading--with-underline'>
         <h2 className='heading--with-icon'>
           <i className='icon icarus-terminal-system-orbits' />
-          <span className='text-no-transform'>{system.systemName} System</span>
+          <span className='text-no-transform'><CopyOnClick>{system.systemName}</CopyOnClick></span>
         </h2>
       </div>
       <div className='rc-table data-table data-table--striped data-table--sticky-heading data-table--animated'>

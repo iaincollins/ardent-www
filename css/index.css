@@ -3,6 +3,7 @@
 @import url('helpers.css');
 @import url('layout.css');
 @import url('home.css');
+@import url('selectable.css');
 
 @import url('elements/index.css');
 
@@ -336,4 +337,9 @@ a.button--small:hover {
   color: var(--color-text-dark);
   clip-path: polygon(0 0,100% 0,100% calc(100% - 0.5rem),calc(100% - 0.5rem) 100%,0 100%);
   border: none;
+}
+
+.notification p {
+  font-size: 1rem;
+  margin: .5rem;
 }

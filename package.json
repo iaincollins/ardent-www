@@ -1,6 +1,6 @@
 {
   "name": "ardent-www",
-  "version": "1.46.3",
+  "version": "1.47.0",
   "description": "Ardent Insight Website",
   "main": "index.js",
   "scripts": {
@@ -18,9 +18,9 @@
     "url": "git+https://github.com/iaincollins/ardent-spike.git"
   },
   "standard": {
-  "ignore": [
-    "lib/sfxr.js"
-  ]
+    "ignore": [
+      "lib/sfxr.js"
+    ]
   },
   "author": "",
   "license": "AGPL-3.0",
@@ -38,6 +38,7 @@
     "react": "^18.2.0",
     "react-collapsible": "^2.10.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.5.2",
     "react-markdown": "^9.0.1",
     "react-tabs": "^6.0.1"
   },

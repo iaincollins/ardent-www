@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import factionStates from 'lib/utils/faction-states'
 import { scanSystemSound } from 'lib/sounds'
+import CopyOnClick from 'components/copy-on-click'
 
 const SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER = 50
 
@@ -47,7 +48,7 @@ module.exports = ({
         <div className='heading--with-underline'>
           <h2 className='heading--with-icon'>
             <i className='icon icarus-terminal-system-orbits' />
-            <span className='text-no-transform'>{system.systemName} System</span>
+            <span className='text-no-transform'><CopyOnClick>{system.systemName}</CopyOnClick></span>
           </h2>
         </div>
 
