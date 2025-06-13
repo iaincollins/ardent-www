@@ -163,7 +163,7 @@ table {
 
 small {
   text-transform: uppercase;
-  opacity: .6; 
+  color: var(--color-primary-8);
   font-size: .8rem;
 }
 

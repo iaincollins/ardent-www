@@ -35,7 +35,7 @@ export default ({ tableName = 'Exporters', commodities }) => {
           render: (v, r) =>
             <div>
               <StationIcon station={r}>
-                <CopyOnClick>{r.stationName}</CopyOnClick>
+                {r.stationName}
                 {r.distanceToArrival !== undefined && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                 <span className='is-visible-mobile'>
                   <br />

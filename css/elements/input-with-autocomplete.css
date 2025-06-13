@@ -22,13 +22,6 @@
 
 .input-with-autocomplete__input:focus::placeholder {}
 
-.input-with-autocomplete__input::selection {
-  color:  var(--color-text);
-  background-color:  var(--color-primary-4);
-  /* color: var(--color-primary-10);
-  background-color:  var(--color-primary-5); */
-}
-
 .input-with-autocomplete__results-dropdown {
   z-index: 1;
   position: absolute;

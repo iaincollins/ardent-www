@@ -27,12 +27,11 @@
   opacity: 0;
   transition: all .1s ease-in;
   content: "\ea01";
-  color: aquamarine;
-  background-color: rgb(0, 50, 50);
-  border-radius: .15rem;
-  padding: .1rem .05rem;
-  bottom: -.1rem;
-  right: -1.25rem;
+  color: var(--color-text-selected-background);
+  background-color: var(--color-text-selected);
+  padding: .1rem 0;
+  bottom: -.2rem;
+  right: -1.3rem;
   font-size: .8rem;
   line-height: .8rem;
   font-family: 'icarus-terminal' !important;
@@ -41,17 +40,18 @@
   -moz-osx-font-smoothing: grayscale;
   pointer-events: none;
   z-index: 100;
+  text-align: center;
 }
 
 .text-right > .selectable-wrapper::after {
   right: initial;
-  left: -1.75rem;
+  left: -1.4rem;
 }
 
 .selectable:hover {
-  background-color: aquamarine;
-  color: rgb(0, 50, 50);
-  border-radius: .15rem;
+  color: var(--color-text-selected);
+  background-color: var(--color-text-selected-background);
+  outline: .2rem solid var(--color-text-selected-background);
 }
 
 .selectable:hover::after {
@@ -67,8 +67,8 @@
   user-select: text !important;
 }
 
-::selection {
-  background: none;
-  color: inherit;
-  text-shadow: initial;
+::selection  {
+  color: var(--color-text-selected);
+  background-color: var(--color-text-selected-background);
+  outline: .2rem solid var(--color-text-selected-background);
 }

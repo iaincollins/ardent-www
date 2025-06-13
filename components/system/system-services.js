@@ -4,6 +4,7 @@ import Collapsible from 'react-collapsible'
 import { CollapsibleTrigger } from 'components/collapsible-trigger'
 import StationIcon from 'components/station-icon'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
+import CopyOnClick from 'components/copy-on-click'
 
 const SERVICE_STATION_TYPES = [
   'Coriolis',
@@ -27,7 +28,7 @@ module.exports = ({ system, nearestServices }) => {
         <p className='loading-bar' style={{ position: 'relative', top: '-.25rem', height: '1.75rem' }} />}
       {nearestServices &&
         <div className='fx__fade-in'>
-          <p className='muted'>Station services in {system.systemName} and nearest populated systems</p>
+          <p>Station services in <CopyOnClick>{system.systemName}</CopyOnClick> and nearest populated systems</p>
           <div className='rc-table data-table data-table--striped data-table--interactive data-table--animated'>
             <div className='rc-table-container'>
               <table>
@@ -51,7 +52,7 @@ module.exports = ({ system, nearestServices }) => {
                                 <Fragment key={`in_system_service_${service}_${station.marketId}`}>
                                   <p style={{ padding: '.25rem .25rem 0 .25rem', marginBottom: '.25rem', display: 'inline-block' }}>
                                     <StationIcon station={station}>
-                                      {station.stationName}
+                                      <CopyOnClick>{station.stationName}</CopyOnClick>
                                       <small className='text-no-transform'> {Math.round(station.distanceToArrival).toLocaleString()} Ls</small>
                                       <br />{station.updatedAt && <small>{timeBetweenTimestamps(station.updatedAt)} ago</small>}
                                     </StationIcon>
@@ -69,7 +70,7 @@ module.exports = ({ system, nearestServices }) => {
                                 <Fragment key={`nearest_service_${service}_${station.marketId}`}>
                                   <p style={{ padding: '.25rem .25rem 0 .25rem', marginBottom: '.25rem', display: 'inline-block' }}>
                                     <StationIcon station={station}>
-                                      {station.stationName}
+                                      <CopyOnClick>{station.stationName}</CopyOnClick>
                                       <br />
                                       <Link style={{ fontSize: '.9rem' }} href={`/system/${station.systemAddress}`}>{station.systemName}</Link>
                                       <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>
@@ -88,7 +89,7 @@ module.exports = ({ system, nearestServices }) => {
                                 <Fragment key={`nearest_service_${service}_${station.marketId}`}>
                                   <p style={{ padding: '.25rem .25rem 0 .25rem', marginBottom: '.25rem', display: 'inline-block' }}>
                                     <StationIcon station={station}>
-                                      {station.stationName}
+                                      <CopyOnClick>{station.stationName}</CopyOnClick>
                                       <br />
                                       <Link style={{ fontSize: '.9rem' }} href={`/system/${station.systemAddress}`}>{station.systemName}</Link>
                                       <small className='text-no-transform'> {station.distance.toLocaleString()} ly</small>

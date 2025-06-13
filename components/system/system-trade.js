@@ -11,6 +11,7 @@ import CommodityImportersInSystem from 'components/commodity-importers/commodity
 import CommodityExportersInSystem from 'components/commodity-exporters/commodity-exporters-in-system'
 import CommodityImportersNearby from 'components/commodity-importers/commodity-importers-nearby'
 import CommodityExportersNearby from 'components/commodity-exporters/commodity-exporters-nearby'
+import CopyOnClick from 'components/copy-on-click'
 
 import { NO_DEMAND_TEXT } from 'lib/consts'
 
@@ -34,10 +35,10 @@ module.exports = ({
       <div className='heading--with-underline'>
         <h2>Commodities</h2>
       </div>
-      <p className='muted'>
+      <p>
         {system?.systemName !== undefined &&
           <span className='fx__fade-in'>
-            Trade data for {system.systemName} last updated {timeBetweenTimestamps(lastUpdatedAt)} ago
+            Trade data for <CopyOnClick>{system.systemName}</CopyOnClick> last updated {timeBetweenTimestamps(lastUpdatedAt)} ago
           </span>}
       </p>
       <Tabs

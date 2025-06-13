@@ -67,6 +67,7 @@
   position: relative;
   top: -.25rem;
   line-height: 1rem;
+  z-index: 10000;
 }
 
 .system-map__system-objects {
