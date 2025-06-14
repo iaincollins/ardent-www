@@ -71,7 +71,8 @@
   border-bottom: none;
 }
 
-.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td a {
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td a,
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td small {
   color: var(--color-text-dark) !important;
 }
 
