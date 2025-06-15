@@ -8,7 +8,7 @@ module.exports = ({ nearbySystems }) => {
   const onSystemsRowClick = (record, index, event) => {
     router.push(`/system/${record.systemAddress}`)
   }
-  
+
   return (
     <div className='fx__fade-in'>
       <div className='heading--with-underline'>

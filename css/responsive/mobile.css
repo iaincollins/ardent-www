@@ -348,4 +348,19 @@
     background: var(--color-primary-9);
     color: var(--color-text-dark);
   }
+
+  .layout__content--with-inspector {
+    width: inherit;
+    height: calc(100% - 50% - 5rem);
+  }
+  
+  .layout__inspector {
+    width: inherit;
+    top: auto;
+    bottom: 3.8rem;
+    left: 4.6rem;
+    right: 1rem;
+    height: calc(100% - 50% - 5rem);
+    border-top: .2rem solid var(--color-primary-7);
+  }
 }

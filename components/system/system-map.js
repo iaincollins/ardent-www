@@ -102,7 +102,7 @@ module.exports = ({
                 <span className='muted'>SYS ADDR</span> <CopyOnClick>{system.systemAddress}</CopyOnClick>
               </small>
               <br />
-              <small className='fx__animated-text' data-fx-order='1' style={{paddingRight: '1rem'}}>
+              <small className='fx__animated-text' data-fx-order='1' style={{ paddingRight: '1rem' }}>
                 <span className='muted'>SYS POS</span> <CopyOnClick>{system.systemX}, {system.systemY}, {system.systemZ}</CopyOnClick>
               </small>
               <br />

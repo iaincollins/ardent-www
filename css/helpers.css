@@ -47,6 +47,10 @@
   color: rgb(255, 180, 0);
 }
 
+.text-muted {
+  color: var(--color-primary-7);
+}
+
 .text-no-transform {
   text-transform: none;
 }

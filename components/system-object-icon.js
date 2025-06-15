@@ -44,7 +44,7 @@ module.exports = ({ systemObject, type, children }) => {
 
   if (children) {
     return (
-      <span style={{ position: 'relative', paddingLeft: '2rem', display: 'inline-block' }}>
+      <span className='system-object'>
         <i style={{ position: 'absolute', left: 0, top: '.1rem' }} className={`system-object-icon icarus-terminal-${icon}${systemObject?.isLandable ? ' text-info' : ''}`} />
         {children}
       </span>

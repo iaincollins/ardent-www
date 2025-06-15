@@ -71,6 +71,14 @@
   border-bottom: none;
 }
 
+.data-table tr.data-table__row--selected td,
+.data-table tr.data-table__row--selected td > *,
+.data-table tr.data-table__row--selected td small,
+.data-table tr.data-table__row--selected td i {
+  background: var(--color-primary-9) !important;
+  color: var(--color-primary-0) !important;
+}
+
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td a,
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td small {
   color: var(--color-text-dark) !important;

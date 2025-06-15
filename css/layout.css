@@ -75,3 +75,27 @@ mask-repeat: no-repeat, no-repeat;
 .layout__content--with-navigation.layout__content--with-navigation-overlayed {
   left: 0;
 }
+
+.layout__content--with-inspector {
+  width: calc(100% - 25rem);
+}
+
+.layout__inspector {
+  width: 20rem; 
+  display: inline-block;
+  top: 4.3rem;
+  right: 1rem;
+  bottom: 3.75rem;
+  position: fixed;
+  animation: inspector-slide-in-animation .25s ease-in-out;
+}
+
+@keyframes inspector-slide-in-animation {
+  from { right: -21rem; }
+  to { right: 1rem; }
+}
+
+.layout__inspector p {
+  padding: 0 .5rem;
+}
+

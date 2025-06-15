@@ -58,6 +58,10 @@
   opacity: 1;
 }
 
+.selectable::selection {
+  background: transparent;
+}
+
 .selectable--text {
   -webkit-touch-callout: text !important;
   -webkit-user-select: text !important;

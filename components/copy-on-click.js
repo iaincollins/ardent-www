@@ -9,7 +9,7 @@ export default function CopyOnClick ({ children, prepend, append }) {
       const text = selectableText.current.innerHTML
       document.execCommand('copy')
       navigator.clipboard.writeText(text)
-      notification(() => <p><span className='muted'>Copied text</span><br/><span className='text-no-transform'>{`"${text}"`}</span></p>)
+      notification(() => <p><span className='muted'>Copied text</span><br /><span className='text-no-transform'>{`"${text}"`}</span></p>)
       getSelection().removeAllRanges()
     } catch { /* don't care */ }
   }

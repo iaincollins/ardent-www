@@ -12,7 +12,7 @@ export default ({
   onFocus = (e) => { },
   onBlur = (e) => { },
   autoCompleteResults,
-  onClear,
+  onClear
 }) => {
   const resultsRef = useRef()
   const [focus, setFocus] = useState(false)

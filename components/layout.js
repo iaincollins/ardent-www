@@ -18,7 +18,8 @@ export default ({
   sidebar = undefined,
   className = undefined,
   navigation = undefined,
-  navigationOverlaid = false
+  navigationOverlaid = false,
+  inspector = undefined
 }) => {
   useEffect(() => {
     ; (() => {
@@ -42,9 +43,13 @@ export default ({
           <div className={`layout__content layout__content--left-sidebar scrollable ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
             {sidebar}
           </div>}
-        <div className={`layout__content scrollable ${sidebar !== undefined ? 'layout__content--right' : ''} ${navigation !== undefined ? 'layout__content--with-navigation' : ''} ${navigationOverlaid === true ? 'layout__content--with-navigation-overlayed' : ''}`}>
+        <div className={`layout__content scrollable ${sidebar !== undefined ? 'layout__content--right' : ''} ${navigation !== undefined ? 'layout__content--with-navigation' : ''} ${navigationOverlaid === true ? 'layout__content--with-navigation-overlayed' : ''} ${inspector !== undefined ? 'layout__content--with-inspector' : ''}`}>
           {children}
         </div>
+        {inspector !== undefined &&
+          <div className='layout__inspector scrollable'>
+            {inspector}
+          </div>}
         {navigation !== undefined &&
           <div className='navigation-bar'>
             {navigation.map(item =>

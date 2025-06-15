@@ -47,7 +47,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
     updateOptions()
   }, [])
 
-  function optionChangeHandler(e) {
+  function optionChangeHandler (e) {
     const query = {}
 
     if (locationRef.current?.dataset.value) {
@@ -353,15 +353,15 @@ export default ({ disabled = false, commodities = [], commodity }) => {
           }}
           autoCompleteResults={systemAutoCompleteResults}
         />
-        <small style={{ display: 'block', opacity: 1, textAlign: 'right', paddingTop: '.15rem', height: '1rem'}}>
+        <small style={{ display: 'block', opacity: 1, textAlign: 'right', paddingTop: '.15rem', height: '1rem' }}>
           {locationRef.current?.dataset?.value
             ? <span onClick={() => router.push(`/system/${locationRef.current?.dataset?.value}`)}>
               <span className='muted'>SYS ADDR</span>
               {' '}
-              <span style={{borderBottom: '1px dotted var(--color-primary-10'}}>{locationRef.current?.dataset?.value}</span>
-              <i className='icarus-terminal-chevron-right'/>
+              <span style={{ borderBottom: '1px dotted var(--color-primary-10' }}>{locationRef.current?.dataset?.value}</span>
+              <i className='icarus-terminal-chevron-right' />
             </span>
-            : <span className='muted' style={{paddingRight: '1rem'}}>...</span>}
+            : <span className='muted' style={{ paddingRight: '1rem' }}>...</span>}
         </small>
         <label>
           <span className='form-options__label-text'>Distance</span>

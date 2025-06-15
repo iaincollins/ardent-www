@@ -17,7 +17,7 @@ export default () => {
   const [version, setVersion] = useState()
 
   useEffect(() => {
-    setNavigationPath([{ name: 'Home', path: '/', icon: 'icarus-terminal-home'}])
+    setNavigationPath([{ name: 'Home', path: '/', icon: 'icarus-terminal-home' }])
     ; (async () => {
       try {
         const res = await fetch(`${API_BASE_URL}/v2/news/galnet`)

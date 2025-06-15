@@ -39,51 +39,51 @@ export default () => {
 
   useEffect(animateTableEffect)
 
-  async function getExporters(commoditySymbol) {
+  async function getExporters (commoditySymbol) {
     setExports(undefined)
-      ; (async () => {
-        const exports = await getExports(commoditySymbol)
-        if (Array.isArray(exports)) {
-          exports.forEach(c => {
-            c.key = `${c.marketId}_${c.commoditySymbol}`
-            c.symbol = commoditySymbol
-            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-            c.maxProfit = c.maxSellPrice - c.minBuyPrice
-            c.category = listOfCommodities[c.symbol]?.category ?? ''
-            c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
-            delete c.commodityName
-          })
-          setExports(exports)
-        } else {
-          setExports([])
-        }
-      })()
+    ; (async () => {
+      const exports = await getExports(commoditySymbol)
+      if (Array.isArray(exports)) {
+        exports.forEach(c => {
+          c.key = `${c.marketId}_${c.commoditySymbol}`
+          c.symbol = commoditySymbol
+          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+          c.maxProfit = c.maxSellPrice - c.minBuyPrice
+          c.category = listOfCommodities[c.symbol]?.category ?? ''
+          c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
+          delete c.commodityName
+        })
+        setExports(exports)
+      } else {
+        setExports([])
+      }
+    })()
   }
 
-  async function getImporters(commoditySymbol) {
+  async function getImporters (commoditySymbol) {
     setImports(undefined)
-      ; (async () => {
-        const imports = await getImports(commoditySymbol)
-        if (Array.isArray(imports)) {
-          imports.forEach(c => {
-            c.symbol = commoditySymbol
-            c.key = `${c.marketId}_${c.commoditySymbol}`
-            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-            c.maxProfit = c.maxSellPrice - c.minBuyPrice
-            c.category = listOfCommodities[commoditySymbol]?.category ?? ''
-            c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
-            delete c.commodityName
-          })
-          setImports(imports)
-        } else {
-          setImports([])
-        }
-      })()
+    ; (async () => {
+      const imports = await getImports(commoditySymbol)
+      if (Array.isArray(imports)) {
+        imports.forEach(c => {
+          c.symbol = commoditySymbol
+          c.key = `${c.marketId}_${c.commoditySymbol}`
+          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+          c.maxProfit = c.maxSellPrice - c.minBuyPrice
+          c.category = listOfCommodities[commoditySymbol]?.category ?? ''
+          c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
+          delete c.commodityName
+        })
+        setImports(imports)
+      } else {
+        setImports([])
+      }
+    })()
   }
 
-  async function loadCommodity(_commoditySymbol, _activeTab) {
+  async function loadCommodity (_commoditySymbol, _activeTab) {
     const commoditySymbol = _commoditySymbol?.toLowerCase()
     if (!commoditySymbol) return
 
@@ -218,12 +218,12 @@ export default () => {
   )
 }
 
-async function getCommodity(commodityName) {
+async function getCommodity (commodityName) {
   const res = await fetch(`${API_BASE_URL}/v2/commodity/name/${commodityName}`)
   return (res.status === 200) ? await res.json() : null
 }
 
-async function getExports(commodityName) {
+async function getExports (commodityName) {
   try {
     const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/exports?${apiQueryOptions()}`
     const res = await fetch(url)
@@ -233,7 +233,7 @@ async function getExports(commodityName) {
   }
 }
 
-async function getImports(commodityName) {
+async function getImports (commodityName) {
   try {
     const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/imports?${apiQueryOptions()}`
     const res = await fetch(url)
@@ -243,7 +243,7 @@ async function getImports(commodityName) {
   }
 }
 
-async function getMarket(marketId) {
+async function getMarket (marketId) {
   const res = await fetch(`${API_BASE_URL}/v2/market/${marketId}`)
   return (res.status === 200) ? await res.json() : null
 }
@@ -255,7 +255,7 @@ async function getMarket(marketId) {
 //   return `${a / greatestCommonDivisor(a, b)}:${b / greatestCommonDivisor(a, b)}`
 // }
 
-function apiQueryOptions() {
+function apiQueryOptions () {
   // Parse current query string and convert the params to an API query parametrer string
   const options = []
 
@@ -285,7 +285,7 @@ function apiQueryOptions() {
   return options.join('&')
 }
 
-function parseQueryString() {
+function parseQueryString () {
   const obj = {}
   window.location.search.replace(
     new RegExp('([^?=&]+)(=([^&]*))?', 'g'),
