@@ -127,12 +127,6 @@ hr {
   padding: 0;
   padding-left: 1.2rem;
   display: inline;
-  background-color: var(--color-table-row);
-}
-
-.collapsible__trigger:hover {
-  color: var(--color-text-link);
-  background-color: var(--color-table-row-hover);
 }
 
 .collapsible__trigger-text {
@@ -162,13 +156,19 @@ hr {
   padding-left: 1.4rem;
   display: block;
   border-radius: .2rem;
+  background-color: var(--color-table-row);
+}
+
+.rc-table-cell .collapsible__trigger:hover {
+  background-color: var(--color-table-row-hover);
+  color: var(--color-text-link);
 }
 
 .rc-table-cell .collapsible__trigger .collapsible__trigger-icon {
   left: .2rem;
 }
 
-.rc-table-cell .collapsible__trigger--open {
+.rc-table-cell .collapsible__trigger.collapsible__trigger--open {
   background: var(--color-primary-9);
   color: var(--color-primary-0);
   border: none;
