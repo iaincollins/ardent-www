@@ -294,6 +294,10 @@ header {
   color: var(--color-text-dark);
 }
 
+.header__search-result--highlighted * {
+  color: var(--color-text-dark);
+}
+
 .header__menu {
   background: black;
   position: absolute;

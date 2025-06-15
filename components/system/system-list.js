@@ -236,8 +236,14 @@ function Inspector ({ systemObject }) {
             <p><span className='text-muted'>Distance from arrival</span><br />{systemObject?.distanceToArrival?.toLocaleString(undefined, { maximumFractionDigits: 0 }) ?? 0} Ls</p>
             {SURFACE_STATION_TYPES.includes(systemObject?.stationType) && systemObject.bodyName &&
               <p className='text-link text-no-wrap'>
-                <span className='text-muted'>Planet</span><br />
                 <i className='icon icarus-terminal-planet' /> <span className='text-link-text text-no-wrap'>{systemObject.bodyName}</span>
+                {systemObject.latitude !== undefined && systemObject.latitude !== null && systemObject.longitude !== undefined && systemObject.longitude !== null &&
+                  <div style={{ paddingLeft: '1.75rem' }}>
+                    <small>
+
+                      {systemObject.latitude}, {systemObject.longitude}
+                    </small>
+                  </div>}
               </p>}
           </div>}
 
@@ -247,9 +253,11 @@ function Inspector ({ systemObject }) {
               <h3>Stellar properties</h3>
             </div>
             <p>
-              {systemObject.isScoopable ? <div>Main sequence (scoopable)</div> : <div className='text-muted'>Not scoopable</div>}
-              {systemObject.spectralClass && <span>Spectral class {systemObject.spectralClass}, </span>}
-              Luminosity {systemObject.luminosity}
+              {systemObject.isScoopable ? <div><i className='system-object-icon text-warning icarus-terminal-fuel' />Main sequence (scoopable)</div> : <div className='text-muted'><i className='system-object-icon icarus-terminal-warning' />Not scoopable</div>}
+              <small>
+                {systemObject.spectralClass && <span>Spectral class {systemObject.spectralClass}, </span>}
+                Luminosity {systemObject.luminosity}
+              </small>
             </p>
             {systemObject.solarRadius && <p><span className='text-muted'>Radius</span><br />{(systemObject.solarRadius * SOL_RADIUS_IN_KM).toLocaleString(undefined, { maximumFractionDigits: 0 })} Km</p>}
             <p><span className='text-muted'>Solar masses</span><br />{systemObject.solarMasses.toFixed(2)}</p>
@@ -275,9 +283,9 @@ function Inspector ({ systemObject }) {
                           <p><i className='system-object-icon icarus-terminal-scan' />Surface scan required</p>
                           )}
                     </>}
-                  {systemObject.isLandable ? <p><i className='system-object-icon icarus-terminal-planet-lander' /> Landable surface</p> : null}
+                  {systemObject.isLandable ? <p><i className='system-object-icon text-info icarus-terminal-planet-lander' /> Landable surface</p> : null}
                   {systemObject.terraformingState && systemObject.terraformingState !== 'Not terraformable' && systemObject.terraformingState !== 'Terraformed' &&
-                    <p><i className='system-object-icon icarus-terminal-planet-terraformable' />Terraformable</p>}
+                    <p><i className='system-object-icon text-positive icarus-terminal-planet-terraformable' />Terraformable</p>}
                   {systemObject.volcanismType !== 'No volcanism' ? <p className='text-no-wrap'><i className='system-object-icon icarus-terminal-planet-volcanic' />{systemObject.volcanismType}</p> : null}
                   {systemObject?.signals?.biological > 0 && !systemObject?.biologicalGenuses &&
                     <>
@@ -438,8 +446,10 @@ function Inspector ({ systemObject }) {
             </div>
             {systemObject?.controllingFaction &&
               <p>
-                <i className='system-object-icon icarus-terminal-system-authority' />
-                <CopyOnClick>{systemObject.controllingFaction}</CopyOnClick>
+                <span className='system-object'>
+                  <i style={{ position: 'absolute', left: 0, top: '.1rem' }} className='system-object-icon icarus-terminal-system-authority' />
+                  <CopyOnClick>{systemObject.controllingFaction}</CopyOnClick>
+                </span>
               </p>}
             <p className='text-muted'><i className='system-object-icon icarus-terminal-power' />
               {systemObject.allegiance}
