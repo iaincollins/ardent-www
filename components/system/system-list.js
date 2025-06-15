@@ -187,7 +187,7 @@ function Inspector ({ systemObject }) {
 
   // Show exploration only if there is intersting data to show
   let showExploration = false
-  if (systemObject.hasOwnProperty('mapped')) showExploration = true
+  if (Object.prototype.hasOwnProperty.call(systemObject, 'mapped')) showExploration = true
   if (systemObject.isLandable) showExploration = true
   if (systemObject.volcanismType !== 'No volcanism') showExploration = true
   if (systemObject?.signals?.biological > 0) showExploration = true
@@ -263,35 +263,45 @@ function Inspector ({ systemObject }) {
                 <h3>Environment</h3>
               </div>
 
-              {showExploration == true && <>
-                {systemObject.hasOwnProperty('mapped') && <>
-                  {systemObject.mapped === true
-                    ? <p className='text-muted'><i className='system-object-icon icarus-terminal-scan' />Surface scanned</p>
-                    : <p><i className='system-object-icon icarus-terminal-scan' />Surface scan required</p>}
+              {showExploration === true &&
+                <>
+                  {Object.prototype.hasOwnProperty.call(systemObject, 'mapped') &&
+                    <>
+                      {systemObject.mapped === true
+                        ? (
+                          <p className='text-muted'><i className='system-object-icon icarus-terminal-scan' />Surface scanned</p>
+                          )
+                        : (
+                          <p><i className='system-object-icon icarus-terminal-scan' />Surface scan required</p>
+                          )}
+                    </>}
+                  {systemObject.isLandable ? <p><i className='system-object-icon icarus-terminal-planet-lander' /> Landable surface</p> : null}
+                  {systemObject.terraformingState && systemObject.terraformingState !== 'Not terraformable' && systemObject.terraformingState !== 'Terraformed' &&
+                    <p><i className='system-object-icon icarus-terminal-planet-terraformable' />Terraformable</p>}
+                  {systemObject.volcanismType !== 'No volcanism' ? <p className='text-no-wrap'><i className='system-object-icon icarus-terminal-planet-volcanic' />{systemObject.volcanismType}</p> : null}
+                  {systemObject?.signals?.biological > 0 && !systemObject?.biologicalGenuses &&
+                    <>
+                      {systemObject?.signals?.biological === 1 &&
+                        <p><i className='system-object-icon icarus-terminal-plant' />{systemObject?.signals?.biological} Biological Signal</p>}
+                      {systemObject?.signals?.biological > 1 &&
+                        <p><i className='system-object-icon icarus-terminal-plant' />{systemObject?.signals?.biological} Biological Signals</p>}
+                    </>}
+                  {systemObject.biologicalGenuses &&
+                    <>
+                      {systemObject.biologicalGenuses.map(genus =>
+                        <p key={`${systemObject.id}_bio-signal_${genus}`}><i className='system-object-icon icarus-terminal-plant' />{genus}</p>
+                      )}
+                    </>}
                 </>}
-                {systemObject.isLandable ? <p><i className='system-object-icon icarus-terminal-planet-lander' /> Landable surface</p> : null}
-                {systemObject.terraformingState && systemObject.terraformingState !== 'Not terraformable' && systemObject.terraformingState !== 'Terraformed' &&
-                  <p><i className='system-object-icon icarus-terminal-planet-terraformable' />Terraformable</p>}
-                {systemObject.volcanismType !== 'No volcanism' ? <p className='text-no-wrap'><i className='system-object-icon icarus-terminal-planet-volcanic' />{systemObject.volcanismType}</p> : null}
-                {systemObject?.signals?.biological > 0 && !systemObject?.biologicalGenuses && <>
-                  {systemObject?.signals?.biological === 1 &&
-                    <p><i className='system-object-icon icarus-terminal-plant' />{systemObject?.signals?.biological} Biological Signal</p>}
-                  {systemObject?.signals?.biological > 1 &&
-                    <p><i className='system-object-icon icarus-terminal-plant' />{systemObject?.signals?.biological} Biological Signals</p>}
-                </>}
-                {systemObject.biologicalGenuses && <>
-                  {systemObject.biologicalGenuses.map(genus =>
-                    <p key={`${systemObject.id}_bio-signal_${genus}`}><i className='system-object-icon icarus-terminal-plant' />{genus}</p>
-                  )}
-                </>}
-              </>}
 
               {systemObject.gravity
-                ? <p><span className='text-muted'>Gravity</span><br />{Math.max(0.01, Number(systemObject.gravity.toFixed(2)))}g
-                  {systemObject.gravity < 0.5 && ' (Low)'}
-                  {systemObject.gravity > 1.5 && ' (High)'}
-                </p>
-                : null}
+                ? (
+                  <p><span className='text-muted'>Gravity</span><br />{Math.max(0.01, Number(systemObject.gravity.toFixed(2)))}g
+                    {systemObject.gravity < 0.5 && ' (Low)'}
+                    {systemObject.gravity > 1.5 && ' (High)'}
+                  </p>
+                  )
+                : ''}
               {systemObject.radius && <p><span className='text-muted'>Radius</span><br />{systemObject.radius.toLocaleString(undefined, { maximumFractionDigits: 0 })} Km</p>}
               {systemObject.surfaceTemperature &&
                 <p>
@@ -416,10 +426,11 @@ function Inspector ({ systemObject }) {
             <div className='heading--with-underline'>
               <h3>Controlling faction</h3>
             </div>
-            {systemObject?.controllingFaction && <p>
-              <i className='system-object-icon icarus-terminal-system-authority' />
-              <CopyOnClick>{systemObject.controllingFaction}</CopyOnClick>
-            </p>}
+            {systemObject?.controllingFaction &&
+              <p>
+                <i className='system-object-icon icarus-terminal-system-authority' />
+                <CopyOnClick>{systemObject.controllingFaction}</CopyOnClick>
+              </p>}
             <p className='text-muted'><i className='system-object-icon icarus-terminal-power' />
               {systemObject.allegiance}
               {(systemObject.allegiance || systemObject.government) && ' '}
@@ -456,11 +467,12 @@ function Inspector ({ systemObject }) {
             <div className='heading--with-underline'>
               <h3>Orbital properties</h3>
             </div>
-            {systemObject?.rotationalPeriod !== undefined && <p>
-              <span className='text-muted'>Rotational period</span>
-              <br />{systemObject.rotationalPeriod}
-              {systemObject?.rotationalPeriodTidallyLocked && <><br />Tidally locked</>}
-            </p>}
+            {systemObject?.rotationalPeriod !== undefined &&
+              <p>
+                <span className='text-muted'>Rotational period</span>
+                <br />{systemObject.rotationalPeriod}
+                {systemObject?.rotationalPeriodTidallyLocked && <><br />Tidally locked</>}
+              </p>}
             {systemObject?.orbitalEccentricity !== undefined && <p><span className='text-muted'>Orbital eccentricity</span><br />{systemObject.orbitalEccentricity}</p>}
             {systemObject?.orbitalInclination !== undefined && <p><span className='text-muted'>Orbital inclination</span><br />{systemObject.orbitalInclination}</p>}
             {systemObject?.orbitalPeriod !== undefined && <p><span className='text-muted'>Orbital period</span><br />{systemObject.orbitalPeriod}</p>}
@@ -469,7 +481,6 @@ function Inspector ({ systemObject }) {
             {systemObject?.argOfPeriapsis !== undefined && <p><span className='text-muted'>Argument of periapsis</span><br />{systemObject.argOfPeriapsis}</p>}
           </div>}
       </div>
-
     </>
   )
 }

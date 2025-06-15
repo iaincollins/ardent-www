@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useReducer } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import {
   API_BASE_URL,
   COMMODITY_FILTER_MAX_DAYS_AGO_DEFAULT,
@@ -355,13 +354,17 @@ export default ({ disabled = false, commodities = [], commodity }) => {
         />
         <small style={{ display: 'block', opacity: 1, textAlign: 'right', paddingTop: '.15rem', height: '1rem' }}>
           {locationRef.current?.dataset?.value
-            ? <span onClick={() => router.push(`/system/${locationRef.current?.dataset?.value}`)}>
-              <span className='muted'>SYS ADDR</span>
-              {' '}
-              <span style={{ borderBottom: '1px dotted var(--color-primary-10' }}>{locationRef.current?.dataset?.value}</span>
-              <i className='icarus-terminal-chevron-right' />
-            </span>
-            : <span className='muted' style={{ paddingRight: '1rem' }}>...</span>}
+            ? (
+              <span onClick={() => router.push(`/system/${locationRef.current?.dataset?.value}`)}>
+                <span className='muted'>SYS ADDR</span>
+                {' '}
+                <span style={{ borderBottom: '1px dotted var(--color-primary-10' }}>{locationRef.current?.dataset?.value}</span>
+                <i className='icarus-terminal-chevron-right' />
+              </span>
+              )
+            : (
+              <span className='muted' style={{ paddingRight: '1rem' }}>...</span>
+              )}
         </small>
         <label>
           <span className='form-options__label-text'>Distance</span>

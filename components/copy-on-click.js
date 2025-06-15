@@ -10,7 +10,7 @@ export default function CopyOnClick ({ children, prepend, append }) {
       document.execCommand('copy')
       navigator.clipboard.writeText(text)
       notification(() => <p><span className='muted'>Copied text</span><br /><span className='text-no-transform'>{`"${text}"`}</span></p>)
-      getSelection().removeAllRanges()
+      window.getSelection().removeAllRanges()
     } catch { /* don't care */ }
   }
   return (

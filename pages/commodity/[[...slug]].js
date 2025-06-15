@@ -218,11 +218,6 @@ export default () => {
   )
 }
 
-async function getCommodity (commodityName) {
-  const res = await fetch(`${API_BASE_URL}/v2/commodity/name/${commodityName}`)
-  return (res.status === 200) ? await res.json() : null
-}
-
 async function getExports (commodityName) {
   try {
     const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/exports?${apiQueryOptions()}`
@@ -288,7 +283,7 @@ function apiQueryOptions () {
 function parseQueryString () {
   const obj = {}
   window.location.search.replace(
-    new RegExp('([^?=&]+)(=([^&]*))?', 'g'),
+    /([^?=&]+)(=([^&]*))?/g,
     ($0, $1, $2, $3) => { obj[$1] = decodeURIComponent($3) }
   )
   return obj

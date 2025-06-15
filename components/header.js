@@ -327,15 +327,17 @@ export default () => {
           <i className={`icon icarus-terminal-chevron-${menuVisible ? 'up' : 'down'}`} />
         </button>
         <div className='header__menu is-visible-mobile' style={{ visibility: menuVisible ? 'visible' : 'hidden' }}>
-          <Link href='/commodity/advancedcatalysers' className='--no-hover'><button aria-label='Commodities' className='header__menu-item'>
-            <i className='icon icarus-terminal-cargo' />
-            Commodities
-          </button>
+          <Link href='/commodity/advancedcatalysers' className='--no-hover'>
+            <button aria-label='Commodities' className='header__menu-item'>
+              <i className='icon icarus-terminal-cargo' />
+              Commodities
+            </button>
           </Link>
-          <Link href='/about' className='--no-hover'><button aria-label='Commodities' className='header__menu-item'>
-            <i className='icon icarus-terminal-info' />
-            About
-          </button>
+          <Link href='/about' className='--no-hover'>
+            <button aria-label='Commodities' className='header__menu-item'>
+              <i className='icon icarus-terminal-info' />
+              About
+            </button>
           </Link>
           <button aria-label='Toggle Fullscreen' className='--no-hover header__menu-item' onClick={() => toggleFullScreen()}>
             <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />

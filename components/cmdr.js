@@ -218,7 +218,7 @@ export default () => {
       {signedIn === false &&
         <>
           {maintanceMode === true
-            ? <>
+            ? (
               <div className='home__sign-in-placeholder'>
                 <p className='text-center'>
                   <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning muted' />
@@ -231,8 +231,8 @@ export default () => {
                   For more information refer to the offical <a target='_blank' href='https://forums.frontier.co.uk/forums/elite-dangerous-news/' rel='noreferrer'>Elite Dangerous News Forum</a>
                 </p>
               </div>
-            </>
-            : <>
+              )
+            : (
               <div className='home__sign-in-placeholder'>
                 <p className='text-center'>
                   <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning muted' />
@@ -246,7 +246,7 @@ export default () => {
                   </button>
                 </form>
               </div>
-            </>}
+              )}
         </>}
     </div>
   )

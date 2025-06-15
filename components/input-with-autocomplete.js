@@ -17,11 +17,11 @@ export default ({
   const resultsRef = useRef()
   const [focus, setFocus] = useState(false)
   const [_autoCompleteResults, _setAutoCompleteResults] = useState()
-  const [highlightedResult, setHighlightedResult] = useState()
+  // const [highlightedResult, setHighlightedResult] = useState()
 
   useEffect(() => {
     _setAutoCompleteResults(autoCompleteResults)
-    setHighlightedResult(0)
+    // setHighlightedResult(0)
     if (resultsRef?.current?.scrollTop) resultsRef.current.scrollTop = 0
   }, [autoCompleteResults])
 
