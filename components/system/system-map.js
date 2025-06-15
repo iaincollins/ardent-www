@@ -134,7 +134,6 @@ module.exports = ({
                 {systemStatus.allegiance}
                 {(systemStatus.allegiance || systemStatus.government) && ' '}
                 {systemStatus.government}
-                {(systemStatus.allegiance || systemStatus.government) && ' Government'}
               </span>}
 
             {systemStatus.economy && systemStatus.economy.primary && systemStatus.economy.primary !== 'None' &&

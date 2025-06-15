@@ -361,6 +361,6 @@
     left: 4.6rem;
     right: 1rem;
     height: calc(100% - 50% - 5rem);
-    border-top: .2rem solid var(--color-primary-7);
+    border-top: .2rem solid var(--color-primary-9);
   }
 }

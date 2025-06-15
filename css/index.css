@@ -358,7 +358,7 @@ a.button--small:hover {
   padding-bottom: 1rem;
   display: block;
   background: linear-gradient(to top, var(--color-primary-3), var(--color-primary-0) 90%);
-  border-bottom: .15rem solid var(--color-primary-7);
+  border-bottom: .15rem solid var(--color-primary-9);
   margin-bottom: .75rem;
 }
 

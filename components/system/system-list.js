@@ -179,7 +179,7 @@ function Inspector ({ systemObject }) {
   if (systemObject?.refuel === 1) services.push('Refuel')
   if (systemObject?.repair === 1) services.push('Repair')
   if (systemObject?.restock === 1) services.push('Restock')
-  if (systemObject?.searchAndRescue === 1) services.push('Search & Rescue')
+  if (systemObject?.searchAndRescue === 1) services.push('Search & rescue')
   if (systemObject?.shipyard === 1) services.push('Shipyard')
   if (systemObject?.technologyBroker === 1) services.push('Technology broker')
   if (systemObject?.tuning === 1) services.push('Tuning')
@@ -382,6 +382,16 @@ function Inspector ({ systemObject }) {
                     <p key={`inspector-station-${station.stationName}`} className='text-no-wrap'>
                       <StationIcon station={station}>
                         <CopyOnClick>{station.stationName}</CopyOnClick>
+                        <small>
+                          <br />
+                          {station?.primaryEconomy !== undefined && station?.primaryEconomy !== null &&
+                            <>
+                              {station.primaryEconomy}
+                              {station?.secondaryEconomy !== undefined && station?.secondaryEconomy !== null && station?.secondaryEconomy !== station?.primaryEconomy &&
+                                <> &amp; {station.secondaryEconomy}</>}
+                            </>}
+                          {station?.stationType === 'FleetCarrier' && 'Fleet Carrier'}
+                        </small>
                       </StationIcon>
                     </p>
                   ))}
@@ -458,7 +468,7 @@ function Inspector ({ systemObject }) {
               <h3>Services</h3>
             </div>
             <ul>
-              {services.map((service, i) => <li key={`service_${service}_${i}`}>{service}</li>)}
+              {services.map((service, i) => <li key={`service_${service}_${i}`}><span className='text-uppercase'>{service}</span></li>)}
             </ul>
           </div>}
 
