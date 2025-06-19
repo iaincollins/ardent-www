@@ -47,7 +47,7 @@ export default function Page (props) {
     <Layout
       loading={commodities === undefined}
       loadingText='Loading commodities'
-      title={categories?.length === 1 ? `${categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category => category)} in Elite Dangerous` : 'Commodities in Elite Dangerous'}
+      title={categories?.length === 1 ? `${categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category => category)} commodities - Elite Dangerous` : 'Commodities in Elite Dangerous'}
       description={categories?.length === 1 ? `Where to buy and sell ${categories.filter(category => category.toLowerCase() !== 'nonmarketable').map(category => category)} in Elite Dangerous` : 'Where to buy and sell commodities in Elite Dangerous'}
     >
       <Head>

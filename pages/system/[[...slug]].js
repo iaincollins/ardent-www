@@ -43,6 +43,7 @@ export default () => {
   const [bodiesInSystem, setBodiesInSystem] = useState()
   const [systemStatus, setSystemStatus] = useState()
   const [inspector, setInspector] = useState()
+  const [title, setTitle] = useState('')
 
   // TODO Refactor to read path from slug
   const views = ['', 'list', 'exports', 'imports', 'services', 'nearby']
@@ -63,7 +64,7 @@ export default () => {
       const view = router.query?.slug?.[1] ?? ''
       if (activeViewIndex !== views.indexOf(view)) setInspector(undefined) // Hide inspector when switching views
       setActiveViewIndex(views.indexOf(view))
-
+      
       if (view) {
         playLoadingSound()
       } else {
@@ -91,6 +92,27 @@ export default () => {
 
       const _system = await getSystem(systemIdentifer)
       if (_system) {
+        let _title = `${_system.systemName} system - Elite Dangerous`
+        switch (view) {
+          case 'list':
+            _title =  `${_system.systemName} planets and stations- Elite Dangerous`
+            break;
+          case 'exports':
+            _title =  `${_system.systemName} exported commodities - Elite Dangerous`
+            break;
+          case 'imports':
+            _title =  `${_system.systemName} imported commodities - Elite Dangerous`
+            break;
+          case 'services':
+            _title =  `${_system.systemName} nearest services - Elite Dangerous`
+            break;
+          case 'nearby':
+            _title =  `${_system.systemName} nearest systems - Elite Dangerous`
+            break;
+          default:
+        }
+        setTitle(_title)
+
         mostRecentUpdatedAt = _system.updatedAt
         setLastUpdatedAt(mostRecentUpdatedAt)
         const systemCoordinates = [_system.systemX, _system.systemY, _system.systemZ]
@@ -291,7 +313,7 @@ export default () => {
       loading={loading}
       loadingText='Loading system data'
       loadingSound={false}
-      title={system ? `${system.systemName} system` : null}
+      title={title}
       description={system ? `Data for the system ${system.systemName} in Elite Dangerous` : null}
       navigation={
         [
@@ -331,7 +353,7 @@ export default () => {
       navigationOverlaid={!!((views[activeViewIndex] === '' && system !== null))} // Overlay navigation for map view
     >
       <Head>
-        <link rel='canonical' href={`https://ardent-insight.com/system/${system?.systemName}/${views[activeViewIndex]}`} />
+        <link rel='canonical' href={`https://ardent-insight.com/system/${system?.systemAddress}/${views[activeViewIndex]}`} />
       </Head>
       {system === null &&
         <>
