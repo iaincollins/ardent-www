@@ -61,11 +61,12 @@ export default () => {
     deleteCache('cmdrNearestServices')
   }
 
-  const refreshCmdrProfile = async () => {
+  const updateCmdrProfile = async () => {
+    // Check if is signed in
     const _cmdrProfile = await getCmdrInfo('profile')
-    const isSignedIn = !!(_cmdrProfile?.commander?.id)
-    setSignedIn(isSignedIn)
-    if (isSignedIn) {
+    const _signedIn = !!(_cmdrProfile?.commander?.id)
+    setSignedIn(_signedIn)
+    if (_signedIn) {
       setMaintanceMode(false)
       setCmdrProfile(_cmdrProfile)
       saveCache('cmdrProfile', _cmdrProfile)
@@ -81,21 +82,7 @@ export default () => {
   useEffect(() => {
     if (cmdrProfile !== undefined) setSignedIn(true)
     ; (async () => {
-      // If we can get a profile, they are signed in
-      const _cmdrProfile = await getCmdrInfo('profile')
-      const isSignedIn = !!(_cmdrProfile?.commander?.id)
-      setSignedIn(isSignedIn)
-      if (isSignedIn) {
-        setMaintanceMode(false)
-        setCmdrProfile(_cmdrProfile)
-        saveCache('cmdrProfile', _cmdrProfile)
-        updateFleetCarrier()
-        updateNearestServices(_cmdrProfile)
-      } else {
-        const _maintanceMode = _cmdrProfile?.status === 418
-        setMaintanceMode(_maintanceMode)
-        clearCmdrCache()
-      }
+      await updateCmdrProfile()
       setCsrfToken(await getCsrfToken())
     })()
   }, [])
@@ -105,7 +92,7 @@ export default () => {
       {signedIn === true &&
         <>
           {cmdrProfile?.commander &&
-            <div onClick={() => refreshCmdrProfile()}>
+            <div onClick={() => updateCmdrProfile()}>
               {cmdrProfile?.commander?.name &&
                 <p>
                   CMDR {cmdrProfile.commander.name}<br />
