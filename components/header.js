@@ -473,7 +473,7 @@ const SettingsDialog = () => {
   const [color, setColor] = useState(currentColor)
 
   return (
-    <div style={{ minWidth: '8.5rem', minHeight: '11rem', paddingLeft: '.5rem', paddingTop: '.5rem' }}>
+    <div style={{ minWidth: '9rem', minHeight: '11.5rem', paddingLeft: '.5rem', paddingTop: '.5rem' }}>
       <HexColorPicker
         color={color} onChange={(hexColor) => {
           setColor(hexColor)
@@ -484,7 +484,7 @@ const SettingsDialog = () => {
         }}
       />
       <button
-        className='button--small' style={{ marginTop: '.5rem', fontSize: '1rem', width: '8rem' }} onClick={(e) => {
+        className='button--small' style={{ marginTop: '.5rem', fontSize: '1rem', width: '8.5rem' }} onClick={(e) => {
           const defaultHue = window.getComputedStyle(document.documentElement).getPropertyValue('--default-color-primary-hue')
           const defaultSaturation = window.getComputedStyle(document.documentElement).getPropertyValue('--default-color-primary-saturation')
           document.documentElement.style.setProperty('--color-primary-hue', defaultHue)
