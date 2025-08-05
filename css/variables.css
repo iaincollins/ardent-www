@@ -1,9 +1,6 @@
 :root {
-  /*** Start Origional Theme ***/
-  --color-primary-hue: 22;
-  --color-primary-saturation: 0%;
-  --color-primary-lightness: 50%;
-  /*** End Origional Theme ***/
+  --default-color-primary-hue: 22;
+  --default-color-primary-saturation: 80%;
 
   /*** Begin Default Theme ***/
   --color-primary-hue: 25;

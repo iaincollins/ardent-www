@@ -36,7 +36,7 @@ module.exports = ({ nearbySystems }) => {
             className: 'no-wrap is-hidden-mobile',
             render: (v) => v < 1
               ? '< 1 ly'
-              : <span class='text-primary'>{Math.floor(v).toLocaleString()} ly</span>
+              : <span className='text-primary'>{Math.floor(v).toLocaleString()} ly</span>
           }
         ]}
         data={nearbySystems}

@@ -224,7 +224,7 @@ export default () => {
                 <p className='text-center' style={{ opacity: 0.5 }}>
                   <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning text-negative' />
                   <br />
-                  <span class='text-negative text-uppercase'>Anonymous access</span>
+                  <span className='text-negative text-uppercase'>Anonymous access</span>
                 </p>
                 <p className='text-center'>Sign in to access all services</p>
                 <form method='GET' action={SIGN_IN_URL}>

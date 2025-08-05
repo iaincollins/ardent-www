@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { HexColorPicker } from 'react-colorful'
 import { getCommoditiesWithPricing, listOfCommoditiesAsArray } from 'lib/commodities'
 import commodities from 'lib/commodities/commodities'
-import { NavigationContext } from 'lib/context'
+import { NavigationContext, DialogContext } from 'lib/context'
 import { API_BASE_URL } from 'lib/consts'
 import { eliteDateTime } from 'lib/utils/dates'
 
@@ -21,6 +22,7 @@ export default () => {
   const [searchResultsVisible, setSearchResultsVisible] = useState(false)
   const [menuVisible, setMenuVisible] = useState(false)
   const [dateTime, setDateTime] = useState()
+  const [, setDialog] = useContext(DialogContext)
 
   const toggleMenu = () => setMenuVisible(!menuVisible)
 
@@ -45,7 +47,7 @@ export default () => {
     return () => clearInterval(dateTimeInterval)
   }, [])
 
-  async function onSearchInputChange (e) {
+  async function onSearchInputChange(e) {
     const searchText = e.target.value.trim()
 
     if (searchText.length === 0) {
@@ -74,9 +76,9 @@ export default () => {
         }
       })
 
-      ; (matchingCommodities.length > 0)
-        ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
-        : setCommoditySearchResults(undefined)
+        ; (matchingCommodities.length > 0)
+          ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
+          : setCommoditySearchResults(undefined)
     } catch (e) { }
 
     try {
@@ -320,9 +322,17 @@ export default () => {
         </div>
         <Link href='/' className='--no-hover'><button aria-label='Home' className='button'><i className='icon icarus-terminal-home' /></button></Link>
         <Link href='/commodity/advancedcatalysers' className='--no-hover is-hidden-mobile'><button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button></Link>
-        {/* <button aria-label='Settings' className='button --no-hover is-hidden-mobile'>
+        <button
+          aria-label='Settings' className='button --no-hover is-hidden-mobile'
+          onClick={() =>
+            setDialog({
+              title: 'Settings',
+              contents: <SettingsDialog />,
+              visible: true
+            })}
+        >
           <i className='icon icarus-terminal-settings' />
-        </button> */}
+        </button>
         <button aria-label='Toggle Fullscreen' className='button --no-hover is-hidden-mobile' onClick={() => toggleFullScreen()}>
           <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
         </button>
@@ -336,6 +346,15 @@ export default () => {
               Commodities
             </button>
           </Link>
+          <button aria-label='Settings' className='header__menu-item' onClick={() =>
+            setDialog({
+              title: 'Settings',
+              contents: <SettingsDialog />,
+              visible: true
+            })}>
+            <i className='icon icarus-terminal-settings' />
+            Settings
+          </button>
           <Link href='/about' className='--no-hover'>
             <button aria-label='Commodities' className='header__menu-item'>
               <i className='icon icarus-terminal-info' />
@@ -412,7 +431,7 @@ export default () => {
   )
 }
 
-function isFullScreen () {
+function isFullScreen() {
   if (typeof document === 'undefined') return false
 
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
@@ -422,7 +441,7 @@ function isFullScreen () {
   }
 }
 
-async function toggleFullScreen () {
+async function toggleFullScreen() {
   if (isFullScreen()) {
     if (document.cancelFullScreen) {
       document.cancelFullScreen()
@@ -444,4 +463,120 @@ async function toggleFullScreen () {
     }
     return true
   }
+}
+
+const SettingsDialog = () => {
+  const hue = window.getComputedStyle(document.documentElement).getPropertyValue('--color-primary-hue')
+  const saturation = window.getComputedStyle(document.documentElement).getPropertyValue('--color-primary-saturation')
+  const currentColor = hsl2hex(hue, saturation.replace('%', ''), 50)
+
+  const [color, setColor] = useState(currentColor)
+
+  return (
+    <div style={{ minWidth: '8.5rem', minHeight: '11rem', paddingLeft: '.5rem', paddingTop: '.5rem' }}>
+      <HexColorPicker
+        color={color} onChange={(hexColor) => {
+          setColor(hexColor)
+          const { h, s, l } = hex2hsl(hexColor)
+          document.documentElement.style.setProperty('--color-primary-hue', h)
+          document.documentElement.style.setProperty('--color-primary-saturation', `${s}%`)
+          window.localStorage.setItem('theme-settings', JSON.stringify({ hue: h, saturation: s, timestamp: Date.now() }))
+        }}
+      />
+      <button
+        className='button--small' style={{ marginTop: '.5rem', fontSize: '1rem', width: '8rem' }} onClick={(e) => {
+          const defaultHue = window.getComputedStyle(document.documentElement).getPropertyValue('--default-color-primary-hue')
+          const defaultSaturation = window.getComputedStyle(document.documentElement).getPropertyValue('--default-color-primary-saturation')
+          document.documentElement.style.setProperty('--color-primary-hue', defaultHue)
+          document.documentElement.style.setProperty('--color-primary-saturation', defaultSaturation)
+          window.localStorage.removeItem('theme-settings')
+          setColor(hsl2hex(defaultHue, defaultSaturation.replace('%', ''), 50))
+        }}
+      >RESET
+      </button>
+    </div>
+  )
+}
+
+const hex2rgb = (hex) => {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return { r, g, b }
+}
+
+const rgb2hex = (r, g, b) => {
+  const rgb = (r << 16) | (g << 8) | b
+  return '#' + rgb.toString(16).padStart(6, 0)
+}
+
+const hex2hsl = (hex) => {
+  // Convert hex to RGB first
+  const r = parseInt(hex.slice(1, 3), 16) / 255
+  const g = parseInt(hex.slice(3, 5), 16) / 255
+  const b = parseInt(hex.slice(5, 7), 16) / 255
+
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+  let h; let s; let l = (max + min) / 2
+
+  if (max === min) {
+    h = s = 0 // achromatic
+  } else {
+    const d = max - min
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0)
+        break
+      case g:
+        h = (b - r) / d + 2
+        break
+      case b:
+        h = (r - g) / d + 4
+        break
+    }
+    h /= 6
+  }
+
+  // Convert to degrees and percentages
+  h = Math.round(h * 360)
+  s = Math.round(s * 100)
+  l = Math.round(l * 100)
+
+  return { h, s, l }
+}
+
+const hsl2hex = (h, s, l) => {
+  h /= 360
+  s /= 100
+  l /= 100
+
+  let r, g, b
+
+  if (s === 0) {
+    r = g = b = l // achromatic
+  } else {
+    const hue2rgb = (p, q, t) => {
+      if (t < 0) t += 1
+      if (t > 1) t -= 1
+      if (t < 1 / 6) return p + (q - p) * 6 * t
+      if (t < 1 / 2) return q
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
+      return p
+    }
+
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s
+    const p = 2 * l - q
+    r = hue2rgb(p, q, h + 1 / 3)
+    g = hue2rgb(p, q, h)
+    b = hue2rgb(p, q, h - 1 / 3)
+  }
+
+  const toHex = (c) => {
+    const hex = Math.round(c * 255).toString(16)
+    return hex.length === 1 ? '0' + hex : hex
+  }
+
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`
 }

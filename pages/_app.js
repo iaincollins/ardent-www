@@ -27,6 +27,13 @@ export default ({ Component, pageProps }) => {
 
   useEffect(() => {
     document.body.addEventListener('click', handleOnClick)
+    try {
+      const themeSettings = JSON.parse(window.localStorage.getItem('theme-settings'))
+      if (themeSettings) {
+        document.documentElement.style.setProperty('--color-primary-hue', themeSettings.hue)
+        document.documentElement.style.setProperty('--color-primary-saturation', `${themeSettings.saturation}%`)
+      }
+    } catch (e) {}
     return () => {
       document.body.removeEventListener('click', handleOnClick)
     }

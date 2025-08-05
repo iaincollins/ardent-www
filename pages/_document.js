@@ -50,6 +50,14 @@ table.data-table--animated > tbody > tr:not(.rc-table-expanded-row),
 
  if (isSafari) document.documentElement.setAttribute("data-browser", "safari")
  if (isFirefox) document.documentElement.setAttribute("data-browser", "firefox")
+
+ try {
+  const themeSettings = JSON.parse(window.localStorage.getItem('theme-settings'))
+  if (themeSettings) {
+    document.documentElement.style.setProperty('--color-primary-hue', themeSettings.hue)
+    document.documentElement.style.setProperty('--color-primary-saturation', \`\${themeSettings.saturation}%\`)
+  }
+} catch (e) {}
 </script>
           `.trim()
           }}

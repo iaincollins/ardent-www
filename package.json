@@ -1,6 +1,6 @@
 {
   "name": "ardent-www",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Ardent Insight Website",
   "main": "index.js",
   "scripts": {
@@ -37,6 +37,7 @@
     "rc-table": "^7.32.1",
     "react": "^18.2.0",
     "react-collapsible": "^2.10.0",
+    "react-colorful": "^5.6.1",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.5.2",
     "react-markdown": "^9.0.1",
