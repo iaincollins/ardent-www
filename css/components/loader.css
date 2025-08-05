@@ -48,17 +48,8 @@
   left: 0;
   right: 0;
   background: radial-gradient(rgba(0,0,0,.5), rgba(0,0,0,0) 50%);
-  xbackdrop-filter: blur(.05rem);
   border-radius: .2rem;
   pointer-events: none;
-  xanimation-delay: .5s;
-  /*
-  animation-iteration-count: 1;
-  animation-timing-function: ease-in-out;
-  animation-fill-mode: forwards;
-  animation-duration: .5s;
-  animation-name: loader__animation-fade-in;
-  */
   opacity: 0;
   transition: .5s ease-in-out;
 }

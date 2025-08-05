@@ -1,8 +1,8 @@
 .button {
   position: relative;
-  background: transparent;
-  color: var(--color-primary-9);
-  border: .15rem solid var(--color-primary-9);
+  background: var(--color-primary-2);
+  color: var(--color-primary-5);
+  border: .15rem solid var(--color-primary-2);
   border-color: transparent;
   border-radius: .1rem;
   font-size: 1rem;
@@ -12,7 +12,7 @@
   margin: .25rem;
   padding: .25rem 1rem;
   pointer-events: all;
-  text-shadow: 1.1px 0 .5rem var(--color-primary-6), -1.1px 0 .5rem var(--color-primary-6);
+  text-shadow: 1.1px 0 1.5rem, -1.1px 0 1.5rem;
   text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -34,7 +34,6 @@ a.button {
   inset: 0;
   clip-path: polygon(0 0,calc(100% - 1.00rem) 0,100% 1.00rem,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem));
   z-index: -2;
-  Xbackdrop-filter: blur(.5rem);
 }
 
 .button::after {
@@ -42,15 +41,16 @@ a.button {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--color-primary-8);
   border-radius: .2rem;
   clip-path: polygon(0 0,calc(100% - 1.00rem) 0,100% 1.00rem,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem),0 0,.2rem  .2rem ,.2rem calc(100% - 1.00rem - 0.08rem),calc(1.00rem + 0.08rem) calc(100% - .2rem),calc(100% - .2rem) calc(100% - .2rem),calc(100% - .2rem) calc(1.00rem + 0.08rem),calc(100% - 1.00rem - 0.08rem) .2rem,.2rem .2rem);
 }
 
 .button--active,
 .button:hover {
-  color: black;
+  background-color: var(--color-primary-5);
+  color: var(--color-primary-1);
   text-shadow: 0 0 4rem rgba(0,0,0,1), 0 0 3rem rgba(0,0,0,1), 0 0 2rem rgba(0,0,0,1), 0 0 .25rem rgba(0,0,0,.5);
+  filter: none !important;
 }
 
 .button--active::after,
@@ -59,7 +59,7 @@ a.button {
   position: absolute;
   inset: 0;
   clip-path: polygon(0 0,calc(100% - 1.00rem) 0,100% 1.00rem,100% 100%,1.00rem 100%,0 calc(100% - 1.00rem));
-  background-color: var(--color-primary-10);
+
 }
 
 .button .icon {

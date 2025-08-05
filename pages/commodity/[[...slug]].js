@@ -197,11 +197,11 @@ export default () => {
             <TabList>
               <Tab>
                 <i style={{ lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative' }} className='icarus-terminal-cargo-export' />
-                Exp<span className='is-hidden-mobile'>orters</span>
+                <span className='is-hidden-mobile'>Exporters</span>
               </Tab>
               <Tab>
                 <i style={{ lineHeight: '1.5rem', fontSize: '1.5rem', top: '-.15rem', position: 'relative' }} className='icarus-terminal-cargo-import' />
-                Imp<span className='is-hidden-mobile'>orters</span>
+                <span className='is-hidden-mobile'>Importers</span>
               </Tab>
             </TabList>
             <TabPanel>

@@ -5,9 +5,8 @@
 
 html {
   font-family: sans-serif;
-  background: white;
+  background: var(--color-primary-0);
   color: var(--color-text);
-  filter: contrast(1.3);
   overflow: hidden;
   user-select: none;
   text-rendering: optimizeLegibility;
@@ -71,15 +70,15 @@ h3,
 h4, 
 h5 {
   position: relative;
-  color: var(--color-primary-1);
+  color: var(--color-primary-5);
   font-family: "Jura", sans-serif;
   padding-bottom: .1rem;
   padding-left: .25rem;
   padding-right: .5rem;
   z-index: 1;
-  background: var(--color-primary-9);
-  border-right: 0.01rem solid var(--color-primary-9);
-  text-shadow: 0 0 .8rem rgba(0,0,0,.8);  
+  background: var(--color-primary-2);
+  border-right: 0.01rem solid var(--color-primary-2);
+  text-shadow: 0 0 .8rem; 
   display: inline-block;
 }
 
@@ -125,16 +124,24 @@ h2 {
 .heading--with-underline {
   position: relative;
   display: inline-block;
-  box-shadow: inset 0 -1px var(--color-primary-9);
-  border-bottom: .25rem solid var(--color-primary-9);
+  box-shadow: inset 0 -1px var(--color-primary-2);
+  border-bottom: .25rem solid var(--color-primary-2);
   margin: .5rem 0 0 0;
   width: 100%;
   max-width: 45rem;
   mask: linear-gradient(90deg, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 90%);
 }
 
-.heading--with-underline h3 {
+.heading--with-underline h2 {
+  padding-top: .15rem;
   padding-bottom: 0;
+  color: var(--color-text-light);
+}
+
+.heading--with-underline h3 {
+  padding-top: .15rem;
+  padding-bottom: 0;
+  padding-left: .4rem;
 }
 
 h3,
@@ -163,7 +170,7 @@ table {
 
 small {
   text-transform: uppercase;
-  color: var(--color-primary-8);
+  color: var(--color-primary-5);
   font-size: .8rem;
 }
 

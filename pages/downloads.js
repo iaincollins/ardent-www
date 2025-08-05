@@ -72,8 +72,9 @@ export default () => {
         </p>
         {databases && databases.map(database =>
           <div key={database.name}>
-            <h3>{database.name}</h3>
-
+            <div className='heading--with-underline'>
+              <h3>{database.name}</h3>
+            </div>
             <p>
               <em>{database.description}</em>
             </p>

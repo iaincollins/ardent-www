@@ -29,13 +29,12 @@
 
 .data-table--interactive > .rc-table-container > .rc-table-content > table > thead > tr > th,
 .data-table--sticky-heading > .rc-table-container > .rc-table-content > table > thead > tr > th {
-  background: linear-gradient(to bottom, var(--color-primary-1), var(--color-primary-2));
+  background: linear-gradient(to bottom, var(--color-primary-1), var(--color-primary-1));
 }
 
 .data-table th {
-  color: #111;
   color: var(--color-text);
-  border-bottom: .15rem solid var(--color-primary-8);
+  border-bottom: .15rem solid var(--color-primary-4);
   padding-top: .7rem;
   padding-bottom: .7rem;
   text-transform: uppercase;
@@ -59,15 +58,15 @@
 
 .data-table tr.rc-table-row td {
   margin-bottom: .5rem;
-  border-top: .25rem solid #111;
+  border-top: .25rem solid var(--color-primary-0);
 }
 
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td,
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td > *,
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])):hover td,
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])):hover td > * {
-  background: var(--color-primary-9) !important;
-  color: var(--color-primary-0);
+  background: var(--color-table-row-selected-frame) !important;
+  color: var(--color-primary-1);
   border-bottom: none;
 }
 
@@ -75,13 +74,13 @@
 .data-table tr.data-table__row--selected td > *,
 .data-table tr.data-table__row--selected td small,
 .data-table tr.data-table__row--selected td i {
-  background: var(--color-primary-9) !important;
-  color: var(--color-primary-0) !important;
+  background: var(--color-table-row-selected-frame) !important;
+  color: var(--color-primary-1) !important;
 }
 
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td a,
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td small {
-  color: var(--color-text-dark) !important;
+  color: var(--color-primary-1) !important;
 }
 
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) .counter--table-counter {
@@ -94,9 +93,9 @@
 
 .data-table tr.rc-table-row + tr.rc-table-expanded-row > td {
   box-shadow: 0 0 2rem 2rem rgba(0,0,0,.25) inset;
-  border-left: .2rem solid var(--color-primary-9);
-  border-right: .2rem solid var(--color-primary-9);
-  border-bottom: .2rem solid var(--color-primary-9);
+  border-left: .2rem solid var(--color-table-row-selected-frame);
+  border-right: .2rem solid var(--color-table-row-selected-frame);
+  border-bottom: .2rem solid var(--color-table-row-selected-frame);
   background: var(--color-table-background) !important;
   padding: 0 .25rem .25rem .25rem;
 }
@@ -115,8 +114,9 @@
 table.data-table--mini > tbody > tr > td,
 .data-table--mini > .rc-table-container > .rc-table-content > table > tbody > tr > td {
   background: none;
-  border: none !important;
   font-size: .9rem;
+  margin-bottom: .5rem;
+  border-top: .25rem solid var(--color-primary-0);
 }
 
 .data-table--compact {
@@ -140,13 +140,11 @@ table.data-table--compact > tbody > tr > td,
 
 table.data-table--striped > tbody > tr:nth-child(odd of .rc-table-row) > td,
 .data-table--striped > .rc-table-container > .rc-table-content > table > tbody > tr:nth-child(odd of .rc-table-row) > td {
-  background: rgba(255,255,255,.05);
   background: var(--color-table-row);
 }
 
 table.data-table--striped > tbody > tr:nth-child(even of .rc-table-row) > td,
 .data-table--striped > .rc-table-container > .rc-table-content > table > tbody > tr:nth-child(even of .rc-table-row) > td {
-  background: rgba(255,255,255,.1);
   background: var(--color-table-row-alt);
 }
 
@@ -154,7 +152,6 @@ table.data-table--interactive > tbody > tr.rc-table-row:hover > td,
 table.data-table--striped.data-table--interactive > tbody > tr.rc-table-row:hover > td,
 .data-table--interactive > .rc-table-container > .rc-table-content > table > tbody > tr.rc-table-row:hover > td,
 .data-table--striped.data-table--interactive > .rc-table-container > .rc-table-content > table > tbody > tr.rc-table-row:hover > td {
-  background: rgba(255,255,255,.15);
   background: var(--color-table-row-hover);
 }
 

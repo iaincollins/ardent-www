@@ -91,7 +91,7 @@ module.exports = ({
         </div>
       </div>
       <p className='text-center' style={{ marginBottom: 0 }}>
-        <small className='text-center'>Station orbital locations approximate based on latest telemetry</small>
+        <small className='text-center'>Station orbital locations approximate</small>
       </p>
     </div>
   )
@@ -214,7 +214,6 @@ function Inspector ({ systemObject }) {
                     {systemObject.primaryEconomy}
                     {systemObject?.secondaryEconomy !== undefined && systemObject?.secondaryEconomy !== null && systemObject?.secondaryEconomy !== systemObject?.primaryEconomy &&
                       <> &amp; {systemObject.secondaryEconomy}</>}
-                    {' economy'}
                   </>}
                 {systemObject?.stationType === 'FleetCarrier' && 'Fleet Carrier'}
               </small>

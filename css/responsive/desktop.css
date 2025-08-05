@@ -26,6 +26,7 @@
     padding-left: .1rem;
     padding-right: .35rem;
     overflow: scroll;
+    background: linear-gradient(to left, var(--color-primary-1), transparent);
   }
 
   .layout__content-wrapper {

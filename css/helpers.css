@@ -6,10 +6,6 @@
   opacity: .75;
 }
 
-.muted-2 {
-  opacity: .5;
-}
-
 .transparent {
   opacity: 0;
 }
@@ -48,7 +44,7 @@
 }
 
 .text-muted {
-  color: var(--color-primary-7);
+  color: var(--color-primary-4);
 }
 
 .text-no-transform {

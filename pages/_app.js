@@ -58,9 +58,9 @@ export default ({ Component, pageProps }) => {
                   className: 'notification text-uppercase',
                   style: {
                     borderRadius: '0',
-                    border: '.2rem solid var(--color-primary-10)',
+                    border: '.2rem solid var(--color-primary-5)',
                     background: 'var(--color-background-transparent)',
-                    color: 'var(--color-text)',
+                    color: 'var(--color-text-light)',
                     minWidth: '300px',
                     maxWidth: '600px',
                     textAlign: 'left !important',

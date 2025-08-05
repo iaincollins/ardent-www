@@ -36,6 +36,9 @@ export default ({ toggle }) => {
         <span className='muted'>{' | '}</span>
         <a href='https://github.com/iaincollins/ardent-api' rel='noreferrer' target='_blank'>API v{version?.version ?? '?.?.?'}</a>
       </p>
+      <div className='heading--with-underline'>
+        <h2>About</h2>
+      </div>
       <p>
         Ardent Insight provides open trade data and system information for the game <a href='https://www.elitedangerous.com/' rel='noreferrer' target='_blank'>Elite Dangerous</a>.
       </p>

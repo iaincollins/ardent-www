@@ -24,6 +24,8 @@
   background: linear-gradient(rgba(0,0,0,0) 50%, rgba(0, 0, 0, .075) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.04), rgba(0, 0, 255, 0.05));
   z-index: 1000;
   background-size: 100% 3px, 3px 100%;
+  background: linear-gradient(rgba(0,0,0,0) 50%, rgba(0, 0, 0, .025) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.025), rgba(0, 255, 0, 0.04), rgba(0, 0, 255, 0.025));
+  background-size: 100% .25rem, .25rem 100%; 
   pointer-events: none;
 }
 
@@ -40,9 +42,13 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: rgb(30, 30, 30);
+  /* background-color: rgb(30, 30, 30);
   background-image: url('/images/background.jpg'), linear-gradient(rgb(30, 30, 30) 20%, rgb(15, 15, 15) 80%);
-  filter: contrast(.9) brightness(1.1);
+  background: transparent; */
+  background:
+    linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
+    radial-gradient(circle, var(--color-primary-1) 0, var(--color-primary-0) 100%);
+  background-size: 100% .5rem;
 }
 
 .fx__overlay::after {
@@ -53,7 +59,7 @@
   left: 0;
   bottom: 0;
   right: 0;
-  box-shadow: 0 0 10rem 10rem rgba(0,0,0,.3) inset;
+  box-shadow: 0 0 10rem 10rem rgba(0,0,0,.25) inset;
   z-index: 30000;
   pointer-events: none;
 }
@@ -66,11 +72,28 @@
   left: 0;
   bottom: 0;
   right: 0;
-  background: radial-gradient(circle, rgba(255,255,255,.1) 0, rgba(0,0,0,.8) 100%);
-  /* background: radial-gradient(circle, var(--color-primary-2) 0, var(--color-primary-0) 100%); */
+  /* background: radial-gradient(circle, rgba(255,255,255,.1) 0, rgba(0,0,0,.8) 100%); */
+  /* background: linear-gradient(45deg, var(--color-primary-3), var(--color-primary-1), var(--color-primary-3), var(--color-primary-2)); */
+  /* animation: fx__animated-background-gradient 30s ease infinite; */
+  /* background-size: 500% 500%; */
+  background: linear-gradient(to right, var(--color-primary-1), var(--color-primary-2), var(--color-primary-0), var(--color-primary-2), var(--color-primary-1));
   z-index: -5;
   pointer-events: none;
+  opacity: .75;
 }
+
+/* @keyframes fx__animated-background-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+} */
+
 
 .fx__animated-text {
   overflow-x: clip !important; /* avoids clipping text shadow on y axis */

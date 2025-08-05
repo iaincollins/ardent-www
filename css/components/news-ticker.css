@@ -4,7 +4,8 @@
   overflow: hidden;
   height: 1.9rem;
   max-width: 100%;
-  background: linear-gradient(to top, var(--color-primary-3), var(--color-primary-2));
+  background: linear-gradient(to top, var(--color-primary-4), var(--color-primary-3));
+  background: var(--color-primary-1);
   border-top: .25rem solid var(--color-layout-frame);
   padding-top: .2rem;
   padding-bottom: .4rem;
@@ -71,7 +72,7 @@
   width: 5.5rem;
   padding: 0 .5rem;
   background: var(--color-layout-frame);
-  color: var(--color-layout-frame-text);
+  color: var(--color-primary-5);
   text-align: center;
   z-index: 2;
   font-family: "Jura", sans-serif;
@@ -80,14 +81,14 @@
 
 .news-ticker__clock-time {
   font-size: 1.2rem;
-  text-shadow: 0 0 .5rem rgba(0, 0, 0, .5);
+  text-shadow: 0 0 .5rem;
 }
 .news-ticker__clock-date {
   font-size: .9rem;
   text-transform: uppercase;
-  opacity: .75;
   color: var(--color-layout-frame-text);
-  text-shadow: 0 0 .5rem rgba(0, 0, 0, .5);
+  color: var(--color-primary-6);
+  text-shadow: 0 0 .5rem;
 }
 
 @keyframes marquee {

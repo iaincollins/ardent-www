@@ -221,10 +221,10 @@ export default () => {
               )
             : (
               <div className='home__sign-in-placeholder'>
-                <p className='text-center'>
-                  <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning muted' />
+                <p className='text-center' style={{ opacity: 0.5 }}>
+                  <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning text-negative' />
                   <br />
-                  <small>Anonymous access protocol</small>
+                  <span class='text-negative text-uppercase'>Anonymous access</span>
                 </p>
                 <p className='text-center'>Sign in to access all services</p>
                 <form method='GET' action={SIGN_IN_URL}>

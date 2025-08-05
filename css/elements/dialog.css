@@ -47,7 +47,7 @@
   clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem),0 0,.2rem  .2rem ,.2rem calc(100% - 2.00rem - 0.08rem),calc(2.00rem + 0.08rem) calc(100% - .2rem),calc(100% - .2rem) calc(100% - .2rem),calc(100% - .2rem) .2rem,.2rem .2rem);
   inset: 0;
   z-index: 100000;
-  background: var(--color-primary-9);
+  background: var(--color-primary-3);
   clip-path: polygon(0 0,calc(100% - 2rem) 0,100% 2rem,100% 100%,2rem 100%,0 calc(100% - 2rem),0 0,.2rem  .2rem ,.2rem calc(100% - 2rem - 0.08rem),calc(2rem + 0.08rem) calc(100% - .2rem),calc(100% - .2rem) calc(100% - .2rem),calc(100% - .2rem) calc(2rem + 0.08rem),calc(100% - 2rem - 0.08rem) .2rem,.2rem .2rem);
 }
 
@@ -56,6 +56,8 @@
   line-height: 2rem !important;
   padding-left: .5rem;
   clip-path: none;
+  color: var(--color-text-light);
+  background: var(--color-primary-3);
 }
 
 .dialog__content {
@@ -64,7 +66,7 @@
   height: 100%;
   position: relative;
   padding: .25rem .25rem .25rem .5rem;
-  background-color: var(--color-primary-1);
+  background-color: var(--color-primary-0);
   overflow: hidden;
   position: relative;
   display: flex;
@@ -89,5 +91,5 @@
   z-index: 1002;
   padding-bottom: .2rem;
   clip-path: polygon(0 0,100% 0,100% 100%,2.00rem 100%,0 calc(100% - 2.00rem));
-  background: var(--color-primary-1);
+  background: linear-gradient(to bottom, var(--color-primary-0), var(--color-primary-1));
 }

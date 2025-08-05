@@ -41,7 +41,7 @@ export default () => {
           {
             name: 'About Carrier',
             icon: 'icarus-terminal-fleet-carrier',
-            url: '/fleetcarrier',
+            url: '/fleetcarrier'
           },
           {
             name: 'Cargo',
@@ -63,7 +63,7 @@ export default () => {
           className='data-table data-table--striped data-table--interactive'
           columns={[
             {
-              title: `Commodities in cargo`,
+              title: 'Commodities in cargo',
               dataIndex: 'commodityName',
               key: 'commodityName',
               align: 'left',
@@ -76,12 +76,12 @@ export default () => {
               align: 'right',
               width: 100,
               render: (v, r) => <>{v}</>
-            },
+            }
           ]}
           data={fleetCarrierCargo}
           rowKey={(r) => `fleetCarrier_cargo_${r.commodityName}`}
           emptyText={<span className='muted'>No commodities in cargo hold</span>}
-        />}
+                             />}
       </div>
     </Layout>
   )

@@ -236,7 +236,7 @@ export default () => {
   return (
     <header>
       <div className='header__logo'>
-        <Link href='/' className='--no-hover' style={{ border: 'none' }}>
+        <Link href='/' className='--no-hover' style={{ border: 'none', display: 'inline-block' }}>
           <h1>
             <i className='icarus-terminal-logo icon' />
             Ardent <span className='is-hidden-mobile'>Insight</span>

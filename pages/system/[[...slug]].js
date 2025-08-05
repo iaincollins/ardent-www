@@ -64,7 +64,7 @@ export default () => {
       const view = router.query?.slug?.[1] ?? ''
       if (activeViewIndex !== views.indexOf(view)) setInspector(undefined) // Hide inspector when switching views
       setActiveViewIndex(views.indexOf(view))
-      
+
       if (view) {
         playLoadingSound()
       } else {
@@ -95,20 +95,20 @@ export default () => {
         let _title = `${_system.systemName} system - Elite Dangerous`
         switch (view) {
           case 'list':
-            _title =  `${_system.systemName} planets and stations- Elite Dangerous`
-            break;
+            _title = `${_system.systemName} planets and stations- Elite Dangerous`
+            break
           case 'exports':
-            _title =  `${_system.systemName} exported commodities - Elite Dangerous`
-            break;
+            _title = `${_system.systemName} exported commodities - Elite Dangerous`
+            break
           case 'imports':
-            _title =  `${_system.systemName} imported commodities - Elite Dangerous`
-            break;
+            _title = `${_system.systemName} imported commodities - Elite Dangerous`
+            break
           case 'services':
-            _title =  `${_system.systemName} nearest services - Elite Dangerous`
-            break;
+            _title = `${_system.systemName} nearest services - Elite Dangerous`
+            break
           case 'nearby':
-            _title =  `${_system.systemName} nearest systems - Elite Dangerous`
-            break;
+            _title = `${_system.systemName} nearest systems - Elite Dangerous`
+            break
           default:
         }
         setTitle(_title)
