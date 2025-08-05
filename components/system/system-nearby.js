@@ -18,7 +18,7 @@ module.exports = ({ nearbySystems }) => {
         className='data-table data-table--striped data-table--interactive data-table--animated'
         columns={[
           {
-            title: 'Nearby system',
+            title: 'Nearby systems',
             dataIndex: 'systemName',
             key: 'systemName',
             align: 'left',
@@ -36,7 +36,7 @@ module.exports = ({ nearbySystems }) => {
             className: 'no-wrap is-hidden-mobile',
             render: (v) => v < 1
               ? '< 1 ly'
-              : <>{Math.floor(v).toLocaleString()} ly</>
+              : <span class='text-primary'>{Math.floor(v).toLocaleString()} ly</span>
           }
         ]}
         data={nearbySystems}

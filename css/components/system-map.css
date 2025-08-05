@@ -26,8 +26,8 @@
   mask-repeat: no-repeat, no-repeat;
   margin: 0;
   left: 0;
-  background:  linear-gradient(to bottom, transparent, rgba(20, 0, 60, 1));
-  filter: brightness(1.25) contrast(1.25);
+  background:  linear-gradient(to bottom, transparent, rgba(60, 50, 140, 1));
+  filter: contrast(1.25);
 }
 
 .system-map:before {

@@ -320,6 +320,9 @@ export default () => {
         </div>
         <Link href='/' className='--no-hover'><button aria-label='Home' className='button'><i className='icon icarus-terminal-home' /></button></Link>
         <Link href='/commodity/advancedcatalysers' className='--no-hover is-hidden-mobile'><button aria-label='Commodities' className='button'><i className='icon icarus-terminal-cargo' /></button></Link>
+        {/* <button aria-label='Settings' className='button --no-hover is-hidden-mobile'>
+          <i className='icon icarus-terminal-settings' />
+        </button> */}
         <button aria-label='Toggle Fullscreen' className='button --no-hover is-hidden-mobile' onClick={() => toggleFullScreen()}>
           <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
         </button>

@@ -12,7 +12,7 @@
 }
 
 .breadcrumbs li {
-  padding: .2rem .25rem .25rem 0;
+  padding: .2rem .25rem .35rem 0;
   position: relative;
   display: inline-block;
   text-shadow: 0 0 .5rem rgb(0, 0, 0);
@@ -20,7 +20,7 @@
   font-weight: bold;
   pointer-events: all;
   margin: 0;
-  background: linear-gradient(to right, var(--color-primary-1) 1rem, var(--color-primary-2));
+  background: linear-gradient(to right, var(--color-primary-1) -50%, var(--color-primary-2) 100%);
 }
 
 .breadcrumbs li > a,
@@ -119,5 +119,5 @@
 
 .breadcrumbs li:last-child:first-child a:after,
 .breadcrumbs li:last-child:first-child span:after {
-  background-color: var(--color-primary-2);
+  background: linear-gradient(45deg, var(--color-primary-2) .75rem, var(--color-primary-3));
 }

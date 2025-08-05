@@ -146,7 +146,7 @@ header {
 .header__navigation .button.header__menu-button.--active,
 .header__navigation .button:hover,
 .header__navigation .button.--active {
-  background: linear-gradient(to top, var(--color-primary-4), transparent);
+  background: linear-gradient(to top, var(--color-primary-3), transparent);
   color: var(--color-primary-5);
   border-bottom: .2rem solid var(--color-primary-5);
   filter: none;
