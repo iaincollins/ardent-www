@@ -65,7 +65,7 @@
   margin-right: .5rem;
   margin-left: 1rem;
   z-index: 1;
-  color: var(--color-primary-1);
+  color: var(--color-primary-6);
   outline: none;
 }
 
@@ -109,7 +109,7 @@
 .react-tabs__tab.react-tabs__tab--selected::before,
 .react-tabs__tab.react-tabs__tab--selected::after {
   background: var(--color-primary-5);
-  color: var(--color-primary-2);
+  color: var(--color-primary-0);
   z-index: 3;
 }
 

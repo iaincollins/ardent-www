@@ -5,6 +5,7 @@ export default () => {
   const [dialogContext] = useContext(DialogContext)
   const [visible, setVisible] = useState(false)
   const [title, setTitle] = useState()
+  const [backdrop, setBackdrop] = useState(true)
   const [contents, setContents] = useState()
   const [buttons, setButtons] = useState()
 
@@ -14,6 +15,7 @@ export default () => {
     ;(dialogContext?.title) ? setTitle(dialogContext.title) : setTitle('Dialog')
     ;(dialogContext?.contents) ? setContents(dialogContext.contents) : setContents(undefined)
     ;(dialogContext?.buttons) ? setButtons(dialogContext.buttons) : setButtons(<button className='button' onClick={() => setVisible(false)}>Close</button>)
+    ;(dialogContext?.backdrop === false) ? setBackdrop(false) : setBackdrop(true)
   }, [dialogContext])
 
   useEffect(() => {
@@ -24,7 +26,7 @@ export default () => {
 
   return (
     <>
-      <div className='dialog__background fx__fade-in' onClick={() => setVisible(false)} />
+      {backdrop ? <div className='dialog__background fx__fade-in' onClick={() => setVisible(false)} /> : ''}
       <div className='dialog__container'>
         <div className='dialog fx__fade-in'>
           <h3 className='dialog__title'>{title}</h3>

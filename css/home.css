@@ -82,10 +82,10 @@
   background-color: var(--color-primary-0);
 }
 
-.home__cmdr {
+.home__cmdr--not-signed-in {
   background: linear-gradient(to bottom,
     transparent,
-    rgba(200,0,0,.15) 20%,
+    rgba(200,0,0,.25) 20%,
     transparent calc(100% - 20%),
     transparent);
 }

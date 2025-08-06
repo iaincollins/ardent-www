@@ -32,6 +32,7 @@ export default ({ Component, pageProps }) => {
       if (themeSettings) {
         document.documentElement.style.setProperty('--color-primary-hue', themeSettings.hue)
         document.documentElement.style.setProperty('--color-primary-saturation', `${themeSettings.saturation}%`)
+        if (themeSettings.contrast) document.documentElement.style.setProperty('--contrast', themeSettings.contrast)
       }
     } catch (e) {}
     return () => {

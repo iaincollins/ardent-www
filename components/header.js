@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { HexColorPicker } from 'react-colorful'
+import { useDebouncedCallback } from 'use-debounce'
 import { getCommoditiesWithPricing, listOfCommoditiesAsArray } from 'lib/commodities'
 import commodities from 'lib/commodities/commodities'
 import { NavigationContext, DialogContext } from 'lib/context'
@@ -47,7 +48,7 @@ export default () => {
     return () => clearInterval(dateTimeInterval)
   }, [])
 
-  async function onSearchInputChange(e) {
+  async function onSearchInputChange (e) {
     const searchText = e.target.value.trim()
 
     if (searchText.length === 0) {
@@ -76,9 +77,9 @@ export default () => {
         }
       })
 
-        ; (matchingCommodities.length > 0)
-          ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
-          : setCommoditySearchResults(undefined)
+      ; (matchingCommodities.length > 0)
+        ? setCommoditySearchResults(matchingCommodities.splice(0, 5))
+        : setCommoditySearchResults(undefined)
     } catch (e) { }
 
     try {
@@ -328,7 +329,8 @@ export default () => {
             setDialog({
               title: 'Theme',
               contents: <SettingsDialog />,
-              visible: true
+              visible: true,
+              backdrop: false
             })}
         >
           <i className='icon icarus-terminal-settings' />
@@ -346,12 +348,15 @@ export default () => {
               Commodities
             </button>
           </Link>
-          <button aria-label='Settings' className='header__menu-item' onClick={() =>
-            setDialog({
-              title: 'Settings',
-              contents: <SettingsDialog />,
-              visible: true
-            })}>
+          <button
+            aria-label='Settings' className='header__menu-item' onClick={() =>
+              setDialog({
+                title: 'Theme',
+                contents: <SettingsDialog />,
+                visible: true,
+                backdrop: false
+              })}
+          >
             <i className='icon icarus-terminal-settings' />
             Settings
           </button>
@@ -431,7 +436,7 @@ export default () => {
   )
 }
 
-function isFullScreen() {
+function isFullScreen () {
   if (typeof document === 'undefined') return false
 
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.webkitCurrentFullScreenElement) {
@@ -441,7 +446,7 @@ function isFullScreen() {
   }
 }
 
-async function toggleFullScreen() {
+async function toggleFullScreen () {
   if (isFullScreen()) {
     if (document.cancelFullScreen) {
       document.cancelFullScreen()
@@ -465,31 +470,47 @@ async function toggleFullScreen() {
   }
 }
 
+const MIN_CONTRAST = 0.9
+const MAX_CONTRAST = 1.75
+
 const SettingsDialog = () => {
   const hue = window.getComputedStyle(document.documentElement).getPropertyValue('--color-primary-hue')
   const saturation = window.getComputedStyle(document.documentElement).getPropertyValue('--color-primary-saturation')
-  const currentColor = hsl2hex(hue, saturation.replace('%', ''), 50)
+  const contrast = window.getComputedStyle(document.documentElement).getPropertyValue('--contrast')
+  const lightness = 100 - convertNumberToPercentage(contrast, MIN_CONTRAST, MAX_CONTRAST)
+  const currentColor = hsl2hex(hue, saturation.replace('%', ''), lightness)
 
   const [color, setColor] = useState(currentColor)
+
+  const onColorChange = useDebouncedCallback(
+    (hexColor) => {
+      setColor(hexColor)
+      const { h, s, l } = hex2hsl(hexColor)
+      document.documentElement.style.setProperty('--color-primary-hue', h)
+      document.documentElement.style.setProperty('--color-primary-saturation', `${s}%`)
+      const contrast = convertPercentageToRange((100 - l), MIN_CONTRAST, MAX_CONTRAST)
+      document.documentElement.style.setProperty('--contrast', contrast)
+      window.localStorage.setItem('theme-settings', JSON.stringify({ hue: h, saturation: s, contrast, timestamp: Date.now() }))
+    },
+    100
+  )
 
   return (
     <div style={{ minWidth: '215px', minHeight: '10rem', paddingLeft: '.5rem', paddingTop: '.5rem' }}>
       <HexColorPicker
-        color={color} onChange={(hexColor) => {
-          setColor(hexColor)
-          const { h, s, l } = hex2hsl(hexColor)
-          document.documentElement.style.setProperty('--color-primary-hue', h)
-          document.documentElement.style.setProperty('--color-primary-saturation', `${s}%`)
-          window.localStorage.setItem('theme-settings', JSON.stringify({ hue: h, saturation: s, timestamp: Date.now() }))
-        }}
+        color={color} onChange={onColorChange}
       />
-      <p className='text-center' onClick={(e) => {
+      <p
+        className='text-center' onClick={(e) => {
           const defaultHue = window.getComputedStyle(document.documentElement).getPropertyValue('--default-color-primary-hue')
           const defaultSaturation = window.getComputedStyle(document.documentElement).getPropertyValue('--default-color-primary-saturation')
+          const defaultContrast = window.getComputedStyle(document.documentElement).getPropertyValue('--default-contrast')
           document.documentElement.style.setProperty('--color-primary-hue', defaultHue)
           document.documentElement.style.setProperty('--color-primary-saturation', defaultSaturation)
+          document.documentElement.style.setProperty('--contrast', defaultContrast)
           window.localStorage.removeItem('theme-settings')
-          setColor(hsl2hex(defaultHue, defaultSaturation.replace('%', ''), 50))
+          const lightness = 100 - convertNumberToPercentage(defaultContrast, MIN_CONTRAST, MAX_CONTRAST)
+          setColor(hsl2hex(defaultHue, defaultSaturation.replace('%', ''), lightness))
         }}
       >RESET
       </p>
@@ -578,4 +599,25 @@ const hsl2hex = (h, s, l) => {
   }
 
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`
+}
+
+function convertPercentageToRange (percentage, startOfRange, endOfRange) {
+  if (percentage < 0 || percentage > 100) {
+    console.error('Percentage must be between 0 and 100.')
+    return null
+  }
+  const decimal = percentage / 100
+  const convertedValue = startOfRange + (endOfRange - startOfRange) * decimal
+  return convertedValue
+}
+
+function convertNumberToPercentage (number, startOfRange, endOfRange) {
+  if (startOfRange === endOfRange) {
+    console.error('The start and end of the range cannot be the same.')
+    return null
+  }
+  const position = number - startOfRange
+  const rangeSize = endOfRange - startOfRange
+  const percentage = (position / rangeSize) * 100
+  return Math.max(0, Math.min(100, percentage))
 }

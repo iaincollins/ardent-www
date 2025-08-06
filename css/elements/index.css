@@ -26,7 +26,7 @@ html td,
 html label {
   font-family: 'Jura';
   font-weight: bold;
-  text-shadow: 0 0 .5rem;
+  /* text-shadow: 0 0 .5rem; */
 }
 
 body,

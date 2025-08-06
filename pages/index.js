@@ -99,12 +99,7 @@ export default () => {
           ))}
         </div>
 
-        <div className='home__cmdr'>
-          <div className='heading--with-underline is-hidden-desktop'>
-            <h2 className='text-uppercase'>CMDR</h2>
-          </div>
-          <Cmdr />
-        </div>
+        <Cmdr />
 
         <div className='home__about'>
           <div className='heading--with-underline is-hidden-desktop' style={{ marginBottom: '1rem' }}>

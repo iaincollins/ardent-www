@@ -1,14 +1,15 @@
 :root {
   --default-color-primary-hue: 22;
   --default-color-primary-saturation: 80%;
+  --default-contrast: 1.15;
 
   /*** Begin Default Theme ***/
   --color-primary-hue: 25;
   --color-primary-saturation: 80%;
-  --color-primary-lightness: 50%;
+  --contrast: 1.15;
   /*** End Default Theme ***/
 
-  --color-primary: hsl(var(--color-primary-hue), var(--color-primary-saturation), var(--color-primary-lightness));
+  --color-primary: hsl(var(--color-primary-hue), var(--color-primary-saturation),  50%);
   --color-primary-0: hsl(var(--color-primary-hue), var(--color-primary-saturation), 0%);
   --color-primary-1: hsl(var(--color-primary-hue), var(--color-primary-saturation), 10%);
   --color-primary-2: hsl(var(--color-primary-hue), var(--color-primary-saturation), 20%);
@@ -30,9 +31,9 @@
 
   --color-text-link: var(--color-text-light);
   --color-text: var(--color-text-light);
-  --color-text-muted: hsla(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) + 50%), .75);
+  --color-text-muted: hsla(var(--color-primary-hue), var(--color-primary-saturation), 50%, .75);
   --color-text-dark: var(--color-primary-0);
-  --color-text-dark-muted: hsla(var(--color-primary-hue), var(--color-primary-saturation), calc(var(--color-primary-lightness) - 50%), .75);
+  --color-text-dark-muted: hsla(var(--color-primary-hue), var(--color-primary-saturation), 0%, .75);
   --color-text-light: rgb(240, 240, 255);
   --color-text-dark: black;
   --color-text-selected: rgb(0, 100, 120);
@@ -51,6 +52,9 @@
 
   --color-window-scrollbar-thumb: rgba(250, 241, 228);
   --color-window-scrollbar-track: rgba(103, 100, 94);
+
+  /* --color-text-light: yellow;
+  --color-text-dark: aqua; */
 
   --hover-filter-fx: brightness(1.5);
 }
