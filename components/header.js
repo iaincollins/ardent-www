@@ -326,7 +326,7 @@ export default () => {
           aria-label='Settings' className='button --no-hover is-hidden-mobile'
           onClick={() =>
             setDialog({
-              title: 'Settings',
+              title: 'Theme',
               contents: <SettingsDialog />,
               visible: true
             })}
@@ -473,7 +473,7 @@ const SettingsDialog = () => {
   const [color, setColor] = useState(currentColor)
 
   return (
-    <div style={{ minWidth: '9rem', minHeight: '11.5rem', paddingLeft: '.5rem', paddingTop: '.5rem' }}>
+    <div style={{ minWidth: '215px', minHeight: '10rem', paddingLeft: '.5rem', paddingTop: '.5rem' }}>
       <HexColorPicker
         color={color} onChange={(hexColor) => {
           setColor(hexColor)
@@ -483,8 +483,7 @@ const SettingsDialog = () => {
           window.localStorage.setItem('theme-settings', JSON.stringify({ hue: h, saturation: s, timestamp: Date.now() }))
         }}
       />
-      <button
-        className='button--small' style={{ marginTop: '.5rem', fontSize: '1rem', width: '8.5rem' }} onClick={(e) => {
+      <p className='text-center' onClick={(e) => {
           const defaultHue = window.getComputedStyle(document.documentElement).getPropertyValue('--default-color-primary-hue')
           const defaultSaturation = window.getComputedStyle(document.documentElement).getPropertyValue('--default-color-primary-saturation')
           document.documentElement.style.setProperty('--color-primary-hue', defaultHue)
@@ -493,7 +492,7 @@ const SettingsDialog = () => {
           setColor(hsl2hex(defaultHue, defaultSaturation.replace('%', ''), 50))
         }}
       >RESET
-      </button>
+      </p>
     </div>
   )
 }
