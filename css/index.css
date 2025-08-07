@@ -133,7 +133,7 @@ hr {
 }
 
 .collapsible__trigger-text {
-  border-bottom: 1px dotted var(--color-text-muted);
+  border-bottom: 1px dotted var(--color-text-light);
 }
 
 .collapsible__trigger:hover .collapsible__trigger-text {
@@ -159,16 +159,12 @@ hr {
   padding-left: 1.4rem;
   display: block;
   border-radius: .15rem;
-  background-color: var(--color-table-row);
-  background-color: var(--color-primary-2);
-  background: linear-gradient(to right, var(--color-primary-2), var(--color-primary-0));
+  background: var(--color-primary-2);
 }
 
 .rc-table-cell .collapsible__trigger:hover {
-  background-color: var(--color-table-row-hover);
-  background-color: var(--color-primary-3);
-  background: linear-gradient(to right, var(--color-primary-3), var(--color-primary-1));
-  color: var(--color-text-link);
+    background: var(--color-primary-3);
+    color: var(--color-text-link);
 }
 
 .rc-table-cell .collapsible__trigger .collapsible__trigger-icon {

@@ -32,7 +32,11 @@
   top: .55rem;
   left: 0;
   right: 0;
-  text-shadow: 0 0 .5rem rgba(0,0,0,.5);
+  text-shadow: 0 0 1rem var(--color-primary-0), 0 0 .5rem var(--color-primary-0);
+}
+
+.navigation-bar button:hover:not(.--active) .icon {
+ text-shadow: 0 0 .5rem var(--color-primary-2);
 }
 
 .navigation-bar button:hover {
