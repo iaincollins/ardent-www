@@ -18,16 +18,16 @@
   font-family: 'Jura';
   mask-image: linear-gradient(to bottom,
     transparent 0%,
-    black 10rem,
-    black 10rem,
+    black 20%,
+    black 80%,
     transparent 100%);
   mask-size: 100% 100%, 1rem 100%;
   mask-position: 0 0, 100% 0;
   mask-repeat: no-repeat, no-repeat;
   margin: 0;
   left: 0;
-  background:  linear-gradient(to bottom, transparent, rgba(90, 80, 100, 1));
-  filter: contrast(1.25);
+  background:  linear-gradient(to bottom, transparent 0%, rgba(90, 80, 100, .25) 70%);
+  filter: contrast(1.15);
 }
 
 .system-map:before {
