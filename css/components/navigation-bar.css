@@ -12,7 +12,7 @@
   display: block;
   width: 100%;
   aspect-ratio: 1;
-  background: var(--color-primary-2);
+  background: linear-gradient(to left, var(--color-primary-2), var(--color-primary-1));
   color: var(--color-primary-5);
   position: relative;
   opacity: 1;
@@ -21,7 +21,6 @@
 .navigation-bar button:hover.--active,
 .navigation-bar button.--active {
   box-shadow: .1rem 0 var(--color-primary-5), inset -.1rem 0 var(--color-primary-5);
-  background: transparent;
   color: var(--color-primary-5);
   background: linear-gradient(to left, var(--color-primary-3), var(--color-primary-2));
 }
