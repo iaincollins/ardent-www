@@ -21,12 +21,12 @@
 .navigation-bar button:hover.--active,
 .navigation-bar button.--active {
   box-shadow: .1rem 0 var(--color-primary-5), inset -.1rem 0 var(--color-primary-5);
-  color: var(--color-primary-5);
   background: linear-gradient(to left, var(--color-primary-3), var(--color-primary-2));
 }
 
 .navigation-bar button.--active  .icon {
-  filter: var(--filter-overdrive) !important;
+  color: var(--color-primary-5);
+  filter: var(--filter-overdrive)!important;
 }
 
 .navigation-bar button .icon {
