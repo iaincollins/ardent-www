@@ -345,7 +345,18 @@
     right: 1rem;
     height: calc(100% - 50% - 5rem);
     border-top: .2rem solid var(--color-layout-frame);
+    animation: none;
+    animation: inspector-slide-up-animation .25s ease-in-out;
   }
+
+  @keyframes inspector-slide-up-animation {
+    from { bottom: -50%; }
+    to { bottom: 3.8rem; }
+  }
+
+.layout__inspector p {
+  padding: 0 .5rem;
+}
 
   .data-table tr.rc-table-row td {
     border: none;

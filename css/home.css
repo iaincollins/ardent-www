@@ -71,7 +71,7 @@
 }
 
 .home__sign-in-placeholder__button {
-  filter: var(--hover-filter-fx);
+  filter: var(--filter-overdrive);
   max-width: 15rem;
   top: 2.5rem;
   left: 50%;

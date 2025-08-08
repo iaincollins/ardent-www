@@ -222,9 +222,7 @@ function Inspector ({ systemObject }) {
 
         {systemObject?.updatedAt !== undefined &&
           <p className='text-center text-muted'>
-
             Last updated {timeBetweenTimestamps(systemObject.updatedAt)} ago
-
           </p>}
 
         {systemObject.distanceToArrival !== undefined &&

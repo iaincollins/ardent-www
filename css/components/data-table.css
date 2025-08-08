@@ -70,6 +70,12 @@
   border-bottom: none;
 }
 
+.data-table tr.data-table__row--selected,
+.data-table tr.rc-table-expanded-row:not([style="display: none;"]),
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) {
+  filter: var(--filter-overdrive);
+}
+
 .data-table tr.data-table__row--selected td,
 .data-table tr.data-table__row--selected td > *,
 .data-table tr.data-table__row--selected td small,

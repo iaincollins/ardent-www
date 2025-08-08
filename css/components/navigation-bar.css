@@ -25,13 +25,17 @@
   background: linear-gradient(to left, var(--color-primary-3), var(--color-primary-2));
 }
 
+.navigation-bar button.--active  .icon {
+  filter: var(--filter-overdrive) !important;
+}
+
 .navigation-bar button .icon {
   font-size: 1.8rem;
   position: absolute;
   top: .55rem;
   left: 0;
   right: 0;
-  text-shadow: 0 0 1rem var(--color-primary-0), 0 0 .5rem var(--color-primary-0);
+  text-shadow: 0 0 1rem var(--color-primary-0), 0 0 1rem var(--color-primary-0);
 }
 
 .navigation-bar button:hover:not(.--active) .icon {

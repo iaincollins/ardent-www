@@ -22,6 +22,19 @@
   --color-primary-9: hsl(var(--color-primary-hue), var(--color-primary-saturation), 90%);
   --color-primary-10: hsl(var(--color-primary-hue), var(--color-primary-saturation), 100%);
 
+  --color-primary: hsl(var(--color-primary-hue), var(--color-primary-saturation),  50%);
+  --color-primary-0: hsl(var(--color-primary-hue), var(--color-primary-saturation), 0%);
+  --color-primary-1: hsl(var(--color-primary-hue), var(--color-primary-saturation), 10%);
+  --color-primary-2: hsl(var(--color-primary-hue), var(--color-primary-saturation), 20%);
+  --color-primary-3: hsl(var(--color-primary-hue), var(--color-primary-saturation), 30%);
+  --color-primary-4: hsl(var(--color-primary-hue), var(--color-primary-saturation), 40%);
+  --color-primary-5: hsl(var(--color-primary-hue), var(--color-primary-saturation), 50%);
+  --color-primary-6: hsl(calc(var(--color-primary-hue) + 10), var(100%), 60%);
+  --color-primary-7: hsl(calc(var(--color-primary-hue) + 20), var(--color-primary-saturation), 70%);
+  --color-primary-8: hsl(calc(var(--color-primary-hue) + 30), var(--color-primary-saturation), 80%);
+  --color-primary-9: hsl(calc(var(--color-primary-hue) + 40), var(--color-primary-saturation), 90%);
+  --color-primary-10: hsl(calc(var(--color-primary-hue) + 50), var(--color-primary-saturation), 100%);
+  
   --color-secondary: hsl(185, 95%, 50%);
 
   --color-positive: rgb(137, 255, 82);
@@ -53,8 +66,5 @@
   --color-window-scrollbar-thumb: rgba(250, 241, 228);
   --color-window-scrollbar-track: rgba(103, 100, 94);
 
-  /* --color-text-light: yellow;
-  --color-text-dark: aqua; */
-
-  --hover-filter-fx: brightness(1.5);
+  --filter-overdrive: brightness(1.5);
 }
