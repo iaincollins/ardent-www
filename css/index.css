@@ -25,6 +25,7 @@
 @import url('responsive/mobile.css');
 
 @import url("overrides/safari.css");
+@import url("overrides/firefox.css");
 
 @font-face {
   font-family: 'Jura';
@@ -364,7 +365,7 @@ a.button--small:hover {
   display: block;
   background: linear-gradient(to top, var(--color-primary-2), var(--color-primary-1) 90%);
   border-bottom: .15rem solid var(--color-primary-5);
-  margin-bottom: .75rem;
+  margin-bottom: 1.5rem;
 }
 
 .inspector__heading .system-object-icon {

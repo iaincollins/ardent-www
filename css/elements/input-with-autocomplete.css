@@ -51,9 +51,8 @@
 }
 
 .input-with-autocomplete__result:not(.input-with-autocomplete__result--disabled):hover {
-  background: var(--color-primary-5);
+  background: var(--color-highlight-5);
   color: var(--color-text-dark);
-  filter: var(--filter-overdrive);
 }
 
 .input-with-autocomplete__result-icon {

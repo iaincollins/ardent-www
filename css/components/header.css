@@ -286,9 +286,8 @@ header {
 }
 
 .header__search-result--highlighted {
-  background-color: var(--color-primary-5);
+  background-color: var(--color-highlight-5);
   color: var(--color-primary-1);
-  filter: var(--filter-overdrive);
 }
 
 .header__search-result--highlighted * {
@@ -328,7 +327,6 @@ header {
 }
 
 .header__menu-item:hover {
-  background: var(--color-primary-5);
+  background: var(--color-highlight-5);
   color: var(--color-primary-1);
-  filter: var(--filter-overdrive);
 }

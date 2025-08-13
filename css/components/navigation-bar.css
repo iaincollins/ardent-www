@@ -25,8 +25,8 @@
 }
 
 .navigation-bar button.--active  .icon {
-  color: var(--color-primary-5);
-  filter: var(--filter-overdrive)!important;
+  color: var(--color-highlight-5);
+  /* filter: var(--filter-overdrive)!important; */
 }
 
 .navigation-bar button .icon {
@@ -56,7 +56,7 @@
   height: 3rem;
   width: auto;
   max-width: 0rem;
-  background-color: var(--color-primary-2);
+  background-color: var(--color-primary-1);
   color: var(--color-text);
   z-index: -1;
   line-height: 3rem;

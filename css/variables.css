@@ -22,6 +22,22 @@
   --color-primary-9: hsl(var(--color-primary-hue), var(--color-primary-saturation), 90%);
   --color-primary-10: hsl(var(--color-primary-hue), var(--color-primary-saturation), 100%);
 
+  --color-highlight-hue: calc(var(--color-primary-hue) + 15);
+  --color-highlight-saturation: var(--color-primary-saturation);
+
+  --color-highlight: hsl(var(--color-highlight-hue), var(--color-highlight-saturation),  50%);
+  --color-highlight-0: hsl(var(--color-highlight-hue), var(--color-highlight-saturation), 0%);
+  --color-highlight-1: hsl(var(--color-highlight-hue), var(--color-highlight-saturation), 10%);
+  --color-highlight-2: hsl(var(--color-highlight-hue), var(--color-highlight-saturation), 20%);
+  --color-highlight-3: hsl(var(--color-highlight-hue), var(--color-highlight-saturation), 30%);
+  --color-highlight-4: hsl(var(--color-highlight-hue), var(--color-highlight-saturation), 40%);
+  --color-highlight-5: hsl(var(--color-highlight-hue), var(--color-highlight-saturation), 50%);
+  --color-highlight-6: hsl(var(--color-highlight-hue), var(--color-highlight-saturation), 60%);
+  --color-highlight-7: hsl(var(--color-highlight-hue), var(--color-highlight-saturation), 70%);
+  --color-highlight-8: hsl(var(--color-highlight-hue), var(--color-highlight-saturation), 80%);
+  --color-highlight-9: hsl(var(--color-highlight-hue), var(--color-highlight-saturation), 90%);
+  --color-highlight-10: hsl(var(--color-highlight-hue), var(--color-highlight-saturation), 100%);
+
   --color-secondary: hsl(185, 95%, 50%);
 
   --color-positive: rgb(137, 255, 82);
@@ -44,7 +60,7 @@
   --color-table-row: hsla(var(--color-primary-hue), var(--color-primary-saturation), 30%, .1);
   --color-table-row-alt: hsla(var(--color-primary-hue), var(--color-primary-saturation), 60%, .1);
   --color-table-row-hover: hsla(var(--color-primary-hue), var(--color-primary-saturation), 60%, .2);
-  --color-table-row-selected-frame: var(--color-primary-5);
+  --color-table-row-selected-frame: var(--color-highlight-5);
   --color-background-transparent: hsla(var(--color-primary-hue), var(--color-primary-saturation), 0%, .7);
 
   --color-layout-frame: var(--color-primary-2);

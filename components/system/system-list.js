@@ -220,11 +220,6 @@ function Inspector ({ systemObject }) {
             </StationIcon>}
         </div>
 
-        {systemObject?.updatedAt !== undefined &&
-          <p className='text-center text-muted'>
-            Last updated {timeBetweenTimestamps(systemObject.updatedAt)} ago
-          </p>}
-
         {systemObject.distanceToArrival !== undefined &&
           <div className='inspector__section'>
             <div className='heading--with-underline'>
@@ -250,7 +245,7 @@ function Inspector ({ systemObject }) {
               <h3>Stellar properties</h3>
             </div>
             <p>
-              {systemObject.isScoopable ? <div><i className='system-object-icon text-warning icarus-terminal-fuel' />Main sequence (scoopable)</div> : <div className='text-muted'><i className='system-object-icon icarus-terminal-warning' />Not scoopable</div>}
+              {systemObject.isScoopable ? <div style={{marginBottom: '.75rem'}}><i className='system-object-icon text-warning icarus-terminal-fuel' />Main sequence (scoopable)</div> : <div style={{marginBottom: '.75rem'}} className='text-muted'><i className='system-object-icon icarus-terminal-warning' />Not scoopable</div>}
               <small>
                 {systemObject.spectralClass && <span>Spectral class {systemObject.spectralClass}, </span>}
                 Luminosity {systemObject.luminosity}
@@ -497,6 +492,11 @@ function Inspector ({ systemObject }) {
             {systemObject?.semiMajorAxis !== undefined && <p><span className='text-muted'>Semi-major axis</span><br />{systemObject.semiMajorAxis}</p>}
             {systemObject?.argOfPeriapsis !== undefined && <p><span className='text-muted'>Argument of periapsis</span><br />{systemObject.argOfPeriapsis}</p>}
           </div>}
+
+          {systemObject?.updatedAt !== undefined &&
+          <p className='text-center text-muted'>
+            Last updated {timeBetweenTimestamps(systemObject.updatedAt)} ago
+          </p>}
       </div>
     </>
   )
