@@ -55,7 +55,7 @@ export default () => {
     saveCache('cmdrFleetCarrier', _fleetCarrier)
   }
 
-  function clearCmdrCache() {
+  function clearCmdrCache () {
     deleteCache('cmdrProfile')
     deleteCache('cmdrFleetCarrier')
     deleteCache('cmdrNearestServices')
@@ -81,10 +81,10 @@ export default () => {
 
   useEffect(() => {
     if (cmdrProfile !== undefined) setSignedIn(true)
-      ; (async () => {
-        await updateCmdrProfile()
-        setCsrfToken(await getCsrfToken())
-      })()
+    ; (async () => {
+      await updateCmdrProfile()
+      setCsrfToken(await getCsrfToken())
+    })()
   }, [])
 
   return (
@@ -222,7 +222,7 @@ export default () => {
                     For more information refer to the offical <a target='_blank' href='https://forums.frontier.co.uk/forums/elite-dangerous-news/' rel='noreferrer'>Elite Dangerous News Forum</a>
                   </p>
                 </div>
-              )
+                )
               : (
                 <div className='home__sign-in-placeholder'>
                   <p className='text-center' style={{ opacity: 0.5 }}>
@@ -237,14 +237,14 @@ export default () => {
                     </button>
                   </form>
                 </div>
-              )}
+                )}
           </>}
       </div>
     </div>
   )
 }
 
-async function getNearestService(systemName, service) {
+async function getNearestService (systemName, service) {
   const res = await fetch(`${API_BASE_URL}/v2/system/name/${systemName}/nearest/${service}?minLandingPadSize=3`)
   return res.ok ? await res.json() : null
 }

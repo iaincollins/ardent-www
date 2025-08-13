@@ -245,7 +245,7 @@ function Inspector ({ systemObject }) {
               <h3>Stellar properties</h3>
             </div>
             <p>
-              {systemObject.isScoopable ? <div style={{marginBottom: '.75rem'}}><i className='system-object-icon text-warning icarus-terminal-fuel' />Main sequence (scoopable)</div> : <div style={{marginBottom: '.75rem'}} className='text-muted'><i className='system-object-icon icarus-terminal-warning' />Not scoopable</div>}
+              {systemObject.isScoopable ? <div style={{ marginBottom: '.75rem' }}><i className='system-object-icon text-warning icarus-terminal-fuel' />Main sequence (scoopable)</div> : <div style={{ marginBottom: '.75rem' }} className='text-muted'><i className='system-object-icon icarus-terminal-warning' />Not scoopable</div>}
               <small>
                 {systemObject.spectralClass && <span>Spectral class {systemObject.spectralClass}, </span>}
                 Luminosity {systemObject.luminosity}
@@ -493,7 +493,7 @@ function Inspector ({ systemObject }) {
             {systemObject?.argOfPeriapsis !== undefined && <p><span className='text-muted'>Argument of periapsis</span><br />{systemObject.argOfPeriapsis}</p>}
           </div>}
 
-          {systemObject?.updatedAt !== undefined &&
+        {systemObject?.updatedAt !== undefined &&
           <p className='text-center text-muted'>
             Last updated {timeBetweenTimestamps(systemObject.updatedAt)} ago
           </p>}

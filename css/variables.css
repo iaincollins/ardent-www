@@ -2,11 +2,13 @@
   --default-color-primary-hue: 22;
   --default-color-primary-saturation: 80%;
   --default-contrast: 1.15;
+  --default-highlight-hue-shift: 10;
 
   /*** Begin Default Theme ***/
   --color-primary-hue: var(--default-color-primary-hue);
   --color-primary-saturation: var(--default-color-primary-saturation);
   --contrast: var(--default-contrast);
+  --highlight-hue-shift: var(--default-highlight-hue-shift);
   /*** End Default Theme ***/
   
   --color-primary: hsl(var(--color-primary-hue), var(--color-primary-saturation),  50%);
@@ -22,7 +24,7 @@
   --color-primary-9: hsl(var(--color-primary-hue), var(--color-primary-saturation), 90%);
   --color-primary-10: hsl(var(--color-primary-hue), var(--color-primary-saturation), 100%);
 
-  --color-highlight-hue: calc(var(--color-primary-hue) + 15);
+  --color-highlight-hue: calc(var(--color-primary-hue) + var(--highlight-hue-shift));
   --color-highlight-saturation: var(--color-primary-saturation);
 
   --color-highlight: hsl(var(--color-highlight-hue), var(--color-highlight-saturation),  50%);
