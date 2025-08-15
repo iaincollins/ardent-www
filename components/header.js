@@ -237,13 +237,11 @@ export default () => {
 
   const showThemeSettings = () =>
     setDialog({
-      title: 'Theme',
+      title: 'Settings',
       contents: <ThemeSettings />,
       visible: true,
       backdrop: false
     })
-
-  //  showThemeSettings()
 
   return (
     <header>

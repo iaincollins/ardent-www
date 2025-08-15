@@ -17,6 +17,10 @@ module.exports = () => {
   const [highlightHueShift, setHighlightHueShift] = useState(hueShift)
 
   useEffect(() => {
+    document.getElementById('highlight-color-hue-shift').value = hueShift
+  }, [])
+
+  useEffect(() => {
     saveChanges()
   }, [color, highlightHueShift])
 
@@ -53,34 +57,29 @@ module.exports = () => {
     const lightness = 100 - convertNumberToPercentage(defaultContrast, MIN_CONTRAST, MAX_CONTRAST)
     setColor(hsl2hex(defaultHue, defaultSaturation.replace('%', ''), lightness))
     setHighlightHueShift(defaultHilightHueShift)
+    document.getElementById('highlight-color-hue-shift').value = defaultHilightHueShift
   }
 
   return (
     <div style={{ minWidth: '210px', minHeight: '10rem', paddingLeft: '.5rem' }}>
-      <p style={{ marginTop: '.5rem' }}>
-        Primary color
-      </p>
-      <div style={{ marginTop: '1rem' }}>
+      <div style={{ marginTop: '.5rem', marginBottom: '.5rem' }}>
         <HexColorPicker color={color} onChange={onColorChange} />
       </div>
-      <p>
-        Higlight hue
-      </p>
-      <div>
-        <input style={{ width: '95%' }} type='range' name='highlight-color-hue-shift' min='0' max='360' onChange={onChangeHighlightHueShift} />
-      </div>
-      <p>
-        Preview
-      </p>
-      <div>
+      <div style={{width: 'calc(100% - .5rem)'}}>
         {Array.from({ length: 11 }, (_, i) => i).map((number) => (
-          <div key={number} style={{ aspectRatio: '1', width: '8.5%', background: `var(--color-primary-${number})`, display: 'inline-block' }} />
+          <div key={number} style={{ aspectRatio: '1', width: '9%', background: `var(--color-primary-${number})`, display: 'inline-block' }} />
         ))}
       </div>
-      <div>
+      <div style={{width: 'calc(100% - .5rem)'}}>
         {Array.from({ length: 11 }, (_, i) => i).map((number) => (
-          <div key={number} style={{ aspectRatio: '1', width: '8.5%', background: `var(--color-highlight-${number})`, display: 'inline-block' }} />
+          <div key={number} style={{ aspectRatio: '1', width: '9%', background: `var(--color-highlight-${number})`, display: 'inline-block' }} />
         ))}
+      </div>
+      <p style={{ fontSize: '.8rem', marginTop: '.5rem', marginBottom: '.25rem', opacity: .75 }}>
+        Highlight color shift
+      </p>
+      <div style={{width: 'calc(100% - .5rem)'}}>
+        <input style={{ width: '99%'}} type='range' id='highlight-color-hue-shift' name='highlight-color-hue-shift' min='0' max='360' onChange={onChangeHighlightHueShift} />
       </div>
       <p className='text-center' onClick={resetToDefaults}>RESET</p>
     </div>
