@@ -264,7 +264,7 @@ export default () => {
       </div>
       <div className='header__navigation' style={{ display: 'block' }}>
         <div className='header__search'>
-          <label className='header__search-input' aria-label='Search' onClick={() => headerSearchRef.current.focus()}>
+          <label className='header__search-input header__search-input--always-visible' aria-label='Search' onClick={() => headerSearchRef.current.focus()}>
             <i className='icon icarus-terminal-search' />
             <input
               ref={headerSearchRef}

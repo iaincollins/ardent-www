@@ -218,8 +218,11 @@ header {
 .header__search-input input:focus {
   color: var(--color-text-light);
   background-color: var(--color-primary-1);
-  border-color: var(--color-primary-5);
-  outline: none;
+  outline: .175rem solid var(--color-primary-2);
+}
+
+.header__search-input input:hover,
+.header__search-input input:focus {
   outline: .175rem solid var(--color-primary-5);
 }
 

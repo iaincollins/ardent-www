@@ -76,7 +76,7 @@ module.exports = () => {
         ))}
       </div>
       <p style={{ fontSize: '.8rem', marginTop: '.5rem', marginBottom: '.25rem', opacity: .75 }}>
-        Highlight color shift
+        Highlight color
       </p>
       <div style={{width: 'calc(100% - .5rem)'}}>
         <input style={{ width: '99%'}} type='range' id='highlight-color-hue-shift' name='highlight-color-hue-shift' min='0' max='360' onChange={onChangeHighlightHueShift} />

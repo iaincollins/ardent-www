@@ -46,6 +46,22 @@
   .is-hidden-desktop {
     display: none !important;
   }
+
+  .header__search-input--always-visible input {
+    color: var(--color-text-light);
+    background-color: var(--color-primary-1);
+    outline: .175rem solid var(--color-primary-2);
+  }
+  
+  .header__search-input--always-visible input:hover,
+  .header__search-input--always-visible input:focus {
+    outline: .175rem solid var(--color-primary-5);
+  }
+  
+  .header__search-input--always-visible input {
+    width: 18rem;
+    padding-left: 2.25rem;
+  }
 }
 
 @media only screen and (max-width: 1280px) {
