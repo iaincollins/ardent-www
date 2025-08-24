@@ -378,3 +378,13 @@ a.button--small:hover {
   font-size: .9rem !important;
   line-height: .9rem !important;
 }
+
+a.link__icon,
+a.link__icon:hover {
+  border: 0;
+  margin-left: .25rem;
+}
+
+a.link__icon:hover .station-icon  {
+  color: var(--text-info) !important;
+}

@@ -230,7 +230,7 @@ export default () => {
                     <br />
                     <span className='text-negative text-uppercase'>Anonymous access</span>
                   </p>
-                  <p className='text-center'>Sign in to access all services</p>
+                  <p className='text-center'>Sign in to access services</p>
                   <form method='GET' action={SIGN_IN_URL}>
                     <button className='button home__sign-in-placeholder__button' style={{ display: 'block', width: '100%', padding: '.75rem .25rem', fontSize: '1.25rem' }}>
                       Sign in

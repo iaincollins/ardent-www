@@ -53,7 +53,10 @@
     outline: .175rem solid var(--color-primary-2);
   }
   
-  .header__search-input--always-visible input:hover,
+  .header__search-input--always-visible input:hover {
+    outline: .175rem solid var(--color-primary-3);
+  }
+  
   .header__search-input--always-visible input:focus {
     outline: .175rem solid var(--color-primary-5);
   }

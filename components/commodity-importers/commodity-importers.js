@@ -118,11 +118,13 @@ export default ({ tableName = 'Importers', commodities, rare }) => {
 function ExpandedRow ({ r, rare }) {
   if (!r) return
 
+  const expandedRow = r
+
   const [imports, setImports] = useState()
 
   useEffect(() => {
     (async () => {
-      const imports = await getImportsForCommodityBySystem(r.systemAddress, r.symbol)
+      const imports = await getImportsForCommodityBySystem(expandedRow.systemAddress, expandedRow.symbol)
       setImports(imports)
     })()
   }, [r])
@@ -134,8 +136,8 @@ function ExpandedRow ({ r, rare }) {
   return (
     <>
       <Collapsible
-        trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> in {r.systemName}</CollapsibleTrigger>}
-        triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> in {r.systemName}</CollapsibleTrigger>}
+        trigger={<CollapsibleTrigger>Demand for <strong>{expandedRow.name}</strong> in {expandedRow.systemName}</CollapsibleTrigger>}
+        triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{expandedRow.name}</strong> in {expandedRow.systemName}</CollapsibleTrigger>}
         open
       >
         <Table
@@ -152,10 +154,12 @@ function ExpandedRow ({ r, rare }) {
                   <StationIcon station={r}>
                     <CopyOnClick>{r.stationName}</CopyOnClick>
                     {r.distanceToArrival !== undefined && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
+                    {expandedRow?.marketId === r?.marketId &&  <Link className='link__icon float-right' href={`/system/${r.systemAddress}/list`}><i className='station-icon icarus-terminal-location text-info float-right' /></Link> }
                     <span className='is-visible-mobile'>
                       <br />
-                      <Link href={`/system/${r.systemAddress}`}>{r.systemName}</Link>
+                      <CopyOnClick>{r.systemName}</CopyOnClick>
                       {r.distance !== undefined && <small style={{ textTransform: 'none' }}> {r.distance.toLocaleString()} ly</small>}
+                      <Link className='link__icon' href={`/system/${r.systemAddress}`}><i className='station-icon icarus-terminal-system-orbits text-info' /></Link>
                     </span>
                   </StationIcon>
                   <div className='is-visible-mobile'>
@@ -181,7 +185,11 @@ function ExpandedRow ({ r, rare }) {
               key: 'systemName',
               align: 'right',
               className: 'is-hidden-mobile',
-              render: (v, r) => <Link href={`/system/${r.systemAddress}`}>{v}</Link>
+              render: (v, r) =>
+                <>
+                  <CopyOnClick>{v}</CopyOnClick>
+                  <Link className='link__icon' href={`/system/${r.systemAddress}`}><i className='station-icon icarus-terminal-system-orbits text-info' /></Link>
+                </>
             },
             {
               title: 'Updated',
@@ -220,19 +228,19 @@ function ExpandedRow ({ r, rare }) {
         />
       </Collapsible>
       <Collapsible
-        trigger={<CollapsibleTrigger>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
-        triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
+        trigger={<CollapsibleTrigger>Stock of <strong>{expandedRow.name}</strong> near <strong>{expandedRow.systemName}</strong></CollapsibleTrigger>}
+        triggerWhenOpen={<CollapsibleTrigger open>Stock of <strong>{r.name}</strong> near <strong>{expandedRow.systemName}</strong></CollapsibleTrigger>}
       >
-        <CommodityExportersNearby commodity={r} />
+        <CommodityExportersNearby commodity={expandedRow} />
       </Collapsible>
       <Collapsible
-        trigger={<CollapsibleTrigger>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
-        triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{r.name}</strong> near <strong>{r.systemName}</strong></CollapsibleTrigger>}
+        trigger={<CollapsibleTrigger>Demand for <strong>{expandedRow.name}</strong> near <strong>{expandedRow.systemName}</strong></CollapsibleTrigger>}
+        triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{expandedRow.name}</strong> near <strong>{expandedRow.systemName}</strong></CollapsibleTrigger>}
       >
-        <CommodityImportersNearby commodity={r} rare={rare} />
+        <CommodityImportersNearby commodity={expandedRow} rare={rare} />
       </Collapsible>
       {/* <p className='table-row-expanded-link'>
-        <Link className='button--small' href={`/system/${r.systemAddress}`}>
+        <Link className='button--small' href={`/system/${expandedRow.systemAddress}`}>
           <i className='station-icon icarus-terminal-star' />
           {r.systemName}
         </Link>

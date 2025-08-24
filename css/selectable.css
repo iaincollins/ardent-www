@@ -71,7 +71,7 @@
   user-select: text !important;
 }
 
-::selection  {
+.selectable:hover::selection  {
   color: var(--color-text-selected);
   background-color: var(--color-text-selected-background);
   outline: .2rem solid var(--color-text-selected-background);

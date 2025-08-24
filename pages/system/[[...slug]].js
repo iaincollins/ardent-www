@@ -72,7 +72,8 @@ export default () => {
         // setTimeout(playLoadingSound, 1500)
       }
 
-      setNavigationPath([{ name: '…', path: '/', icon: 'icarus-terminal-system-orbits' }])
+      // setNavigationPath([{ name: '…', path: '/', icon: 'icarus-terminal-system-orbits' }])
+      setNavigationPath([{ name: 'Systems', path: '/', icon: 'icarus-terminal-system-orbits' }])
       setLoading(true)
 
       setSystem(undefined)
@@ -147,7 +148,7 @@ export default () => {
         }
         setSystem(_system)
 
-        setNavigationPath([{ name: _system.systemName, path: '/', icon: 'icarus-terminal-system-orbits' }])
+        //setNavigationPath([{ name: _system.systemName, path: '/', icon: 'icarus-terminal-system-orbits' }])
         ; (async () => {
           const stations = await getStationsInSystem(_system.systemAddress)
           setStationsInSystem(

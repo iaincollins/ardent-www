@@ -47,8 +47,9 @@ export default ({ commodity }) => {
                     {r.distanceToArrival !== undefined && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                     <span className='is-visible-mobile'>
                       <br />
-                      <Link href={`/system/${r.systemAddress}`}>{r.systemName}</Link>
+                      <CopyOnClick>{r.systemName}</CopyOnClick>
                       {r.distance !== undefined && <small style={{ textTransform: 'none' }}> {r.distance.toLocaleString()} ly</small>}
+                      <Link className='link__icon' href={`/system/${r.systemAddress}`}><i className='station-icon icarus-terminal-system-orbits text-info' /></Link>
                     </span>
                   </StationIcon>
                   <div className='is-visible-mobile'>
@@ -76,8 +77,9 @@ export default ({ commodity }) => {
               className: 'is-hidden-mobile',
               render: (v, r) =>
                 <>
-                  <Link href={`/system/${r.systemAddress}`}>{r.systemName}</Link>
-                  {r.distance !== undefined && <small style={{ textTransform: 'none' }}> {r.distance.toLocaleString()} ly</small>}
+                  <CopyOnClick>{v}</CopyOnClick>
+                  {r.distance !== undefined && <small class='no-wrap' style={{ textTransform: 'none' }}> {r.distance.toLocaleString()} ly</small>}
+                  <Link className='link__icon' href={`/system/${r.systemAddress}`}><i className='station-icon icarus-terminal-system-orbits text-info' /></Link>
                 </>
             },
             {

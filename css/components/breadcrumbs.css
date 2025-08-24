@@ -21,11 +21,12 @@
   pointer-events: all;
   margin: 0;
   background: linear-gradient(to right, var(--color-primary-1) -50%, var(--color-primary-2) 100%);
+  text-transform: uppercase;
 }
 
 .breadcrumbs li > a,
 .breadcrumbs li > span {
-  color: var(--color-primary-5);
+  color: var(--color-primary-4);
   text-decoration: none;
   pointer-events: all;
   border: none !important;
@@ -119,5 +120,6 @@
 
 .breadcrumbs li:last-child:first-child a:after,
 .breadcrumbs li:last-child:first-child span:after {
-  background: linear-gradient(45deg, var(--color-primary-2) .75rem, var(--color-primary-3));
+  /* background: linear-gradient(45deg, var(--color-primary-2) .75rem, var(--color-primary-3)); */
+  background: var(--color-primary-2);
 }

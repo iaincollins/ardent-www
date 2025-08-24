@@ -20,15 +20,11 @@
 
 .navigation-bar button:hover.--active,
 .navigation-bar button.--active {
-  /* box-shadow: .1rem 0 var(--color-primary-5), inset -.1rem 0 var(--color-primary-5); */
-  /* background: linear-gradient(to left, var(--color-primary-5), var(--color-primary-3)); */
   background: var(--color-primary-5);
-  background: linear-gradient(to left, var(--color-primary-4), var(--color-primary-3));
-  filter: var(--filter-overdrive)!important;
 }
 
 .navigation-bar button.--active  .icon {
-  color: var(--color-primary-1);
+  color: var(--color-primary-0);
 }
 
 .navigation-bar button .icon {
@@ -46,7 +42,7 @@
 
 .navigation-bar button:hover {
   color: var(--color-primary-1);
-  background: var(--color-primary-5);
+  background: linear-gradient(to right, var(--color-primary-4), var(--color-primary-5));
 }
 
 .navigation-bar button:before {
