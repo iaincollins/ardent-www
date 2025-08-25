@@ -384,7 +384,10 @@ a.link__icon:hover {
   border: 0;
   margin-left: .25rem;
 }
+a.link__icon .station-icon {
+  font-size: 1rem !important;
+}
 
-a.link__icon:hover .station-icon  {
+a.link__icon:hover .station-icon {
   color: var(--text-info) !important;
 }
