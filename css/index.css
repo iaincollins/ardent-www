@@ -356,6 +356,10 @@ a.button--small:hover {
   background: var(--color-primary-5);
 }
 
+a.button--small:hover {
+  border: none !important;
+}
+
 .notification p {
   font-size: 1rem;
   margin: .5rem;
@@ -386,7 +390,7 @@ a.button--small:hover {
 
 a.link__icon,
 a.link__icon:hover {
-  border: 0;
+  border: none !important;
   margin-left: .25rem;
 }
 a.link__icon .station-icon {

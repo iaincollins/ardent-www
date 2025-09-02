@@ -26,7 +26,7 @@ export default ({ commodityOrders }) => {
                     {r.distanceToArrival !== null && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
                   </StationIcon>
                   <div className='is-visible-mobile'>
-                    <table className='data-table--mini data-table--compact two-column-table'>
+                    <table className='data-table--compact two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
                           <td>

@@ -83,7 +83,7 @@ module.exports = ({
                       <small>{r.category}</small>
                       {r?.rare === true && <small style={{ opacity: 1 }} className='text-rare'> Rare</small>}
                       <div className='is-visible-mobile'>
-                        <table className='data-table--mini two-column-table data-table--compact'>
+                        <table className='two-column-table data-table--compact'>
                           <tbody style={{ textTransform: 'uppercase' }}>
                             <tr>
                               <td><span className='data-table__label'>Total stock</span>{r.totalStock.toLocaleString()} T</td>
@@ -238,7 +238,7 @@ module.exports = ({
                         {r?.consumer === true && ' (Consumer)'}
                       </small>
                       <div className='is-visible-mobile'>
-                        <table className='data-table--mini data-table--compact two-column-table'>
+                        <table className='data-table--compact two-column-table'>
                           <tbody style={{ textTransform: 'uppercase' }}>
                             <tr>
                               <td><span className='data-table__label'>Total demand</span>{r.totalDemand > 0 ? `${r.totalDemand.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}</td>

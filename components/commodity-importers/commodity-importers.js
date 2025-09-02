@@ -44,7 +44,7 @@ export default ({ tableName = 'Importers', commodities, rare }) => {
                 </span>
               </StationIcon>
               <div className='is-visible-mobile'>
-                <table className='data-table--mini data-table--compact two-column-table'>
+                <table className='data-table--compact two-column-table'>
                   <tbody style={{ textTransform: 'uppercase' }}>
                     <tr>
                       <td>
@@ -163,7 +163,7 @@ function ExpandedRow ({ r, rare }) {
                     </span>
                   </StationIcon>
                   <div className='is-visible-mobile'>
-                    <table className='data-table--mini data-table--compact two-column-table'>
+                    <table className='data-table--compact two-column-table'>
                       <tbody style={{ textTransform: 'uppercase' }}>
                         <tr>
                           <td>

@@ -114,6 +114,7 @@
   border-bottom: .2rem solid var(--color-table-row-selected-frame);
   background: var(--color-table-background) !important;
   padding: 0 .25rem .25rem .25rem;
+  background: var(--color-highlight-0) !important;
 }
 
 .data-table th .icon,
@@ -127,12 +128,28 @@
   overflow: auto;
 }
 
+table.data-table--mini > thead > tr > th,
+.rc-table.data-table--mini > .rc-table-container > .rc-table-content > table > thead > tr > th {
+  border-color: var(--color-highlight-4);
+  background: linear-gradient(to bottom, var(--color-highlight-1), var(--color-highlight-2));
+}
+
+table.data-table--mini > tbody,
+.rc-table.data-table--mini > .rc-table-container > .rc-table-content > table > tbody {
+  background: var(--color-highlight-1) !important;
+}
+
+table.data-table--mini > tbody small,
+.rc-table.data-table--mini > .rc-table-container > .rc-table-content > table > tbody small {
+  color: var(--color-highlight-5);
+}
+
 table.data-table--mini > tbody > tr > td,
-.data-table--mini > .rc-table-container > .rc-table-content > table > tbody > tr > td {
+.rc-table.data-table--mini > .rc-table-container > .rc-table-content > table > tbody > tr > td {
   background: none;
   font-size: .9rem;
   margin-bottom: .5rem;
-  border-top: .25rem solid var(--color-primary-0);
+  border-top: .25rem solid var(--color-highlight-0);
 }
 
 .data-table--compact {

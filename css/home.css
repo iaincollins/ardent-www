@@ -70,16 +70,24 @@
   min-height: 16rem;
 }
 
-.home__sign-in-placeholder__button {
+.button--large {
   filter: var(--filter-overdrive);
+  background: var(--color-primary-5);
   max-width: 15rem;
   top: 2.5rem;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-weight: bold;
+  font-size: 1.25rem !important;
+  padding: .75rem .25rem !important;
 }
 
-.home__sign-in-placeholder__button:not(:hover)::before {
-  background-color: var(--color-primary-0);
+.button--large .icon {
+  font-size: 1.25rem !important;
+}
+
+.button--large:not(:hover)::before {
+  background-color: var(--color-primary-1);
 }
 
 .home__cmdr--not-signed-in {

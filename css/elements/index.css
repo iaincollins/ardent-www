@@ -45,7 +45,7 @@ a {
   border-bottom: 1px dotted var(--color-text-light);
 }
 
-a:hover:not(.--no-hover) {
+a:hover:not(.--no-hover):not(.button) {
   filter: contrast(1.5);
   border-bottom: 1px dotted var(--color-text-link);
 }

@@ -105,7 +105,7 @@ export default function Page (props) {
                         <small>{r.category}</small>
                         {r?.market_id && <small style={{ opacity: 1 }} className='text-rare'> Rare</small>}
                         <div className='is-visible-mobile'>
-                          <table className='data-table--mini data-table--compact two-column-table'>
+                          <table className='data-table--compact two-column-table'>
                             <tbody style={{ textTransform: 'uppercase' }}>
                               <tr>
                                 <td><span className='data-table__label'>Avg Export CR/T</span>{r.avgBuyPrice > 0 ? <>{r.avgBuyPrice.toLocaleString()} CR</> : '-'}</td>
