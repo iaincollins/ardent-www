@@ -65,10 +65,20 @@
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td > *,
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])):hover td,
 .data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])):hover td > * {
+  color: var(--color-highlight-1);
+}
+
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td > *,
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])):hover td > * {
+  background: transparent;
+}
+
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])) td,
+.data-table tr.rc-table-row:has(+ tr.rc-table-expanded-row:not([style="display: none;"])):hover td {
   background: var(--color-table-row-selected-frame) !important;
-  color: var(--color-primary-1);
   border-bottom: none;
 }
+
 
 .data-table tr.data-table__row--selected,
 .data-table tr.rc-table-expanded-row:not([style="display: none;"]),

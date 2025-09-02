@@ -65,7 +65,6 @@
   margin-right: .5rem;
   margin-left: 1rem;
   z-index: 1;
-  color: var(--color-primary-5);
   outline: none;
 }
 
@@ -94,17 +93,17 @@
 .react-tabs__tab,
 .react-tabs__tab::before,
 .react-tabs__tab::after {
-  background: var(--color-primary-3);
+  background: var(--color-primary-2);
+  color: var(--color-primary-5);
 }
 
 .react-tabs__tab:hover:not(.react-tabs__tab--selected),
 .react-tabs__tab:hover:not(.react-tabs__tab--selected)::before,
 .react-tabs__tab:hover:not(.react-tabs__tab--selected)::after {
   background: var(--color-primary-4);
-  color: var(--color-primary-2);
+  color: var(--color-primary-0);
   z-index: 2;
 }
-
 
 .react-tabs__tab.react-tabs__tab--selected,
 .react-tabs__tab.react-tabs__tab--selected::before,

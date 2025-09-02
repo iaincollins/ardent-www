@@ -136,8 +136,8 @@ function ExpandedRow ({ r, rare }) {
   return (
     <>
       <Collapsible
-        trigger={<CollapsibleTrigger>Demand for <strong>{expandedRow.name}</strong> in {expandedRow.systemName}</CollapsibleTrigger>}
-        triggerWhenOpen={<CollapsibleTrigger open>Demand for <strong>{expandedRow.name}</strong> in {expandedRow.systemName}</CollapsibleTrigger>}
+        trigger={<CollapsibleTrigger>Buying <strong>{expandedRow.name}</strong> in {expandedRow.systemName}</CollapsibleTrigger>}
+        triggerWhenOpen={<CollapsibleTrigger open>Buying <strong>{expandedRow.name}</strong> in {expandedRow.systemName}</CollapsibleTrigger>}
         open
       >
         <Table

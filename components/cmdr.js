@@ -133,7 +133,7 @@ export default () => {
                   </p>}
 
                 {nearestServices &&
-                  <div className='fx__fade-in'>
+                  <div className='fx__fade-in nearby-services'>
                     <div className='heading--with-underline'>
                       <h3>Nearest services</h3>
                     </div>
@@ -214,12 +214,11 @@ export default () => {
                   <p className='text-center'>
                     <i style={{ fontSize: '3rem' }} className='icarus-terminal-warning muted' />
                     <br />
-                    <small>Maintenance mode</small>
+                    SYSTEM OFFLINE
                   </p>
-                  <p className='text-center'>Elite Dangerous is offline.</p>
-                  <p className='text-center'>This is usually due to scheduled weekly maintenance on a Thursday or because an update to the game is currently being deployed.</p>
+                  <p className='text-center'><small>Elite Dangerous servers are offline during sheduled weekly maintenance on Thursdays</small></p>
                   <p className='text-center'>
-                    For more information refer to the offical <a target='_blank' href='https://forums.frontier.co.uk/forums/elite-dangerous-news/' rel='noreferrer'>Elite Dangerous News Forum</a>
+                    For more information refer to the offical <a target='_blank' href='https://forums.frontier.co.uk/forums/elite-dangerous-news/' rel='noreferrer'>Elite Dangerous Forum</a>
                   </p>
                 </div>
                 )

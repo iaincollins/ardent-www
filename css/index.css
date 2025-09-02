@@ -131,14 +131,15 @@ hr {
   padding: 0;
   padding-left: 1.2rem;
   display: inline;
+  color: var(--color-highlight-5);
 }
 
 .collapsible__trigger-text {
-  border-bottom: 1px dotted var(--color-text-light);
+  border-bottom: 1px dotted var(--color-highlight-5);
 }
 
 .collapsible__trigger:hover .collapsible__trigger-text {
-  border-bottom: 1px dotted var(--color-text-link);
+  border-bottom: 1px dotted var(--color-highlight-5);
 }
 
 .collapsible__trigger-icon {
@@ -159,13 +160,16 @@ hr {
   padding-bottom: .25rem;
   padding-left: 1.4rem;
   display: block;
-  border-radius: .15rem;
-  background: var(--color-primary-2);
+  background: var(--color-highlight-1);
 }
 
 .rc-table-cell .collapsible__trigger:hover {
-    background: var(--color-primary-3);
-    color: var(--color-text-link);
+  background: var(--color-highlight-2);
+  color: var(--color-highlight-6);
+}
+
+.rc-table-cell .collapsible__trigger:hover .collapsible__trigger-text {
+  xborder: none;
 }
 
 .rc-table-cell .collapsible__trigger .collapsible__trigger-icon {
@@ -173,8 +177,8 @@ hr {
 }
 
 .rc-table-cell .collapsible__trigger.collapsible__trigger--open {
-  background: var(--color-primary-5);
-  color: var(--color-primary-1);
+  background: var(--color-highlight-4);
+  color: var(--color-highlight-0);
   border: none;
 }
 
@@ -337,18 +341,19 @@ a.button--small {
   display: inline-block;
   padding: .5rem .75rem .5rem .25rem;
   border-radius: .25rem;
-  color: var(--color-primary-1);
-  background: var(--color-primary-4);
+  color: var(--color-primary-5);
+  background: var(--color-primary-2);
   clip-path: polygon(0 0,100% 0,100% calc(100% - 0.5rem),calc(100% - 0.5rem) 100%,0 100%);
   border: none;
 }
 
 .button--small:hover,
 a.button--small:hover {
-  background: var(--color-primary-5);
   clip-path: polygon(0 0,100% 0,100% calc(100% - 0.5rem),calc(100% - 0.5rem) 100%,0 100%);
   border: none;
   filter: none;
+  color: var(--color-primary-2);
+  background: var(--color-primary-5);
 }
 
 .notification p {
@@ -390,4 +395,10 @@ a.link__icon .station-icon {
 
 a.link__icon:hover .station-icon {
   color: var(--text-info) !important;
+}
+
+.nearby-services .collapsible__trigger,
+.nearby-services .collapsible__trigger-text {
+  color: var(--color-text-link) !important;
+  border-color: var(--color-text-link) !important;
 }

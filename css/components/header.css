@@ -149,8 +149,8 @@ header {
   background: linear-gradient(to top, var(--color-primary-3), transparent);
   color: var(--color-primary-5);
   border-bottom: .2rem solid var(--color-primary-5);
-  filter: none;
   transition: 0;
+
 }
 
 .header__navigation .button .icon {
