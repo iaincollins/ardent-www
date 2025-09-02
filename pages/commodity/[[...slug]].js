@@ -9,7 +9,7 @@ import CommodityImporters from 'components/commodity-importers/commodity-importe
 import CommodityExporters from 'components/commodity-exporters/commodity-exporters'
 import listOfCommodities from 'lib/commodities/commodities.json'
 import animateTableEffect from 'lib/animate-table-effect'
-import { NavigationContext } from 'lib/context'
+import { NavigationContext, DialogContext } from 'lib/context'
 import commodityCategories from 'lib/commodities/commodity-categories.json'
 import { playLoadingSound } from 'lib/sounds'
 import { getCommodityBySymbolOrName, getCommoditiesWithPricing } from 'lib/commodities'
@@ -28,7 +28,9 @@ const TABS = ['exporters', 'importers']
 
 export default () => {
   const router = useRouter()
+
   const [, setNavigationPath] = useContext(NavigationContext)
+
   const [cachedQuery, setCachedQuery] = useState()
   const [activeTab, setActiveTab] = useState()
   const [commodities, setCommodities] = useState([])
@@ -39,51 +41,51 @@ export default () => {
 
   useEffect(animateTableEffect)
 
-  async function getExporters (commoditySymbol) {
+  async function getExporters(commoditySymbol) {
     setExports(undefined)
-    ; (async () => {
-      const exports = await getExports(commoditySymbol)
-      if (Array.isArray(exports)) {
-        exports.forEach(c => {
-          c.key = `${c.marketId}_${c.commoditySymbol}`
-          c.symbol = commoditySymbol
-          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-          c.maxProfit = c.maxSellPrice - c.minBuyPrice
-          c.category = listOfCommodities[c.symbol]?.category ?? ''
-          c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
-          delete c.commodityName
-        })
-        setExports(exports)
-      } else {
-        setExports([])
-      }
-    })()
+      ; (async () => {
+        const exports = await getExports(commoditySymbol)
+        if (Array.isArray(exports)) {
+          exports.forEach(c => {
+            c.key = `${c.marketId}_${c.commoditySymbol}`
+            c.symbol = commoditySymbol
+            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+            c.maxProfit = c.maxSellPrice - c.minBuyPrice
+            c.category = listOfCommodities[c.symbol]?.category ?? ''
+            c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
+            delete c.commodityName
+          })
+          setExports(exports)
+        } else {
+          setExports([])
+        }
+      })()
   }
 
-  async function getImporters (commoditySymbol) {
+  async function getImporters(commoditySymbol) {
     setImports(undefined)
-    ; (async () => {
-      const imports = await getImports(commoditySymbol)
-      if (Array.isArray(imports)) {
-        imports.forEach(c => {
-          c.symbol = commoditySymbol
-          c.key = `${c.marketId}_${c.commoditySymbol}`
-          c.avgProfit = c.avgSellPrice - c.avgBuyPrice
-          c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
-          c.maxProfit = c.maxSellPrice - c.minBuyPrice
-          c.category = listOfCommodities[commoditySymbol]?.category ?? ''
-          c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
-          delete c.commodityName
-        })
-        setImports(imports)
-      } else {
-        setImports([])
-      }
-    })()
+      ; (async () => {
+        const imports = await getImports(commoditySymbol)
+        if (Array.isArray(imports)) {
+          imports.forEach(c => {
+            c.symbol = commoditySymbol
+            c.key = `${c.marketId}_${c.commoditySymbol}`
+            c.avgProfit = c.avgSellPrice - c.avgBuyPrice
+            c.avgProfitMargin = Math.floor((c.avgProfit / c.avgBuyPrice) * 100)
+            c.maxProfit = c.maxSellPrice - c.minBuyPrice
+            c.category = listOfCommodities[commoditySymbol]?.category ?? ''
+            c.name = listOfCommodities[commoditySymbol]?.name ?? commoditySymbol
+            delete c.commodityName
+          })
+          setImports(imports)
+        } else {
+          setImports([])
+        }
+      })()
   }
 
-  async function loadCommodity (_commoditySymbol, _activeTab) {
+  async function loadCommodity(_commoditySymbol, _activeTab) {
     const commoditySymbol = _commoditySymbol?.toLowerCase()
     if (!commoditySymbol) return
 
@@ -134,10 +136,10 @@ export default () => {
   useEffect(() => {
     setNavigationPath([{ name: 'Commodities', path: '/commodities', icon: 'icarus-terminal-cargo' }])
 
-    ; (async () => {
-      const commoditiesWithPricing = await getCommoditiesWithPricing()
-      setCommodities(commoditiesWithPricing)
-    })()
+      ; (async () => {
+        const commoditiesWithPricing = await getCommoditiesWithPricing()
+        setCommodities(commoditiesWithPricing)
+      })()
 
     window.addEventListener('LoadCommodityEvent', loadCommodityEventHandler)
     return () => window.removeEventListener('LoadCommodityEvent', loadCommodityEventHandler)
@@ -218,7 +220,7 @@ export default () => {
   )
 }
 
-async function getExports (commodityName) {
+async function getExports(commodityName) {
   try {
     const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/exports?${apiQueryOptions()}`
     const res = await fetch(url)
@@ -228,7 +230,7 @@ async function getExports (commodityName) {
   }
 }
 
-async function getImports (commodityName) {
+async function getImports(commodityName) {
   try {
     const url = `${API_BASE_URL}/v2/commodity/name/${commodityName}/imports?${apiQueryOptions()}`
     const res = await fetch(url)
@@ -238,7 +240,7 @@ async function getImports (commodityName) {
   }
 }
 
-async function getMarket (marketId) {
+async function getMarket(marketId) {
   const res = await fetch(`${API_BASE_URL}/v2/market/${marketId}`)
   return (res.status === 200) ? await res.json() : null
 }
@@ -250,7 +252,7 @@ async function getMarket (marketId) {
 //   return `${a / greatestCommonDivisor(a, b)}:${b / greatestCommonDivisor(a, b)}`
 // }
 
-function apiQueryOptions () {
+function apiQueryOptions() {
   // Parse current query string and convert the params to an API query parametrer string
   const options = []
 
@@ -280,7 +282,7 @@ function apiQueryOptions () {
   return options.join('&')
 }
 
-function parseQueryString () {
+function parseQueryString() {
   const obj = {}
   window.location.search.replace(
     /([^?=&]+)(=([^&]*))?/g,
@@ -290,20 +292,45 @@ function parseQueryString () {
 }
 
 const CommodityInfo = ({ commodities, commodity, rareMarket }) => {
+  const [, setDialog] = useContext(DialogContext)
+
   if (!commodity) return
+
   return (
     <div style={{ paddingTop: '.5rem' }}>
       <CommodityFilterOptions commodities={commodities} commodity={commodity} />
       <div className='fx__fade-in' style={{ padding: '0 .1rem' }}>
+        <span className='text-uppercase' style={{ lineHeight: '1.25rem', display: 'block', marginTop: '1rem' }}>
+          {commodity.name}
+        </span>
+
         <p className='fx__animated-text text-uppercase' data-fx-order='3' style={{ marginBottom: '.25rem', fontSize: '.9rem' }}>
-          <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category}</Link>
+          <Link href={`/commodities/${commodity.category.toLowerCase()}`}>{commodity.category.replace(/s$/, '')}</Link>
         </p>
         <p className='text-no-transform muted' style={{ fontSize: '.8rem', marginTop: '.1rem' }}>
           {commodityCategories[commodity.category]?.description}
         </p>
+
+
+        {commodity?.description && !commodity?.rare &&
+          <>
+            <div
+              className='button--small'
+              onClick={() => {
+                setDialog({
+                  title: `About ${commodity.name}`,
+                  contents: <p>{commodity?.description}</p>,
+                  visible: true
+                })
+              }}
+            >
+              <i className='station-icon icarus-terminal-info' />
+              ABOUT
+            </div></>}
+
         {commodity?.rare && rareMarket?.stationName && rareMarket?.systemName &&
           <>
-            <span className='text-rare text-uppercase' style={{ fontSize: '.9rem', lineHeight: '1.5rem', display: 'block', marginTop: '.5rem' }}>
+            <span className='text-rare text-uppercase' style={{ fontSize: '.9rem', lineHeight: '1.5rem', display: 'block' }}>
               Rare export
               {commodity?.rareMaxCount && <small> Limit {commodity.rareMaxCount}T</small>}
             </span>
@@ -325,11 +352,36 @@ const CommodityInfo = ({ commodities, commodity, rareMarket }) => {
                   <small>Limit {commodity.rareMaxCount}T</small>
                 </span></>} */}
             </StationIcon>
-            <div style={{ paddingTop: '.5rem' }}>
-              <Link className='button--small' href={`/system/${rareMarket.systemAddress}`}>
-                <i className='icarus-terminal-star system-icon' />
-                {rareMarket.systemName}
-              </Link>
+            <div style={{ paddingTop: '.5rem', marginTop: '.5rem' }}>
+              <div
+                className='button--small'
+                onClick={() => {
+                  const contents = commodity?.description
+                    ? (
+                      <>
+                        <p>
+                          {rareMarket.stationName} in {rareMarket.systemName} is the exclusive exporter of {commodity.name}.
+                        </p>
+                        <p>
+                          {commodity?.description}
+                        </p>
+                        <p>
+                          {commodity?.limit && <>Export restrictions typically limit orders to {commodity.limit}T at a time.</>}
+                        </p>
+                      </>
+                    )
+                    : <p>{rareMarket.systemName} in {rareMarket.systemName} is the exclusive exporter of {commodity.name}.</p>
+
+                  setDialog({
+                    title: `About ${commodity.name}`,
+                    contents,
+                    visible: true
+                  })
+                }}
+              >
+                <i className='station-icon icarus-terminal-info' />
+                ABOUT
+              </div>
             </div>
           </>}
         {listOfCommodities[commodity.symbol]?.description &&

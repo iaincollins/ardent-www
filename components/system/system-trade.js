@@ -38,7 +38,7 @@ module.exports = ({
       <p>
         {system?.systemName !== undefined &&
           <span className='fx__fade-in'>
-            Trade data for <CopyOnClick>{system.systemName}</CopyOnClick> last updated {timeBetweenTimestamps(lastUpdatedAt)} ago
+            Commodities traded in <CopyOnClick>{system.systemName}</CopyOnClick>
           </span>}
       </p>
       <Tabs
@@ -179,17 +179,17 @@ module.exports = ({
                               ? (
                                 <>
                                   <p>
-                                    {rare.stationName} is the exclusive exporter of {rare.name}.
+                                    {rare.stationName} in {system.systemName} is the exclusive exporter of {rare.name}.
                                   </p>
                                   <p>
                                     {rare?.description}
                                   </p>
                                   <p>
-                                    {rare?.limit && <>Export restrictions limit orders to {rare.limit} T at a time.</>}
+                                    {rare?.limit && <>Export restrictions typically limit orders to {rare.limit}T at a time.</>}
                                   </p>
                                 </>
                                 )
-                              : <p>{r.systemName} is the exclusive exporter of {r.name}.</p>
+                              : <p>{r.systemName} in {system.systemName} is the exclusive exporter of {r.name}.</p>
 
                             setDialog({
                               title: `About ${r.name}`,

@@ -28,7 +28,7 @@ module.exports = ({ system, nearestServices }) => {
         <p className='loading-bar' style={{ position: 'relative', top: '-.25rem', height: '1.75rem' }} />}
       {nearestServices &&
         <div className='fx__fade-in nearby-services'>
-          <p>Station services in <CopyOnClick>{system.systemName}</CopyOnClick> and nearest populated systems</p>
+          <p>Station services in and nearest to <CopyOnClick>{system.systemName}</CopyOnClick></p>
           <div className='rc-table data-table data-table--striped data-table--interactive data-table--animated'>
             <div className='rc-table-container'>
               <table>
