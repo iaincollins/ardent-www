@@ -177,7 +177,7 @@ hr {
 }
 
 .rc-table-cell .collapsible__trigger.collapsible__trigger--open {
-  background: var(--color-highlight-4);
+  background: var(--color-highlight-5);
   color: var(--color-highlight-0);
   border: none;
 }
@@ -345,6 +345,8 @@ a.button--small {
   background: var(--color-primary-2);
   clip-path: polygon(0 0,100% 0,100% calc(100% - 0.5rem),calc(100% - 0.5rem) 100%,0 100%);
   border: none;
+  font-family: 'Jura';
+  font-weight: bold;
 }
 
 .button--small:hover,
@@ -359,6 +361,7 @@ a.button--small:hover {
 a.button--small:hover {
   border: none !important;
 }
+
 
 .notification p {
   font-size: 1rem;

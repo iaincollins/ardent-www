@@ -79,11 +79,13 @@
   transform: translate(-50%, -50%);
   font-weight: bold;
   font-size: 1.25rem !important;
-  padding: .75rem .25rem !important;
+  line-height: 1.25rem !important;
+  padding: 1.25rem .5rem !important;
 }
 
 .button--large .icon {
   font-size: 1.25rem !important;
+  line-height: 1.25rem !important;
 }
 
 .button--large:not(:hover)::before {

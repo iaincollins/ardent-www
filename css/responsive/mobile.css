@@ -251,7 +251,7 @@
     padding-left: .1rem;
     padding-bottom: 1.5rem;
     width: calc(100% - 1rem);
-    background: linear-gradient(to bottom, var(--color-primary-1), var(--color-primary-0));
+    background: transparent;
   }
 
   .layout__content-heading {

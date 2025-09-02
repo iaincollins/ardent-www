@@ -19,12 +19,12 @@
 }
 
 .navigation-bar button.--active {
-  box-shadow: .2rem 0 0 0 var(--color-primary-5);
-  filter: var(--filter-overdrive);
+  box-shadow: .2rem 0 0 0 var(--color-highlight-5);
+  background: linear-gradient(to left, var(--color-highlight-3), var(--color-highlight-1));
 }
 
 .navigation-bar button.--active .icon {
-  color: var(--color-primary-5);
+  color: var(--color-highlight-5);
 }
 
 .navigation-bar button .icon {

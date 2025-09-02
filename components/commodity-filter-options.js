@@ -359,7 +359,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
                 <span className='muted'>SYS ADDR</span>
                 {' '}
                 <span style={{ borderBottom: '1px dotted var(--color-primary-5)' }}>{locationRef.current?.dataset?.value}</span>
-                <i className='icarus-terminal-chevron-right' />
+                <i className='icarus-terminal-system-orbits' />
               </span>
               )
             : (
