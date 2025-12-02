@@ -10,6 +10,7 @@ const SERVICE_STATION_TYPES = [
   'Coriolis',
   'Ocellus',
   'Orbis',
+  'Dodec',
   'AsteroidBase',
   'Outpost',
   'MegaShip',

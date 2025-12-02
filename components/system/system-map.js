@@ -72,6 +72,8 @@ module.exports = ({
                   <p className='fx__fade-in'><i className='icon icarus-terminal-star' /> {bodiesInSystem?.filter(b => b.bodyType === 'Star')?.length}</p>}
                 {bodiesInSystem?.filter(b => b.bodyType === 'Planet')?.length > 0 &&
                   <p className='fx__fade-in'><i className='icon icarus-terminal-planet' /> {bodiesInSystem?.filter(b => b.bodyType === 'Planet')?.length}</p>}
+                {stationsInSystem?.filter(s => s.stationType === 'Dodec')?.length > 0 &&
+                  <p className='fx__fade-in'><i className='icon icarus-terminal-dodec-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Dodec')?.length}</p>}
                 {stationsInSystem?.filter(s => s.stationType === 'Orbis')?.length > 0 &&
                   <p className='fx__fade-in'><i className='icon icarus-terminal-orbis-starport' /> {stationsInSystem?.filter(s => s.stationType === 'Orbis')?.length}</p>}
                 {stationsInSystem?.filter(s => s.stationType === 'Coriolis')?.length > 0 &&
