@@ -40,7 +40,7 @@ way for a Node.js application:
 
 This will start a web server running on port `3000` in development mode with 
 hot reloading enabled, the site will connect to the live API. This is useful 
-for testing with real world data without needing to have a full  copy of the 
+for testing with real world data without needing to have a full copy of the 
 databsases locally, but is limited as sign in will not work in this mode.
 
 Note: You may sometimes see CORS requests failing locally in the browser as a 
@@ -49,32 +49,35 @@ production API URL. These errors can be safely ignored.
 
 ### Starting the full stack in development mode
 
-You can run the full stack with 
+You can run the full stack consisting of 
 [ardent-www](https://github.com/iaincollins/ardent-www), 
-[ardent-api](https://github.com/iaincollins/ardent-api) and
+[ardent-api](https://github.com/iaincollins/ardent-api), 
+[ardent-collector](https://github.com/iaincollins/ardent-collector) and 
 [ardent-auth](https://github.com/iaincollins/ardent-auth) locally by starting 
 all of them using `npm run dev:local` which will start each service running on 
-port `3000`, `3001` and `3003` respectively. You can optionally also run the 
-[ardent-collector](https://github.com/iaincollins/ardent-collector) using 
-`npm run dev`, port `3002` is reserved for the collector although it does not 
-have a public facing interface.
+port `3000`, `3001`, `3002` and `3003` respectively.
 
 Being able to run the full stack locally, including authentication, requires 
 configuration of appropriate auth tokens using environment variables or an 
 `ardent.config` file.
 
-You will, at a mimium, need to configure the following details, with the 
-`AUTH_CLIENT_ID` option corresponding to the Client ID you can configured 
-on the Frontier Development developer portal.
+For authentication to work, you will, at a mimium, need to configure the 
+following details, with the `AUTH_CLIENT_ID` option corresponding to the 
+Client ID (with AUTH and CAPI scope) that you have configured in the  
+[Frontier Developer Zone](https://user.frontierstore.net/developer).
 
     AUTH_CLIENT_ID=
     ARDENT_AUTH_JWT_SECRET=
     ARDENT_SESSION_SECRET=
 
-Tip: If you create a file called `ardent.config` in the parent directory for 
+If you create a file called `ardent.config` in the parent directory for 
 the repositories - or create a file at `/etc/ardent.config` - with environment 
 variables in this format all the services will use any supported configuration 
 options specified there.
+
+If you want to download real data to test with, you can run `npm run download` 
+in the `ardent-collector` respository to fetch the last backup, this make take 
+a few hours.
 
 ## Credits
 
