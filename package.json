@@ -1,6 +1,6 @@
 {
   "name": "ardent-www",
-  "version": "2.7.1",
+  "version": "2.8.0",
   "description": "Ardent Insight Website",
   "main": "index.js",
   "scripts": {
@@ -48,7 +48,7 @@
     "standard": "^17.0.0"
   },
   "engines": {
-    "npm": "9.6.7",
-    "node": "18.17.1"
+    "npm": "11.6.2",
+    "node": "24.12.0"
   }
 }
