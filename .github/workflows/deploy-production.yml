@@ -58,6 +58,11 @@ jobs:
           rm -rf "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}.tmp"
           cp -R "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}" "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}-${{ env.GIT_SHA_SHORT}}" || :
         SCRIPT_AFTER: |
+          # Using NVM for Node and NPM version management, so we need to load it
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+          # Install any new dependencies, rebuild then restart the site
           cd "${{ vars.DEPLOY_DIR }}/${{ env.SERVICE_NAME }}-${{ env.GIT_SHA_SHORT}}"
           npm install --omit=dev 
           npm run build
