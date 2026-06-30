@@ -217,7 +217,7 @@ export default () => {
                     <br />
                     SYSTEM OFFLINE
                   </p>
-                  <p className='text-center'><small>Elite Dangerous servers are offline during sheduled weekly maintenance on Thursdays</small></p>
+                  <p className='text-center'><small>Elite Dangerous servers are offline during sheduled maintenance</small></p>
                   <p className='text-center'>
                     For more information refer to the offical <a target='_blank' href='https://forums.frontier.co.uk/forums/elite-dangerous-news/' rel='noreferrer'>Elite Dangerous Forum</a>
                   </p>
