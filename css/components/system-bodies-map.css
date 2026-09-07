@@ -28,7 +28,7 @@
 }
 
 .system-bodies-map__orbit-container {
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
   margin-top: .5rem;
   padding: .25rem 0;
@@ -36,7 +36,10 @@
 
 .system-bodies-map__orbit-svg {
   display: block;
-  min-width: 100%;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: auto;
 }
 
 .system-bodies-map__connector-line {
@@ -263,9 +266,11 @@
   fill: url(#system-map-svg-gradient__planet-ring);
   pointer-events: none;
 }
+
 #system-map-svg-gradient__planet-ring stop:nth-child(1) {
   stop-color: rgba(160, 160, 160, 0.1);
 }
+
 #system-map-svg-gradient__planet-ring stop:nth-child(2) {
   stop-color: rgba(160, 160, 160, 0.2);
 }
@@ -276,13 +281,15 @@
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Class IV gas giant"],
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Class V gas giant"],
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Helium-rich gas giant"],
-.system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Helium gas giant"] 
+.system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Helium gas giant"],
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Gas giant with water-based life"] {
   fill: url(#system-map-svg-gradient__planet--gas-giant);
 }
+
 #system-map-svg-gradient__planet--gas-giant stop:nth-child(1) {
   stop-color: rgb(132, 134, 111);
 }
+
 #system-map-svg-gradient__planet--gas-giant stop:nth-child(2) {
   stop-color: rgb(117, 70, 7);
 }
@@ -291,9 +298,11 @@
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Gas giant with ammonia-based life"] {
   fill: url(#system-map-svg-gradient__planet--gas-giant-ammonia);
 }
+
 #system-map-svg-gradient__planet--gas-giant-ammonia stop:nth-child(1) {
   stop-color: rgb(107, 139, 87);
 }
+
 #system-map-svg-gradient__planet--gas-giant-ammonia stop:nth-child(2) {
   stop-color: rgb(4, 99, 47);
 }
@@ -301,9 +310,11 @@
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Rocky body"] {
   fill: url(#system-map-svg-gradient__planet--rocky);
 }
+
 #system-map-svg-gradient__planet--rocky stop:nth-child(1) {
   stop-color: rgb(124, 94, 81);
 }
+
 #system-map-svg-gradient__planet--rocky stop:nth-child(2) {
   stop-color: rgb(97, 57, 41);
 }
@@ -311,9 +322,11 @@
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Rocky Ice world"] {
   fill: url(#system-map-svg-gradient__planet--rocky-icy);
 }
+
 #system-map-svg-gradient__planet--rocky-icy stop:nth-child(1) {
   stop-color: rgb(106, 142, 155);
 }
+
 #system-map-svg-gradient__planet--rocky-icy stop:nth-child(2) {
   stop-color: rgb(90, 69, 37);
 }
@@ -321,19 +334,23 @@
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Icy body"] {
   fill: url(#system-map-svg-gradient__planet--icy);
 }
+
 #system-map-svg-gradient__planet--icy stop:nth-child(1) {
   stop-color: rgb(153, 206, 226);
 }
+
 #system-map-svg-gradient__planet--icy stop:nth-child(2) {
   stop-color: rgb(61, 88, 110);
 }
 
-.system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Metal-rich body"]{
+.system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Metal-rich body"] {
   fill: url(#system-map-svg-gradient__planet--metal-rich);
 }
+
 #system-map-svg-gradient__planet--metal-rich stop:nth-child(1) {
   stop-color: rgb(102, 102, 102);
 }
+
 #system-map-svg-gradient__planet--metal-rich stop:nth-child(2) {
   stop-color: rgb(97, 84, 79);
 }
@@ -341,9 +358,11 @@
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="High metal content world"] {
   fill: url(#system-map-svg-gradient__planet--high-metal);
 }
+
 #system-map-svg-gradient__planet--high-metal stop:nth-child(1) {
   stop-color: rgb(133, 19, 19);
 }
+
 #system-map-svg-gradient__planet--high-metal stop:nth-child(2) {
   stop-color: rgb(85, 28, 5);
 }
@@ -353,9 +372,11 @@
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type="Earth-like world"] {
   fill: url(#system-map-svg-gradient__planet--earth-like);
 }
+
 #system-map-svg-gradient__planet--earth-like stop:nth-child(1) {
   stop-color: rgb(27, 116, 250);
 }
+
 #system-map-svg-gradient__planet--earth-like stop:nth-child(2) {
   stop-color: rgb(7, 82, 72);
 }

@@ -151,11 +151,11 @@ function ExpandedRow ({ r }) {
               className: 'max-width-mobile',
               render: (v, r) =>
                 <>
-               
+
                   <StationIcon station={r}>
                     <CopyOnClick>{r.stationName}</CopyOnClick>
                     {r.distanceToArrival !== undefined && <small className='text-no-transform'> {Math.round(r.distanceToArrival).toLocaleString()} Ls</small>}
-                    {expandedRow?.marketId === r?.marketId && <Link className='link__icon float-right' href={`/system/${r.systemAddress}/list?marketId=${r.marketId}`}><i className='station-icon icarus-terminal-location text-info float-right' /></Link> }
+                    {expandedRow?.marketId === r?.marketId && <Link className='link__icon float-right' href={`/system/${r.systemAddress}/list?marketId=${r.marketId}`}><i className='station-icon icarus-terminal-location text-info float-right' /></Link>}
                     <span className='is-visible-mobile'>
                       <br />
                       <CopyOnClick>{r.systemName}</CopyOnClick>

@@ -11,6 +11,7 @@ const MIN_PLANET_RADIUS = 600
 const MAX_PLANET_RADIUS = 2000
 const STAR_RADIUS = 2500
 const PLANET_SPACING = 5000
+const STAR_CLUSTER_GAP = 2500
 const SVG_PADDING = 3000
 const ROW_HEIGHT = 7000
 const LABEL_GAP = 500
@@ -22,7 +23,7 @@ function getBodyFillColor (body) {
     const sub = (body.subType ?? '').toLowerCase()
     if (sub.includes('neutron')) return '#c8d8ff'
     if (sub.includes('white dwarf')) return '#f0f4ff'
-    if (sub.includes('black hole')) '#1a1a2e'
+    if (sub.includes('black hole')) return '#1a1a2e'
     if (sub.includes('brown dwarf') || sub.includes('t tauri') || sub.includes('l ')) return '#cc6633'
     if (sub.includes('class m') || sub.includes('m (')) return '#ff6030'
     if (sub.includes('class k') || sub.includes('k (')) return '#ffaa44'
@@ -49,21 +50,6 @@ function getBodyFillColor (body) {
   return '#667788'
 }
 
-function getTexturePattern (body) {
-  if (body.bodyType === 'Star') {
-    const sub = (body.subType ?? '').toLowerCase()
-    if (sub.includes('brown dwarf')) return 'svg-pattern__planet-surface--brown-dwarf'
-    return 'svg-pattern__star-surface'
-  }
-
-  const sub = (body.subType ?? '').toLowerCase()
-  if (sub.includes('gas giant')) return 'svg-pattern__planet-surface--gas-giant'
-  if (sub.includes('ammonia')) return 'svg-pattern__planet-surface--gas-giant'
-  if (sub.includes('earth-like')) return 'svg-pattern__planet-surface--clouds'
-  if (sub.includes('water world') || sub.includes('water giant')) return 'svg-pattern__planet-surface--clouds'
-  return 'svg-pattern__planet-surface'
-}
-
 module.exports = ({
   system,
   bodiesInSystem,
@@ -83,7 +69,7 @@ module.exports = ({
     <div className='fx__fade-in system-bodies-map'>
       <div className='heading--with-underline'>
         <h2 className='heading--with-icon'>
-          <i className='icon icarus-terminal-system-bodies' />
+          <i className='icon icarus-terminal-system-orbits' />
           <span className='text-no-transform'><CopyOnClick>{system.systemName}</CopyOnClick></span>
         </h2>
       </div>
@@ -94,15 +80,22 @@ module.exports = ({
           <i className='icon icarus-terminal-warning' style={{ position: 'relative', top: '.1rem' }} />{' '}
           No body data available
         </p>}
-      {objectsInSystem !== undefined && objectsInSystem.length > 0 &&
-        objectsInSystem.map((star, starIndex) => (
-          <StarSection
-            key={`star-section-${star.bodyId ?? starIndex}`}
-            star={star}
+      {objectsInSystem !== undefined && objectsInSystem.length > 0 && (
+        <>
+          {/* {objectsInSystem.map((star, starIndex) => (
+            <StarSection
+              key={`star-section-${star.bodyId ?? starIndex}`}
+              star={star}
+              setInspector={setInspector}
+            />
+          ))} */}
+          <SystemCanvas
+            stars={objectsInSystem}
             setInspector={setInspector}
           />
-        ))}
-      <p className='text-center' style={{ marginBottom: 0 }}>
+        </>
+      )}
+      <p className='text-center' style={{ marginBottom: 0, opacity: 0.5 }}>
         <small className='text-center'>Stellar cartography enhanced by EDSM.NET</small>
       </p>
     </div>
@@ -111,8 +104,6 @@ module.exports = ({
 
 function StarSection ({ star, setInspector }) {
   const children = star.children ?? []
-  const allBodies = [star, ...children]
-  const layout = calculateLayout(allBodies)
 
   return (
     <div className='system-bodies-map__star-section'>
@@ -128,73 +119,97 @@ function StarSection ({ star, setInspector }) {
             {children.length} {children.length === 1 ? 'orbiting body' : 'orbiting bodies'}
           </small>}
       </div>
-      {allBodies.length > 0 &&
-        <div className='system-bodies-map__orbit-container'>
-          <svg
-            className='system-bodies-map__orbit-svg'
-            viewBox={layout.viewBox}
-            preserveAspectRatio='xMinYMid meet'
-            style={{ width: `${Math.max(100, allBodies.length * 8)}%` }}
-          >
-            {children.length > 0 &&
-              <line
-                x1={layout.bodies[0].x}
-                y1={layout.bodies[0].y}
-                x2={layout.bodies[layout.bodies.length - 1].x}
-                y2={layout.bodies[layout.bodies.length - 1].y}
-                className='system-bodies-map__connector-line'
-              />}
-            {layout.bodies.map((item, i) => {
-              const isRootStar = i === 0 && item.body.bodyType === 'Star'
-              const moons = isRootStar ? [] : (item.body.children ?? [])
-              return (
-                <Fragment key={`body-svg-${item.body.bodyId ?? i}`}>
-                  {moons.length > 0 &&
-                    <line
-                      x1={item.x}
-                      y1={item.y + item.r}
-                      x2={item.x}
-                      y2={item.y + MOON_Y_OFFSET + ((moons.length - 1) * MOON_Y_SPACING)}
-                      className='system-bodies-map__connector-line system-bodies-map__connector-line--secondary'
-                    />}
-                  <BodySvg
-                    body={item.body}
-                    x={item.x}
-                    y={item.y}
-                    r={item.r}
-                    setInspector={setInspector}
-                  />
-                  {moons.map((child, ci) => {
-                    const childR = calculateRadius(child) * 0.6
-                    const childY = item.y + MOON_Y_OFFSET + (ci * MOON_Y_SPACING)
-                    return (
-                      <BodySvg
-                        key={`child-svg-${child.bodyId ?? ci}`}
-                        body={child}
-                        x={item.x}
-                        y={childY}
-                        r={childR}
-                        setInspector={setInspector}
-                        small
-                      />
-                    )
-                  })}
-                </Fragment>
-              )
-            })}
-          </svg>
-        </div>}
     </div>
   )
 }
 
+function SystemCanvas ({ stars, setInspector }) {
+  const layout = calculateSystemLayout(stars)
+
+  return (
+    <div className='system-bodies-map__orbit-container'>
+      <svg
+        className='system-bodies-map__orbit-svg'
+        viewBox={layout.viewBox}
+        preserveAspectRatio='xMidYMin meet'
+        style={{ width: '100%' }}
+      >
+        {layout.stars.map(({ star, xOffset, yOffset }) => (
+          <StarCanvasCluster
+            key={`star-canvas-${star.bodyId ?? star.bodyName ?? `${xOffset}-${yOffset}`}`}
+            star={star}
+            xOffset={xOffset}
+            yOffset={yOffset}
+            setInspector={setInspector}
+          />
+        ))}
+      </svg>
+    </div>
+  )
+}
+
+function StarCanvasCluster ({ star, xOffset, yOffset, setInspector }) {
+  const children = star.children ?? []
+  const allBodies = [star, ...children]
+  const layout = calculateLayout(allBodies)
+
+  return (
+    <g transform={`translate(${xOffset}, ${yOffset})`}>
+      {children.length > 0 &&
+        <line
+          x1={layout.bodies[0].x}
+          y1={layout.bodies[0].y}
+          x2={layout.bodies[layout.bodies.length - 1].x}
+          y2={layout.bodies[layout.bodies.length - 1].y}
+          className='system-bodies-map__connector-line'
+        />}
+      {layout.bodies.map((item, i) => {
+        const isRootStar = i === 0 && item.body.bodyType === 'Star'
+        const moons = isRootStar ? [] : (item.body.children ?? [])
+        return (
+          <Fragment key={`body-svg-${item.body.bodyId ?? `${star.bodyId ?? 'star'}-${i}`}`}>
+            {moons.length > 0 &&
+              <line
+                x1={item.x}
+                y1={item.y + item.r}
+                x2={item.x}
+                y2={item.y + MOON_Y_OFFSET + ((moons.length - 1) * MOON_Y_SPACING)}
+                className='system-bodies-map__connector-line system-bodies-map__connector-line--secondary'
+              />}
+            <BodySvg
+              body={item.body}
+              x={item.x}
+              y={item.y}
+              r={item.r}
+              setInspector={setInspector}
+            />
+            {moons.map((child, ci) => {
+              const childR = calculateRadius(child) * 0.6
+              const childY = item.y + MOON_Y_OFFSET + (ci * MOON_Y_SPACING)
+              return (
+                <BodySvg
+                  key={`child-svg-${child.bodyId ?? `${item.body.bodyId ?? 'body'}-${ci}`}`}
+                  body={child}
+                  x={item.x}
+                  y={childY}
+                  r={childR}
+                  setInspector={setInspector}
+                  small
+                />
+              )
+            })}
+          </Fragment>
+        )
+      })}
+    </g>
+  )
+}
+
 function BodySvg ({ body, x, y, r, setInspector, small = false }) {
-  const isStarType = body.bodyType === 'Star'
   const isPlanet = body.bodyType === 'Planet'
   const hasAtmosphere = body.atmosphereType && body.atmosphereType !== 'No atmosphere'
   const hasRings = body.rings && body.rings.length > 0
   const fillColor = getBodyFillColor(body)
-  const texturePatternId = getTexturePattern(body)
 
   const nameLabel = truncateString(body.bodyName ?? '', small ? 8 : 14)
   const distanceLabel = body.distanceToArrival !== undefined && body.distanceToArrival > 0
@@ -319,7 +334,42 @@ function calculateLayout (allBodies) {
 
   return {
     viewBox: `0 0 ${totalWidth} ${totalHeight}`,
+    totalWidth,
+    totalHeight,
     bodies
+  }
+}
+
+function calculateSystemLayout (stars = []) {
+  const starLayouts = []
+  let currentY = SVG_PADDING
+  let maxRenderedWidth = SVG_PADDING * 2
+
+  for (const star of stars) {
+    const children = star.children ?? []
+    const allBodies = [star, ...children]
+    const layout = calculateLayout(allBodies)
+
+    starLayouts.push({
+      star,
+      xOffset: SVG_PADDING,
+      yOffset: currentY,
+      totalWidth: layout.totalWidth,
+      totalHeight: layout.totalHeight
+    })
+
+    if (layout.totalWidth > maxRenderedWidth) maxRenderedWidth = layout.totalWidth
+    currentY += layout.totalHeight + STAR_CLUSTER_GAP
+  }
+
+  const totalWidth = Math.ceil(maxRenderedWidth + SVG_PADDING)
+  const totalHeight = Math.ceil(currentY + SVG_PADDING)
+
+  return {
+    viewBox: `0 0 ${totalWidth} ${totalHeight}`,
+    totalWidth,
+    totalHeight,
+    stars: starLayouts
   }
 }
 

@@ -65,21 +65,21 @@ module.exports = () => {
       <div style={{ marginTop: '.5rem', marginBottom: '.5rem' }}>
         <HexColorPicker color={color} onChange={onColorChange} />
       </div>
-      <div style={{width: 'calc(100% - .5rem)'}}>
+      <div style={{ width: 'calc(100% - .5rem)' }}>
         {Array.from({ length: 11 }, (_, i) => i).map((number) => (
           <div key={number} style={{ aspectRatio: '1', width: '9%', background: `var(--color-primary-${number})`, display: 'inline-block' }} />
         ))}
       </div>
-      <div style={{width: 'calc(100% - .5rem)'}}>
+      <div style={{ width: 'calc(100% - .5rem)' }}>
         {Array.from({ length: 11 }, (_, i) => i).map((number) => (
           <div key={number} style={{ aspectRatio: '1', width: '9%', background: `var(--color-highlight-${number})`, display: 'inline-block' }} />
         ))}
       </div>
-      <p style={{ fontSize: '.8rem', marginTop: '.5rem', marginBottom: '.25rem', opacity: .75 }}>
+      <p style={{ fontSize: '.8rem', marginTop: '.5rem', marginBottom: '.25rem', opacity: 0.75 }}>
         Highlight color
       </p>
-      <div style={{width: 'calc(100% - .5rem)'}}>
-        <input style={{ width: '99%'}} type='range' id='highlight-color-hue-shift' name='highlight-color-hue-shift' min='0' max='360' onChange={onChangeHighlightHueShift} />
+      <div style={{ width: 'calc(100% - .5rem)' }}>
+        <input style={{ width: '99%' }} type='range' id='highlight-color-hue-shift' name='highlight-color-hue-shift' min='0' max='360' onChange={onChangeHighlightHueShift} />
       </div>
       <p className='text-center' onClick={resetToDefaults}>RESET</p>
     </div>

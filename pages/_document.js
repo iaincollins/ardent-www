@@ -65,7 +65,7 @@ table.data-table--animated > tbody > tr:not(.rc-table-expanded-row),
           }}
           />
 
-                    <div dangerouslySetInnerHTML={{
+          <div dangerouslySetInnerHTML={{
             __html: `
             <!-- SVG filters and effects used for styling icons (e.g. sytem map) -->
     <svg style="position: absolute; height: 0; margin: 0; padding: 0; top: -100px;">
