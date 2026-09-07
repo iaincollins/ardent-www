@@ -158,11 +158,20 @@
   fill: url(#system-map-svg-gradient__planet--earth-like);
 }
 
+.system-map__system-object[data-system-object-type="Planet"] .system-map__planet {
+  fill: url(#system-map-svg-gradient__planet--earth-like) !important;
+}
+
 /* Planet surface — subtle texture overlay on top of the gradient. */
 .system-map__planet-surface {
   pointer-events: none;
   opacity: 0.1;
   fill: url(#svg-pattern__planet-surface);
+}
+
+.system-map__system-object[data-system-object-type="Planet"] .system-map__planet-surface {
+  fill: url(#svg-pattern__planet-surface--clouds) !important;
+  opacity: 1 !important;
 }
 
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type*="gas giant" i] .system-map__planet-surface {

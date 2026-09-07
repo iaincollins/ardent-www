@@ -36,6 +36,7 @@ function getBodyFillColor (body) {
   }
 
   const sub = (body.subType ?? '').toLowerCase()
+  if (body.bodyType === 'Planet') return '#5aa6ff'
   if (sub.includes('earth-like')) return '#4488bb'
   if (sub.includes('water world') || sub.includes('water giant')) return '#3366aa'
   if (sub.includes('ammonia')) return '#886644'
