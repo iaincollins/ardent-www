@@ -22,7 +22,7 @@ function getBodyFillColor (body) {
     const sub = (body.subType ?? '').toLowerCase()
     if (sub.includes('neutron')) return '#c8d8ff'
     if (sub.includes('white dwarf')) return '#f0f4ff'
-    if (sub.includes('black hole')) return '#1a1a2e'
+    if (sub.includes('black hole')) '#1a1a2e'
     if (sub.includes('brown dwarf') || sub.includes('t tauri') || sub.includes('l ')) return '#cc6633'
     if (sub.includes('class m') || sub.includes('m (')) return '#ff6030'
     if (sub.includes('class k') || sub.includes('k (')) return '#ffaa44'
@@ -225,7 +225,7 @@ function BodySvg ({ body, x, y, r, setInspector, small = false }) {
           fill={fillColor}
           opacity='0.15'
         />}
-      {isStarType &&
+      {/* {isStarType &&
         <circle
           className='system-map__star-glow'
           cx={x}
@@ -233,7 +233,7 @@ function BodySvg ({ body, x, y, r, setInspector, small = false }) {
           r={r * 1.6}
           fill={fillColor}
           opacity='0.12'
-        />}
+        />} */}
       <text
         className='system-map__planet-name-text'
         x={x}
