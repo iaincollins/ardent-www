@@ -293,7 +293,7 @@ function BodySvg ({ body, x, y, r, setInspector, small = false }) {
 function calculateLayout (allBodies) {
   const bodies = []
   let currentX = SVG_PADDING
-  let maxMoonDepth = 0
+  let maxRenderedBottom = ROW_HEIGHT
 
   for (let i = 0; i < allBodies.length; i++) {
     const body = allBodies[i]
@@ -302,12 +302,20 @@ function calculateLayout (allBodies) {
     const y = ROW_HEIGHT / 2
     bodies.push({ body, x, y, r })
     currentX += (r * 2) + PLANET_SPACING
-    const moonCount = body.children?.length ?? 0
-    if (moonCount > maxMoonDepth) maxMoonDepth = moonCount
+
+    const renderedChildren = (i === 0 && body.bodyType === 'Star') ? [] : (body.children ?? [])
+    if (renderedChildren.length > 0) {
+      const lastChildIndex = renderedChildren.length - 1
+      const maxChildRadius = renderedChildren.reduce((largestRadius, child) => {
+        return Math.max(largestRadius, calculateRadius(child) * 0.6)
+      }, 0)
+      const renderedBottom = y + MOON_Y_OFFSET + (lastChildIndex * MOON_Y_SPACING) + maxChildRadius
+      if (renderedBottom > maxRenderedBottom) maxRenderedBottom = renderedBottom
+    }
   }
 
   const totalWidth = currentX + SVG_PADDING
-  const totalHeight = ROW_HEIGHT + (maxMoonDepth > 0 ? MOON_Y_OFFSET + ((maxMoonDepth - 1) * MOON_Y_SPACING) + 2000 : 0)
+  const totalHeight = Math.ceil(maxRenderedBottom)
 
   return {
     viewBox: `0 0 ${totalWidth} ${totalHeight}`,
