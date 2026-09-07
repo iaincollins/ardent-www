@@ -364,6 +364,12 @@
     "name": "Narcotics",
     "description": "Synthetically created substances tailored to create mood enhancement in a human. Widely outlawed due to their addictive nature, and the resultant longer term effects on human consumers."
   },
+  "bastnasite": {
+    "id": "129046168",
+    "symbol": "Bastnasite",
+    "category": "Minerals",
+    "name": "Bastnasite"
+  },
   "bastsnakegin": {
     "id": "128667065",
     "symbol": "BastSnakeGin",
@@ -745,6 +751,12 @@
     "rare": true,
     "description": "Transparent spheres crafted from the finest crystal and containing a clear liquid full of snow that swirls when shaken"
   },
+  "curatedcommodity": {
+    "id": "129045961",
+    "symbol": "CuratedCommodity",
+    "category": "Industrial Materials",
+    "name": "Curated Commodity Package"
+  },
   "damagedescapepod": {
     "id": "128672811",
     "symbol": "DamagedEscapePod",
@@ -788,6 +800,18 @@
     "limit": 7,
     "rare": true,
     "description": "More of a lichen than the fungus that they resemble. They have a similar musty flavor to ancient Earth truffles, but the process of metabolising Deuringas's surface - which is why Deuringas truffles must be shaved in preparation for eating."
+  },
+  "deuterium": {
+    "id": "129046169",
+    "symbol": "Deuterium",
+    "category": "Minerals",
+    "name": "Deuterium"
+  },
+  "diamond": {
+    "id": "129046175",
+    "symbol": "Diamond",
+    "category": "Minerals",
+    "name": "Diamond"
   },
   "diagnosticsensor": {
     "id": "128673875",
@@ -1170,6 +1194,18 @@
     "name": "Microbial Furnaces",
     "description": "Bio-engineered microbes that separate specific elements from powdered ore. Produced on high tech worlds, their name is historic having replaced thermal furnaces for the refining or many ores."
   },
+  "helium": {
+    "id": "129046166",
+    "symbol": "Helium",
+    "category": "Chemicals",
+    "name": "Helium"
+  },
+  "helium3": {
+    "id": "129046167",
+    "symbol": "Helium3",
+    "category": "Chemicals",
+    "name": "Helium-3"
+  },
   "helvetitjpearls": {
     "id": "128667052",
     "symbol": "HelvetitjPearls",
@@ -1322,6 +1358,12 @@
     "category": "Machinery",
     "name": "Ion Distributor",
     "description": "Ion distributors are used to control the flows of ions within a device. These can be found at Stevens Orbital in the HIP 18327 system."
+  },
+  "iridium": {
+    "id": "129046165",
+    "symbol": "Iridium",
+    "category": "Metals",
+    "name": "Iridium"
   },
   "jadeite": {
     "id": "128672776",
@@ -1621,6 +1663,12 @@
     "category": "Salvage",
     "name": "Mollusc Soft Tissue",
     "description": "A sample of soft tissue from a space-based mollusc."
+  },
+  "magnesite": {
+    "id": "129046177",
+    "symbol": "Magnesite",
+    "category": "Minerals",
+    "name": "Magnesite"
   },
   "magneticemittercoil": {
     "id": "128673869",
@@ -1970,6 +2018,12 @@
     "name": "Onionhead Gamma Strain",
     "description": "A new strain of Onionhead tailored to grow in local conditions."
   },
+  "olivine": {
+    "id": "129046172",
+    "symbol": "Olivine",
+    "category": "Minerals",
+    "name": "Olivine"
+  },
   "opal": {
     "id": "128924332",
     "symbol": "Opal",
@@ -2083,6 +2137,12 @@
     "name": "Pesticides",
     "description": "Pesticides are targeted engineered substances, created to disrupt a particular part of the biological processes within a given organic pest. Used on agricultural worlds to reduce pest damage to crops or livestock."
   },
+  "periclasedunite": {
+    "id": "129046173",
+    "symbol": "PericlaseDunite",
+    "category": "Minerals",
+    "name": "Periclase Dunite"
+  },
   "platinum": {
     "id": "128049152",
     "symbol": "Platinum",
@@ -2177,6 +2237,12 @@
     "name": "Pyrophyllite",
     "description": "This phyllosilicate mineral is used in high pressure experiments. On some worlds it's also a material for intricate arts and crafts."
   },
+  "quartzpyroxenite": {
+    "id": "129046171",
+    "symbol": "QuartzPyroxenite",
+    "category": "Minerals",
+    "name": "Quartz Pyroxenite"
+  },
   "radiationbaffle": {
     "id": "128673865",
     "symbol": "RadiationBaffle",
@@ -2245,6 +2311,12 @@
     "category": "Chemicals",
     "name": "Rockforth Fertiliser",
     "description": "A synthetic material designed to provide growing plants with essential nutrients."
+  },
+  "ruby": {
+    "id": "129046176",
+    "symbol": "Ruby",
+    "category": "Minerals",
+    "name": "Ruby"
   },
   "rusanioldsmokey": {
     "id": "128667082",
@@ -2373,6 +2445,12 @@
     "category": "Industrial Materials",
     "name": "Semiconductors",
     "description": "Extremely pure semiconducting crystalline materials are used extensively in the electronics industry."
+  },
+  "sapphire": {
+    "id": "129046174",
+    "symbol": "Sapphire",
+    "category": "Minerals",
+    "name": "Sapphire"
   },
   "serendibite": {
     "id": "128924326",
@@ -2745,6 +2823,12 @@
     "category": "Metals",
     "name": "Thorium",
     "description": "Thorium, Th, atomic number 90. Melting point 2023K. A radioactive actinide metal. It was once used in ancient fission reactions. It is still used by some medical technology and as a component in advanced ceramics."
+  },
+  "thortveitite": {
+    "id": "129046170",
+    "symbol": "Thortveitite",
+    "category": "Minerals",
+    "name": "Thortveitite"
   },
   "thrutiscream": {
     "id": "128667066",
