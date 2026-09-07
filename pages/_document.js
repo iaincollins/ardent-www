@@ -64,6 +64,220 @@ table.data-table--animated > tbody > tr:not(.rc-table-expanded-row),
           `.trim()
           }}
           />
+
+                    <div dangerouslySetInnerHTML={{
+            __html: `
+            <!-- SVG filters and effects used for styling icons (e.g. sytem map) -->
+    <svg style="position: absolute; height: 0; margin: 0; padding: 0; top: -100px;">
+      <defs>
+        <!-- For planet icons in system map -->
+        <clipPath id="svg-clip-path__planet">
+          <rect x="400" y="0" width="500" height="1000" />
+        </clipPath>
+        <!-- Unknown system objects (eg stations, megaships)-->
+        <linearGradient id="svg-gradient__unknown">
+          <stop offset="0%" stop-color="#ccc" />
+          <stop offset="100%" stop-color="#aaa" />
+        </linearGradient>
+        <!-- Planets -->
+        <linearGradient id="system-map-svg-gradient__planet-ring" gradientTransform="rotate(90)" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="rgba(160, 160, 160, 0.1)" />
+          <stop offset="100%" stop-color="rgba(160, 160, 160, 0.2)" />
+        </linearGradient>
+        <linearGradient id="system-map-svg-gradient__planet" gradientTransform="rotate(10)">
+          <stop offset="0%" stop-color="rgb(100, 100, 120)" />
+          <stop offset="100%" stop-color="rgb(60, 60, 80)" />
+        </linearGradient>
+        <linearGradient id="system-map-svg-gradient__planet--gas-giant">
+          <stop offset="0%" stop-color="rgb(132, 134, 111)" />
+          <stop offset="100%" stop-color="rgb(117, 70, 7)" />
+        </linearGradient>
+        <linearGradient id="system-map-svg-gradient__planet--gas-giant-ammonia">
+          <stop offset="0%" stop-color="rgb(107, 139, 87)" />
+          <stop offset="100%" stop-color="rgb(4, 99, 47)" />
+        </linearGradient>
+        <linearGradient id="system-map-svg-gradient__planet--rocky">
+          <stop offset="0%" stop-color="rgb(124, 94, 81)" />
+          <stop offset="100%" stop-color="rgb(97, 57, 41)" />
+        </linearGradient>
+        <linearGradient id="system-map-svg-gradient__planet--rocky-icy">
+          <stop offset="0%" stop-color="rgb(106, 142, 155)" />
+          <stop offset="100%" stop-color="rgb(90, 69, 37)" />
+        </linearGradient>
+        <linearGradient id="system-map-svg-gradient__planet--icy">
+          <stop offset="0%" stop-color="rgb(153, 206, 226)" />
+          <stop offset="100%" stop-color="rgb(61, 88, 110)" />
+        </linearGradient>
+        <linearGradient id="system-map-svg-gradient__planet--high-metal">
+          <stop offset="0%" stop-color="rgb(133, 19, 19)" />
+          <stop offset="100%" stop-color="rgb(85, 28, 5)" />
+        </linearGradient>
+        <linearGradient id="system-map-svg-gradient__planet--metal-rich">
+          <stop offset="0%" stop-color="rgb(102, 102, 102)" />
+          <stop offset="100%" stop-color="rgb(97, 84, 79)" />
+        </linearGradient>
+        <linearGradient id="system-map-svg-gradient__planet--earth-like">
+          <stop offset="0%" stop-color="rgb(27, 116, 250)" />
+          <stop offset="100%" stop-color="rgb(7, 82, 72)" />
+        </linearGradient>
+        <linearGradient id="system-map-svg-gradient__planet--landable">
+          <stop offset="0%" stop-color="rgb(80, 140, 160)" />
+          <stop offset="100%" stop-color="rgb(40, 80, 100)" />
+        </linearGradient>
+        <radialGradient id="system-map-svg-gradient__planet--atmosphere--radial">
+          <stop offset="25%" />
+          <stop offset="50%" />
+          <stop offset="100%" />
+        </radialGradient>
+        <linearGradient id="system-map-svg-gradient__planet--atmosphere" gradientTransform="rotate(10)">
+          <stop offset="50%" />
+          <stop offset="100%" />
+        </linearGradient>
+        <!-- Shadows on planets  -->
+        <filter id="svg-filter__planet-shadow">
+          <feOffset dx="-500" dy="-500"/>
+          <feGaussianBlur stdDeviation="200" result="offset-blur"/>
+          <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
+          <feFlood flood-color="black" flood-opacity="1" result="color"/>
+          <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
+          <feComponentTransfer in="shadow" result="shadow"><feFuncA type="linear" slope=".7"/></feComponentTransfer>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="svg-filter__planet-shadow--small">
+          <feOffset dx="-200" dy="-200"/>
+          <feGaussianBlur stdDeviation="100" result="offset-blur"/>
+          <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
+          <feFlood flood-color="black" flood-opacity="1" result="color"/>
+          <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
+          <feComponentTransfer in="shadow" result="shadow"><feFuncA type="linear" slope=".7"/></feComponentTransfer>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="svg-filter__star-glow">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="500" result="offset-blur"/>
+          <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
+          <feFlood flood-color="rgba(255,0,0,.5)" flood-opacity="1" result="color"/>
+          <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
+          <feComponentTransfer in="shadow" result="shadow"><feFuncA type="linear" slope="1"/></feComponentTransfer>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="svg-filter__star-glow--light">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="500" result="offset-blur"/>
+          <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
+          <feFlood flood-color="rgba(255,0,0,.25)" flood-opacity="1" result="color"/>
+          <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
+          <feComponentTransfer in="shadow" result="shadow"><feFuncA type="linear" slope="1"/></feComponentTransfer>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+      </defs>
+    </svg>
+    <script>
+      // Google Chrome supports filters on SVG textures in this way but not all
+      // imitation Chrome browsers do and some look terrible as a result because
+      // of how the fail at rendering.
+      // 
+      // Firefox supports this feature too, though doesn't support focus events
+      // on the SVGs so the map view isn't actually interactive on Firefox.
+      //
+      // This check is all so the map doesn't look bad on cheap tablets like the
+      // Amazon Fire, which Amazon recently forceably purged side loaded Google
+      // Chrome from and replaced it with less capeable version of Amazon's 
+      // Silk browser which uses Google Inc. as the vendor name but isn't
+      // actually from Google and it does not have feature parity with Chrome.
+      let ENABLE_PLANET_TEXTURES = false
+
+      // Note: Safari supports SVG textures, but needs special handling as it
+      // doesn't support filters on SVG elements (textured or otherwise), so
+      // they are not enabled on Safari for now (unless/until Apple address the
+      // limitation).
+      if (isIEedge || (isFirefox && !isIOSFirefox)) { 
+        ENABLE_PLANET_TEXTURES = true
+      } else if (
+        // Check is Google Chrome (and not impostor)
+        isChromium !== null &&
+        window.navigator.vendor === "Google Inc." &&
+        !window.navigator.userAgent.match("like Chrome") && // Browsers like Amazon Fire's Silk Browsers use the Google Inc. vendor name, but that's a lie and it doesn't support this feature
+        isOpera === false &&
+        isIEedge === false
+      ) {
+        ENABLE_PLANET_TEXTURES = true
+      }
+
+      if (ENABLE_PLANET_TEXTURES) {
+        document.write(\`
+          <svg style="position: absolute; height: 0; margin: 0; padding: 0; top: -100px;">
+            <defs>
+              <pattern id="svg-pattern__star-surface" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
+                <image href="/images/textures/star.jpg" x="0" y="0" width="4096" height="4096"/>
+              </pattern>
+              <pattern id="svg-pattern__planet-surface" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
+                <image href="/images/textures/rock.jpg" x="0" y="0" width="4096" height="4096"/>
+              </pattern>
+              <pattern id="svg-pattern__planet-surface-animated" x="0" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
+                <image href="/images/textures/rock.jpg" x="0" y="0" width="4096" height="4096"/>
+                <animate attributeName="x" values="0;4096" dur="30s" repeatCount="indefinite"/>
+              </pattern>
+              <pattern id="svg-pattern__planet-surface--clouds" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
+                <image href="/images/textures/clouds.jpg" x="0" y="0" width="4096" height="4096"/>
+              </pattern>
+              <pattern id="svg-pattern__planet-surface--gas-giant" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
+                <image href="/images/textures/gas-giant.jpg" x="0" y="0" width="4096" height="4096"/>
+              </pattern>
+              <pattern id="svg-pattern__planet-surface--brown-dwarf" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="8192" height="8192">
+                <image href="/images/textures/gas-giant.jpg" x="0" y="0" width="8192" height="8192"/>
+              </pattern>
+            </defs>
+          </svg>
+          <style>
+            .system-map__system-object[data-system-object-type="Star"] .system-map__planet-surface {
+              fill: url(#svg-pattern__star-surface) !important;
+            }
+
+            .system-map__system-object[data-system-object-type="Star"][data-system-object-sub-type*="Brown dwarf" i] .system-map__planet-surface {
+              fill: url(#svg-pattern__planet-surface--brown-dwarf) !important;
+            }
+
+            .system-map__system-object[data-system-object-type="Planet"] .system-map__planet-surface {
+              fill: url(#svg-pattern__planet-surface) !important;
+            }
+
+            .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type*="gas giant" i] .system-map__planet-surface {
+              fill: url(#svg-pattern__planet-surface--gas-giant) !important;
+            }
+
+            .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type*="earth-like" i] .system-map__planet-surface {
+              fill: url(#svg-pattern__planet-surface--clouds) !important;
+            }
+
+            .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type*="water world" i] .system-map__planet-surface {
+              fill: url(#svg-pattern__planet-surface--clouds) !important;
+            }
+
+            .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type*="water giant" i] .system-map__planet-surface {
+              fill: url(#svg-pattern__planet-surface--clouds) !important;
+            }
+
+            .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type*="ammonia" i] .system-map__planet-surface {
+              fill: url(#svg-pattern__planet-surface--gas-giant) !important;
+            }
+          </style>
+        \`)
+      } else {
+        // If the device is not kown to support textures, use a different effect
+        // to render stars that works without textures (uses a radial gradient)
+        document.write(\`
+          <style>
+            .system-map__system-object[data-system-object-type="Star"] .system-map__planet {
+              filter: url(#svg-filter__star-glow) !important;
+            }
+        </style>
+        \`)
+      }
+    </script>
+          `
+          }}
+          />
           <Main />
           <NextScript />
         </body>

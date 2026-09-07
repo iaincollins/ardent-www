@@ -6,6 +6,7 @@ import animateTableEffect from 'lib/animate-table-effect'
 import Layout from 'components/layout'
 import SystemMap from 'components/system/system-map'
 import SystemList from 'components/system/system-list'
+import SystemBodiesMap from 'components/system/system-bodies-map'
 import SystemTrade from 'components/system/system-trade'
 import SystemServices from 'components/system/system-services'
 import SystemNearby from 'components/system/system-nearby'
@@ -46,7 +47,7 @@ export default () => {
   const [title, setTitle] = useState('')
 
   // TODO Refactor to read path from slug
-  const views = ['', 'list', 'exports', 'imports', 'services', 'nearby']
+  const views = ['', 'list', 'bodies', 'exports', 'imports', 'services', 'nearby']
 
   useEffect(animateTableEffect)
 
@@ -101,6 +102,9 @@ export default () => {
         switch (view) {
           case 'list':
             _title = `${_system.systemName} planets and stations- Elite Dangerous`
+            break
+          case 'bodies':
+            _title = `${_system.systemName} system bodies - Elite Dangerous`
             break
           case 'exports':
             _title = `${_system.systemName} exported commodities - Elite Dangerous`
@@ -334,6 +338,12 @@ export default () => {
             url: system ? `${systemViewBaseUrl}/list` : '',
             active: views[activeViewIndex] === 'list'
           },
+          // {
+          //   name: 'Bodies',
+          //   icon: 'icarus-terminal-system-bodies',
+          //   url: system ? `${systemViewBaseUrl}/bodies` : '',
+          //   active: views[activeViewIndex] === 'bodies'
+          // },
           {
             name: 'Commodities',
             icon: 'icarus-terminal-cargo',
@@ -391,6 +401,8 @@ export default () => {
         />}
       {views[activeViewIndex] === 'list' &&
         <SystemList system={system} bodiesInSystem={bodiesInSystem} stationsInSystem={stationsInSystem} setInspector={setInspector} />}
+      {views[activeViewIndex] === 'bodies' &&
+        <SystemBodiesMap system={system} bodiesInSystem={bodiesInSystem} stationsInSystem={stationsInSystem} setInspector={setInspector} />}
       {(views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports') &&
           <SystemTrade
             system={system}
