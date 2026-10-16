@@ -175,7 +175,21 @@ module.exports = ({
 
       </div>
       <div className='system-map'>
-        <div className='system-map__point system-map__point--highlighted' style={{ top: '50%', left: '50%' }} data-name={system.systemName} />
+        <div
+          className='system-map__point system-map__point--highlighted'
+          style={{ top: '50%', left: '50%' }}
+          data-name={system.systemName}
+          role='button'
+          tabIndex={0}
+          aria-label={`View bodies in ${system.systemName}`}
+          onClick={() => router.push(`/system/${system.systemAddress}/bodies`)}
+          onKeyDown={event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault()
+              router.push(`/system/${system.systemAddress}/bodies`)
+            }
+          }}
+        />
         {/* {system && nearbySystems === undefined && <div className='system-map__scanner'/>} */}
         <div className={`system-map__scanner${(!system || nearbySystems !== undefined) ? '--stopped' : ''}`} />
         {starsVisible && nearbySystems && nearbySystems.map((nearbySystem, i) =>

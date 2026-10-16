@@ -1,21 +1,25 @@
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect, useRef, Fragment } from 'react'
 import { parseBodiesAndStations } from 'lib/utils/sytem-map-utils'
 import CopyOnClick from 'components/copy-on-click'
 import SystemObjectIcon from 'components/system-object-icon'
 import StationIcon from 'components/station-icon'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import { kelvinToCelius, kelvinToFahrenheit } from 'lib/utils/temperature'
+import factionStates from 'lib/utils/faction-states'
 
 const SOL_RADIUS_IN_KM = 696340
-const MIN_PLANET_RADIUS = 600
+const MIN_PLANET_RADIUS = 800
 const MAX_PLANET_RADIUS = 2000
-const STAR_RADIUS = 2500
-const PLANET_SPACING = 5000
+const MAIN_STAR_RADIUS = 4000
+const STAR_RADIUS = 3000
+const SMALL_STAR_RADIUS = 1000
+const PLANET_SPACING = 3500
 const STAR_CLUSTER_GAP = 2500
-const SVG_PADDING = 3000
-const ROW_HEIGHT = 7000
+const SVG_PADDING = 1000
+const STARTING_Y_OFFSET = 3000
+const ROW_HEIGHT = 9000
 const LABEL_GAP = 500
-const MOON_Y_OFFSET = 4500
+const MOON_Y_OFFSET = 6000
 const MOON_Y_SPACING = 3500
 
 function getBodyFillColor (body) {
@@ -53,8 +57,13 @@ function getBodyFillColor (body) {
 
 module.exports = ({
   system,
+  systemStatus,
   bodiesInSystem,
   stationsInSystem,
+  settlementsInSystem,
+  megashipsInSystem,
+  fleetCarriersInSystem,
+  lastUpdatedAt,
   setInspector
 }) => {
   const [objectsInSystem, setObjectsInSystem] = useState()
@@ -63,16 +72,65 @@ module.exports = ({
     if (bodiesInSystem !== undefined && stationsInSystem !== undefined) {
       const _objectsInSystem = parseBodiesAndStations(bodiesInSystem, stationsInSystem, system)
       setObjectsInSystem(_objectsInSystem)
+      setInspector(<Inspector systemObject={_objectsInSystem[0]} />)
     }
   }, [bodiesInSystem, stationsInSystem])
 
   return (
     <div className='fx__fade-in system-bodies-map'>
-      <div className='heading--with-underline'>
-        <h2 className='heading--with-icon'>
-          <i className='icon icarus-terminal-system-orbits' />
-          <span className='text-no-transform'><CopyOnClick>{system.systemName}</CopyOnClick></span>
-        </h2>
+      <div className='system-map__system-info'>
+        <div className='heading--with-underline'>
+          <h2 className='heading--with-icon'>
+            <i className='icon icarus-terminal-system-orbits' />
+            <span className='text-no-transform'><CopyOnClick>{system.systemName}</CopyOnClick></span>
+          </h2>
+        </div>
+
+        <div className='system-map__system-objects'>
+          {(stationsInSystem === undefined || bodiesInSystem === undefined) &&
+            <p className='loading-bar' style={{ position: 'relative', top: '-.25rem', height: '1.75rem' }} />}
+          {bodiesInSystem !== undefined && stationsInSystem !== undefined && settlementsInSystem !== undefined && megashipsInSystem !== undefined && fleetCarriersInSystem !== undefined &&
+            <>
+              {bodiesInSystem.length === 0 && stationsInSystem.length === 0 &&
+                <p className='fx__fade-in text-blink-slow' style={{ height: '1.75rem' }}>
+                  <i className='icon icarus-terminal-warning muted' style={{ position: 'relative', top: '.1rem', fontSize: '1.25rem' }} />
+                  <small>System not scanned</small>
+                </p>}
+              {bodiesInSystem.filter(b => b.bodyType === 'Star').length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-star' /> {bodiesInSystem.filter(b => b.bodyType === 'Star').length}</p>}
+              {bodiesInSystem.filter(b => b.bodyType === 'Planet').length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-planet' /> {bodiesInSystem.filter(b => b.bodyType === 'Planet').length}</p>}
+              {stationsInSystem.filter(s => s.stationType === 'Dodec').length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-dodec-starport' /> {stationsInSystem.filter(s => s.stationType === 'Dodec').length}</p>}
+              {stationsInSystem.filter(s => s.stationType === 'Orbis').length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-orbis-starport' /> {stationsInSystem.filter(s => s.stationType === 'Orbis').length}</p>}
+              {stationsInSystem.filter(s => s.stationType === 'Coriolis').length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-coriolis-starport' /> {stationsInSystem.filter(s => s.stationType === 'Coriolis').length}</p>}
+              {stationsInSystem.filter(s => s.stationType === 'Ocellus').length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-ocellus-starport' /> {stationsInSystem.filter(s => s.stationType === 'Ocellus').length}</p>}
+              {stationsInSystem.filter(s => s.stationType === 'AsteroidBase').length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-asteroid-base' /> {stationsInSystem.filter(s => s.stationType === 'AsteroidBase').length}</p>}
+              {stationsInSystem.filter(s => s.stationType === 'Outpost').length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-outpost' /> {stationsInSystem.filter(s => s.stationType === 'Outpost').length}</p>}
+              {stationsInSystem.filter(s => ['CraterPort', 'CraterOutpost'].includes(s.stationType)).length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-planetary-port' /> {stationsInSystem.filter(s => ['CraterPort', 'CraterOutpost'].includes(s.stationType)).length}</p>}
+              {settlementsInSystem.length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-settlement' /> {settlementsInSystem.length}</p>}
+              {megashipsInSystem.length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-megaship' /> {megashipsInSystem.length}</p>}
+              {fleetCarriersInSystem.length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-fleet-carrier' /> {fleetCarriersInSystem.length}</p>}
+              {stationsInSystem.filter(s => ['PlanetaryConstructionDepot', 'SpaceConstructionDepot', 'SurfaceStation'].includes(s.stationType)).length > 0 && <p className='fx__fade-in'><i className='icon icarus-terminal-poi-empty' /> {stationsInSystem.filter(s => ['PlanetaryConstructionDepot', 'SpaceConstructionDepot', 'SurfaceStation'].includes(s.stationType)).length}</p>}
+            </>}
+        </div>
+
+        <div className='system-map__location'>
+          <p>
+            <small className='fx__animated-text' data-fx-order='1'><span className='muted'>SYS ADDR</span> <CopyOnClick>{system.systemAddress}</CopyOnClick></small><br />
+            <small className='fx__animated-text' data-fx-order='1' style={{ paddingRight: '1rem' }}><span className='muted'>SYS POS</span> <CopyOnClick>{system.systemX}, {system.systemY}, {system.systemZ}</CopyOnClick></small><br />
+            <small style={{ opacity: 1 }} className='fx__animated-text' data-fx-order='2'><span className='muted'>Location</span> {system.tradeZone}</small>
+            {system.tradeZoneLocation !== undefined && <><br /><small className='fx__animated-text text-no-transform' data-fx-order='3'>{system.tradeZoneLocation}</small></>}
+          </p>
+        </div>
+
+        {systemStatus != null &&
+          <div className='system-map__system-status'>
+            {systemStatus.faction && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='4'><i className='icon icarus-terminal-system-authority' /> <CopyOnClick>{systemStatus.faction}</CopyOnClick></span>}
+            {systemStatus.government && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='5'><i className='icon icarus-terminal-power' />{systemStatus.allegiance}{(systemStatus.allegiance || systemStatus.government) && ' '}{systemStatus.government}</span>}
+            {systemStatus.economy?.primary && systemStatus.economy.primary !== 'None' && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='6'><i className='icon icarus-terminal-trending-up-chart' />{systemStatus.economy.primary}{systemStatus.economy.secondary && systemStatus.economy.secondary !== 'None' && <> &amp; {systemStatus.economy.secondary}</>} Economy</span>}
+            {systemStatus.population > 0 && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='7'><i className='icon icarus-terminal-engineer' />Population {systemStatus.population.toLocaleString()}</span>}
+            {systemStatus.security && systemStatus.security !== 'Anarchy' && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='8'><i className='icon icarus-terminal-shield' />{systemStatus.security} Security</span>}
+            {systemStatus.state && systemStatus.state !== 'None' && <span style={{ display: 'block' }} className='fx__animated-text' data-fx-order='9'><i className='icon icarus-terminal-warning' />{factionStates?.[systemStatus.state.replaceAll(' ', '').toLowerCase()]?.description ?? systemStatus.state} <small>{timeBetweenTimestamps(lastUpdatedAt)} ago</small></span>}
+            <span style={{ display: 'block' }} className='fx__fade-in'><small>Stellar cartography enhanced by EDSM.NET</small></span>
+          </div>}
       </div>
       {objectsInSystem === undefined &&
         <div className='loading-bar' style={{ marginTop: '1rem' }} />}
@@ -91,14 +149,12 @@ module.exports = ({
             />
           ))} */}
           <SystemCanvas
+            system={system}
             stars={objectsInSystem}
             setInspector={setInspector}
           />
         </>
       )}
-      <p className='text-center' style={{ marginBottom: 0, opacity: 0.5 }}>
-        <small className='text-center'>Stellar cartography enhanced by EDSM.NET</small>
-      </p>
     </div>
   )
 }
@@ -124,20 +180,132 @@ function StarSection ({ star, setInspector }) {
   )
 }
 
-function SystemCanvas ({ stars, setInspector }) {
+function SystemCanvas ({ system, stars, setInspector }) {
   const layout = calculateSystemLayout(stars)
+  const initialViewBox = layout.viewBox.split(/[ ,]+/).map(Number)
+  const [viewBox, setViewBox] = useState(initialViewBox)
+  const viewBoxRef = useRef(initialViewBox)
+  const pointers = useRef(new Map())
+  const gesture = useRef(null)
+  const dragged = useRef(false)
+  const suppressClick = useRef(false)
+
+  const updateViewBox = nextViewBox => {
+    viewBoxRef.current = nextViewBox
+    setViewBox(nextViewBox)
+  }
+
+  useEffect(() => {
+    updateViewBox(initialViewBox)
+  }, [layout.viewBox])
+
+  const handleWheel = event => {
+    event.preventDefault()
+    const point = getSvgPoint(event.currentTarget, event.clientX, event.clientY)
+    const [x, y, width, height] = viewBoxRef.current
+    const factor = Math.exp(Math.max(-1, Math.min(1, event.deltaY * 0.0015)))
+    const nextWidth = Math.max(initialViewBox[2] * 0.05, Math.min(initialViewBox[2] * 20, width * factor))
+    const nextHeight = height * (nextWidth / width)
+    const ratio = nextWidth / width
+    updateViewBox([
+      point.x - (point.x - x) * ratio,
+      point.y - (point.y - y) * ratio,
+      nextWidth,
+      nextHeight
+    ])
+  }
+
+  const handlePointerDown = event => {
+    if (pointers.current.size === 0) {
+      dragged.current = false
+    } else {
+      dragged.current = true
+      pointers.current.forEach((pointer, pointerId) => event.currentTarget.setPointerCapture(pointerId))
+      event.currentTarget.setPointerCapture(event.pointerId)
+    }
+    pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY })
+    gesture.current = null
+  }
+
+  const handlePointerMove = event => {
+    if (!pointers.current.has(event.pointerId)) return
+    const previous = pointers.current.get(event.pointerId)
+    const current = { x: event.clientX, y: event.clientY }
+    pointers.current.set(event.pointerId, current)
+    const [x, y, width, height] = viewBoxRef.current
+
+    if (pointers.current.size >= 2) {
+      const [first, second] = [...pointers.current.values()]
+      const distance = Math.hypot(second.x - first.x, second.y - first.y)
+      const midpoint = { x: (first.x + second.x) / 2, y: (first.y + second.y) / 2 }
+      if (gesture.current && distance > 0) {
+        const old = gesture.current
+        const ratio = old.distance / distance
+        const nextWidth = Math.max(initialViewBox[2] * 0.05, Math.min(initialViewBox[2] * 20, width * ratio))
+        const nextHeight = height * (nextWidth / width)
+        const anchor = getSvgPoint(event.currentTarget, old.midpoint.x, old.midpoint.y)
+        const nextMidpoint = getSvgPoint(event.currentTarget, midpoint.x, midpoint.y)
+        updateViewBox([
+          anchor.x - (nextMidpoint.x - x) * (nextWidth / width),
+          anchor.y - (nextMidpoint.y - y) * (nextHeight / height),
+          nextWidth,
+          nextHeight
+        ])
+        if (!dragged.current) event.currentTarget.setPointerCapture(event.pointerId)
+        dragged.current = true
+      }
+      gesture.current = { distance, midpoint }
+      return
+    }
+
+    if (Math.hypot(current.x - previous.x, current.y - previous.y) > 3 && !dragged.current) {
+      dragged.current = true
+      event.currentTarget.setPointerCapture(event.pointerId)
+    }
+    if (dragged.current) {
+      const previousPoint = getSvgPoint(event.currentTarget, previous.x, previous.y)
+      const currentPoint = getSvgPoint(event.currentTarget, current.x, current.y)
+      updateViewBox([
+        x - (currentPoint.x - previousPoint.x),
+        y - (currentPoint.y - previousPoint.y),
+        width,
+        height
+      ])
+    }
+  }
+
+  const handlePointerUp = event => {
+    pointers.current.delete(event.pointerId)
+    gesture.current = null
+    if (dragged.current) {
+      suppressClick.current = true
+      setTimeout(() => { suppressClick.current = false }, 0)
+    }
+  }
 
   return (
     <div className='system-bodies-map__orbit-container'>
       <svg
         className='system-bodies-map__orbit-svg'
-        viewBox={layout.viewBox}
-        preserveAspectRatio='xMidYMin meet'
+        viewBox={viewBox.join(' ')}
+        preserveAspectRatio='xMidYMid meet'
         style={{ width: '100%' }}
+        onWheel={handleWheel}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onClickCapture={event => {
+          if (suppressClick.current) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+        }}
       >
         {layout.stars.map(({ star, xOffset, yOffset }) => (
           <StarCanvasCluster
             key={`star-canvas-${star.bodyId ?? star.bodyName ?? `${xOffset}-${yOffset}`}`}
+            system={system}
             star={star}
             xOffset={xOffset}
             yOffset={yOffset}
@@ -149,7 +317,14 @@ function SystemCanvas ({ stars, setInspector }) {
   )
 }
 
-function StarCanvasCluster ({ star, xOffset, yOffset, setInspector }) {
+function getSvgPoint (svg, clientX, clientY) {
+  const point = svg.createSVGPoint()
+  point.x = clientX
+  point.y = clientY
+  return point.matrixTransform(svg.getScreenCTM().inverse())
+}
+
+function StarCanvasCluster ({ system, star, xOffset, yOffset, setInspector }) {
   const children = star.children ?? []
   const allBodies = [star, ...children]
   const layout = calculateLayout(allBodies)
@@ -178,6 +353,7 @@ function StarCanvasCluster ({ star, xOffset, yOffset, setInspector }) {
                 className='system-bodies-map__connector-line system-bodies-map__connector-line--secondary'
               />}
             <BodySvg
+              system={system}
               body={item.body}
               x={item.x}
               y={item.y}
@@ -190,7 +366,9 @@ function StarCanvasCluster ({ star, xOffset, yOffset, setInspector }) {
               return (
                 <BodySvg
                   key={`child-svg-${child.bodyId ?? `${item.body.bodyId ?? 'body'}-${ci}`}`}
+                  system={system}
                   body={child}
+                  star={star}
                   x={item.x}
                   y={childY}
                   r={childR}
@@ -206,13 +384,13 @@ function StarCanvasCluster ({ star, xOffset, yOffset, setInspector }) {
   )
 }
 
-function BodySvg ({ body, x, y, r, setInspector, small = false }) {
+function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
   const isPlanet = body.bodyType === 'Planet'
   const hasAtmosphere = body.atmosphereType && body.atmosphereType !== 'No atmosphere'
   const hasRings = body.rings && body.rings.length > 0
   const fillColor = getBodyFillColor(body)
 
-  const nameLabel = truncateString(body.bodyName ?? '', small ? 8 : 14)
+  const nameLabel = truncateString((body.bodyName ?? '').replace(new RegExp(`^${system?.systemName}`), ''), small ? 8 : 14)
   const distanceLabel = body.distanceToArrival !== undefined && body.distanceToArrival > 0
     ? `${Math.round(body.distanceToArrival).toLocaleString()} Ls`
     : ''
@@ -268,14 +446,14 @@ function BodySvg ({ body, x, y, r, setInspector, small = false }) {
           {distanceLabel}
         </text>}
       <g className='system-map__body'>
-        <g className='system-map__planet'>
+        <g className={isPlanet ? 'system-map__planet' : 'system-map__star'}>
           <circle
             cx={x}
             cy={y}
             r={r}
           />
           <circle
-            className='system-map__planet-surface'
+            className={isPlanet ? 'system-map__planet-surface' : 'system-map__star-surface'}
             cx={x}
             cy={y}
             r={r}
@@ -313,11 +491,12 @@ function calculateLayout (allBodies) {
 
   for (let i = 0; i < allBodies.length; i++) {
     const body = allBodies[i]
-    const r = calculateRadius(body)
+    const isRootStar = i === 0 && body.bodyType === 'Star'
+    const r = calculateRadius(body, isRootStar)
     const x = currentX + r
     const y = ROW_HEIGHT / 2
     bodies.push({ body, x, y, r })
-    currentX += (r * 2) + PLANET_SPACING
+    currentX += (r * 2) + PLANET_SPACING 
 
     const renderedChildren = (i === 0 && body.bodyType === 'Star') ? [] : (body.children ?? [])
     if (renderedChildren.length > 0) {
@@ -343,7 +522,7 @@ function calculateLayout (allBodies) {
 
 function calculateSystemLayout (stars = []) {
   const starLayouts = []
-  let currentY = SVG_PADDING
+  let currentY = SVG_PADDING + STARTING_Y_OFFSET
   let maxRenderedWidth = SVG_PADDING * 2
 
   for (const star of stars) {
@@ -374,11 +553,14 @@ function calculateSystemLayout (stars = []) {
   }
 }
 
-function calculateRadius (body) {
+function calculateRadius (body, isRootStar = false) {
   if (body.bodyType === 'Star') {
+    const subType = (body.subType ?? '').toLowerCase()
+    if (['black hole', 'neutron', 'white dwarf'].some(type => subType.includes(type))) return SMALL_STAR_RADIUS
+    if (isRootStar) return MAIN_STAR_RADIUS
     if (body.solarRadius) {
       const scaled = Math.log10(Math.max(body.solarRadius, 0.1) * SOL_RADIUS_IN_KM) * 400
-      return Math.min(Math.max(scaled, STAR_RADIUS * 0.8), STAR_RADIUS * 1.5)
+      return Math.min(Math.max(scaled, STAR_RADIUS * .5), STAR_RADIUS * 3)
     }
     return STAR_RADIUS
   }

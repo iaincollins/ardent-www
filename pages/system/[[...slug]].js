@@ -324,6 +324,7 @@ export default () => {
       loadingSound={false}
       title={title}
       description={system ? `Data for the system ${system.systemName} in Elite Dangerous` : null}
+      className={views[activeViewIndex] === 'bodies' ? 'layout__content-wrapper--no-scroll' : undefined}
       navigation={
         [
           {
@@ -365,7 +366,7 @@ export default () => {
         ]
       }
       inspector={inspector}
-      navigationOverlaid={!!((views[activeViewIndex] === '' && system !== null))} // Overlay navigation for map view
+      navigationOverlaid={!!((views[activeViewIndex] === '' && system !== null) || (views[activeViewIndex] === 'bodies'))} // Overlay navigation for map view
     >
       <Head>
         <link rel='canonical' href={`https://ardent-insight.com/system/${system?.systemAddress}/${views[activeViewIndex]}`} />
@@ -402,7 +403,17 @@ export default () => {
           {views[activeViewIndex] === 'list' &&
             <SystemList system={system} bodiesInSystem={bodiesInSystem} stationsInSystem={stationsInSystem} setInspector={setInspector} />}
           {views[activeViewIndex] === 'bodies' &&
-            <SystemBodiesMap system={system} bodiesInSystem={bodiesInSystem} stationsInSystem={stationsInSystem} setInspector={setInspector} />}
+            <SystemBodiesMap
+              system={system}
+              systemStatus={systemStatus}
+              bodiesInSystem={bodiesInSystem}
+              stationsInSystem={stationsInSystem}
+              settlementsInSystem={settlementsInSystem}
+              megashipsInSystem={megashipsInSystem}
+              fleetCarriersInSystem={fleetCarriersInSystem}
+              lastUpdatedAt={lastUpdatedAt}
+              setInspector={setInspector}
+            />}
           {(views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports') &&
             <SystemTrade
               system={system}

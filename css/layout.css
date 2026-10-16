@@ -1,3 +1,11 @@
+.layout__content-wrapper--no-scroll {
+  overflow: hidden !important;
+}
+
+.layout__content-wrapper--no-scroll .layout__content {
+  overflow: hidden !important;
+}
+
 .layout__frame {
   position: absolute;
   top: .5rem;

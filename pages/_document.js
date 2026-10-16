@@ -109,8 +109,8 @@ table.data-table--animated > tbody > tr:not(.rc-table-expanded-row),
           <stop offset="100%" stop-color="rgb(61, 88, 110)" />
         </linearGradient>
         <linearGradient id="system-map-svg-gradient__planet--high-metal">
-          <stop offset="0%" stop-color="rgb(133, 19, 19)" />
-          <stop offset="100%" stop-color="rgb(85, 28, 5)" />
+          <stop offset="0%" stop-color="rgb(72, 51, 42)" />
+          <stop offset="100%" stop-color="rgb(79, 47, 34)" />
         </linearGradient>
         <linearGradient id="system-map-svg-gradient__planet--metal-rich">
           <stop offset="0%" stop-color="rgb(102, 102, 102)" />
@@ -140,7 +140,7 @@ table.data-table--animated > tbody > tr:not(.rc-table-expanded-row),
           <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
           <feFlood flood-color="black" flood-opacity="1" result="color"/>
           <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
-          <feComponentTransfer in="shadow" result="shadow"><feFuncA type="linear" slope=".7"/></feComponentTransfer>
+          <feComponentTransfer in="shadow" result="shadow"><feFuncA type="linear" slope=".9"/></feComponentTransfer>
           <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
         </filter>
         <filter id="svg-filter__planet-shadow--small">
@@ -149,7 +149,7 @@ table.data-table--animated > tbody > tr:not(.rc-table-expanded-row),
           <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
           <feFlood flood-color="black" flood-opacity="1" result="color"/>
           <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
-          <feComponentTransfer in="shadow" result="shadow"><feFuncA type="linear" slope=".7"/></feComponentTransfer>
+          <feComponentTransfer in="shadow" result="shadow"><feFuncA type="linear" slope=".9"/></feComponentTransfer>
           <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
         </filter>
         <filter id="svg-filter__star-glow">
@@ -209,20 +209,20 @@ table.data-table--animated > tbody > tr:not(.rc-table-expanded-row),
           <svg style="position: absolute; height: 0; margin: 0; padding: 0; top: -100px;">
             <defs>
               <pattern id="svg-pattern__star-surface" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
-                <image href="/images/textures/star.jpg" x="0" y="0" width="4096" height="4096"/>
+                <image href="/images/textures/star.jpg" x="0" y="0" width="4096" height="4096" opacity="0.6"/>
               </pattern>
               <pattern id="svg-pattern__planet-surface" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
-                <image href="/images/textures/rock.jpg" x="0" y="0" width="4096" height="4096"/>
+                <image href="/images/textures/rock.jpg" x="0" y="0" width="4096" height="4096" opacity="0.6"/>
               </pattern>
               <pattern id="svg-pattern__planet-surface-animated" x="0" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
-                <image href="/images/textures/rock.jpg" x="0" y="0" width="4096" height="4096"/>
+                <image href="/images/textures/rock.jpg" x="0" y="0" width="4096" height="4096" opacity="0.6"/>
                 <animate attributeName="x" values="0;4096" dur="30s" repeatCount="indefinite"/>
               </pattern>
               <pattern id="svg-pattern__planet-surface--clouds" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
-                <image href="/images/textures/clouds.jpg" x="0" y="0" width="4096" height="4096"/>
+                <image href="/images/textures/clouds.jpg" x="0" y="0" width="4096" height="4096" opacity="0.6"/>
               </pattern>
               <pattern id="svg-pattern__planet-surface--gas-giant" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
-                <image href="/images/textures/gas-giant.jpg" x="0" y="0" width="4096" height="4096"/>
+                <image href="/images/textures/gas-giant.jpg" x="0" y="0" width="4096" height="4096" opacity="0.6"/>
               </pattern>
               <pattern id="svg-pattern__planet-surface--brown-dwarf" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="8192" height="8192">
                 <image href="/images/textures/gas-giant.jpg" x="0" y="0" width="8192" height="8192"/>
@@ -230,11 +230,11 @@ table.data-table--animated > tbody > tr:not(.rc-table-expanded-row),
             </defs>
           </svg>
           <style>
-            .system-map__system-object[data-system-object-type="Star"] .system-map__planet-surface {
+            .system-map__system-object[data-system-object-type="Star"] .system-map__star-surface {
               fill: url(#svg-pattern__star-surface) !important;
             }
 
-            .system-map__system-object[data-system-object-type="Star"][data-system-object-sub-type*="Brown dwarf" i] .system-map__planet-surface {
+            .system-map__system-object[data-system-object-type="Star"][data-system-object-sub-type*="Brown dwarf" i] .system-map__star-surface {
               fill: url(#svg-pattern__planet-surface--brown-dwarf) !important;
             }
 
@@ -268,7 +268,7 @@ table.data-table--animated > tbody > tr:not(.rc-table-expanded-row),
         // to render stars that works without textures (uses a radial gradient)
         document.write(\`
           <style>
-            .system-map__system-object[data-system-object-type="Star"] .system-map__planet {
+            .system-map__system-object[data-system-object-type="Star"] .system-map__star {
               filter: url(#svg-filter__star-glow) !important;
             }
         </style>
