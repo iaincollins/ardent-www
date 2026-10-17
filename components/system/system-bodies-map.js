@@ -189,6 +189,7 @@ function SystemCanvas ({ system, stars, setInspector }) {
   const gesture = useRef(null)
   const dragged = useRef(false)
   const suppressClick = useRef(false)
+  const mapElement = useRef()
 
   const updateViewBox = nextViewBox => {
     viewBoxRef.current = nextViewBox
@@ -198,6 +199,56 @@ function SystemCanvas ({ system, stars, setInspector }) {
   useEffect(() => {
     updateViewBox(initialViewBox)
   }, [layout.viewBox])
+
+  useEffect(() => {
+    mapElement.current?.focus({ preventScroll: true })
+  }, [])
+
+  const handleKeyDown = event => {
+    const [x, y, width, height] = viewBoxRef.current
+    const panX = width * 0.1
+    const panY = height * 0.1
+
+    switch (event.key) {
+      case 'ArrowUp':
+        event.preventDefault()
+        updateViewBox([x, y - panY, width, height])
+        break
+      case 'ArrowDown':
+        event.preventDefault()
+        updateViewBox([x, y + panY, width, height])
+        break
+      case 'ArrowLeft':
+        event.preventDefault()
+        updateViewBox([x - panX, y, width, height])
+        break
+      case 'ArrowRight':
+        event.preventDefault()
+        updateViewBox([x + panX, y, width, height])
+        break
+      case '+':
+      case '=':
+      case 'Add':
+        event.preventDefault()
+        zoomViewBox(0.8)
+        break
+      case '-':
+      case '_':
+      case 'Subtract':
+        event.preventDefault()
+        zoomViewBox(1.25)
+        break
+      default:
+        break
+    }
+  }
+
+  const zoomViewBox = factor => {
+    const [x, y, width, height] = viewBoxRef.current
+    const nextWidth = Math.max(initialViewBox[2] * 0.05, Math.min(initialViewBox[2] * 20, width * factor))
+    const nextHeight = height * (nextWidth / width)
+    updateViewBox([x + (width - nextWidth) / 2, y + (height - nextHeight) / 2, nextWidth, nextHeight])
+  }
 
   const handleWheel = event => {
     event.preventDefault()
@@ -286,11 +337,16 @@ function SystemCanvas ({ system, stars, setInspector }) {
   return (
     <div className='system-bodies-map__orbit-container'>
       <svg
+        ref={mapElement}
         className='system-bodies-map__orbit-svg'
+        tabIndex={0}
+        role='img'
+        aria-label='System bodies map. Use arrow keys to pan and plus or minus to zoom.'
         viewBox={viewBox.join(' ')}
         preserveAspectRatio='xMidYMid meet'
         style={{ width: '100%' }}
         onWheel={handleWheel}
+        onKeyDown={handleKeyDown}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
