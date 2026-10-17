@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import factionStates from 'lib/utils/faction-states'
@@ -6,11 +6,14 @@ import { scanSystemSound } from 'lib/sounds'
 import CopyOnClick from 'components/copy-on-click'
 
 const SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER = 50
+const SYSTEM_MAP_DRAG_THRESHOLD = 8
+const SYSTEM_MAP_KEYBOARD_STEP = 1
 
 module.exports = ({
   system,
   systemStatus,
   nearbySystems,
+  onMapCenterChange,
   stationsInSystem,
   settlementsInSystem,
   megashipsInSystem,
@@ -21,10 +24,101 @@ module.exports = ({
   const router = useRouter()
   const [mapZoomMultiplier, setMapZoomMultiplier] = useState(SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER)
   const [starsVisible, setStarsVisible] = useState(false)
+  const [mapCenter, setMapCenter] = useState(() => ({ x: system.systemX, z: system.systemZ }))
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
+  const [hasDragged, setHasDragged] = useState(false)
+  const mapElement = useRef()
+  const drag = useRef()
+  const suppressClick = useRef(false)
+
+  useEffect(() => {
+    setMapCenter({ x: system.systemX, z: system.systemZ })
+    setHasDragged(false)
+  }, [system.systemAddress])
+
+  const handlePointerDown = event => {
+    const point = event.target.closest('.system-map__point')
+    event.currentTarget.setPointerCapture(event.pointerId)
+    drag.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      deltaX: 0,
+      deltaY: 0,
+      systemAddress: point?.dataset.systemAddress,
+      isHighlighted: point?.classList.contains('system-map__point--highlighted'),
+      moved: false
+    }
+  }
+
+  const handlePointerMove = event => {
+    if (!drag.current || drag.current.pointerId !== event.pointerId) return
+    const x = event.clientX - drag.current.startX
+    const y = event.clientY - drag.current.startY
+    if (Math.hypot(x, y) > SYSTEM_MAP_DRAG_THRESHOLD) {
+      drag.current.moved = true
+      setHasDragged(true)
+    }
+    drag.current.deltaX = x
+    drag.current.deltaY = y
+    setDragOffset({ x, y })
+  }
+
+  const handlePointerUp = event => {
+    if (!drag.current || drag.current.pointerId !== event.pointerId) return
+    const { deltaX, deltaY, moved, systemAddress, isHighlighted } = drag.current
+    drag.current = undefined
+    setDragOffset({ x: 0, y: 0 })
+    if (!moved) {
+      if (systemAddress) router.push(`/system/${systemAddress}${isHighlighted ? '/bodies' : ''}`)
+      return
+    }
+    suppressClick.current = true
+    setTimeout(() => { suppressClick.current = false }, 100)
+    const center = {
+      x: mapCenter.x - deltaX / mapZoomMultiplier,
+      z: mapCenter.z - deltaY / mapZoomMultiplier
+    }
+    setMapCenter(center)
+    onMapCenterChange?.(center)
+  }
+
+  const handlePointerCancel = event => {
+    if (!drag.current || drag.current.pointerId !== event.pointerId) return
+    drag.current = undefined
+    setDragOffset({ x: 0, y: 0 })
+  }
+
+  const handleMapKeyDown = event => {
+    if (event.target !== event.currentTarget) return
+
+    const center = { ...mapCenter }
+    switch (event.key) {
+      case 'ArrowUp':
+        center.z -= SYSTEM_MAP_KEYBOARD_STEP
+        break
+      case 'ArrowDown':
+        center.z += SYSTEM_MAP_KEYBOARD_STEP
+        break
+      case 'ArrowLeft':
+        center.x -= SYSTEM_MAP_KEYBOARD_STEP
+        break
+      case 'ArrowRight':
+        center.x += SYSTEM_MAP_KEYBOARD_STEP
+        break
+      default:
+        return
+    }
+
+    event.preventDefault()
+    setMapCenter(center)
+    onMapCenterChange?.(center)
+  }
 
   useEffect(() => {
     scanSystemSound()
     setStarsVisible(false)
+    mapElement.current?.focus({ preventScroll: true })
   }, [])
 
   useEffect(() => {
@@ -174,11 +268,34 @@ module.exports = ({
           </div>}
 
       </div>
-      <div className='system-map'>
+      <div
+        ref={mapElement}
+        className={`system-map${hasDragged ? ' system-map--no-animations' : ''}`}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+        onKeyDown={handleMapKeyDown}
+        tabIndex={0}
+        role='region'
+        aria-label='Star map. Use arrow keys to pan.'
+        onClickCapture={event => {
+          if (suppressClick.current) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+        }}
+        style={{ touchAction: 'none' }}
+      >
+        <div className='system-map__stars' style={{ transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)` }}>
         <div
           className='system-map__point system-map__point--highlighted'
-          style={{ top: '50%', left: '50%' }}
+          style={{
+            top: `calc(50% + ${(system.systemZ - mapCenter.z) * mapZoomMultiplier}px)`,
+            left: `calc(50% + ${(system.systemX - mapCenter.x) * mapZoomMultiplier}px)`
+          }}
           data-name={system.systemName}
+          data-system-address={system.systemAddress}
           role='button'
           tabIndex={0}
           aria-label={`View bodies in ${system.systemName}`}
@@ -198,13 +315,24 @@ module.exports = ({
             className='system-map__point fx__fade-in'
             onClick={() => router.push(`/system/${nearbySystem.systemAddress}`)}
             data-name={nearbySystem.systemName}
+            data-system-address={nearbySystem.systemAddress}
+            role='button'
+            tabIndex={0}
+            aria-label={`View ${nearbySystem.systemName}`}
+            onKeyDown={event => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault()
+                router.push(`/system/${nearbySystem.systemAddress}`)
+              }
+            }}
             style={{
               // animationDelay: `${distance([nearbySystem.systemX, nearbySystem.systemY, nearbySystem.systemZ],[system.systemX, system.systemY, system.systemZ]) * 1000}ms`,
-              top: nearbySystem.systemZ > system.systemZ ? `calc(50% + ${(nearbySystem.systemZ - system.systemZ) * mapZoomMultiplier}px)` : `calc(50% - ${(system.systemZ - nearbySystem.systemZ) * mapZoomMultiplier}px)`, // Z
-              left: nearbySystem.systemX > system.systemX ? `calc(50% + ${(nearbySystem.systemX - system.systemX) * mapZoomMultiplier}px)` : `calc(50% - ${(system.systemX - nearbySystem.systemX) * mapZoomMultiplier}px)`// X
+              top: `calc(50% + ${(nearbySystem.systemZ - mapCenter.z) * mapZoomMultiplier}px)`,
+              left: `calc(50% + ${(nearbySystem.systemX - mapCenter.x) * mapZoomMultiplier}px)`
             }}
           />
         )}
+        </div>
       </div>
     </div>
 

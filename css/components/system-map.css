@@ -30,6 +30,19 @@
   filter: contrast(1.15);
 }
 
+.system-map__stars {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.system-map--no-animations .system-map__point,
+.system-map--no-animations .system-map__scanner,
+.system-map--no-animations .system-map__scanner--stopped {
+  animation: none !important;
+  transition: none !important;
+}
+
 .system-map:before {
   content: '';
   display: block;
@@ -286,6 +299,8 @@
   opacity: 1 !important;
   filter: blur(0);
   z-index: 2;
+  height: 1.5rem;
+  cursor: pointer;
 }
 
 .system-map__point--highlighted:before {
@@ -309,9 +324,10 @@
   font-weight: bold;
   color: var(--color-primary-2);
   background: var(--color-primary-5);
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
-.system-map__point--highlighted:hover,
 .system-map__point--highlighted:hover:after {
   color: var(--color-primary-1) !important;
   background: var(--color-secondary) !important;

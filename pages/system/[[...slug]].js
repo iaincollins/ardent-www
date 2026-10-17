@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import distance from 'lib/utils/distance'
@@ -28,6 +28,7 @@ import {
 export default () => {
   const router = useRouter()
   const [, setNavigationPath] = useContext(NavigationContext)
+  const nearbySystemsRequestId = useRef(0)
   const [loading, setLoading] = useState(true)
   const [system, setSystem] = useState()
   const [stationsInSystem, setStationsInSystem] = useState()
@@ -86,6 +87,7 @@ export default () => {
       setSettlementsInSystem(undefined)
       setFleetCarriersInSystem(undefined)
       setMegashipsInSystem(undefined)
+      nearbySystemsRequestId.current++
       setNearbySystems(undefined)
       setImportOrders(undefined)
       setExportOrders(undefined)
@@ -391,6 +393,31 @@ export default () => {
               system={system}
               systemStatus={systemStatus}
               nearbySystems={nearbySystems}
+              onMapCenterChange={async ({ x, z }) => {
+                const requestId = ++nearbySystemsRequestId.current
+                const knownSystems = [system, ...(nearbySystems ?? [])]
+                const closestSystem = knownSystems.reduce((closest, candidate) => {
+                  const candidateDistance = distance([x, system.systemY, z], [candidate.systemX, candidate.systemY, candidate.systemZ])
+                  const closestDistance = distance([x, system.systemY, z], [closest.systemX, closest.systemY, closest.systemZ])
+                  return candidateDistance < closestDistance ? candidate : closest
+                })
+                const systems = await getNearbySystems(closestSystem.systemAddress)
+                if (systems && requestId === nearbySystemsRequestId.current) {
+                  setNearbySystems(currentSystems => {
+                    const systemsByAddress = new Map()
+                    ;[...(currentSystems ?? []), ...systems].forEach(nearbySystem => {
+                      systemsByAddress.set(`${nearbySystem.systemAddress}`, nearbySystem)
+                    })
+                    return [...systemsByAddress.values()]
+                      .filter(nearbySystem => !HIDDEN_SYSTEMS.includes(`${nearbySystem.systemAddress}`))
+                      .map(nearbySystem => ({
+                        ...nearbySystem,
+                        distance: distance([x, system.systemY, z], [nearbySystem.systemX, nearbySystem.systemY, nearbySystem.systemZ])
+                      }))
+                      .filter(nearbySystem => nearbySystem.distance <= 100)
+                  })
+                }
+              }}
               stationsInSystem={stationsInSystem}
               settlementsInSystem={settlementsInSystem}
               megashipsInSystem={megashipsInSystem}
