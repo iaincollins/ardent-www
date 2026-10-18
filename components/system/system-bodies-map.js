@@ -8,7 +8,7 @@ import { timeBetweenTimestamps } from 'lib/utils/dates'
 import factionStates from 'lib/utils/faction-states'
 
 const SOL_RADIUS_IN_KM = 696340
-const MIN_PLANET_RADIUS = 800
+const MIN_PLANET_RADIUS = 1000
 const MAX_PLANET_RADIUS = 2000
 const MAIN_STAR_RADIUS = 4000
 const STAR_RADIUS = 3000
@@ -26,6 +26,9 @@ const STATION_MARKER_RADIUS = 800
 const STATION_Y_SPACING = (STATION_MARKER_RADIUS * 2) + 800
 const STATION_ICON_SIZE = 1200
 const STATION_ICON_CONTAINER_SIZE = STATION_ICON_SIZE + 400
+const MIN_PLANET_OVERLAY_ICON_FONT_SIZE = 800
+const MAX_PLANET_OVERLAY_ICON_FONT_SIZE = 1600
+const PLANET_OVERLAY_ICON_SIZE = MAX_PLANET_OVERLAY_ICON_FONT_SIZE + 400
 const STATION_LABEL_GAP = 400
 const STATION_TYPES_TO_RENDER = [
   'Coriolis',
@@ -589,12 +592,37 @@ function getRenderableChildren (body) {
   ))
 }
 
+function getPlanetOverlayIcon (body) {
+  if (body.bodyType !== 'Planet') return undefined
+
+  const stations = body.stations ?? []
+  const hasPlanetaryPort = stations.some(station => ['CraterPort', 'CraterOutpost'].includes(station?.stationType))
+  if (hasPlanetaryPort) return 'planetary-port'
+
+  const hasOnFootSettlement = stations.some(station => station?.stationType === 'OnFootSettlement')
+  if (hasOnFootSettlement) return 'settlement'
+
+  if (!body.isLandable) return undefined
+  const hasAtmosphere = body.atmosphereType && body.atmosphereType !== 'No atmosphere'
+  return hasAtmosphere ? 'planet-atmosphere-landable' : 'planet-landable'
+}
+
+function getPlanetOverlayIconFontSize (radius) {
+  const radiusProgress = (radius - MIN_PLANET_RADIUS) / (MAX_PLANET_RADIUS - MIN_PLANET_RADIUS)
+  const clampedProgress = Math.min(Math.max(radiusProgress, 0), 1)
+  const fontSize = MIN_PLANET_OVERLAY_ICON_FONT_SIZE +
+    (MAX_PLANET_OVERLAY_ICON_FONT_SIZE - MIN_PLANET_OVERLAY_ICON_FONT_SIZE) * clampedProgress
+  return Math.round(fontSize)
+}
+
 function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
   r = getBodyRenderRadius(body, r)
   const isPlanet = body.bodyType === 'Planet'
   const hasAtmosphere = body.atmosphereType && body.atmosphereType !== 'No atmosphere'
   const hasRings = body.rings && body.rings.length > 0
   const fillColor = getBodyFillColor(body)
+  const overlayIcon = getPlanetOverlayIcon(body)
+  const overlayIconFontSize = getPlanetOverlayIconFontSize(r)
 
   let nameLabel = truncateString((body.bodyName ?? '').replace(new RegExp(`^${system?.systemName}`), ''), small ? 8 : 14)
   if (body.isBarycentre) nameLabel = '' // Don't display labels for barycentres
@@ -687,6 +715,22 @@ function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
             </>}
         </g>
       </g>
+      {overlayIcon &&
+        <foreignObject
+          className='system-map__planet-overlay-icon-container'
+          x={x}
+          y={y}
+          width={PLANET_OVERLAY_ICON_SIZE}
+          height={PLANET_OVERLAY_ICON_SIZE}
+          aria-hidden='true'
+        >
+          <div xmlns='http://www.w3.org/1999/xhtml' className='system-map__planet-overlay-icon-wrapper'>
+            <i
+              style={{ '--planet-overlay-icon-font-size': `${overlayIconFontSize}px` }}
+              className={`system-map__planet-overlay-icon system-object-icon icarus-terminal-${overlayIcon}`}
+            />
+          </div>
+        </foreignObject>}
     </g>
   )
 }

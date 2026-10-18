@@ -136,6 +136,26 @@
   pointer-events: none;
 }
 
+.system-map__planet-overlay-icon-container {
+  pointer-events: none;
+}
+
+.system-map__planet-overlay-icon-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.system-map__planet-overlay-icon.system-object-icon {
+  position: static !important;
+  font-size: var(--planet-overlay-icon-font-size) !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+  text-shadow: 0 0 10rem var(--color-info);
+}
 .system-bodies-map__station-icon-wrapper {
   width: 100%;
   height: 100%;
