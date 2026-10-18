@@ -100,9 +100,11 @@ module.exports = ({
 function SystemObjects ({ objects, depth = 0, onRowClickHandler = () => { }, selectedObject }) {
   return objects?.map((systemObject, i) => {
     const systemObjectId = systemObject.marketId ? `MarketId-${systemObject.marketId}` : `BodyId-${systemObject.bodyId}`
+    const isBarycenter = systemObject?.bodyType === 'Barycentre'
+    const childDepth = depth + (isBarycenter ? 0 : 1)
     return (
       <Fragment key={`object-in-system-row-${depth}-${i}-${systemObject?.stationType ?? systemObject?.bodyType}-${systemObject?.stationName ?? systemObject?.bodyName}`}>
-        <tr onClick={onRowClickHandler} className={`rc-table-row rc-table-row-level-0 data-table__row--visible ${systemObjectId === selectedObject ? 'data-table__row--selected' : ''}`} data-system-object={JSON.stringify(systemObject)}>
+        {!isBarycenter && <tr onClick={onRowClickHandler} className={`rc-table-row rc-table-row-level-0 data-table__row--visible ${systemObjectId === selectedObject ? 'data-table__row--selected' : ''}`} data-system-object={JSON.stringify(systemObject)}>
           <td className='max-width-mobile' style={{ paddingLeft: '.25rem' }}>
             <div style={{ display: 'inline-block', paddingLeft: `${depth}rem` }}>
               {systemObject?.bodyType === 'Null' && <>✕— </>}
@@ -150,9 +152,9 @@ function SystemObjects ({ objects, depth = 0, onRowClickHandler = () => { }, sel
           <td style={{ textAlign: 'right' }} className='is-hidden-mobile'>
             {systemObject?.distanceToArrival !== undefined && <>{Math.round(systemObject?.distanceToArrival).toLocaleString()} Ls</>}
           </td>
-        </tr>
-        {systemObject?.stations?.length > 0 && <SystemObjects objects={systemObject.stations} depth={depth + 1} onRowClickHandler={onRowClickHandler} selectedObject={selectedObject} />}
-        {systemObject?.children?.length > 0 && <SystemObjects objects={systemObject.children} depth={depth + 1} onRowClickHandler={onRowClickHandler} selectedObject={selectedObject} />}
+        </tr>}
+        {systemObject?.stations?.length > 0 && <SystemObjects objects={systemObject.stations} depth={childDepth} onRowClickHandler={onRowClickHandler} selectedObject={selectedObject} />}
+        {systemObject?.children?.length > 0 && <SystemObjects objects={systemObject.children} depth={childDepth} onRowClickHandler={onRowClickHandler} selectedObject={selectedObject} />}
       </Fragment>
     )
   })
