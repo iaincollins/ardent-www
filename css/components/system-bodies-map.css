@@ -281,6 +281,22 @@
   /* filter: grayscale(100%) contrast(0.2) brightness(1.5) drop-shadow(0 0 15rem white); */
 }
 
+/* Barycentres are orbital reference points, shown as a hollow ring and centre. */
+.system-map__system-object[data-system-object-type="Barycentre"] .system-map__star {
+  filter: none;
+}
+
+.system-map__system-object[data-system-object-type="Barycentre"] .system-map__star > circle:first-child {
+  fill: none;
+  stroke: var(--color-primary-2);
+  stroke-width: 150;
+}
+
+.system-map__system-object[data-system-object-type="Barycentre"] .system-map__star-surface {
+  fill: var(--color-primary-2);
+  opacity: 1;
+}
+
 /* .system-map__system-object[data-system-object-type="Star"] .system-map__star-surface circle {
   filter: url(#svg-pattern__star-surface) !important;
 } */

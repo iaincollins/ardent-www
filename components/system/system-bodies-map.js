@@ -23,6 +23,7 @@ const MOON_Y_OFFSET = 6000
 const MOON_Y_SPACING = 3500
 
 function getBodyFillColor (body) {
+  if (body.isBarycentre) return '#ffffff'
   if (body.bodyType === 'Star') {
     const sub = (body.subType ?? '').toLowerCase()
     if (sub.includes('neutron')) return '#c8d8ff'
@@ -70,7 +71,7 @@ module.exports = ({
 
   useEffect(() => {
     if (bodiesInSystem !== undefined && stationsInSystem !== undefined) {
-      const _objectsInSystem = parseBodiesAndStations(bodiesInSystem, stationsInSystem, system)
+      const _objectsInSystem = parseBodiesAndStations(bodiesInSystem, stationsInSystem, system) //?.[0]?.children ?? []
       setObjectsInSystem(_objectsInSystem)
       setInspector(<Inspector systemObject={_objectsInSystem[0]} />)
     }
@@ -360,7 +361,7 @@ function SystemCanvas ({ system, stars, setInspector }) {
       >
         {layout.stars.map(({ star, xOffset, yOffset }) => (
           <StarCanvasCluster
-            key={`star-canvas-${star.bodyId ?? star.bodyName ?? `${xOffset}-${yOffset}`}`}
+            key={`star-canvas-${star.isBarycentre ? 'barycentre' : star.bodyType}-${star.bodyId ?? star.bodyName ?? `${xOffset}-${yOffset}`}`}
             system={system}
             star={star}
             xOffset={xOffset}
@@ -381,7 +382,7 @@ function getSvgPoint (svg, clientX, clientY) {
 }
 
 function StarCanvasCluster ({ system, star, xOffset, yOffset, setInspector }) {
-  const children = star.children ?? []
+  const children = getRenderableChildren(star)
   const allBodies = [star, ...children]
   const layout = calculateLayout(allBodies)
 
@@ -396,18 +397,10 @@ function StarCanvasCluster ({ system, star, xOffset, yOffset, setInspector }) {
           className='system-bodies-map__connector-line'
         />}
       {layout.bodies.map((item, i) => {
-        const isRootStar = i === 0 && item.body.bodyType === 'Star'
-        const moons = isRootStar ? [] : (item.body.children ?? [])
+        const isRootNode = i === 0 && (item.body.bodyType === 'Star' || item.body.isBarycentre)
+        const moons = isRootNode ? [] : getRenderableChildren(item.body)
         return (
           <Fragment key={`body-svg-${item.body.bodyId ?? `${star.bodyId ?? 'star'}-${i}`}`}>
-            {moons.length > 0 &&
-              <line
-                x1={item.x}
-                y1={item.y + item.r}
-                x2={item.x}
-                y2={item.y + MOON_Y_OFFSET + ((moons.length - 1) * MOON_Y_SPACING)}
-                className='system-bodies-map__connector-line system-bodies-map__connector-line--secondary'
-              />}
             <BodySvg
               system={system}
               body={item.body}
@@ -416,23 +409,15 @@ function StarCanvasCluster ({ system, star, xOffset, yOffset, setInspector }) {
               r={item.r}
               setInspector={setInspector}
             />
-            {moons.map((child, ci) => {
-              const childR = calculateRadius(child) * 0.6
-              const childY = item.y + MOON_Y_OFFSET + (ci * MOON_Y_SPACING)
-              return (
-                <BodySvg
-                  key={`child-svg-${child.bodyId ?? `${item.body.bodyId ?? 'body'}-${ci}`}`}
-                  system={system}
-                  body={child}
-                  star={star}
-                  x={item.x}
-                  y={childY}
-                  r={childR}
-                  setInspector={setInspector}
-                  small
-                />
-              )
-            })}
+            <NestedBodiesSvg
+              system={system}
+              parent={item.body}
+              parentX={item.x}
+              parentY={item.y}
+              parentRadius={item.r}
+              children={moons}
+              setInspector={setInspector}
+            />
           </Fragment>
         )
       })}
@@ -440,13 +425,72 @@ function StarCanvasCluster ({ system, star, xOffset, yOffset, setInspector }) {
   )
 }
 
+function NestedBodiesSvg ({ system, parent, parentX, parentY, parentRadius, children, setInspector }) {
+  if (!children.length) return null
+  let nextY = parentY + MOON_Y_OFFSET
+  const positions = children.map(child => {
+    const branchRows = getDescendantRows(child)
+    const y = nextY
+    nextY += branchRows * MOON_Y_SPACING
+    return { child, y }
+  })
+
+  return (
+    <>
+      <line
+        x1={parentX}
+        y1={parentY + (parent?.bodyType === 'Barycentre' ? 0 : parentRadius)}
+        x2={parentX}
+        y2={positions[positions.length - 1].y}
+        className='system-bodies-map__connector-line system-bodies-map__connector-line--secondary'
+      />
+      {positions.map(({ child, y }) => {
+        const radius = calculateRadius(child) * 0.6
+        return (
+          <Fragment key={`nested-body-${child.bodyType}-${child.bodyId ?? child.bodyName}-${y}`}>
+            <BodySvg system={system} body={child} x={parentX} y={y} r={radius} setInspector={setInspector} small />
+            <NestedBodiesSvg
+              system={system}
+              parent={child}
+              parentX={parentX}
+              parentY={y}
+              parentRadius={radius}
+              children={getRenderableChildren(child)}
+              setInspector={setInspector}
+            />
+          </Fragment>
+        )
+      })}
+    </>
+  )
+}
+
+function getDescendantRows (body) {
+  const children = getRenderableChildren(body)
+  if (children.length === 0) return 1
+  return 2 + children.reduce((total, child) => total + getDescendantRows(child), 0)
+}
+
+function getRenderableChildren (body) {
+  const children = body.children ?? []
+  if (body?.bodyType !== 'Planet') return children
+
+  // Hide only the barycentre directly orbiting this planet. Keep any nested
+  // barycentres visible alongside the other bodies orbiting that point.
+  return children.flatMap(child => (
+    child?.isBarycentre ? (child.children ?? []) : [child]
+  ))
+}
+
 function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
+  if (body.isBarycentre) r = Math.min(r, 900)
   const isPlanet = body.bodyType === 'Planet'
   const hasAtmosphere = body.atmosphereType && body.atmosphereType !== 'No atmosphere'
   const hasRings = body.rings && body.rings.length > 0
   const fillColor = getBodyFillColor(body)
 
-  const nameLabel = truncateString((body.bodyName ?? '').replace(new RegExp(`^${system?.systemName}`), ''), small ? 8 : 14)
+  let nameLabel = truncateString((body.bodyName ?? '').replace(new RegExp(`^${system?.systemName}`), ''), small ? 8 : 14)
+  if (body.isBarycentre) nameLabel = '' // Don't display labels for barycentres
   const distanceLabel = body.distanceToArrival !== undefined && body.distanceToArrival > 0
     ? `${Math.round(body.distanceToArrival).toLocaleString()} Ls`
     : ''
@@ -457,7 +501,7 @@ function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
   return (
     <g
       className='system-map__system-object'
-      data-system-object-type={body.bodyType}
+      data-system-object-type={body.isBarycentre ? 'Barycentre' : body.bodyType}
       data-system-object-sub-type={body.subType ?? ''}
       data-system-object-landable={body.isLandable ?? false}
       data-system-object-atmosphere={hasAtmosphere ? body.atmosphereType : undefined}
@@ -502,7 +546,7 @@ function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
           {distanceLabel}
         </text>}
       <g className='system-map__body'>
-        <g className={isPlanet ? 'system-map__planet' : 'system-map__star'}>
+        <g className={isPlanet ? 'system-map__planet' : 'system-map__star'} fill={fillColor}>
           <circle
             cx={x}
             cy={y}
@@ -512,7 +556,7 @@ function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
             className={isPlanet ? 'system-map__planet-surface' : 'system-map__star-surface'}
             cx={x}
             cy={y}
-            r={r}
+            r={body.isBarycentre ? r * 0.25 : r}
           />
           {hasRings &&
             <>
@@ -547,20 +591,17 @@ function calculateLayout (allBodies) {
 
   for (let i = 0; i < allBodies.length; i++) {
     const body = allBodies[i]
-    const isRootStar = i === 0 && body.bodyType === 'Star'
-    const r = calculateRadius(body, isRootStar)
+    const isRootNode = i === 0 && (body.bodyType === 'Star' || body.isBarycentre)
+    const r = calculateRadius(body, i === 0 && body.bodyType === 'Star')
     const x = currentX + r
     const y = ROW_HEIGHT / 2
     bodies.push({ body, x, y, r })
     currentX += (r * 2) + PLANET_SPACING 
 
-    const renderedChildren = (i === 0 && body.bodyType === 'Star') ? [] : (body.children ?? [])
+    const renderedChildren = isRootNode ? [] : getRenderableChildren(body)
     if (renderedChildren.length > 0) {
-      const lastChildIndex = renderedChildren.length - 1
-      const maxChildRadius = renderedChildren.reduce((largestRadius, child) => {
-        return Math.max(largestRadius, calculateRadius(child) * 0.6)
-      }, 0)
-      const renderedBottom = y + MOON_Y_OFFSET + (lastChildIndex * MOON_Y_SPACING) + maxChildRadius
+      const rows = renderedChildren.reduce((total, child) => total + getDescendantRows(child), 0)
+      const renderedBottom = y + MOON_Y_OFFSET + (rows * MOON_Y_SPACING)
       if (renderedBottom > maxRenderedBottom) maxRenderedBottom = renderedBottom
     }
   }
@@ -582,7 +623,9 @@ function calculateSystemLayout (stars = []) {
   let maxRenderedWidth = SVG_PADDING * 2
 
   for (const star of stars) {
-    const children = star.children ?? []
+    if (star?.isBarycentre && Number(star.bodyId) === 0 && (star.children ?? []).length === 0) continue
+
+    const children = getRenderableChildren(star)
     const allBodies = [star, ...children]
     const layout = calculateLayout(allBodies)
 
@@ -610,6 +653,7 @@ function calculateSystemLayout (stars = []) {
 }
 
 function calculateRadius (body, isRootStar = false) {
+  if (body.isBarycentre) return 1200
   if (body.bodyType === 'Star') {
     const subType = (body.subType ?? '').toLowerCase()
     if (['black hole', 'neutron', 'white dwarf'].some(type => subType.includes(type))) return SMALL_STAR_RADIUS
@@ -652,6 +696,7 @@ function Inspector ({ systemObject }) {
     <>
       <div className='fx-fade-in'>
         <div className='inspector__heading'>
+          {systemObject?.isBarycentre && <h3>{systemObject.bodyName}</h3>}
           {(systemObject?.bodyType === 'Planet' || systemObject?.bodyType === 'Star') &&
             <SystemObjectIcon systemObject={systemObject}>
               <CopyOnClick>{systemObject.bodyName}</CopyOnClick>
