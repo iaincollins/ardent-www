@@ -503,3 +503,5 @@ function Inspector ({ systemObject }) {
     </>
   )
 }
+
+module.exports.Inspector = Inspector

@@ -2,9 +2,9 @@ import { useState, useEffect, useRef, Fragment } from 'react'
 import { parseBodiesAndStations } from 'lib/utils/sytem-map-utils'
 import CopyOnClick from 'components/copy-on-click'
 import SystemObjectIcon from 'components/system-object-icon'
-import StationIcon, { getStationIconName } from 'components/station-icon'
+import { getStationIconName } from 'components/station-icon'
+import SystemList from './system-list'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
-import { kelvinToCelius, kelvinToFahrenheit } from 'lib/utils/temperature'
 import factionStates from 'lib/utils/faction-states'
 
 const SOL_RADIUS_IN_KM = 696340
@@ -89,7 +89,7 @@ module.exports = ({
     if (bodiesInSystem !== undefined && stationsInSystem !== undefined) {
       const _objectsInSystem = parseBodiesAndStations(bodiesInSystem, stationsInSystem, system) //?.[0]?.children ?? []
       setObjectsInSystem(_objectsInSystem)
-      setInspector(<Inspector systemObject={_objectsInSystem[0]} />)
+      setInspector(<SystemList.Inspector systemObject={_objectsInSystem[0]} />)
     }
   }, [bodiesInSystem, stationsInSystem])
 
@@ -181,7 +181,7 @@ function StarSection ({ star, setInspector }) {
 
   return (
     <div className='system-bodies-map__star-section'>
-      <div className='system-bodies-map__star-heading' onClick={() => setInspector(<Inspector systemObject={star} />)}>
+      <div className='system-bodies-map__star-heading' onClick={() => setInspector(<SystemList.Inspector systemObject={star} />)}>
         <h3>
           <SystemObjectIcon systemObject={star}>
             {star.bodyName}
@@ -614,8 +614,8 @@ function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
       data-system-object-atmosphere={hasAtmosphere ? body.atmosphereType : undefined}
       data-system-object-small={small}
       tabIndex='0'
-      onFocus={() => setInspector(<Inspector systemObject={body} />)}
-      onClick={() => setInspector(<Inspector systemObject={body} />)}
+      onFocus={() => setInspector(<SystemList.Inspector systemObject={body} />)}
+      onClick={() => setInspector(<SystemList.Inspector systemObject={body} />)}
     >
       {hasAtmosphere && isPlanet &&
         <circle
@@ -703,11 +703,11 @@ function StationSvg ({ station, x, y, setInspector }) {
       aria-label={`Station: ${station.stationName}`}
       onFocus={event => {
         event.stopPropagation()
-        setInspector(<Inspector systemObject={station} />)
+        setInspector(<SystemList.Inspector systemObject={station} />)
       }}
       onClick={event => {
         event.stopPropagation()
-        setInspector(<Inspector systemObject={station} />)
+        setInspector(<SystemList.Inspector systemObject={station} />)
       }}
     >
       <title>{station.stationName}{station.stationType ? ` — ${station.stationType}` : ''}</title>
@@ -824,142 +824,4 @@ function truncateString (str, maxLength) {
     return `${str.substring(0, maxLength - 1)}…`
   }
   return str
-}
-
-function Inspector ({ systemObject }) {
-  const surfacePorts = []
-  const settlements = []
-  const orbitals = []
-  systemObject?.stations?.forEach(station => {
-    if (['CraterOutpost', 'CraterPort', 'OnFootSettlement'].includes(station.stationType)) {
-      ['CraterOutpost', 'CraterPort'].includes(station.stationType) ? surfacePorts.push(station) : settlements.push(station)
-    } else {
-      orbitals.push(station)
-    }
-  })
-
-  return (
-    <>
-      <div className='fx-fade-in'>
-        <div className='inspector__heading'>
-          {systemObject?.stationName &&
-            <StationIcon station={systemObject}>
-              <CopyOnClick>{systemObject.stationName}</CopyOnClick>
-              {systemObject.stationType && <small><br />{systemObject.stationType}</small>}
-            </StationIcon>}
-          {systemObject?.isBarycentre && <h3>{systemObject.bodyName}</h3>}
-          {(systemObject?.bodyType === 'Planet' || systemObject?.bodyType === 'Star') &&
-            <SystemObjectIcon systemObject={systemObject}>
-              <CopyOnClick>{systemObject.bodyName}</CopyOnClick>
-              {systemObject?.subType &&
-                <small><br />{systemObject.subType}</small>}
-            </SystemObjectIcon>}
-        </div>
-
-        {systemObject.distanceToArrival !== undefined &&
-          <div className='inspector__section'>
-            <div className='heading--with-underline'>
-              <h3>Location</h3>
-            </div>
-            <p>
-              <span className='text-muted'>Distance from arrival</span><br />
-              {systemObject.distanceToArrival.toLocaleString(undefined, { maximumFractionDigits: 0 })} Ls
-            </p>
-          </div>}
-
-        {systemObject?.bodyType === 'Star' &&
-          <div className='inspector__section'>
-            <div className='heading--with-underline'>
-              <h3>Stellar properties</h3>
-            </div>
-            {systemObject.isScoopable
-              ? <p><i className='system-object-icon text-warning icarus-terminal-fuel' />Main sequence (scoopable)</p>
-              : <p className='text-muted'><i className='system-object-icon icarus-terminal-warning' />Not scoopable</p>}
-            {systemObject.spectralClass && <p><small>Spectral class {systemObject.spectralClass}, Luminosity {systemObject.luminosity}</small></p>}
-            {systemObject.solarRadius && <p><span className='text-muted'>Radius</span><br />{(systemObject.solarRadius * SOL_RADIUS_IN_KM).toLocaleString(undefined, { maximumFractionDigits: 0 })} Km</p>}
-            {systemObject.solarMasses && <p><span className='text-muted'>Solar masses</span><br />{systemObject.solarMasses.toFixed(2)}</p>}
-            {systemObject.surfaceTemperature && <p><span className='text-muted'>Temperature</span><br />{systemObject.surfaceTemperature} K</p>}
-          </div>}
-
-        {systemObject?.bodyType === 'Planet' &&
-          <>
-            <div className='inspector__section'>
-              <div className='heading--with-underline'>
-                <h3>Environment</h3>
-              </div>
-              {systemObject.isLandable && <p><i className='system-object-icon text-info icarus-terminal-planet-lander' /> Landable surface</p>}
-              {systemObject.terraformingState && systemObject.terraformingState !== 'Not terraformable' && systemObject.terraformingState !== 'Terraformed' &&
-                <p><i className='system-object-icon text-positive icarus-terminal-planet-terraformable' />Terraformable</p>}
-              {systemObject.volcanismType && systemObject.volcanismType !== 'No volcanism' &&
-                <p className='text-no-wrap'><i className='system-object-icon icarus-terminal-planet-volcanic' />{systemObject.volcanismType}</p>}
-              {systemObject?.signals?.biological > 0 &&
-                <p><i className='system-object-icon icarus-terminal-plant' />{systemObject.signals.biological} Biological {systemObject.signals.biological === 1 ? 'Signal' : 'Signals'}</p>}
-              {systemObject.gravity &&
-                <p><span className='text-muted'>Gravity</span><br />{Math.max(0.01, Number(systemObject.gravity.toFixed(2)))}g</p>}
-              {systemObject.radius && <p><span className='text-muted'>Radius</span><br />{systemObject.radius.toLocaleString(undefined, { maximumFractionDigits: 0 })} Km</p>}
-              {systemObject.surfaceTemperature &&
-                <p>
-                  <span className='text-muted'>Temperature</span><br />{systemObject.surfaceTemperature}K
-                  ({kelvinToCelius(systemObject.surfaceTemperature)}C/{kelvinToFahrenheit(systemObject.surfaceTemperature)}F)
-                </p>}
-              {systemObject.atmosphereType && systemObject.atmosphereType !== 'No atmosphere' &&
-                <p><span className='text-muted'>Atmosphere</span><br />{systemObject.atmosphereType}</p>}
-            </div>
-
-            {surfacePorts.length > 0 &&
-              <div className='inspector__section'>
-                <div className='heading--with-underline'><h3>Ports</h3></div>
-                {surfacePorts.map(station => (
-                  <p key={`inspector-port-${station.stationName}`} className='text-no-wrap'>
-                    <StationIcon station={station}><CopyOnClick>{station.stationName}</CopyOnClick></StationIcon>
-                  </p>
-                ))}
-              </div>}
-
-            {settlements.length > 0 &&
-              <div className='inspector__section'>
-                <div className='heading--with-underline'><h3>Settlements</h3></div>
-                {settlements.map(station => (
-                  <p key={`inspector-settlement-${station.stationName}`} className='text-no-wrap'>
-                    <StationIcon station={station}><CopyOnClick>{station.stationName}</CopyOnClick></StationIcon>
-                  </p>
-                ))}
-              </div>}
-
-            {orbitals.length > 0 &&
-              <div className='inspector__section'>
-                <div className='heading--with-underline'><h3>In orbit</h3></div>
-                {orbitals.map(station => (
-                  <p key={`inspector-orbital-${station.stationName}`} className='text-no-wrap'>
-                    <StationIcon station={station}><CopyOnClick>{station.stationName}</CopyOnClick></StationIcon>
-                  </p>
-                ))}
-              </div>}
-          </>}
-
-        {systemObject.rings &&
-          <div className='inspector__section'>
-            <div className='heading--with-underline'><h3>Rings</h3></div>
-            {systemObject.reserveLevel && <p>{systemObject.reserveLevel} Reserves</p>}
-            <ul>
-              {systemObject.rings.map((ring, i) => <li key={`ring-${i}`}>{ring.name} ({ring.type})</li>)}
-            </ul>
-          </div>}
-
-        {Object.prototype.hasOwnProperty.call(systemObject, 'rotationalPeriod') &&
-          <div className='inspector__section'>
-            <div className='heading--with-underline'><h3>Orbital properties</h3></div>
-            {systemObject.rotationalPeriod !== undefined &&
-              <p><span className='text-muted'>Rotational period</span><br />{systemObject.rotationalPeriod}</p>}
-            {systemObject.orbitalPeriod !== undefined &&
-              <p><span className='text-muted'>Orbital period</span><br />{systemObject.orbitalPeriod}</p>}
-          </div>}
-
-        {systemObject?.updatedAt !== undefined &&
-          <p className='text-center text-muted'>
-            Last updated {timeBetweenTimestamps(systemObject.updatedAt)} ago
-          </p>}
-      </div>
-    </>
-  )
 }
