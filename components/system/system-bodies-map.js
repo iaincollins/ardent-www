@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, Fragment } from 'react'
 import { parseBodiesAndStations } from 'lib/utils/sytem-map-utils'
 import CopyOnClick from 'components/copy-on-click'
 import SystemObjectIcon from 'components/system-object-icon'
-import StationIcon from 'components/station-icon'
+import StationIcon, { getStationIconName } from 'components/station-icon'
 import { timeBetweenTimestamps } from 'lib/utils/dates'
 import { kelvinToCelius, kelvinToFahrenheit } from 'lib/utils/temperature'
 import factionStates from 'lib/utils/faction-states'
@@ -21,6 +21,22 @@ const ROW_HEIGHT = 9000
 const LABEL_GAP = 500
 const MOON_Y_OFFSET = 6000
 const MOON_Y_SPACING = 3500
+const STATION_Y_OFFSET = 2000
+const STATION_MARKER_RADIUS = 800
+const STATION_Y_SPACING = (STATION_MARKER_RADIUS * 2) + 800
+const STATION_ICON_SIZE = 1200
+const STATION_ICON_CONTAINER_SIZE = STATION_ICON_SIZE + 400
+const STATION_LABEL_GAP = 400
+const STATION_TYPES_TO_RENDER = [
+  'Coriolis',
+  'Ocellus',
+  'Orbis',
+  'Dodec',
+  'AsteroidBase',
+  'Outpost',
+  'MegaShip',
+  'StrongholdCarrier'
+]
 
 function getBodyFillColor (body) {
   if (body.isBarycentre) return '#ffffff'
@@ -421,19 +437,24 @@ function StarCanvasCluster ({ system, star, xOffset, yOffset, setInspector }) {
           </Fragment>
         )
       })}
+      {layout.bodies.map((item, index) => (
+        <StationTreeSvg
+          key={`station-tree-${item.body.bodyId ?? item.body.bodyName}`}
+          body={item.body}
+          x={item.x}
+          y={item.y}
+          radius={getBodyRenderRadius(item.body, item.r)}
+          includeChildren={!(index === 0 && (item.body.bodyType === 'Star' || item.body.isBarycentre))}
+          setInspector={setInspector}
+        />
+      ))}
     </g>
   )
 }
 
 function NestedBodiesSvg ({ system, parent, parentX, parentY, parentRadius, children, setInspector }) {
   if (!children.length) return null
-  let nextY = parentY + MOON_Y_OFFSET
-  const positions = children.map(child => {
-    const branchRows = getDescendantRows(child)
-    const y = nextY
-    nextY += branchRows * MOON_Y_SPACING
-    return { child, y }
-  })
+  const positions = getNestedBodyPositions(parent, parentY, parentRadius, children)
 
   return (
     <>
@@ -445,7 +466,7 @@ function NestedBodiesSvg ({ system, parent, parentX, parentY, parentRadius, chil
         className='system-bodies-map__connector-line system-bodies-map__connector-line--secondary'
       />
       {positions.map(({ child, y }) => {
-        const radius = calculateRadius(child) * 0.6
+        const radius = getNestedBodyRadius(child)
         return (
           <Fragment key={`nested-body-${child.bodyType}-${child.bodyId ?? child.bodyName}-${y}`}>
             <BodySvg system={system} body={child} x={parentX} y={y} r={radius} setInspector={setInspector} small />
@@ -465,10 +486,96 @@ function NestedBodiesSvg ({ system, parent, parentX, parentY, parentRadius, chil
   )
 }
 
-function getDescendantRows (body) {
+function StationTreeSvg ({ body, x, y, radius, includeChildren = true, setInspector }) {
+  const stations = getRenderableStations(body.stations)
+  const children = includeChildren ? getRenderableChildren(body) : []
+  const positions = getNestedBodyPositions(body, y, radius, children)
+
+  return (
+    <>
+      {stations.map((station, index) => (
+        <StationSvg
+          key={`station-${station.marketId ?? station.stationName}-${index}`}
+          station={station}
+          x={x}
+          y={y + radius + STATION_Y_OFFSET + (index * STATION_Y_SPACING)}
+          setInspector={setInspector}
+        />
+      ))}
+      {positions.map(({ child, y: childY, radius: childRadius }) => (
+        <StationTreeSvg
+          key={`station-tree-${child.bodyId ?? child.bodyName}-${childY}`}
+          body={child}
+          x={x}
+          y={childY}
+          radius={childRadius}
+          setInspector={setInspector}
+        />
+      ))}
+    </>
+  )
+}
+
+function getNestedBodyPositions (parent, parentY, parentRadius, children) {
+  let nextY = parentY + getNestedBodiesOffset(parent, parentRadius)
+  return children.map((child, index) => {
+    const y = nextY
+    const radius = getNestedBodyRadius(child)
+    const branchBottom = getBodySubtreeBottom(child, radius)
+    const nextChild = children[index + 1]
+    const nextTopExtent = nextChild ? getBodyTopExtent(nextChild, getNestedBodyRadius(nextChild)) : 0
+    nextY += Math.max(MOON_Y_SPACING, branchBottom + nextTopExtent + LABEL_GAP)
+    return { child, y, radius }
+  })
+}
+
+function getNestedBodyRadius (body) {
+  const radius = calculateRadius(body) * 0.6
+  return body.isBarycentre ? Math.min(radius, 900) : radius
+}
+
+function getBodyRenderRadius (body, radius) {
+  return body.isBarycentre ? Math.min(radius, 900) : radius
+}
+
+function getBodyTopExtent (body, radius) {
+  const hasDistanceLabel = body.distanceToArrival !== undefined && body.distanceToArrival > 0
+  return radius + LABEL_GAP + (hasDistanceLabel ? 900 : 500)
+}
+
+function getBodySubtreeBottom (body, radius) {
+  const stationCount = getRenderableStations(body?.stations).length
+  let bottom = stationCount > 0
+    ? radius + STATION_Y_OFFSET + ((stationCount - 1) * STATION_Y_SPACING) + STATION_MARKER_RADIUS
+    : radius
+
   const children = getRenderableChildren(body)
-  if (children.length === 0) return 1
-  return 2 + children.reduce((total, child) => total + getDescendantRows(child), 0)
+  if (children.length === 0) return bottom
+
+  let childY = getNestedBodiesOffset(body, radius)
+  children.forEach((child, index) => {
+    const childRadius = getNestedBodyRadius(child)
+    const childBottom = getBodySubtreeBottom(child, childRadius)
+    bottom = Math.max(bottom, childY + childBottom)
+
+    if (index < children.length - 1) {
+      const nextChild = children[index + 1]
+      const nextTopExtent = getBodyTopExtent(nextChild, getNestedBodyRadius(nextChild))
+      childY += Math.max(MOON_Y_SPACING, childBottom + nextTopExtent + LABEL_GAP)
+    }
+  })
+
+  return bottom
+}
+
+function getNestedBodiesOffset (body, radius) {
+  const stationCount = getRenderableStations(body?.stations).length
+  const stationStackHeight = radius + STATION_Y_OFFSET + (stationCount * STATION_Y_SPACING) + STATION_MARKER_RADIUS
+  return Math.max(MOON_Y_OFFSET, stationStackHeight)
+}
+
+function getRenderableStations (stations) {
+  return (stations ?? []).filter(station => STATION_TYPES_TO_RENDER.includes(station?.stationType))
 }
 
 function getRenderableChildren (body) {
@@ -483,7 +590,7 @@ function getRenderableChildren (body) {
 }
 
 function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
-  if (body.isBarycentre) r = Math.min(r, 900)
+  r = getBodyRenderRadius(body, r)
   const isPlanet = body.bodyType === 'Planet'
   const hasAtmosphere = body.atmosphereType && body.atmosphereType !== 'No atmosphere'
   const hasRings = body.rings && body.rings.length > 0
@@ -584,6 +691,41 @@ function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
   )
 }
 
+function StationSvg ({ station, x, y, setInspector }) {
+  const isSurfaceStation = ['CraterPort', 'CraterOutpost', 'OnFootSettlement'].includes(station.stationType)
+
+  return (
+    <g
+      className='system-bodies-map__station'
+      data-station-type={station.stationType ?? 'Unknown'}
+      tabIndex='0'
+      role='button'
+      aria-label={`Station: ${station.stationName}`}
+      onFocus={event => {
+        event.stopPropagation()
+        setInspector(<Inspector systemObject={station} />)
+      }}
+      onClick={event => {
+        event.stopPropagation()
+        setInspector(<Inspector systemObject={station} />)
+      }}
+    >
+      <title>{station.stationName}{station.stationType ? ` — ${station.stationType}` : ''}</title>
+      {isSurfaceStation
+        ? <rect className='system-bodies-map__station-marker' x={x - STATION_MARKER_RADIUS} y={y - STATION_MARKER_RADIUS} width={STATION_MARKER_RADIUS * 2} height={STATION_MARKER_RADIUS * 2} rx={STATION_MARKER_RADIUS / 5} />
+        : <circle className='system-bodies-map__station-marker' cx={x} cy={y} r={STATION_MARKER_RADIUS} />}
+      <foreignObject className='system-bodies-map__station-icon-container' x={x - (STATION_ICON_CONTAINER_SIZE / 2)} y={y - (STATION_ICON_CONTAINER_SIZE / 2)} width={STATION_ICON_CONTAINER_SIZE} height={STATION_ICON_CONTAINER_SIZE}>
+        <div xmlns='http://www.w3.org/1999/xhtml' className='system-bodies-map__station-icon-wrapper'>
+          <i className={`system-object-icon icarus-terminal-${getStationIconName(station)} system-bodies-map__station-icon`} />
+        </div>
+      </foreignObject>
+      <text className='system-bodies-map__station-name' x={x} y={y - (STATION_ICON_SIZE / 2) - STATION_LABEL_GAP} textAnchor='middle'>
+        {truncateString(station.stationName ?? 'Unknown station', 28)}
+      </text>
+    </g>
+  )
+}
+
 function calculateLayout (allBodies) {
   const bodies = []
   let currentX = SVG_PADDING
@@ -599,9 +741,13 @@ function calculateLayout (allBodies) {
     currentX += (r * 2) + PLANET_SPACING 
 
     const renderedChildren = isRootNode ? [] : getRenderableChildren(body)
+    const stationCount = getRenderableStations(body.stations).length
+    const stationBottom = stationCount > 0
+      ? y + r + STATION_Y_OFFSET + ((stationCount - 1) * STATION_Y_SPACING) + STATION_MARKER_RADIUS
+      : y
+    if (stationBottom > maxRenderedBottom) maxRenderedBottom = stationBottom
     if (renderedChildren.length > 0) {
-      const rows = renderedChildren.reduce((total, child) => total + getDescendantRows(child), 0)
-      const renderedBottom = y + MOON_Y_OFFSET + (rows * MOON_Y_SPACING)
+      const renderedBottom = y + getBodySubtreeBottom(body, r)
       if (renderedBottom > maxRenderedBottom) maxRenderedBottom = renderedBottom
     }
   }
@@ -696,6 +842,11 @@ function Inspector ({ systemObject }) {
     <>
       <div className='fx-fade-in'>
         <div className='inspector__heading'>
+          {systemObject?.stationName &&
+            <StationIcon station={systemObject}>
+              <CopyOnClick>{systemObject.stationName}</CopyOnClick>
+              {systemObject.stationType && <small><br />{systemObject.stationType}</small>}
+            </StationIcon>}
           {systemObject?.isBarycentre && <h3>{systemObject.bodyName}</h3>}
           {(systemObject?.bodyType === 'Planet' || systemObject?.bodyType === 'Star') &&
             <SystemObjectIcon systemObject={systemObject}>

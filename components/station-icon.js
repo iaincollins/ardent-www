@@ -1,4 +1,4 @@
-module.exports = ({ stationType, station, children }) => {
+function getStationIconName (station, stationType) {
   // Default to unknown POI if we don't know the type, and all the data we have
   // is the name and that it's a dockable location of some description.
   let icon = 'poi'
@@ -14,7 +14,7 @@ module.exports = ({ stationType, station, children }) => {
   // record of the station type as there isn't an entry for the station in the
   // 'Stations' databases, this is usually because for some reason we don't have
   // a record of any docking events at the station.
-  if (!_stationType && station?.stationName.match('^[A-Z0-9]{3}-[A-Z0-9]{3}$')) icon = 'fleet-carrier'
+  if (!_stationType && station?.stationName?.match('^[A-Z0-9]{3}-[A-Z0-9]{3}$')) icon = 'fleet-carrier'
   if (!_stationType && station?.stationName === 'Stronghold Carrier') icon = 'megaship'
 
   if (_stationType === 'Orbis') icon = 'orbis-starport'
@@ -38,6 +38,12 @@ module.exports = ({ stationType, station, children }) => {
   if (_stationType === 'PlanetaryConstructionDepot') icon = 'poi-empty'
   if (_stationType === 'SpaceConstructionDepot') icon = 'poi-empty'
 
+  return icon
+}
+
+module.exports = ({ stationType, station, children }) => {
+  const icon = getStationIconName(station, stationType)
+
   if (children) {
     return (
       <span className='system-object'>
@@ -49,3 +55,5 @@ module.exports = ({ stationType, station, children }) => {
     return <i className={`system-object-icon icarus-terminal-${icon}`} />
   }
 }
+
+module.exports.getStationIconName = getStationIconName
