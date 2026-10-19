@@ -18,6 +18,10 @@
     padding-top: 1rem;
   }
 
+  .layout__content--with-inspector.layout__content--system-bodies {
+    width: calc(100% - 21.5rem);
+  }
+
   .layout__content--left-sidebar {
     left: -.5rem;
     bottom: 0;

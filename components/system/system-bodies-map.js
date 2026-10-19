@@ -13,19 +13,19 @@ const MAX_PLANET_RADIUS = 2000
 const MAIN_STAR_RADIUS = 4000
 const STAR_RADIUS = 3000
 const SMALL_STAR_RADIUS = 1000
-const PLANET_SPACING = 3500
+const MIN_HORIZONTAL_PADDING = 1500
+const EXTRA_HORIZONTAL_PADDING_FOR_RINGS = 1000
 const STAR_CLUSTER_GAP = 2500
 const SVG_PADDING = 1000
 const STARTING_Y_OFFSET = 3000
 const ROW_HEIGHT = 9000
 const LABEL_GAP = 500
-const MOON_Y_OFFSET = 6000
-const MOON_Y_SPACING = 3500
+const MIN_VERTICAL_PADDING = 2200
 const STATION_Y_OFFSET = 2000
 const STATION_MARKER_RADIUS = 800
 const STATION_Y_SPACING = (STATION_MARKER_RADIUS * 2) + 800
 const STATION_ICON_SIZE = 1200
-const STATION_ICON_CONTAINER_SIZE = STATION_ICON_SIZE + 400
+const STATION_ICON_CONTAINER_SIZE = STATION_ICON_SIZE + 600
 const MIN_PLANET_OVERLAY_ICON_FONT_SIZE = 800
 const MAX_PLANET_OVERLAY_ICON_FONT_SIZE = 1600
 const PLANET_OVERLAY_ICON_SIZE = MAX_PLANET_OVERLAY_ICON_FONT_SIZE + 400
@@ -159,7 +159,7 @@ module.exports = ({
           <i className='icon icarus-terminal-warning' style={{ position: 'relative', top: '.1rem' }} />{' '}
           No body data available
         </p>}
-      {objectsInSystem !== undefined && objectsInSystem.length > 0 && (
+      {objectsInSystem !== undefined && bodiesInSystem?.length > 0 && (
         <>
           {/* {objectsInSystem.map((star, starIndex) => (
             <StarSection
@@ -380,12 +380,24 @@ function SystemCanvas ({ system, stars, setInspector }) {
       >
         {layout.stars.map(({ star, xOffset, yOffset }) => (
           <StarCanvasCluster
-            key={`star-canvas-${star.isBarycentre ? 'barycentre' : star.bodyType}-${star.bodyId ?? star.bodyName ?? `${xOffset}-${yOffset}`}`}
+            key={`star-canvas-connectors-${star.isBarycentre ? 'barycentre' : star.bodyType}-${star.bodyId ?? star.bodyName ?? `${xOffset}-${yOffset}`}`}
             system={system}
             star={star}
             xOffset={xOffset}
             yOffset={yOffset}
             setInspector={setInspector}
+            layer='connectors'
+          />
+        ))}
+        {layout.stars.map(({ star, xOffset, yOffset }) => (
+          <StarCanvasCluster
+            key={`star-canvas-objects-${star.isBarycentre ? 'barycentre' : star.bodyType}-${star.bodyId ?? star.bodyName ?? `${xOffset}-${yOffset}`}`}
+            system={system}
+            star={star}
+            xOffset={xOffset}
+            yOffset={yOffset}
+            setInspector={setInspector}
+            layer='objects'
           />
         ))}
       </svg>
@@ -400,87 +412,182 @@ function getSvgPoint (svg, clientX, clientY) {
   return point.matrixTransform(svg.getScreenCTM().inverse())
 }
 
-function StarCanvasCluster ({ system, star, xOffset, yOffset, setInspector }) {
+function StarCanvasCluster ({ system, star, xOffset, yOffset, setInspector, layer }) {
   const children = getRenderableChildren(star)
   const allBodies = [star, ...children]
   const layout = calculateLayout(allBodies)
+  const renderConnectors = layer === 'connectors'
 
   return (
     <g transform={`translate(${xOffset}, ${yOffset})`}>
-      {children.length > 0 &&
-        <line
-          x1={layout.bodies[0].x}
-          y1={layout.bodies[0].y}
-          x2={layout.bodies[layout.bodies.length - 1].x}
-          y2={layout.bodies[layout.bodies.length - 1].y}
-          className='system-bodies-map__connector-line'
-        />}
-      {layout.bodies.map((item, i) => {
-        const isRootNode = i === 0 && (item.body.bodyType === 'Star' || item.body.isBarycentre)
-        const moons = isRootNode ? [] : getRenderableChildren(item.body)
-        return (
-          <Fragment key={`body-svg-${item.body.bodyId ?? `${star.bodyId ?? 'star'}-${i}`}`}>
-            <BodySvg
-              system={system}
-              body={item.body}
-              x={item.x}
-              y={item.y}
-              r={item.r}
-              setInspector={setInspector}
-            />
-            <NestedBodiesSvg
-              system={system}
-              parent={item.body}
-              parentX={item.x}
-              parentY={item.y}
-              parentRadius={item.r}
-              children={moons}
-              setInspector={setInspector}
-            />
-          </Fragment>
-        )
-      })}
-      {layout.bodies.map((item, index) => (
-        <StationTreeSvg
-          key={`station-tree-${item.body.bodyId ?? item.body.bodyName}`}
-          body={item.body}
-          x={item.x}
-          y={item.y}
-          radius={getBodyRenderRadius(item.body, item.r)}
-          includeChildren={!(index === 0 && (item.body.bodyType === 'Star' || item.body.isBarycentre))}
-          setInspector={setInspector}
-        />
-      ))}
+      {renderConnectors
+        ? <>
+            {children.length > 0 &&
+              <line
+                x1={layout.bodies[0].x}
+                y1={layout.bodies[0].y}
+                x2={layout.bodies[layout.bodies.length - 1].x}
+                y2={layout.bodies[layout.bodies.length - 1].y}
+                className='system-bodies-map__connector-line'
+              />}
+            {layout.bodies.map((item, i) => {
+              const isRootNode = i === 0 && (item.body.bodyType === 'Star' || item.body.isBarycentre)
+              return (
+                <NestedBodiesConnectorSvg
+                  key={`body-connectors-${item.body.bodyId ?? `${star.bodyId ?? 'star'}-${i}`}`}
+                  parent={item.body}
+                  parentX={item.x}
+                  parentY={item.y}
+                  parentRadius={item.r}
+                  children={isRootNode ? [] : getRenderableChildren(item.body)}
+                />
+              )
+            })}
+            {layout.bodies.map((item, index) => (
+              <StationConnectorsSvg
+                key={`station-connectors-${item.body.bodyId ?? item.body.bodyName}`}
+                body={item.body}
+                x={item.x}
+                y={item.y}
+                radius={getBodyRenderRadius(item.body, item.r)}
+                includeChildren={!(index === 0 && (item.body.bodyType === 'Star' || item.body.isBarycentre))}
+              />
+            ))}
+          </>
+        : <>
+            {layout.bodies.map((item, i) => {
+              const isRootNode = i === 0 && (item.body.bodyType === 'Star' || item.body.isBarycentre)
+              const moons = isRootNode ? [] : getRenderableChildren(item.body)
+              return (
+                <Fragment key={`body-svg-${item.body.bodyId ?? `${star.bodyId ?? 'star'}-${i}`}`}>
+                  <BodySvg
+                    system={system}
+                    body={item.body}
+                    x={item.x}
+                    y={item.y}
+                    r={item.r}
+                    setInspector={setInspector}
+                  />
+                  <NestedBodiesSvg
+                    system={system}
+                    parent={item.body}
+                    parentX={item.x}
+                    parentY={item.y}
+                    parentRadius={item.r}
+                    children={moons}
+                    setInspector={setInspector}
+                  />
+                </Fragment>
+              )
+            })}
+            {layout.bodies.map((item, index) => (
+              <StationTreeSvg
+                key={`station-tree-${item.body.bodyId ?? item.body.bodyName}`}
+                body={item.body}
+                x={item.x}
+                y={item.y}
+                radius={getBodyRenderRadius(item.body, item.r)}
+                includeChildren={!(index === 0 && (item.body.bodyType === 'Star' || item.body.isBarycentre))}
+                setInspector={setInspector}
+              />
+            ))}
+          </>}
     </g>
   )
 }
 
-function NestedBodiesSvg ({ system, parent, parentX, parentY, parentRadius, children, setInspector }) {
+function NestedBodiesConnectorSvg ({ parent, parentX, parentY, parentRadius, children, orientation = 'vertical' }) {
   if (!children.length) return null
-  const positions = getNestedBodyPositions(parent, parentY, parentRadius, children)
+  const positions = orientation === 'horizontal'
+    ? getHorizontalNestedBodyPositions(parent, parentX, parentY, parentRadius, children)
+    : getNestedBodyPositions(parent, parentY, parentRadius, children)
+  const lastPosition = positions[positions.length - 1]
 
   return (
     <>
-      <line
-        x1={parentX}
-        y1={parentY + (parent?.bodyType === 'Barycentre' ? 0 : parentRadius)}
-        x2={parentX}
-        y2={positions[positions.length - 1].y}
-        className='system-bodies-map__connector-line system-bodies-map__connector-line--secondary'
-      />
-      {positions.map(({ child, y }) => {
+      {orientation === 'horizontal'
+        ? <line
+            x1={parent?.isBarycentre ? parentX : parentX + parentRadius}
+            y1={parentY}
+            x2={lastPosition.x - (lastPosition.child.isBarycentre ? 0 : lastPosition.radius)}
+            y2={parentY}
+            className='system-bodies-map__connector-line system-bodies-map__connector-line--secondary'
+          />
+        : <line
+            x1={parentX}
+            y1={parentY + (parent?.isBarycentre ? 0 : parentRadius)}
+            x2={parentX}
+            y2={lastPosition.y}
+            className='system-bodies-map__connector-line system-bodies-map__connector-line--secondary'
+          />}
+      {positions.map(({ child, x, y, radius }) => (
+        <NestedBodiesConnectorSvg
+          key={`nested-body-connectors-${child.bodyType}-${child.bodyId ?? child.bodyName}-${y}`}
+          parent={child}
+          parentX={x ?? parentX}
+          parentY={y}
+          parentRadius={radius ?? getNestedBodyRadius(child)}
+          children={getRenderableChildren(child)}
+          orientation={orientation === 'vertical' ? 'horizontal' : 'vertical'}
+        />
+      ))}
+    </>
+  )
+}
+
+function StationConnectorsSvg ({ body, x, y, radius, includeChildren = true, orientation = 'vertical' }) {
+  const stations = getRenderableStations(body.stations)
+  const children = includeChildren ? getRenderableChildren(body) : []
+  const positions = orientation === 'horizontal'
+    ? getHorizontalNestedBodyPositions(body, x, y, radius, children)
+    : getNestedBodyPositions(body, y, radius, children)
+
+  return (
+    <>
+      {stations.length > 0 &&
+        <line
+          x1={x}
+          y1={y + (body.isBarycentre ? 0 : radius)}
+          x2={x}
+          y2={y + radius + STATION_Y_OFFSET + ((stations.length - 1) * STATION_Y_SPACING)}
+          className='system-bodies-map__connector-line system-bodies-map__connector-line--secondary'
+        />}
+      {positions.map(({ child, x: childX, y: childY, radius: childRadius }) => (
+        <StationConnectorsSvg
+          key={`station-connectors-${child.bodyId ?? child.bodyName}-${childY}`}
+          body={child}
+          x={childX ?? x}
+          y={childY}
+          radius={childRadius}
+          orientation={orientation === 'vertical' ? 'horizontal' : 'vertical'}
+        />
+      ))}
+    </>
+  )
+}
+
+function NestedBodiesSvg ({ system, parent, parentX, parentY, parentRadius, children, setInspector, orientation = 'vertical' }) {
+  if (!children.length) return null
+  const positions = orientation === 'horizontal'
+    ? getHorizontalNestedBodyPositions(parent, parentX, parentY, parentRadius, children)
+    : getNestedBodyPositions(parent, parentY, parentRadius, children)
+
+  return (
+    <>
+      {positions.map(({ child, x, y, radius: positionRadius }) => {
         const radius = getNestedBodyRadius(child)
         return (
           <Fragment key={`nested-body-${child.bodyType}-${child.bodyId ?? child.bodyName}-${y}`}>
-            <BodySvg system={system} body={child} x={parentX} y={y} r={radius} setInspector={setInspector} small />
+            <BodySvg system={system} body={child} x={x ?? parentX} y={y} r={positionRadius ?? radius} setInspector={setInspector} small />
             <NestedBodiesSvg
               system={system}
               parent={child}
-              parentX={parentX}
+              parentX={x ?? parentX}
               parentY={y}
-              parentRadius={radius}
+              parentRadius={positionRadius ?? radius}
               children={getRenderableChildren(child)}
               setInspector={setInspector}
+              orientation={orientation === 'vertical' ? 'horizontal' : 'vertical'}
             />
           </Fragment>
         )
@@ -489,10 +596,12 @@ function NestedBodiesSvg ({ system, parent, parentX, parentY, parentRadius, chil
   )
 }
 
-function StationTreeSvg ({ body, x, y, radius, includeChildren = true, setInspector }) {
+function StationTreeSvg ({ body, x, y, radius, includeChildren = true, setInspector, orientation = 'vertical' }) {
   const stations = getRenderableStations(body.stations)
   const children = includeChildren ? getRenderableChildren(body) : []
-  const positions = getNestedBodyPositions(body, y, radius, children)
+  const positions = orientation === 'horizontal'
+    ? getHorizontalNestedBodyPositions(body, x, y, radius, children)
+    : getNestedBodyPositions(body, y, radius, children)
 
   return (
     <>
@@ -505,14 +614,15 @@ function StationTreeSvg ({ body, x, y, radius, includeChildren = true, setInspec
           setInspector={setInspector}
         />
       ))}
-      {positions.map(({ child, y: childY, radius: childRadius }) => (
+      {positions.map(({ child, x: childX, y: childY, radius: childRadius }) => (
         <StationTreeSvg
           key={`station-tree-${child.bodyId ?? child.bodyName}-${childY}`}
           body={child}
-          x={x}
+          x={childX ?? x}
           y={childY}
           radius={childRadius}
           setInspector={setInspector}
+          orientation={orientation === 'vertical' ? 'horizontal' : 'vertical'}
         />
       ))}
     </>
@@ -520,16 +630,81 @@ function StationTreeSvg ({ body, x, y, radius, includeChildren = true, setInspec
 }
 
 function getNestedBodyPositions (parent, parentY, parentRadius, children) {
-  let nextY = parentY + getNestedBodiesOffset(parent, parentRadius)
+  if (!children.length) return []
+  let nextY = parentY + getNestedBodiesOffset(parent, parentRadius, getNestedBodyRadius(children[0]))
   return children.map((child, index) => {
     const y = nextY
     const radius = getNestedBodyRadius(child)
-    const branchBottom = getBodySubtreeBottom(child, radius)
+    const branchBottom = getBodySubtreeBottom(child, radius, 'horizontal')
     const nextChild = children[index + 1]
-    const nextTopExtent = nextChild ? getBodyTopExtent(nextChild, getNestedBodyRadius(nextChild)) : 0
-    nextY += Math.max(MOON_Y_SPACING, branchBottom + nextTopExtent + LABEL_GAP)
+    if (nextChild) nextY += branchBottom + getNestedBodyRadius(nextChild) + MIN_VERTICAL_PADDING
     return { child, y, radius }
   })
+}
+
+function getHorizontalNestedBodyPositions (parent, parentX, parentY, parentRadius, children) {
+  let nextX = parentX + parentRadius + getRingHorizontalPadding(parent) + MIN_HORIZONTAL_PADDING
+  return children.map(child => {
+    const radius = getNestedBodyRadius(child)
+    const ringPadding = getRingHorizontalPadding(child)
+    const x = nextX + ringPadding + radius
+    nextX = x + getBodyRightExtent(child, radius, 'vertical') + ringPadding + MIN_HORIZONTAL_PADDING
+    return { child, x, y: parentY, radius }
+  })
+}
+
+function getBodyRightExtent (body, radius, orientation) {
+  const children = getRenderableChildren(body)
+  if (children.length === 0) return radius
+
+  if (orientation === 'vertical') {
+    return children.reduce((right, child) => {
+      const childRadius = getNestedBodyRadius(child)
+      return Math.max(
+        right,
+        getBodyRightExtent(child, childRadius, 'horizontal') + getRingHorizontalPadding(child)
+      )
+    }, radius)
+  }
+
+  let nextX = radius + getRingHorizontalPadding(body) + MIN_HORIZONTAL_PADDING
+  let right = radius
+  for (const child of children) {
+    const childRadius = getNestedBodyRadius(child)
+    const ringPadding = getRingHorizontalPadding(child)
+    const childX = nextX + ringPadding + childRadius
+    const childRightExtent = getBodyRightExtent(child, childRadius, 'vertical')
+    right = Math.max(right, childX + childRightExtent + ringPadding)
+    nextX = childX + childRightExtent + ringPadding + MIN_HORIZONTAL_PADDING
+  }
+  return right
+}
+
+function getNestedTreeRightExtent (parent, parentX, parentY, parentRadius, children, orientation = 'vertical') {
+  if (!children.length) return parentX + parentRadius + getRingHorizontalPadding(parent)
+
+  const positions = orientation === 'horizontal'
+    ? getHorizontalNestedBodyPositions(parent, parentX, parentY, parentRadius, children)
+    : getNestedBodyPositions(parent, parentY, parentRadius, children)
+  return positions.reduce((right, { child, x, y, radius }) => {
+    const childX = x ?? parentX
+    const childRadius = radius ?? getNestedBodyRadius(child)
+    const childRight = getNestedTreeRightExtent(
+      child,
+      childX,
+      y,
+      childRadius,
+      getRenderableChildren(child),
+      orientation === 'vertical' ? 'horizontal' : 'vertical'
+    )
+    return Math.max(right, childRight)
+  }, parentX + parentRadius + getRingHorizontalPadding(parent))
+}
+
+function getRingHorizontalPadding (body) {
+  return body?.rings?.length > 0 && ['Star', 'Planet'].includes(body.bodyType)
+    ? EXTRA_HORIZONTAL_PADDING_FOR_RINGS
+    : 0
 }
 
 function getNestedBodyRadius (body) {
@@ -541,12 +716,7 @@ function getBodyRenderRadius (body, radius) {
   return body.isBarycentre ? Math.min(radius, 900) : radius
 }
 
-function getBodyTopExtent (body, radius) {
-  const hasDistanceLabel = body.distanceToArrival !== undefined && body.distanceToArrival > 0
-  return radius + LABEL_GAP + (hasDistanceLabel ? 900 : 500)
-}
-
-function getBodySubtreeBottom (body, radius) {
+function getBodySubtreeBottom (body, radius, orientation = 'vertical') {
   const stationCount = getRenderableStations(body?.stations).length
   let bottom = stationCount > 0
     ? radius + STATION_Y_OFFSET + ((stationCount - 1) * STATION_Y_SPACING) + STATION_MARKER_RADIUS
@@ -555,26 +725,35 @@ function getBodySubtreeBottom (body, radius) {
   const children = getRenderableChildren(body)
   if (children.length === 0) return bottom
 
-  let childY = getNestedBodiesOffset(body, radius)
+  if (orientation === 'horizontal') {
+    children.forEach(child => {
+      const childRadius = getNestedBodyRadius(child)
+      bottom = Math.max(bottom, getBodySubtreeBottom(child, childRadius, 'vertical'))
+    })
+    return bottom
+  }
+
+  let childY = getNestedBodiesOffset(body, radius, getNestedBodyRadius(children[0]))
   children.forEach((child, index) => {
     const childRadius = getNestedBodyRadius(child)
-    const childBottom = getBodySubtreeBottom(child, childRadius)
+    const childBottom = getBodySubtreeBottom(child, childRadius, 'horizontal')
     bottom = Math.max(bottom, childY + childBottom)
 
     if (index < children.length - 1) {
       const nextChild = children[index + 1]
-      const nextTopExtent = getBodyTopExtent(nextChild, getNestedBodyRadius(nextChild))
-      childY += Math.max(MOON_Y_SPACING, childBottom + nextTopExtent + LABEL_GAP)
+      childY += childBottom + getNestedBodyRadius(nextChild) + MIN_VERTICAL_PADDING
     }
   })
 
   return bottom
 }
 
-function getNestedBodiesOffset (body, radius) {
+function getNestedBodiesOffset (body, radius, firstChildRadius) {
   const stationCount = getRenderableStations(body?.stations).length
-  const stationStackHeight = radius + STATION_Y_OFFSET + (stationCount * STATION_Y_SPACING) + STATION_MARKER_RADIUS
-  return Math.max(MOON_Y_OFFSET, stationStackHeight)
+  const stationStackBottom = stationCount > 0
+    ? radius + STATION_Y_OFFSET + ((stationCount - 1) * STATION_Y_SPACING) + STATION_MARKER_RADIUS
+    : 0
+  return Math.max(radius, stationStackBottom) + firstChildRadius + MIN_VERTICAL_PADDING
 }
 
 function getRenderableStations (stations) {
@@ -582,13 +761,8 @@ function getRenderableStations (stations) {
 }
 
 function getRenderableChildren (body) {
-  const children = body.children ?? []
-  if (body?.bodyType !== 'Planet') return children
-
-  // Hide only the barycentre directly orbiting this planet. Keep any nested
-  // barycentres visible alongside the other bodies orbiting that point.
-  return children.flatMap(child => (
-    child?.isBarycentre ? (child.children ?? []) : [child]
+  return (body?.children ?? []).filter(child => (
+    !child?.isBarycentre || getRenderableChildren(child).length > 0
   ))
 }
 
@@ -773,18 +947,21 @@ function StationSvg ({ station, x, y, setInspector }) {
 function calculateLayout (allBodies) {
   const bodies = []
   let currentX = SVG_PADDING
+  let maxRenderedRight = SVG_PADDING
   let maxRenderedBottom = ROW_HEIGHT
 
   for (let i = 0; i < allBodies.length; i++) {
     const body = allBodies[i]
     const isRootNode = i === 0 && (body.bodyType === 'Star' || body.isBarycentre)
     const r = calculateRadius(body, i === 0 && body.bodyType === 'Star')
-    const x = currentX + r
+    const ringPadding = getRingHorizontalPadding(body)
+    const x = currentX + ringPadding + r
     const y = ROW_HEIGHT / 2
     bodies.push({ body, x, y, r })
-    currentX += (r * 2) + PLANET_SPACING 
+    maxRenderedRight = Math.max(maxRenderedRight, x + r)
 
     const renderedChildren = isRootNode ? [] : getRenderableChildren(body)
+    let nextX = x + r + ringPadding + MIN_HORIZONTAL_PADDING
     const stationCount = getRenderableStations(body.stations).length
     const stationBottom = stationCount > 0
       ? y + r + STATION_Y_OFFSET + ((stationCount - 1) * STATION_Y_SPACING) + STATION_MARKER_RADIUS
@@ -793,10 +970,17 @@ function calculateLayout (allBodies) {
     if (renderedChildren.length > 0) {
       const renderedBottom = y + getBodySubtreeBottom(body, r)
       if (renderedBottom > maxRenderedBottom) maxRenderedBottom = renderedBottom
+      const branchRight = getNestedTreeRightExtent(body, x, y, r, renderedChildren)
+      nextX = Math.max(nextX, branchRight + MIN_HORIZONTAL_PADDING)
+      maxRenderedRight = Math.max(
+        maxRenderedRight,
+        branchRight
+      )
     }
+    currentX = nextX
   }
 
-  const totalWidth = currentX + SVG_PADDING
+  const totalWidth = Math.max(currentX + SVG_PADDING, maxRenderedRight + SVG_PADDING)
   const totalHeight = Math.ceil(maxRenderedBottom)
 
   return {
@@ -813,7 +997,7 @@ function calculateSystemLayout (stars = []) {
   let maxRenderedWidth = SVG_PADDING * 2
 
   for (const star of stars) {
-    if (star?.isBarycentre && Number(star.bodyId) === 0 && (star.children ?? []).length === 0) continue
+    if (star?.isBarycentre && getRenderableChildren(star).length === 0) continue
 
     const children = getRenderableChildren(star)
     const allBodies = [star, ...children]

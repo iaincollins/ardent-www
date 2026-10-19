@@ -104,6 +104,7 @@
   cursor: grab;
   touch-action: none;
   user-select: none;
+  outline: none;
 }
 
 .system-bodies-map__orbit-svg:active {
@@ -128,7 +129,6 @@
 .system-bodies-map__station-marker {
   fill: var(--color-primary-0);
   stroke: var(--color-primary-2);
-  stroke: var(--color-primary-1);
   stroke-width: 100;
 }
 
@@ -231,6 +231,10 @@
 .system-map__system-object:focus .system-map__planet circle {
   filter: contrast(1.2) brightness(1.1) blur(0.9rem);
   stroke: var(--color-secondary);
+}
+
+.system-map__system-object:focus .system-map__planet-name-text {
+  fill: var(--color-secondary);
 }
 
 .system-map__planet-name-text {

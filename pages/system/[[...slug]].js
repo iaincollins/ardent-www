@@ -327,6 +327,7 @@ export default () => {
       title={title}
       description={system ? `Data for the system ${system.systemName} in Elite Dangerous` : null}
       className={views[activeViewIndex] === 'bodies' ? 'layout__content-wrapper--no-scroll' : undefined}
+      contentClassName={views[activeViewIndex] === 'bodies' ? 'layout__content--system-bodies' : undefined}
       navigation={
         [
           {
@@ -368,6 +369,7 @@ export default () => {
         ]
       }
       inspector={inspector}
+      onInspectorClose={() => setInspector(undefined)}
       navigationOverlaid={!!((views[activeViewIndex] === '' && system !== null) || (views[activeViewIndex] === 'bodies'))} // Overlay navigation for map view
     >
       <Head>

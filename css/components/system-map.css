@@ -28,6 +28,7 @@
   left: 0;
   background:  linear-gradient(to bottom, transparent 0%, rgba(90, 80, 100, .25) 70%);
   filter: contrast(1.15);
+  outline: none;
 }
 
 .system-map__stars {

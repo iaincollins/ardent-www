@@ -17,9 +17,11 @@ export default ({
   children,
   sidebar = undefined,
   className = undefined,
+  contentClassName = undefined,
   navigation = undefined,
   navigationOverlaid = false,
-  inspector = undefined
+  inspector = undefined,
+  onInspectorClose = undefined
 }) => {
   useEffect(() => {
     ; (() => {
@@ -43,11 +45,18 @@ export default ({
           <div className={`layout__content layout__content--left-sidebar scrollable ${navigation !== undefined ? 'layout__content--with-navigation' : ''}`}>
             {sidebar}
           </div>}
-        <div className={`layout__content scrollable ${sidebar !== undefined ? 'layout__content--right' : ''} ${navigation !== undefined ? 'layout__content--with-navigation' : ''} ${navigationOverlaid === true ? 'layout__content--with-navigation-overlayed' : ''} ${inspector !== undefined ? 'layout__content--with-inspector' : ''}`}>
+        <div className={`layout__content scrollable ${sidebar !== undefined ? 'layout__content--right' : ''} ${navigation !== undefined ? 'layout__content--with-navigation' : ''} ${navigationOverlaid === true ? 'layout__content--with-navigation-overlayed' : ''} ${inspector !== undefined ? 'layout__content--with-inspector' : ''} ${contentClassName ?? ''}`}>
           {children}
         </div>
         {inspector !== undefined &&
-          <div className='layout__inspector scrollable'>
+          <div
+            className='layout__inspector scrollable'
+            onClick={event => {
+              if (event.target.closest?.('.inspector__heading') && window.matchMedia('(max-width: 768px)').matches) {
+                onInspectorClose?.()
+              }
+            }}
+          >
             {inspector}
           </div>}
         {navigation !== undefined &&

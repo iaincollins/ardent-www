@@ -203,8 +203,10 @@ function Inspector ({ systemObject }) {
           {(systemObject?.bodyType === 'Planet' || systemObject?.bodyType === 'Star') &&
             <SystemObjectIcon systemObject={systemObject}>
               <CopyOnClick>{systemObject.bodyName}</CopyOnClick>
-              {systemObject?.subType !== undefined && systemObject?.subType !== null &&
-                <small><br />{systemObject.subType}</small>}
+              <small>
+                <br />
+                {systemObject?.subType ?? <>UNKNOWN</>}
+              </small>
             </SystemObjectIcon>}
           {systemObject?.stationType !== undefined &&
             <StationIcon station={systemObject}>
@@ -250,12 +252,12 @@ function Inspector ({ systemObject }) {
               {systemObject.isScoopable ? <div style={{ marginBottom: '.75rem' }}><i className='system-object-icon text-warning icarus-terminal-fuel' />Main sequence (scoopable)</div> : <div style={{ marginBottom: '.75rem' }} className='text-muted'><i className='system-object-icon icarus-terminal-warning' />Not scoopable</div>}
               <small>
                 {systemObject.spectralClass && <span>Spectral class {systemObject.spectralClass}, </span>}
-                Luminosity {systemObject.luminosity}
+                {systemObject.luminosity && <span>Luminosity {systemObject.luminosity}</span>}
               </small>
             </p>
             {systemObject.solarRadius && <p><span className='text-muted'>Radius</span><br />{(systemObject.solarRadius * SOL_RADIUS_IN_KM).toLocaleString(undefined, { maximumFractionDigits: 0 })} Km</p>}
-            <p><span className='text-muted'>Solar masses</span><br />{systemObject.solarMasses.toFixed(2)}</p>
-            <p><span className='text-muted'>Temperature</span><br />{systemObject.surfaceTemperature} K</p>
+            <p><span className='text-muted'>Solar masses</span><br />{systemObject.solarMasses?.toFixed(2) ?? 'UNKNOWN'}</p>
+            <p><span className='text-muted'>Temperature</span><br />{systemObject.surfaceTemperature ?? 'UNKNOWN'} K</p>
           </div>}
 
         {systemObject?.bodyType === 'Planet' &&
