@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import Header from 'components/header'
 import { Toaster } from 'react-hot-toast'
 // import { Canvas, useFrame } from '@react-three/fiber'
-import { NavigationContext, DialogContext } from 'lib/context'
+import { NavigationContext, DialogContext, PictureInPictureContext } from 'lib/context'
 import 'css/index.css'
 import 'public/fonts/icarus-terminal/icarus-terminal.css'
 import { playLoadingSound } from 'lib/sounds'
@@ -24,8 +24,55 @@ function handleOnClick (e) {
 export default ({ Component, pageProps }) => {
   const [navigationPath, setNavigationPath] = useState([])
   const [dialog, setDialog] = useState()
+  const [pictureInPictureSupported, setPictureInPictureSupported] = useState(false)
+  const [pictureInPictureWindow, setPictureInPictureWindow] = useState()
+
+  const togglePictureInPicture = useCallback(async () => {
+    if (pictureInPictureWindow && !pictureInPictureWindow.closed) {
+      pictureInPictureWindow.close()
+      return
+    }
+
+    if (!window.documentPictureInPicture?.requestWindow) return
+
+    try {
+      const pipWindow = await window.documentPictureInPicture.requestWindow({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+      const pipDocument = pipWindow.document
+      const appRoot = document.getElementById('__next')
+
+      if (!appRoot) throw new Error('Unable to find the application root')
+
+      const originalMinHeight = appRoot.style.minHeight
+      document.head.querySelectorAll('link[rel="stylesheet"], style').forEach(element => {
+        pipDocument.head.appendChild(element.cloneNode(true))
+      })
+      const baseElement = pipDocument.createElement('base')
+      baseElement.href = document.baseURI
+      pipDocument.head.prepend(baseElement)
+      pipDocument.title = document.title
+      pipDocument.documentElement.className = document.documentElement.className
+      pipDocument.documentElement.style.cssText = document.documentElement.style.cssText
+      pipDocument.body.className = document.body.className
+      pipDocument.body.style.cssText = `${document.body.style.cssText}; margin: 0; min-height: 100vh;`
+      pipDocument.body.appendChild(document.adoptNode(appRoot))
+      appRoot.style.minHeight = '100vh'
+
+      pipWindow.addEventListener('pagehide', () => {
+        document.body.appendChild(appRoot)
+        appRoot.style.minHeight = originalMinHeight
+        setPictureInPictureWindow(undefined)
+      }, { once: true })
+      setPictureInPictureWindow(pipWindow)
+    } catch (error) {
+      console.error('Unable to open Document Picture-in-Picture window', error)
+    }
+  }, [pictureInPictureWindow])
 
   useEffect(() => {
+    setPictureInPictureSupported(Boolean(window.documentPictureInPicture?.requestWindow))
     document.body.addEventListener('click', handleOnClick)
     try {
       const themeSettings = JSON.parse(window.localStorage.getItem('theme-settings'))
@@ -54,6 +101,12 @@ export default ({ Component, pageProps }) => {
         <div className='fx__background' />
         <NavigationContext.Provider value={[navigationPath, setNavigationPath]}>
           <DialogContext.Provider value={[dialog, setDialog]}>
+            <PictureInPictureContext.Provider value={{
+              supported: pictureInPictureSupported,
+              active: Boolean(pictureInPictureWindow && !pictureInPictureWindow.closed),
+              pipWindow: pictureInPictureWindow,
+              toggle: togglePictureInPicture
+            }}>
             <div id='notifications' style={{ transition: '1s all ease-in-out', position: 'fixed', zIndex: 9999 }}>
               <Toaster
                 containerStyle={{
@@ -82,6 +135,7 @@ export default ({ Component, pageProps }) => {
             </div>
             <Header />
             <Component {...pageProps} />
+            </PictureInPictureContext.Provider>
           </DialogContext.Provider>
         </NavigationContext.Provider>
       </div>

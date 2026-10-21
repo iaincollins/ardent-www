@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { getCommoditiesWithPricing, listOfCommoditiesAsArray } from 'lib/commodities'
 import commodities from 'lib/commodities/commodities'
-import { NavigationContext, DialogContext } from 'lib/context'
+import { NavigationContext, DialogContext, PictureInPictureContext } from 'lib/context'
 import { API_BASE_URL } from 'lib/consts'
 import { eliteDateTime } from 'lib/utils/dates'
 import ThemeSettings from 'components/theme-settings'
@@ -23,8 +23,13 @@ export default () => {
   const [menuVisible, setMenuVisible] = useState(false)
   const [dateTime, setDateTime] = useState()
   const [, setDialog] = useContext(DialogContext)
+  const pictureInPicture = useContext(PictureInPictureContext)
 
   const toggleMenu = () => setMenuVisible(!menuVisible)
+  const toggleFullscreenAndExitPictureInPicture = () => {
+    if (pictureInPicture?.active) pictureInPicture.toggle()
+    toggleFullScreen()
+  }
 
   useEffect(() => {
     const onFullScreenChangeHandler = (event) => setFullScreenState(isFullScreen())
@@ -334,7 +339,11 @@ export default () => {
         <button aria-label='Settings' className='button --no-hover is-hidden-mobile' onClick={showThemeSettings}>
           <i className='icon icarus-terminal-settings' />
         </button>
-        <button aria-label='Toggle Fullscreen' className='button --no-hover is-hidden-mobile' onClick={() => toggleFullScreen()}>
+        {pictureInPicture?.supported &&
+          <button aria-label={pictureInPicture.active ? 'Exit Picture-in-Picture' : 'Open Picture-in-Picture'} title={pictureInPicture.active ? 'Exit Picture-in-Picture' : 'Open Picture-in-Picture'} className='button --no-hover is-hidden-mobile' onClick={pictureInPicture.toggle}>
+            <i className={`icon ${pictureInPicture.active ? 'icarus-terminal-fullscreen-window-exit' : 'icarus-terminal-fullscreen-window'}`} />
+          </button>}
+        <button aria-label='Toggle Fullscreen' className='button --no-hover is-hidden-mobile' onClick={toggleFullscreenAndExitPictureInPicture}>
           <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
         </button>
         <button id='header-menu-toggle' aria-label='Menu' className={`button header__menu-button is-visible-mobile ${menuVisible ? '--active' : ''}`} onClick={() => toggleMenu()}>
@@ -357,7 +366,7 @@ export default () => {
               About
             </button>
           </Link>
-          <button aria-label='Toggle Fullscreen' className='--no-hover header__menu-item' onClick={() => toggleFullScreen()}>
+          <button aria-label='Toggle Fullscreen' className='--no-hover header__menu-item' onClick={toggleFullscreenAndExitPictureInPicture}>
             <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
             Fullscreen
           </button>

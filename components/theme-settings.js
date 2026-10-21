@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import { HexColorPicker } from 'react-colorful'
 import { useDebouncedCallback } from 'use-debounce'
+import { PictureInPictureContext } from 'lib/context'
 
 const MIN_CONTRAST = 0.9
 const MAX_CONTRAST = 1.75
 
 module.exports = () => {
+  const pictureInPicture = useContext(PictureInPictureContext)
+  const highlightHueShiftRef = useRef()
   const hue = window.getComputedStyle(document.documentElement).getPropertyValue('--color-primary-hue')
   const saturation = window.getComputedStyle(document.documentElement).getPropertyValue('--color-primary-saturation')
   const contrast = window.getComputedStyle(document.documentElement).getPropertyValue('--contrast')
@@ -15,10 +18,6 @@ module.exports = () => {
 
   const [color, setColor] = useState(currentColor)
   const [highlightHueShift, setHighlightHueShift] = useState(hueShift)
-
-  useEffect(() => {
-    document.getElementById('highlight-color-hue-shift').value = hueShift
-  }, [])
 
   useEffect(() => {
     saveChanges()
@@ -36,11 +35,11 @@ module.exports = () => {
 
   const saveChanges = () => {
     const { h, s, l } = hex2hsl(color)
-    document.documentElement.style.setProperty('--color-primary-hue', h)
-    document.documentElement.style.setProperty('--color-primary-saturation', `${s}%`)
+    setThemeProperty('--color-primary-hue', h)
+    setThemeProperty('--color-primary-saturation', `${s}%`)
     const contrast = convertPercentageToRange((100 - l), MIN_CONTRAST, MAX_CONTRAST)
-    document.documentElement.style.setProperty('--contrast', contrast)
-    document.documentElement.style.setProperty('--highlight-hue-shift', highlightHueShift)
+    setThemeProperty('--contrast', contrast)
+    setThemeProperty('--highlight-hue-shift', highlightHueShift)
     window.localStorage.setItem('theme-settings', JSON.stringify({ hue: h, saturation: s, contrast, highlightHueShift, timestamp: Date.now() }))
   }
 
@@ -49,15 +48,23 @@ module.exports = () => {
     const defaultSaturation = window.getComputedStyle(document.documentElement).getPropertyValue('--default-color-primary-saturation')
     const defaultContrast = window.getComputedStyle(document.documentElement).getPropertyValue('--default-contrast')
     const defaultHilightHueShift = window.getComputedStyle(document.documentElement).getPropertyValue('--default-highlight-hue-shift')
-    document.documentElement.style.setProperty('--color-primary-hue', defaultHue)
-    document.documentElement.style.setProperty('--color-primary-saturation', defaultSaturation)
-    document.documentElement.style.setProperty('--contrast', defaultContrast)
-    document.documentElement.style.setProperty('--highlight-hue-shift', defaultHilightHueShift)
+    setThemeProperty('--color-primary-hue', defaultHue)
+    setThemeProperty('--color-primary-saturation', defaultSaturation)
+    setThemeProperty('--contrast', defaultContrast)
+    setThemeProperty('--highlight-hue-shift', defaultHilightHueShift)
     window.localStorage.removeItem('theme-settings')
     const lightness = 100 - convertNumberToPercentage(defaultContrast, MIN_CONTRAST, MAX_CONTRAST)
     setColor(hsl2hex(defaultHue, defaultSaturation.replace('%', ''), lightness))
     setHighlightHueShift(defaultHilightHueShift)
-    document.getElementById('highlight-color-hue-shift').value = defaultHilightHueShift
+    if (highlightHueShiftRef.current) highlightHueShiftRef.current.value = defaultHilightHueShift
+  }
+
+  const setThemeProperty = (property, value) => {
+    const pipWindow = pictureInPicture?.pipWindow
+    document.documentElement.style.setProperty(property, value)
+    if (pipWindow && !pipWindow.closed) {
+      pipWindow.document.documentElement.style.setProperty(property, value)
+    }
   }
 
   return (
@@ -79,7 +86,7 @@ module.exports = () => {
         Highlight color
       </p>
       <div style={{ width: 'calc(100% - .5rem)' }}>
-        <input style={{ width: '99%' }} type='range' id='highlight-color-hue-shift' name='highlight-color-hue-shift' min='0' max='360' onChange={onChangeHighlightHueShift} />
+        <input ref={highlightHueShiftRef} style={{ width: '99%' }} type='range' id='highlight-color-hue-shift' name='highlight-color-hue-shift' min='0' max='360' defaultValue={hueShift} onChange={onChangeHighlightHueShift} />
       </div>
       <p className='text-center' onClick={resetToDefaults}>RESET</p>
     </div>
