@@ -20,11 +20,34 @@ async function getExportsForCommodityBySystem (systemAddress, commodityName) {
 }
 
 export default ({ tableName = 'Exporters', commodities }) => {
-  useEffect(animateTableEffect)
+  const [sort, setSort] = useState(null)
+  useEffect(animateTableEffect, [])
+
+  const sortableHeading = (label, field) => (
+    <button
+      type='button'
+      className='data-table__sort-button'
+      aria-label={`Sort by ${label}${sort?.field === field ? (sort.direction === 'desc' ? ', descending' : ', ascending') : ''}`}
+      onClick={() => setSort(current => ({
+        field,
+        direction: current?.field === field && current.direction === 'desc' ? 'asc' : 'desc'
+      }))}
+    >
+      {label}<span aria-hidden='true'>{sort?.field === field ? (sort.direction === 'desc' ? ' ↓' : ' ↑') : ' ↕'}</span>
+    </button>
+  )
+  const sortedCommodities = sort
+    ? [...commodities].sort((a, b) => {
+        const aValue = sort.field === 'updatedAt' ? new Date(a[sort.field]).getTime() : Number(a[sort.field])
+        const bValue = sort.field === 'updatedAt' ? new Date(b[sort.field]).getTime() : Number(b[sort.field])
+        return (aValue - bValue) * (sort.direction === 'desc' ? -1 : 1)
+      })
+    : commodities
+  const hasDistance = commodities.some(commodity => commodity.distance !== undefined)
 
   return (
     <Table
-      className='data-table data-table--striped data-table--interactive data-table--animated'
+      className={`data-table data-table--striped data-table--interactive${sort ? '' : ' data-table--animated'}`}
       columns={[
         {
           title: tableName,
@@ -61,7 +84,7 @@ export default ({ tableName = 'Exporters', commodities }) => {
             </div>
         },
         {
-          title: 'System',
+          title: hasDistance ? sortableHeading('System', 'distance') : 'System',
           dataIndex: 'systemName',
           key: 'systemName',
           align: 'right',
@@ -74,7 +97,7 @@ export default ({ tableName = 'Exporters', commodities }) => {
           )
         },
         {
-          title: 'Updated',
+          title: sortableHeading('Updated', 'updatedAt'),
           dataIndex: 'updatedAt',
           key: 'updatedAt',
           align: 'right',
@@ -83,7 +106,7 @@ export default ({ tableName = 'Exporters', commodities }) => {
           render: (v) => <small>{timeBetweenTimestamps(v)}</small>
         },
         {
-          title: 'Stock',
+          title: sortableHeading('Stock', 'stock'),
           dataIndex: 'stock',
           key: 'stock',
           align: 'right',
@@ -96,7 +119,7 @@ export default ({ tableName = 'Exporters', commodities }) => {
             </>
         },
         {
-          title: 'Price',
+          title: sortableHeading('Price', 'buyPrice'),
           dataIndex: 'buyPrice',
           key: 'buyPrice',
           align: 'right',
@@ -105,7 +128,7 @@ export default ({ tableName = 'Exporters', commodities }) => {
           render: (v) => <>{v.toLocaleString()} CR</>
         }
       ]}
-      data={commodities}
+      data={sortedCommodities}
       rowKey={(r) => `commodity_export_orders_${r.marketId}_${r.commodityName}`}
       expandable={{
         expandRowByClick: true,

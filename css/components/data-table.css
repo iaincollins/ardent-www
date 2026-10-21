@@ -44,6 +44,22 @@
   background: linear-gradient(to bottom, transparent, var(--color-primary-2));
 }
 
+.data-table__sort-button {
+  appearance: none;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-transform: inherit;
+}
+
+.data-table__sort-button:focus-visible {
+  outline: .1rem solid currentColor;
+  outline-offset: .15rem;
+}
+
 .data-table td {
   background: #222;
   background: var(--color-table-background);
