@@ -23,8 +23,7 @@
   padding-right: .75rem;
 }
 
-.sidebar__options form input,
-.sidebar__options form select {
+.sidebar__options form input {
   width: calc(100%);
   background: var(--color-primary-1);
   border-color: var(--color-primary-4);
@@ -43,17 +42,18 @@
   outline: none;
 }
 
+.sidebar__options form select {
+  width: 100%;
+}
+
 .sidebar__options form input:focus,
-.sidebar__options form select:focus,
-.sidebar__options form input:hover:not(:disabled),
-.sidebar__options form select:hover:not(:disabled) {
+.sidebar__options form input:hover:not(:disabled) {
   background: var(--color-primary-0);
   border-color: var(--color-primary-5);
 }
 
 .sidebar__options form button:disabled,
-.sidebar__options form input:disabled,
-.sidebar__options form select:disabled {
+.sidebar__options form input:disabled {
   cursor: not-allowed;
   opacity: .5;
 }

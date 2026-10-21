@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Collapsible from 'react-collapsible'
@@ -12,12 +12,12 @@ import CommodityExportersInSystem from 'components/commodity-exporters/commodity
 import CommodityImportersNearby from 'components/commodity-importers/commodity-importers-nearby'
 import CommodityExportersNearby from 'components/commodity-exporters/commodity-exporters-nearby'
 import CopyOnClick from 'components/copy-on-click'
+import animateTableEffect from 'lib/animate-table-effect'
 
 import { NO_DEMAND_TEXT } from 'lib/consts'
 
 module.exports = ({
   system,
-  stationsInSystem,
   importOrders,
   exportOrders,
   rareGoods,
@@ -25,6 +25,34 @@ module.exports = ({
 }) => {
   const router = useRouter()
   const [, setDialog] = useContext(DialogContext)
+  const [selectedStation, setSelectedStation] = useState('all')
+  const [stationOptions, setStationOptions] = useState([])
+
+  useEffect(animateTableEffect)
+
+  useEffect(() => {
+    setSelectedStation('all')
+    setStationOptions([])
+  }, [system?.systemAddress])
+
+  useEffect(() => {
+    if (exportOrders === undefined || importOrders === undefined) return
+    const nextStationOptions = getStationOptions(exportOrders, importOrders)
+    setStationOptions(currentStationOptions => (
+      areStationOptionsEqual(currentStationOptions, nextStationOptions)
+        ? currentStationOptions
+        : nextStationOptions
+    ))
+  }, [exportOrders, importOrders])
+
+  const visibleExportOrders = useMemo(
+    () => filterOrdersByStation(exportOrders, 'exportOrders', selectedStation),
+    [exportOrders, selectedStation]
+  )
+  const visibleImportOrders = useMemo(
+    () => filterOrdersByStation(importOrders, 'importOrders', selectedStation),
+    [importOrders, selectedStation]
+  )
 
   const activeTab = router.query?.slug?.[1] === 'imports'
     ? 1
@@ -38,9 +66,16 @@ module.exports = ({
       <p>
         {system?.systemName !== undefined &&
           <span className='fx__fade-in'>
-            Commodities traded in <CopyOnClick>{system.systemName}</CopyOnClick>
+            Commodities in <CopyOnClick>{system.systemName}</CopyOnClick>
           </span>}
       </p>
+      <label className='system-trade__station-filter'>
+        <select disabled={!(stationOptions?.length > 0)} value={selectedStation} onChange={event => setSelectedStation(event.target.value)}>
+          <option value='all'>All locations</option>
+          <option disabled>-</option>
+          {stationOptions.map(([marketId, stationName]) => <option key={marketId} value={marketId}>{stationName}</option>)}
+        </select>
+      </label>
       <Tabs
         selectedIndex={activeTab}
         onSelect={
@@ -66,10 +101,11 @@ module.exports = ({
           {!exportOrders && <div className='loading-bar loading-bar--tab' />}
           {exportOrders &&
             <Table
+              key={`system-exports-${selectedStation}`}
               className='data-table data-table--striped data-table--interactive data-table--animated'
               columns={[
                 {
-                  title: `Commodities exported (${exportOrders.length})`,
+                  title: `Commodities exported (${visibleExportOrders.length})`,
                   dataIndex: 'name',
                   key: 'name',
                   align: 'left',
@@ -101,15 +137,17 @@ module.exports = ({
                       </div>
                     </>
                 },
-                {
-                  title: 'Exporters',
-                  dataIndex: 'exportOrders',
-                  key: 'exportOrders',
-                  align: 'center',
-                  width: 100,
-                  className: 'is-hidden-mobile',
-                  render: (v) => <span className='counter counter--table-counter'>{v.length === 1 ? '1' : `${v.length}`}</span>
-                },
+                ...(selectedStation === 'all'
+                  ? [{
+                      title: 'Exporters',
+                      dataIndex: 'exportOrders',
+                      key: 'exportOrders',
+                      align: 'center',
+                      width: 100,
+                      className: 'is-hidden-mobile',
+                      render: (v) => <span className='counter counter--table-counter'>{v.length === 1 ? '1' : `${v.length}`}</span>
+                    }]
+                  : []),
                 {
                   title: 'Updated',
                   dataIndex: 'updatedAt',
@@ -144,7 +182,7 @@ module.exports = ({
                     </>
                 }
               ]}
-              data={exportOrders}
+              data={visibleExportOrders}
               rowKey={(r) => `system_exports_${r.systemAddress}_${r.symbol}`}
               emptyText={<span className='muted'>No exported commodities</span>}
               expandable={{
@@ -219,10 +257,11 @@ module.exports = ({
           {!importOrders && <div className='loading-bar loading-bar--tab' />}
           {importOrders &&
             <Table
+              key={`system-imports-${selectedStation}`}
               className='data-table data-table--striped data-table--interactive data-table--animated'
               columns={[
                 {
-                  title: `Commodities imported (${importOrders.length})`,
+                  title: `Commodities imported (${visibleImportOrders.length})`,
                   dataIndex: 'name',
                   key: 'name',
                   align: 'left',
@@ -256,15 +295,17 @@ module.exports = ({
                       </div>
                     </>
                 },
-                {
-                  title: 'Importers',
-                  dataIndex: 'importOrders',
-                  key: 'importOrders',
-                  align: 'center',
-                  width: 100,
-                  className: 'is-hidden-mobile',
-                  render: (v) => <span className='counter counter--table-counter '>{v.length === 1 ? '1' : `${v.length}`}</span>
-                },
+                ...(selectedStation === 'all'
+                  ? [{
+                      title: 'Importers',
+                      dataIndex: 'importOrders',
+                      key: 'importOrders',
+                      align: 'center',
+                      width: 100,
+                      className: 'is-hidden-mobile',
+                      render: (v) => <span className='counter counter--table-counter '>{v.length === 1 ? '1' : `${v.length}`}</span>
+                    }]
+                  : []),
                 {
                   title: 'Updated',
                   dataIndex: 'updatedAt',
@@ -299,7 +340,7 @@ module.exports = ({
                     </>
                 }
               ]}
-              data={importOrders}
+              data={visibleImportOrders}
               rowKey={(r) => `system_imports_${r.systemAddress}_${r.symbol}`}
               emptyText={<span className='muted'>No imported commodities</span>}
               expandable={{
@@ -340,4 +381,54 @@ module.exports = ({
       </Tabs>
     </div>
   )
+}
+
+function filterOrdersByStation (groups, ordersKey, selectedStation) {
+  if (!groups) return groups
+  if (selectedStation === 'all') return groups
+
+  const isExport = ordersKey === 'exportOrders'
+  return groups.map(group => {
+    const orders = group[ordersKey].filter(order => String(order.marketId) === selectedStation)
+    if (orders.length === 0) return null
+
+    const quantityKey = isExport ? 'stock' : 'demand'
+    const priceKey = isExport ? 'buyPrice' : 'sellPrice'
+    const totalQuantity = orders.reduce((total, order) => total + Number(order[quantityKey] || 0), 0)
+    const totalPrice = orders.reduce((total, order) => total + Number(order[priceKey] || 0) * Number(order[quantityKey] || 0), 0)
+    const updatedAt = orders.reduce((latest, order) => (
+      !latest || new Date(order.updatedAt).getTime() > new Date(latest).getTime() ? order.updatedAt : latest
+    ), null)
+
+    return {
+      ...group,
+      [ordersKey]: orders,
+      [isExport ? 'totalStock' : 'totalDemand']: totalQuantity,
+      totalPrice,
+      avgPrice: totalQuantity > 0 ? Math.round(totalPrice / totalQuantity) : 0,
+      bestPrice: orders.reduce((best, order) => (
+        best === null || (isExport ? Number(order[priceKey]) < best : Number(order[priceKey]) > best)
+          ? Number(order[priceKey])
+          : best
+      ), null),
+      updatedAt
+    }
+  }).filter(Boolean)
+}
+
+function getStationOptions (exportOrders, importOrders) {
+  const stations = [...exportOrders.flatMap(order => order.exportOrders ?? []), ...importOrders.flatMap(order => order.importOrders ?? [])]
+  const byMarketId = new Map()
+  stations.forEach(station => {
+    if (station.marketId === undefined || station.marketId === null) return
+    const marketId = String(station.marketId)
+    if (!byMarketId.has(marketId)) byMarketId.set(marketId, station.stationName ?? `Station ${marketId}`)
+  })
+  return [...byMarketId.entries()].sort((a, b) => a[1].localeCompare(b[1]))
+}
+
+function areStationOptionsEqual (currentOptions, nextOptions) {
+  return currentOptions.length === nextOptions.length && currentOptions.every((option, index) => (
+    option[0] === nextOptions[index][0] && option[1] === nextOptions[index][1]
+  ))
 }

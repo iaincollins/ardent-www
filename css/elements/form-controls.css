@@ -1,0 +1,26 @@
+select {
+  background: var(--color-primary-1);
+  border: .15rem solid var(--color-primary-4);
+  border-radius: .2rem;
+  color: var(--color-text);
+  padding: .25rem;
+  font-size: 1rem;
+  font-family: "Jura", sans-serif;
+  transition:
+    opacity 500ms,
+    background-color 250ms,
+    border-color 250ms,
+    color 250ms;
+  outline: none;
+}
+
+select:focus,
+select:hover:not(:disabled) {
+  background: var(--color-primary-0);
+  border-color: var(--color-primary-5);
+}
+
+select:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}

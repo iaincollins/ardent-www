@@ -33,8 +33,7 @@
   padding-right: .75rem;
 }
 
-.form-options form input,
-.form-options form select {
+.form-options form input {
   float: left;
   clear: both;
   background: var(--color-primary-8);
@@ -49,15 +48,18 @@
   transition: opacity 500ms;
 }
 
-.form-options form input:hover:not(:disabled),
-.form-options form select:hover:not(:disabled) {
+.form-options form select {
+  float: left;
+  clear: both;
+}
+
+.form-options form input:hover:not(:disabled) {
   background: var(--color-primary-9);
   border-color: var(--color-primary-3);
 }
 
 .form-options form button:disabled,
-.form-options form input:disabled,
-.form-options form select:disabled {
+.form-options form input:disabled {
   cursor: not-allowed;
   opacity: .5;
 }

@@ -1,6 +1,7 @@
 @import url('progress.css');
 @import url('button.css');
 @import url('dialog.css');
+@import url('form-controls.css');
 @import url('input-with-autocomplete.css');
 
 html {

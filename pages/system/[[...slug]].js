@@ -263,25 +263,6 @@ export default () => {
         })()
 
         ; (async () => {
-          let importOrders = await getSystemImports(_system.systemAddress)
-          importOrders.forEach((order, i) => {
-            if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
-              mostRecentUpdatedAt = order.updatedAt
-            }
-            // Enrich order data with commodity metadata
-            if (listOfCommodities[order.symbol]) {
-              importOrders[i] = {
-                ...listOfCommodities[order.symbol],
-                ...order
-              }
-            }
-          })
-          importOrders = importOrders.filter(order => !order.rare) // Filter 'Rare' items from imports
-          setImportOrders(importOrders)
-          setLastUpdatedAt(mostRecentUpdatedAt)
-        })()
-
-        ; (async () => {
           const exportOrders = await getSystemExports(_system.systemAddress)
           exportOrders.forEach((order, i) => {
             if (new Date(order.updatedAt).getTime() > new Date(mostRecentUpdatedAt).getTime()) {
@@ -450,7 +431,6 @@ export default () => {
           {(views[activeViewIndex] === 'exports' || views[activeViewIndex] === 'imports') &&
             <SystemTrade
               system={system}
-              stationsInSystem={stationsInSystem}
               importOrders={importOrders}
               exportOrders={exportOrders}
               rareGoods={rareGoods}
