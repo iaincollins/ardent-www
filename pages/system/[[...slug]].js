@@ -380,12 +380,12 @@ export default () => {
               system={system}
               systemStatus={systemStatus}
               nearbySystems={nearbySystems}
-              onMapCenterChange={async ({ x, z }) => {
+              onMapCenterChange={async ({ x, y = system.systemY, z }) => {
                 const requestId = ++nearbySystemsRequestId.current
                 const knownSystems = [system, ...(nearbySystems ?? [])]
                 const closestSystem = knownSystems.reduce((closest, candidate) => {
-                  const candidateDistance = distance([x, system.systemY, z], [candidate.systemX, candidate.systemY, candidate.systemZ])
-                  const closestDistance = distance([x, system.systemY, z], [closest.systemX, closest.systemY, closest.systemZ])
+                  const candidateDistance = distance([x, y, z], [candidate.systemX, candidate.systemY, candidate.systemZ])
+                  const closestDistance = distance([x, y, z], [closest.systemX, closest.systemY, closest.systemZ])
                   return candidateDistance < closestDistance ? candidate : closest
                 })
                 const systems = await getNearbySystems(closestSystem.systemAddress)
@@ -399,7 +399,7 @@ export default () => {
                       .filter(nearbySystem => !HIDDEN_SYSTEMS.includes(`${nearbySystem.systemAddress}`))
                       .map(nearbySystem => ({
                         ...nearbySystem,
-                        distance: distance([x, system.systemY, z], [nearbySystem.systemX, nearbySystem.systemY, nearbySystem.systemZ])
+                        distance: distance([x, y, z], [nearbySystem.systemX, nearbySystem.systemY, nearbySystem.systemZ])
                       }))
                       .filter(nearbySystem => nearbySystem.distance <= 100)
                   })

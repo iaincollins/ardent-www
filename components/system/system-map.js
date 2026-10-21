@@ -25,14 +25,17 @@ module.exports = ({
   const [mapZoomMultiplier, setMapZoomMultiplier] = useState(SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER)
   const [starsVisible, setStarsVisible] = useState(false)
   const [mapCenter, setMapCenter] = useState(() => ({ x: system.systemX, z: system.systemZ }))
+  const [coordinateY, setCoordinateY] = useState(system.systemY)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const [hasDragged, setHasDragged] = useState(false)
+  const [cursorPosition, setCursorPosition] = useState()
   const mapElement = useRef()
   const drag = useRef()
   const suppressClick = useRef(false)
 
   useEffect(() => {
     setMapCenter({ x: system.systemX, z: system.systemZ })
+    setCoordinateY(system.systemY)
     setHasDragged(false)
   }, [system.systemAddress])
 
@@ -52,6 +55,21 @@ module.exports = ({
   }
 
   const handlePointerMove = event => {
+    const rect = mapElement.current?.getBoundingClientRect()
+    if (rect && event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom) {
+      const offset = drag.current?.pointerId === event.pointerId ? {
+        x: event.clientX - drag.current.startX,
+        y: event.clientY - drag.current.startY
+      } : dragOffset
+      setCursorPosition({
+        x: mapCenter.x + (event.clientX - rect.left - rect.width / 2 - offset.x) / mapZoomMultiplier,
+        y: coordinateY,
+        z: mapCenter.z + (event.clientY - rect.top - rect.height / 2 - offset.y) / mapZoomMultiplier
+      })
+    } else {
+      setCursorPosition(undefined)
+    }
+
     if (!drag.current || drag.current.pointerId !== event.pointerId) return
     const x = event.clientX - drag.current.startX
     const y = event.clientY - drag.current.startY
@@ -80,7 +98,7 @@ module.exports = ({
       z: mapCenter.z - deltaY / mapZoomMultiplier
     }
     setMapCenter(center)
-    onMapCenterChange?.(center)
+    onMapCenterChange?.({ ...center, y: coordinateY })
   }
 
   const handlePointerCancel = event => {
@@ -89,11 +107,36 @@ module.exports = ({
     setDragOffset({ x: 0, y: 0 })
   }
 
+  const updateMapCenter = center => {
+    setMapCenter(center)
+    setCursorPosition({ x: center.x, y: coordinateY, z: center.z })
+    onMapCenterChange?.({ ...center, y: coordinateY })
+  }
+
+  const updateCoordinateY = delta => {
+    const y = coordinateY + delta
+    setCoordinateY(y)
+    setCursorPosition(position => ({
+      x: position?.x ?? mapCenter.x,
+      y,
+      z: position?.z ?? mapCenter.z
+    }))
+    onMapCenterChange?.({ x: mapCenter.x, y, z: mapCenter.z })
+  }
+
+  const handleMapWheel = event => {
+    if (event.deltaY === 0) return
+
+    event.preventDefault()
+    updateCoordinateY(event.deltaY < 0 ? SYSTEM_MAP_KEYBOARD_STEP : -SYSTEM_MAP_KEYBOARD_STEP)
+  }
+
   const handleMapKeyDown = event => {
     if (event.target !== event.currentTarget) return
 
+    const key = event.code === 'NumpadAdd' ? '+' : event.code === 'NumpadSubtract' ? '-' : event.key
     const center = { ...mapCenter }
-    switch (event.key) {
+    switch (key) {
       case 'ArrowUp':
         center.z -= SYSTEM_MAP_KEYBOARD_STEP
         break
@@ -106,13 +149,20 @@ module.exports = ({
       case 'ArrowRight':
         center.x += SYSTEM_MAP_KEYBOARD_STEP
         break
+      case '+':
+        event.preventDefault()
+        updateCoordinateY(SYSTEM_MAP_KEYBOARD_STEP)
+        return
+      case '-':
+        event.preventDefault()
+        updateCoordinateY(-SYSTEM_MAP_KEYBOARD_STEP)
+        return
       default:
         return
     }
 
     event.preventDefault()
-    setMapCenter(center)
-    onMapCenterChange?.(center)
+    updateMapCenter(center)
   }
 
   useEffect(() => {
@@ -273,8 +323,10 @@ module.exports = ({
         className={`system-map${hasDragged ? ' system-map--no-animations' : ''}`}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
+        onPointerLeave={() => setCursorPosition(undefined)}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerCancel}
+        onWheel={handleMapWheel}
         onKeyDown={handleMapKeyDown}
         tabIndex={0}
         role='region'
@@ -287,6 +339,14 @@ module.exports = ({
         }}
         style={{ touchAction: 'none' }}
       >
+        {cursorPosition !== undefined &&
+          <div className='system-map__cursor-position' aria-live='off'>
+            <span className='muted'>
+              X {cursorPosition.x.toFixed(2)}<br/>
+              Y {cursorPosition.y.toFixed(2)}<br/>
+              Z {cursorPosition.z.toFixed(2)}
+            </span>
+          </div>}
         <div className='system-map__stars' style={{ transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)` }}>
         <div
           className='system-map__point system-map__point--highlighted'

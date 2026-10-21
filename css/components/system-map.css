@@ -37,6 +37,19 @@
   will-change: transform;
 }
 
+.system-map__cursor-position {
+  position: absolute;
+  bottom: 5rem;
+  right: 1rem;
+  z-index: 1;
+  padding: .35rem .6rem;
+  color: var(--color-text-light);
+  font-size: .75rem;
+  line-height: 1.1rem;
+  text-shadow: 0 0 .35rem black;
+  pointer-events: none;
+}
+
 .system-map--no-animations .system-map__point,
 .system-map--no-animations .system-map__scanner,
 .system-map--no-animations .system-map__scanner--stopped {
