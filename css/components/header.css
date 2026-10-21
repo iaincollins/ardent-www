@@ -7,6 +7,24 @@ header {
     right: 0;
 }
 
+.pip-original-window-logo {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .12;
+  pointer-events: none;
+}
+
+.pip-original-window-logo .header__logo {
+  position: static;
+  top: auto;
+  left: auto;
+  transform: scale(3);
+}
+
 .header__logo {
   position: relative;
   top: -.5rem;

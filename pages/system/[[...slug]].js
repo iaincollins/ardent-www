@@ -53,6 +53,10 @@ export default () => {
   useEffect(animateTableEffect)
 
   useEffect(() => {
+    document.querySelector('.layout__content.scrollable.layout__content--with-navigation')?.scrollTo(0, 0)
+  }, [router.asPath])
+
+  useEffect(() => {
     if (system !== undefined) setLoading(false)
   })
 

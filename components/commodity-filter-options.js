@@ -12,7 +12,6 @@ import {
 import InputWithAutoComplete from 'components/input-with-autocomplete'
 import { getCommodityBySymbolOrName } from 'lib/commodities'
 import { getCmdrInfo } from 'lib/cmdr'
-import { loadCache, saveCache, deleteCache } from 'lib/cache'
 
 export default ({ disabled = false, commodities = [], commodity }) => {
   const router = useRouter()
@@ -32,19 +31,11 @@ export default ({ disabled = false, commodities = [], commodity }) => {
   const [commodityAutoCompleteResults, setCommodityAutoCompleteResults] = useState()
   const [systemAutoCompleteResults, setSystemAutoCompleteResults] = useState()
 
-  const [cmdrProfile, setCmdrProfile] = useState(loadCache('cmdrProfile'))
-  //const [cmdrFleetCarrier] = useState(loadCache('cmdrFleetCarrier'))
+  const [cmdrProfile, setCmdrProfile] = useState()
 
-  const updateCmdrProfile = async () => {
-    // Check if is signed in
+  const updateCmdrInfo = async () => {
     const _cmdrProfile = await getCmdrInfo('profile')
-    const _signedIn = !!(_cmdrProfile?.commander?.id)
-    if (_signedIn) {
-      setCmdrProfile(_cmdrProfile)
-      saveCache('cmdrProfile', _cmdrProfile)
-    } else {
-        deleteCache('cmdrProfile')
-    }
+    setCmdrProfile(_cmdrProfile)
   }
 
   useEffect(() => {
@@ -61,9 +52,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
 
   useEffect(() => {
     updateOptions();
-    ;(async () => {
-      await updateCmdrProfile()
-    })()
+    ;(async () => await updateCmdrInfo())()
   }, [])
 
   function optionChangeHandler (e) {
@@ -209,6 +198,9 @@ export default ({ disabled = false, commodities = [], commodity }) => {
                   })
                 }
               }
+
+              // INSERT PLAYER CARGO HERE
+
               commodities.forEach(commodity => autoCompleteResults.push({
                 icon: 'cargo',
                 text: commodity.name,
@@ -274,7 +266,7 @@ export default ({ disabled = false, commodities = [], commodity }) => {
 
             // If signed in, show the user's current system as an option
             if (cmdrProfile?.lastSystem?.name && cmdrProfile?.lastSystem?.id) {
-              updateCmdrProfile() // Always attempt to update the profile when the user is signed in, in case they have changed systems since last time
+              updateCmdrInfo() // Always attempt to update the profile when the user is signed in, in case they have changed systems since last time
               autoCompleteResults.push({
                 icon: 'location-filled',
                 text: `${cmdrProfile?.lastSystem?.name}`,

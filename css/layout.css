@@ -7,6 +7,7 @@
 }
 
 .layout__frame {
+  filter: contrast(var(--contrast));
   position: absolute;
   top: .5rem;
   left: .5rem;
@@ -52,7 +53,7 @@
   top: 3.8rem;
   left: 0rem;
   right: 0rem;
-  bottom: 3.2rem;
+  bottom: 3.25rem;
   padding-right: .25rem;
   padding-bottom: 1rem;
   padding-top: 1rem;
@@ -81,12 +82,12 @@ mask-repeat: no-repeat, no-repeat;
 }
 
 .layout__content--with-navigation {
-  left: 3.6rem;
+  left: 3.4rem;
 }
 
 .layout__content--with-navigation-overlayed,
 .layout__content--with-navigation.layout__content--with-navigation-overlayed {
-  left: 0;
+  left: -.2rem !important;
 }
 
 .layout__content--with-inspector {
@@ -96,9 +97,9 @@ mask-repeat: no-repeat, no-repeat;
 .layout__inspector {
   width: 19.7rem; 
   display: inline-block;
-  top: 4.3rem;
-  right: 1rem;
-  bottom: 3.75rem;
+  top: 3.8rem;
+  right: .5rem;
+  bottom: 3.25rem;
   position: fixed;
   animation: inspector-slide-in-animation .25s ease-in-out;
   padding-right: .25rem;

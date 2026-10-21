@@ -13,9 +13,9 @@
   overflow: hidden;
   white-space: nowrap;
   position: fixed;
-  bottom: .74rem;
-  left: .5rem;
-  right: .5rem;
+  bottom: .2rem;
+  left: 0rem;
+  right: 0rem;
 }
 
 .news-ticker__ticker {

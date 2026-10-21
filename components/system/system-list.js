@@ -234,12 +234,11 @@ function Inspector ({ systemObject }) {
               <p className='text-link text-no-wrap'>
                 <i className='icon icarus-terminal-planet' /> <span className='text-link-text text-no-wrap'>{systemObject.bodyName}</span>
                 {systemObject.latitude !== undefined && systemObject.latitude !== null && systemObject.longitude !== undefined && systemObject.longitude !== null &&
-                  <div style={{ paddingLeft: '1.75rem' }}>
+                  <span style={{ display: 'block', paddingLeft: '1.75rem' }}>
                     <small>
-
                       {systemObject.latitude}, {systemObject.longitude}
                     </small>
-                  </div>}
+                  </span>}
               </p>}
           </div>}
 

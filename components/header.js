@@ -223,23 +223,26 @@ export default () => {
   }, [commoditySearchResults, systemSearchResults, stationSearchResults])
 
   useEffect(() => {
+    const activeDocument = pictureInPicture?.active && pictureInPicture.pipWindow
+      ? pictureInPicture.pipWindow.document
+      : headerSearchRef.current?.ownerDocument ?? document
     const onKeyDown = ({ key }) => {
       if (key === 'Enter') {
-        if (document.activeElement?.id === 'headerSearch' ||
-          document.activeElement?.id === 'location') {
-          document.activeElement.blur()
+        if (activeDocument.activeElement?.id === 'headerSearch' ||
+          activeDocument.activeElement?.id === 'location') {
+          activeDocument.activeElement.blur()
         } else {
           // If focus is on an INPUT element do nothing (may add more exceptions)
-          if (document?.activeElement?.tagName === 'INPUT') return
+          if (activeDocument.activeElement?.tagName === 'INPUT') return
           headerSearchRef.current.focus()
         }
       }
     }
-    document.addEventListener('keydown', onKeyDown)
+    activeDocument.addEventListener('keydown', onKeyDown)
     return () => {
-      document.removeEventListener('keydown', onKeyDown)
+      activeDocument.removeEventListener('keydown', onKeyDown)
     }
-  }, [])
+  }, [pictureInPicture?.active, pictureInPicture?.pipWindow])
 
   const showThemeSettings = () =>
     setDialog({
@@ -304,7 +307,7 @@ export default () => {
                   }
                 } else if (e.key === 'Escape') {
                   e.target.value = ''
-                  document.activeElement.blur()
+                  e.currentTarget.blur()
                 }
               }}
             />
@@ -339,10 +342,10 @@ export default () => {
         <button aria-label='Settings' className='button --no-hover is-hidden-mobile' onClick={showThemeSettings}>
           <i className='icon icarus-terminal-settings' />
         </button>
-        {/* pictureInPicture?.supported &&
+        {pictureInPicture?.supported &&
           <button aria-label={pictureInPicture.active ? 'Exit Picture-in-Picture' : 'Open Picture-in-Picture'} title={pictureInPicture.active ? 'Exit Picture-in-Picture' : 'Open Picture-in-Picture'} className='button --no-hover is-hidden-mobile' onClick={pictureInPicture.toggle}>
             <i className={`icon ${pictureInPicture.active ? 'icarus-terminal-fullscreen-window-exit' : 'icarus-terminal-fullscreen-window'}`} />
-          </button> */}
+          </button>}
         <button aria-label='Toggle Fullscreen' className='button --no-hover is-hidden-mobile' onClick={toggleFullscreenAndExitPictureInPicture}>
           <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
         </button>

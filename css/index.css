@@ -45,11 +45,6 @@ i[class*=" icarus-terminal-"] {
   margin: 0 .1rem;
 }
 
-html {
-  filter: grayscale(1) sepia(0.3) brightness(1.5) contrast(1.2);
-  filter: contrast(var(--contrast));
-}
-
 body,
 .scrollable {
   overflow-x: hidden !important;
@@ -409,4 +404,14 @@ a.link__icon:hover .station-icon {
 .nearby-services .collapsible__trigger-text {
   color: var(--color-text-link) !important;
   border-color: var(--color-text-link) !important;
+}
+
+.pip-original-window-logo .header__logo h1 {
+  background: none;
+  border: 0;
+}
+
+.pip-original-window-logo .header__logo h1:after,
+.pip-original-window-logo .header__logo .icon:after {
+  display: none;
 }

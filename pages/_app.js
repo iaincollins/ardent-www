@@ -42,6 +42,7 @@ export default ({ Component, pageProps }) => {
       })
       const pipDocument = pipWindow.document
       const appRoot = document.getElementById('__next')
+      const logo = appRoot?.querySelector('.header__logo')
 
       if (!appRoot) throw new Error('Unable to find the application root')
 
@@ -53,14 +54,36 @@ export default ({ Component, pageProps }) => {
       baseElement.href = document.baseURI
       pipDocument.head.prepend(baseElement)
       pipDocument.title = document.title
-      pipDocument.documentElement.className = document.documentElement.className
-      pipDocument.documentElement.style.cssText = document.documentElement.style.cssText
+      Array.from(document.documentElement.attributes).forEach(attribute => {
+        pipDocument.documentElement.setAttribute(attribute.name, attribute.value)
+      })
       pipDocument.body.className = document.body.className
       pipDocument.body.style.cssText = `${document.body.style.cssText}; margin: 0; min-height: 100vh;`
+
+      Array.from(document.body.childNodes).forEach(node => {
+        if (node === appRoot || node.nodeName === 'SCRIPT') return
+        const supportNode = node.cloneNode(true)
+        supportNode.querySelectorAll?.('script').forEach(script => script.remove())
+        pipDocument.body.appendChild(supportNode)
+      })
+
+      let logoOverlay
+      if (logo) {
+        const originalWindowLogo = logo.cloneNode(true)
+        originalWindowLogo.querySelector('.breadcrumbs')?.remove()
+
+        logoOverlay = document.createElement('div')
+        logoOverlay.className = 'pip-original-window-logo'
+        logoOverlay.setAttribute('aria-hidden', 'true')
+        logoOverlay.appendChild(originalWindowLogo)
+        document.body.appendChild(logoOverlay)
+      }
+
       pipDocument.body.appendChild(document.adoptNode(appRoot))
       appRoot.style.minHeight = '100vh'
 
       pipWindow.addEventListener('pagehide', () => {
+        logoOverlay?.remove()
         document.body.appendChild(appRoot)
         appRoot.style.minHeight = originalMinHeight
         setPictureInPictureWindow(undefined)

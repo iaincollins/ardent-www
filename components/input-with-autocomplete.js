@@ -14,6 +14,7 @@ export default ({
   autoCompleteResults,
   onClear
 }) => {
+  const containerRef = useRef()
   const resultsRef = useRef()
   const [focus, setFocus] = useState(false)
   const [_autoCompleteResults, _setAutoCompleteResults] = useState()
@@ -34,14 +35,15 @@ export default ({
         forwardRef.current.value = text
         forwardRef.current.dataset.autoCompleteOption = JSON.stringify(dataObj)
         onSelect(text, dataObj)
-        document.activeElement.blur()
+        resultElements.ownerDocument.activeElement.blur()
         setFocus(false)
       }
     }
-    const resultElements = document.querySelector(`#${id}`)
+    const resultElements = containerRef.current
+    if (!resultElements) return
     resultElements.addEventListener('click', onSelectResult)
-    return () => document.removeEventListener('click', onSelectResult)
-  }, [])
+    return () => resultElements.removeEventListener('click', onSelectResult)
+  }, [forwardRef, onSelect])
 
   function inputOnFocusHandler (e) {
     setFocus(true)
@@ -50,7 +52,7 @@ export default ({
     forwardRef.current.select()
     // This seems to be required on Chrome (seems to be a known issue)
     setTimeout(() => {
-      if (window?.getSelection()?.toString() !== forwardRef.current.value) {
+      if (forwardRef.current.ownerDocument.defaultView?.getSelection()?.toString() !== forwardRef.current.value) {
         forwardRef.current.select()
       }
     }, 200)
@@ -59,8 +61,9 @@ export default ({
   function inputOnBlurHandler (e) {
     setTimeout(() => {
       setFocus(false)
-      if (document.activeElement?.name === name) {
-        document.activeElement.blur()
+      const activeElement = forwardRef.current.ownerDocument.activeElement
+      if (activeElement?.name === name) {
+        activeElement.blur()
       }
       onBlur(e)
     }, 200)
@@ -80,8 +83,9 @@ export default ({
       }
       setTimeout(() => {
         setFocus(false)
-        if (document.activeElement?.name === name) {
-          document.activeElement.blur()
+        const activeElement = forwardRef.current.ownerDocument.activeElement
+        if (activeElement?.name === name) {
+          activeElement.blur()
         }
       }, 200)
     }
@@ -101,7 +105,7 @@ export default ({
   }
 
   return (
-    <div id={id} className='input-with-autocomplete'>
+    <div id={id} ref={containerRef} className='input-with-autocomplete'>
       <label className='input-with-autocomplete__label'>
         <span className='input-with-autocomplete__label-text'>{label}</span>
         <input
