@@ -339,10 +339,10 @@ export default () => {
         <button aria-label='Settings' className='button --no-hover is-hidden-mobile' onClick={showThemeSettings}>
           <i className='icon icarus-terminal-settings' />
         </button>
-        {pictureInPicture?.supported &&
+        {/* pictureInPicture?.supported &&
           <button aria-label={pictureInPicture.active ? 'Exit Picture-in-Picture' : 'Open Picture-in-Picture'} title={pictureInPicture.active ? 'Exit Picture-in-Picture' : 'Open Picture-in-Picture'} className='button --no-hover is-hidden-mobile' onClick={pictureInPicture.toggle}>
             <i className={`icon ${pictureInPicture.active ? 'icarus-terminal-fullscreen-window-exit' : 'icarus-terminal-fullscreen-window'}`} />
-          </button>}
+          </button> */}
         <button aria-label='Toggle Fullscreen' className='button --no-hover is-hidden-mobile' onClick={toggleFullscreenAndExitPictureInPicture}>
           <i className={`icon ${fullScreenState === true ? 'icarus-terminal-fullscreen-exit' : 'icarus-terminal-fullscreen'}`} />
         </button>
