@@ -23,6 +23,7 @@ module.exports = ({
 }) => {
   const router = useRouter()
   const [mapZoomMultiplier, setMapZoomMultiplier] = useState(SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER)
+  const [scaleReadyForSystem, setScaleReadyForSystem] = useState()
   const [starsVisible, setStarsVisible] = useState(false)
   const [mapCenter, setMapCenter] = useState(() => ({ x: system.systemX, z: system.systemZ }))
   const [coordinateY, setCoordinateY] = useState(system.systemY)
@@ -36,6 +37,7 @@ module.exports = ({
     setMapCenter({ x: system.systemX, z: system.systemZ })
     setCoordinateY(system.systemY)
     setHasDragged(false)
+    setScaleReadyForSystem(undefined)
   }, [system.systemAddress])
 
   const handlePointerDown = event => {
@@ -151,18 +153,21 @@ module.exports = ({
 
   useEffect(() => {
     if (nearbySystems !== undefined) {
+      let zoomMultiplier = SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER
       if (nearbySystems?.length >= 1000) {
-        setMapZoomMultiplier(150)
+        zoomMultiplier = 150
       } else if (nearbySystems?.length >= 500) {
-        setMapZoomMultiplier(100)
+        zoomMultiplier = 100
       } else if (nearbySystems?.length >= 100) {
-        setMapZoomMultiplier(75)
-      } else {
-        setMapZoomMultiplier(SYSTEM_MAP_DEFAULT_ZOOM_MULTIPLIER)
+        zoomMultiplier = 75
       }
+      setMapZoomMultiplier(zoomMultiplier)
+      setScaleReadyForSystem(system.systemAddress)
       setTimeout(() => setStarsVisible(true), 1000)
+    } else {
+      setScaleReadyForSystem(undefined)
     }
-  }, [nearbySystems])
+  }, [nearbySystems, system.systemAddress])
 
   return (
     <div className='fx__fade-in' style={{ position: 'relative' }}>
@@ -321,10 +326,11 @@ module.exports = ({
           <span class="muted">Y</span> {coordinateY.toFixed(2)}<br/>
           <span class="muted">Z</span> {(mapCenter.z - dragOffset.y / mapZoomMultiplier).toFixed(2)}
         </div>
-        <div className='system-map__scale' aria-label='Map scale: bar represents 1 light-year'>
-          <span style={{ width: `${mapZoomMultiplier}px`, textAlign: 'center' }}>1 ly</span>
-          <div className='system-map__scale-bar' style={{ width: `${mapZoomMultiplier}px` }} aria-hidden='true' />
-        </div>
+        {scaleReadyForSystem === system.systemAddress && nearbySystems !== undefined &&
+          <div className='system-map__scale' aria-label='Map scale: bar represents 1 light-year'>
+            <span style={{ width: `${mapZoomMultiplier}px`, textAlign: 'center' }}>1<span className='muted'>ly</span></span>
+            <div className='system-map__scale-bar' style={{ width: `${mapZoomMultiplier}px` }} aria-hidden='true' />
+          </div>}
         <div className='system-map__stars' style={{ transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)` }}>
         <div
           className='system-map__point system-map__point--highlighted'
