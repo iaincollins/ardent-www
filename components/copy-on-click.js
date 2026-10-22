@@ -3,14 +3,27 @@ import notification from 'lib/notification'
 
 export default function CopyOnClick ({ children, prepend, append }) {
   const selectableText = useRef()
-  function copyText (e) {
+  async function copyText (e) {
+    e.preventDefault()
+
+    const element = selectableText.current
+    const ownerDocument = e.currentTarget.ownerDocument
+    const ownerWindow = ownerDocument.defaultView
+    const text = element.textContent
+
     try {
-      e.preventDefault()
-      const text = selectableText.current.innerHTML
-      document.execCommand('copy')
-      navigator.clipboard.writeText(text)
+      const clipboard = ownerWindow?.navigator.clipboard
+      if (clipboard?.writeText) {
+        try {
+          await clipboard.writeText(text)
+        } catch {
+          if (!copyFromSelection(ownerDocument, element)) return
+        }
+      } else if (!copyFromSelection(ownerDocument, element)) {
+        return
+      }
+
       notification(() => <p><span className='muted'>Copied text</span><br /><span className='text-no-transform'>{`"${text}"`}</span></p>)
-      window.getSelection().removeAllRanges()
     } catch { /* don't care */ }
   }
   return (
@@ -20,4 +33,17 @@ export default function CopyOnClick ({ children, prepend, append }) {
       {append}
     </span>
   )
+}
+
+function copyFromSelection (ownerDocument, element) {
+  const selection = ownerDocument.getSelection()
+  if (!selection || !ownerDocument.execCommand) return false
+
+  const range = ownerDocument.createRange()
+  range.selectNodeContents(element)
+  selection.removeAllRanges()
+  selection.addRange(range)
+  const copied = ownerDocument.execCommand('copy')
+  selection.removeAllRanges()
+  return copied
 }

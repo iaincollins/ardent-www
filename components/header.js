@@ -343,7 +343,7 @@ export default () => {
           <i className='icon icarus-terminal-settings' />
         </button>
         {pictureInPicture?.supported &&
-          <button aria-label={pictureInPicture.active ? 'Exit Picture-in-Picture' : 'Open Picture-in-Picture'} title={pictureInPicture.active ? 'Exit Picture-in-Picture' : 'Open Picture-in-Picture'} className='button --no-hover is-hidden-mobile' onClick={pictureInPicture.toggle}>
+          <button aria-label={pictureInPicture.active ? 'Exit Always-On-Top window' : 'Open Always-On-Top window'} title={pictureInPicture.active ? 'Exit Always-On-Top window' : 'Open Always-On-Top window'} className='button --no-hover is-hidden-mobile' onClick={pictureInPicture.toggle}>
             <i className={`icon ${pictureInPicture.active ? 'icarus-terminal-fullscreen-window-exit' : 'icarus-terminal-fullscreen-window'}`} />
           </button>}
         <button aria-label='Toggle Fullscreen' className='button --no-hover is-hidden-mobile' onClick={toggleFullscreenAndExitPictureInPicture}>
