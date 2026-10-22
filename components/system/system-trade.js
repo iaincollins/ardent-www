@@ -81,7 +81,7 @@ module.exports = ({
       </p> */}
       <p style={{ marginBottom: 0 }}>
         <label className='system-trade__station-filter'>
-
+          <span>Location</span>
           <select disabled={!(stationOptions?.length > 0)} value={selectedStation} onChange={event => setSelectedStation(event.target.value)}>
             <option value='all'>{system.systemName}</option>
             <option disabled>In system:</option>

@@ -24,3 +24,17 @@ select:disabled {
   cursor: not-allowed;
   opacity: .5;
 }
+
+select option {
+  background: var(--color-primary-0);
+  color: var(--color-text);
+  font-family: "Jura", sans-serif;
+  font-size: .8rem;
+  padding: .2rem;
+}
+
+/* select option:hover,
+select option:checked {
+  background: var(--color-highlight-5);
+  color: var(--color-text-dark);
+} */
