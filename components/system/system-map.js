@@ -321,6 +321,10 @@ module.exports = ({
           <span class="muted">Y</span> {coordinateY.toFixed(2)}<br/>
           <span class="muted">Z</span> {(mapCenter.z - dragOffset.y / mapZoomMultiplier).toFixed(2)}
         </div>
+        <div className='system-map__scale' aria-label='Map scale: bar represents 1 light-year'>
+          <span style={{ width: `${mapZoomMultiplier}px`, textAlign: 'center' }}>1 ly</span>
+          <div className='system-map__scale-bar' style={{ width: `${mapZoomMultiplier}px` }} aria-hidden='true' />
+        </div>
         <div className='system-map__stars' style={{ transform: `translate(${dragOffset.x}px, ${dragOffset.y}px)` }}>
         <div
           className='system-map__point system-map__point--highlighted'

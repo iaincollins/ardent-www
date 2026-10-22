@@ -39,8 +39,8 @@
 
 .system-map__cursor-position {
   position: absolute;
-  bottom: 5rem;
-  right: 1rem;
+  bottom: 8rem;
+  right: .5rem;
   z-index: 1;
   padding: .35rem .6rem;
   color: var(--color-text-light);
@@ -55,6 +55,51 @@
 
 .system-map__cursor-position .muted {
   float: left;
+}
+
+.system-map__scale {
+  position: absolute;
+  right: .5rem;
+  bottom: 6.25rem;
+  z-index: 1;
+  padding: .35rem .6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  color: var(--color-text-light);
+  font-size: .8rem;
+  line-height: 1rem;
+  pointer-events: none;
+  width: 0;
+}
+
+.system-map__scale span {
+  font-family: fixedsys, monospace;
+  font-weight: normal;
+}
+
+.system-map__scale-bar {
+  position: relative;
+  top: -.25rem;
+  height: .5rem;
+  border-bottom: .125rem solid currentColor;
+}
+
+.system-map__scale-bar:before,
+.system-map__scale-bar:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: .5rem;
+  border-left: .125rem solid currentColor;
+}
+
+.system-map__scale-bar:before {
+  left: 0;
+}
+
+.system-map__scale-bar:after {
+  right: 0;
 }
 
 .system-map--no-animations .system-map__point,
@@ -281,7 +326,6 @@
   background: var(--color-primary-3);
   color: var(--color-text-light);
   z-index: 2;
-  zoom: 1.1;
   pointer-events: all;
   transition: 200ms;
   opacity: 1;
@@ -321,7 +365,6 @@
   filter: blur(0);
   z-index: 2;
   height: 1.5rem;
-  cursor: pointer;
 }
 
 .system-map__point--highlighted:before {
