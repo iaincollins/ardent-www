@@ -18,25 +18,34 @@ export default ({
   const resultsRef = useRef()
   const [focus, setFocus] = useState(false)
   const [_autoCompleteResults, _setAutoCompleteResults] = useState()
-  // const [highlightedResult, setHighlightedResult] = useState()
+  const [highlightedResult, setHighlightedResult] = useState(-1)
 
   useEffect(() => {
     _setAutoCompleteResults(autoCompleteResults)
-    // setHighlightedResult(0)
+    setHighlightedResult(-1)
     if (resultsRef?.current?.scrollTop) resultsRef.current.scrollTop = 0
   }, [autoCompleteResults])
 
+  function isSelectableResult (index) {
+    const result = _autoCompleteResults?.[index]
+    return Boolean(result && !result.disabled && !result.seperator)
+  }
+
+  function selectResult (result) {
+    const text = result.text
+    forwardRef.current.value = text
+    forwardRef.current.dataset.autoCompleteOption = JSON.stringify(result)
+    onSelect(text, result)
+    forwardRef.current.blur()
+    setFocus(false)
+  }
+
   useEffect(() => {
     const onSelectResult = (e) => {
-      if (e.target.dataset.autoCompleteResult) {
+      const resultElement = e.target.closest?.('[data-auto-complete-result]')
+      if (resultElement && containerRef.current.contains(resultElement)) {
         e.preventDefault()
-        const dataObj = JSON.parse(e.target.dataset.autoCompleteOption)
-        const text = dataObj.text
-        forwardRef.current.value = text
-        forwardRef.current.dataset.autoCompleteOption = JSON.stringify(dataObj)
-        onSelect(text, dataObj)
-        resultElements.ownerDocument.activeElement.blur()
-        setFocus(false)
+        selectResult(JSON.parse(resultElement.dataset.autoCompleteOption))
       }
     }
     const resultElements = containerRef.current
@@ -78,8 +87,15 @@ export default ({
   function inputOnKeyDownHandler (e) {
     if (e.key === 'Enter' || e.key === 'Escape') {
       e.preventDefault()
+      if (e.key === 'Enter') e.stopPropagation()
       if (e.key === 'Enter') {
-        onSelect(e.target.value)
+        const firstSelectableResult = (_autoCompleteResults ?? []).findIndex((result, index) => isSelectableResult(index))
+        const resultIndex = isSelectableResult(highlightedResult) ? highlightedResult : firstSelectableResult
+        if (resultIndex !== -1) {
+          selectResult(_autoCompleteResults[resultIndex])
+        } else {
+          onSelect(e.target.value)
+        }
       }
       setTimeout(() => {
         setFocus(false)
@@ -88,20 +104,28 @@ export default ({
           activeElement.blur()
         }
       }, 200)
-    }
-    /*
     } else if (e.key === 'ArrowDown') {
-      // e.preventDefault()
-      if (highlightedResult < _autoCompleteResults.length - 1) {
-        setHighlightedResult(highlightedResult + 1)
+      const results = _autoCompleteResults ?? []
+      const nextResult = results.findIndex((result, index) => index > highlightedResult && !result?.disabled && !result?.seperator)
+      if (results.some(result => !result?.disabled && !result?.seperator)) e.preventDefault()
+      if (nextResult !== -1) {
+        setHighlightedResult(nextResult)
       }
     } else if (e.key === 'ArrowUp') {
-      // e.preventDefault()
-      if (highlightedResult - 1 >= 0) {
-        setHighlightedResult(highlightedResult - 1)
+      const results = _autoCompleteResults ?? []
+      let previousResult = -1
+      const startIndex = highlightedResult < 0 ? results.length - 1 : highlightedResult - 1
+      if (results.some(result => !result?.disabled && !result?.seperator)) e.preventDefault()
+      for (let index = Math.min(startIndex, results.length - 1); index >= 0; index--) {
+        if (!results[index]?.disabled && !results[index]?.seperator) {
+          previousResult = index
+          break
+        }
+      }
+      if (previousResult !== -1) {
+        setHighlightedResult(previousResult)
       }
     }
-    */
   }
 
   return (
@@ -131,7 +155,8 @@ export default ({
                 <div key={`autocomplete-${name}-${result.value}-${i}`}>
                   {!result?.seperator && !result.disabled &&
                     <p
-                      className={`input-with-autocomplete__result ${''/* highlightedResult === i ? 'input-with-autocomplete__result-highlighted' : '' */} ${result?.className ?? ''} ${result?.icon ? 'input-with-autocomplete__result--with-icon' : ''}`}
+                      onMouseEnter={() => setHighlightedResult(i)}
+                      className={`input-with-autocomplete__result ${highlightedResult === i ? 'input-with-autocomplete__result-highlighted' : ''} ${result?.className ?? ''} ${result?.icon ? 'input-with-autocomplete__result--with-icon' : ''}`}
                       data-auto-complete-option={JSON.stringify(result)}
                       data-auto-complete-result
                     >

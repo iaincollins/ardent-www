@@ -55,6 +55,11 @@
   color: var(--color-text-dark);
 }
 
+.input-with-autocomplete__result-highlighted {
+  background: var(--color-highlight-5);
+  color: var(--color-text-dark);
+}
+
 .input-with-autocomplete__result-icon {
   position: absolute;
   left: 0;

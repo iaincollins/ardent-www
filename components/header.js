@@ -298,7 +298,7 @@ export default () => {
                     headerSearchRef.current.value = ''
                   }
                 } else if (e.key === 'ArrowDown') {
-                  if (highlightedResult < searchResults.length - 1) {
+                  if (highlightedResult < searchResults?.length - 1) {
                     setHighlightedResult(highlightedResult + 1)
                   }
                 } else if (e.key === 'ArrowUp') {
