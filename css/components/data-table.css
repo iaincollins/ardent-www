@@ -49,10 +49,14 @@
   background: none;
   border: 0;
   color: inherit;
-  cursor: pointer;
+  /* cursor: pointer; */
   font: inherit;
   padding: 0;
   text-transform: inherit;
+}
+
+.data-table__sort-button:hover {
+  color: var(--color-highlight);
 }
 
 .data-table__sort-button:focus-visible {

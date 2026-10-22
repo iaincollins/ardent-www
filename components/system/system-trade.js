@@ -27,6 +27,8 @@ module.exports = ({
   const [, setDialog] = useContext(DialogContext)
   const [selectedStation, setSelectedStation] = useState('all')
   const [stationOptions, setStationOptions] = useState([])
+  const [exportSort, setExportSort] = useState(null)
+  const [importSort, setImportSort] = useState(null)
 
   useEffect(animateTableEffect)
 
@@ -53,6 +55,14 @@ module.exports = ({
     () => filterOrdersByStation(importOrders, 'importOrders', selectedStation),
     [importOrders, selectedStation]
   )
+  const sortedExportOrders = useMemo(
+    () => sortOrders(visibleExportOrders, exportSort),
+    [visibleExportOrders, exportSort]
+  )
+  const sortedImportOrders = useMemo(
+    () => sortOrders(visibleImportOrders, importSort),
+    [visibleImportOrders, importSort]
+  )
 
   const activeTab = router.query?.slug?.[1] === 'imports'
     ? 1
@@ -63,19 +73,22 @@ module.exports = ({
       <div className='heading--with-underline'>
         <h2>Commodities</h2>
       </div>
-      <p>
+      {/* <p>
         {system?.systemName !== undefined &&
           <span className='fx__fade-in'>
             Commodities in <CopyOnClick>{system.systemName}</CopyOnClick>
           </span>}
+      </p> */}
+      <p style={{ marginBottom: 0 }}>
+        <label className='system-trade__station-filter'>
+
+          <select disabled={!(stationOptions?.length > 0)} value={selectedStation} onChange={event => setSelectedStation(event.target.value)}>
+            <option value='all'>{system.systemName}</option>
+            <option disabled>In system:</option>
+            {stationOptions.map(([marketId, stationName]) => <option key={marketId} value={marketId}>{stationName}</option>)}
+          </select>
+        </label>
       </p>
-      <label className='system-trade__station-filter'>
-        <select disabled={!(stationOptions?.length > 0)} value={selectedStation} onChange={event => setSelectedStation(event.target.value)}>
-          <option value='all'>All locations</option>
-          <option disabled>-</option>
-          {stationOptions.map(([marketId, stationName]) => <option key={marketId} value={marketId}>{stationName}</option>)}
-        </select>
-      </label>
       <Tabs
         selectedIndex={activeTab}
         onSelect={
@@ -102,7 +115,7 @@ module.exports = ({
           {exportOrders &&
             <Table
               key={`system-exports-${selectedStation}`}
-              className='data-table data-table--striped data-table--interactive data-table--animated'
+              className={`data-table data-table--striped data-table--interactive${exportSort ? '' : ' data-table--animated'}`}
               columns={[
                 {
                   title: `Commodities exported (${visibleExportOrders.length})`,
@@ -158,7 +171,7 @@ module.exports = ({
                   render: (v) => <small>{timeBetweenTimestamps(v)}</small>
                 },
                 {
-                  title: 'Total stock',
+                  title: sortableHeading('Total stock', 'totalStock', exportSort, setExportSort),
                   dataIndex: 'totalStock',
                   key: 'totalStock',
                   align: 'right',
@@ -167,7 +180,7 @@ module.exports = ({
                   render: (v) => <>{v.toLocaleString()} T</>
                 },
                 {
-                  title: 'Avg price',
+                  title: sortableHeading('Avg price', 'avgPrice', exportSort, setExportSort),
                   dataIndex: 'avgPrice',
                   key: 'avgPrice',
                   align: 'right',
@@ -182,7 +195,7 @@ module.exports = ({
                     </>
                 }
               ]}
-              data={visibleExportOrders}
+              data={sortedExportOrders}
               rowKey={(r) => `system_exports_${r.systemAddress}_${r.symbol}`}
               emptyText={<span className='muted'>No exported commodities</span>}
               expandable={{
@@ -258,7 +271,7 @@ module.exports = ({
           {importOrders &&
             <Table
               key={`system-imports-${selectedStation}`}
-              className='data-table data-table--striped data-table--interactive data-table--animated'
+              className={`data-table data-table--striped data-table--interactive${importSort ? '' : ' data-table--animated'}`}
               columns={[
                 {
                   title: `Commodities imported (${visibleImportOrders.length})`,
@@ -316,7 +329,7 @@ module.exports = ({
                   render: (v) => <small>{timeBetweenTimestamps(v)}</small>
                 },
                 {
-                  title: 'Total demand',
+                  title: sortableHeading('Total demand', 'totalDemand', importSort, setImportSort),
                   dataIndex: 'totalDemand',
                   key: 'totalDemand',
                   align: 'right',
@@ -325,7 +338,7 @@ module.exports = ({
                   render: (v) => <>{v > 0 ? `${v.toLocaleString()} T` : <small>{NO_DEMAND_TEXT}</small>}</>
                 },
                 {
-                  title: 'Avg price',
+                  title: sortableHeading('Avg price', 'avgPrice', importSort, setImportSort),
                   dataIndex: 'avgPrice',
                   key: 'avgPrice',
                   align: 'right',
@@ -340,7 +353,7 @@ module.exports = ({
                     </>
                 }
               ]}
-              data={visibleImportOrders}
+              data={sortedImportOrders}
               rowKey={(r) => `system_imports_${r.systemAddress}_${r.symbol}`}
               emptyText={<span className='muted'>No imported commodities</span>}
               expandable={{
@@ -381,6 +394,29 @@ module.exports = ({
       </Tabs>
     </div>
   )
+}
+
+function sortableHeading (label, field, sort, setSort) {
+  return (
+    <button
+      type='button'
+      className='data-table__sort-button'
+      aria-label={`Sort by ${label}${sort?.field === field ? (sort.direction === 'desc' ? ', descending' : ', ascending') : ''}`}
+      onClick={() => setSort(current => ({
+        field,
+        direction: current?.field === field && current.direction === 'desc' ? 'asc' : 'desc'
+      }))}
+    >
+      {label}<span aria-hidden='true'>{sort?.field === field ? (sort.direction === 'desc' ? ' ↓' : ' ↑') : ' ↕'}</span>
+    </button>
+  )
+}
+
+function sortOrders (orders, sort) {
+  if (!sort) return orders
+  return [...orders].sort((a, b) => (
+    (Number(a[sort.field] ?? 0) - Number(b[sort.field] ?? 0)) * (sort.direction === 'desc' ? -1 : 1)
+  ))
 }
 
 function filterOrdersByStation (groups, ordersKey, selectedStation) {

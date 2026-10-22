@@ -44,10 +44,17 @@
   z-index: 1;
   padding: .35rem .6rem;
   color: var(--color-text-light);
-  font-size: .75rem;
-  line-height: 1.1rem;
+  font-size: .8rem;
+  line-height: 1.25rem;
   text-shadow: 0 0 .35rem black;
   pointer-events: none;
+  text-align: right;
+  min-width: 4.5rem;
+  font-family: fixedsys, monospace;
+}
+
+.system-map__cursor-position .muted {
+  float: left;
 }
 
 .system-map--no-animations .system-map__point,

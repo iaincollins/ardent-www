@@ -265,12 +265,12 @@ export default ({ disabled = false, commodities = [], commodity }) => {
             })
 
             // If signed in, show the user's current system as an option
-            if (cmdrProfile?.lastSystem?.name && cmdrProfile?.lastSystem?.id) {
+            if (cmdrProfile?.lastSystem?.name) {
               updateCmdrInfo() // Always attempt to update the profile when the user is signed in, in case they have changed systems since last time
               autoCompleteResults.push({
                 icon: 'location-filled',
-                text: `${cmdrProfile?.lastSystem?.name}`,
-                value: cmdrProfile.lastSystem.id
+                text: `${cmdrProfile.lastSystem.name}`,
+                value: cmdrProfile.lastSystem.name
               })
             }
 

@@ -49,14 +49,7 @@ export default ({
           {children}
         </div>
         {inspector !== undefined &&
-          <div
-            className='layout__inspector scrollable'
-            onClick={event => {
-              if (event.target.closest?.('.inspector__heading') && window.matchMedia('(max-width: 768px)').matches) {
-                onInspectorClose?.()
-              }
-            }}
-          >
+          <div className='layout__inspector scrollable'>
             {inspector}
           </div>}
         {navigation !== undefined &&

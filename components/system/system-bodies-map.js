@@ -75,6 +75,14 @@ function getBodyFillColor (body) {
   return '#667788'
 }
 
+function toggleInspector (setInspector, systemObject) {
+  setInspector(currentInspector => (
+    currentInspector?.props?.systemObject === systemObject
+      ? undefined
+      : <SystemList.Inspector systemObject={systemObject} />
+  ))
+}
+
 module.exports = ({
   system,
   systemStatus,
@@ -92,7 +100,7 @@ module.exports = ({
     if (bodiesInSystem !== undefined && stationsInSystem !== undefined) {
       const _objectsInSystem = parseBodiesAndStations(bodiesInSystem, stationsInSystem, system) //?.[0]?.children ?? []
       setObjectsInSystem(_objectsInSystem)
-      setInspector(<SystemList.Inspector systemObject={_objectsInSystem[0]} />)
+      // setInspector(<SystemList.Inspector systemObject={_objectsInSystem[0]} />)
     }
   }, [bodiesInSystem, stationsInSystem])
 
@@ -179,27 +187,6 @@ module.exports = ({
   )
 }
 
-function StarSection ({ star, setInspector }) {
-  const children = star.children ?? []
-
-  return (
-    <div className='system-bodies-map__star-section'>
-      <div className='system-bodies-map__star-heading' onClick={() => setInspector(<SystemList.Inspector systemObject={star} />)}>
-        <h3>
-          <SystemObjectIcon systemObject={star}>
-            {star.bodyName}
-            {star.subType && <small className='text-no-transform'> — {star.subType}</small>}
-          </SystemObjectIcon>
-        </h3>
-        {children.length > 0 &&
-          <small className='muted'>
-            {children.length} {children.length === 1 ? 'orbiting body' : 'orbiting bodies'}
-          </small>}
-      </div>
-    </div>
-  )
-}
-
 function SystemCanvas ({ system, stars, setInspector }) {
   const layout = calculateSystemLayout(stars)
   const initialViewBox = layout.viewBox.split(/[ ,]+/).map(Number)
@@ -271,7 +258,7 @@ function SystemCanvas ({ system, stars, setInspector }) {
   }
 
   const handleWheel = event => {
-    event.preventDefault()
+    if (event.cancelable) event.preventDefault() // Check is cancelable
     const point = getSvgPoint(event.currentTarget, event.clientX, event.clientY)
     const [x, y, width, height] = viewBoxRef.current
     const factor = Math.exp(Math.max(-1, Math.min(1, event.deltaY * 0.0015)))
@@ -790,6 +777,7 @@ function getPlanetOverlayIconFontSize (radius) {
 }
 
 function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
+  const pointerDownRef = useRef(false)
   r = getBodyRenderRadius(body, r)
   const isPlanet = body.bodyType === 'Planet'
   const hasAtmosphere = body.atmosphereType && body.atmosphereType !== 'No atmosphere'
@@ -816,8 +804,16 @@ function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
       data-system-object-atmosphere={hasAtmosphere ? body.atmosphereType : undefined}
       data-system-object-small={small}
       tabIndex='0'
-      onFocus={() => setInspector(<SystemList.Inspector systemObject={body} />)}
-      onClick={() => setInspector(<SystemList.Inspector systemObject={body} />)}
+      onPointerDown={() => { pointerDownRef.current = true }}
+      onPointerUp={() => { pointerDownRef.current = false }}
+      onPointerCancel={() => { pointerDownRef.current = false }}
+      onFocus={() => {
+        if (!pointerDownRef.current) setInspector(<SystemList.Inspector systemObject={body} />)
+      }}
+      onClick={() => {
+        pointerDownRef.current = false
+        toggleInspector(setInspector, body)
+      }}
     >
       {hasAtmosphere && isPlanet &&
         <circle
@@ -910,6 +906,7 @@ function BodySvg ({ system, body, x, y, r, setInspector, small = false }) {
 }
 
 function StationSvg ({ station, x, y, setInspector }) {
+  const pointerDownRef = useRef(false)
   const isSurfaceStation = ['CraterPort', 'CraterOutpost', 'OnFootSettlement'].includes(station.stationType)
 
   return (
@@ -919,13 +916,17 @@ function StationSvg ({ station, x, y, setInspector }) {
       tabIndex='0'
       role='button'
       aria-label={`Station: ${station.stationName}`}
+      onPointerDown={() => { pointerDownRef.current = true }}
+      onPointerUp={() => { pointerDownRef.current = false }}
+      onPointerCancel={() => { pointerDownRef.current = false }}
       onFocus={event => {
         event.stopPropagation()
-        setInspector(<SystemList.Inspector systemObject={station} />)
+        if (!pointerDownRef.current) setInspector(<SystemList.Inspector systemObject={station} />)
       }}
       onClick={event => {
         event.stopPropagation()
-        setInspector(<SystemList.Inspector systemObject={station} />)
+        pointerDownRef.current = false
+        toggleInspector(setInspector, station)
       }}
     >
       <title>{station.stationName}{station.stationType ? ` — ${station.stationType}` : ''}</title>

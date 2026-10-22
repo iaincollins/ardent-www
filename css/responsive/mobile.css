@@ -334,15 +334,15 @@
 
   .layout__content--with-inspector {
     width: inherit;
-    height: calc(100% - 50% - 5rem);
+    height: calc(100% - 50% - 4.5rem);
   }
   
   .layout__inspector {
     width: inherit;
     top: auto;
-    bottom: 3.8rem;
-    left: 4.6rem;
-    right: 1rem;
+    bottom: 3.2rem;
+    left: 3.8rem;
+    right: .5rem;
     height: calc(100% - 50% - 5rem);
     border-top: .2rem solid var(--color-layout-frame);
     animation: none;
