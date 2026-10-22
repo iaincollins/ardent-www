@@ -413,6 +413,7 @@ function sortableHeading (label, field, sort, setSort) {
 }
 
 function sortOrders (orders, sort) {
+  if (!Array.isArray(orders)) return []
   if (!sort) return orders
   return [...orders].sort((a, b) => (
     (Number(a[sort.field] ?? 0) - Number(b[sort.field] ?? 0)) * (sort.direction === 'desc' ? -1 : 1)
